@@ -1,0 +1,50 @@
+{
+  "name": "beping-api",
+  "version": "0.0.1",
+  "description": "A sample Node.js app using Express 4",
+  "engines": {
+    "node": "8.9.1"
+  },
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js --cache=false",
+    "cluster": "node clusters.js",
+    "cluster-no-cache": "node clusters.js --cache=false"
+  },
+  "dependencies": {
+    "app-root-path": "^2.1.0",
+    "body-parser": "latest",
+    "compression": "^1.7.3",
+    "ejs": "^2.5.6",
+    "express": "^4.15.2",
+    "express-api-doc": "0.0.12",
+    "express-status-monitor": "^1.1.5",
+    "helmet": "^3.13.0",
+    "json-stable-stringify": "^1.0.1",
+    "lodash": "^4.17.10",
+    "minimist": "^1.2.0",
+    "morgan": "^1.9.0",
+    "node-schedule": "^1.3.0",
+    "path": "^0.12.7",
+    "redis": "^2.8.0",
+    "redis-server": "^1.2.2",
+    "response-time": "^2.3.2",
+    "soap": "^0.24.0",
+    "terminal": "^0.1.4",
+    "winston": "^3.0.0"
+  },
+  "devDependencies": {
+    "request": "^2.81.0",
+    "tape": "^4.7.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/heroku/node-js-getting-started"
+  },
+  "keywords": [
+    "node",
+    "heroku",
+    "express"
+  ],
+  "license": "MIT"
+}
