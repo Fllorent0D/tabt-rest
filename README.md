@@ -8,7 +8,7 @@ Caching server for requests
 ```sh
 $ cd beping2-backend
 $ npm install
-$ npm start
+$ npm run clusters
 ```
 
 ## Running Locally with caching disable
@@ -16,7 +16,7 @@ $ npm start
 ```sh
 $ cd beping2-backend
 $ npm install
-$ npm start
+$ npm run clusters-no-cache
 ```
 
 # To do
