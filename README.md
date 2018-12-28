@@ -1,12 +1,11 @@
-# Backend of BePing 2
+# Tabt-REST
 
-Transform call SOAP Tabt API via REST
-Caching server for requests
+Transform Tabt SOAP Webservice to a REST service
 
 ## Running Locally with caching enable
 
 ```sh
-$ cd beping2-backend
+$ cd tabt-rest
 $ npm install
 $ npm run clusters
 ```
@@ -14,13 +13,10 @@ $ npm run clusters
 ## Running Locally with caching disable
 
 ```sh
-$ cd beping2-backend
+$ cd tabt-rest
 $ npm install
 $ npm run clusters-no-cache
 ```
 
 # To do
-[ ] Notifications sender
-[ ] Send mail to AFTT to increase quota
-[ ] WSDL files refresher each week in case of changes
-[ ] ? Automatically create routing based on WSDL files ?
+[ ] 
