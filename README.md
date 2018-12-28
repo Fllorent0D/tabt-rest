@@ -19,4 +19,4 @@ $ npm run clusters-no-cache
 ```
 
 # To do
-[ ] 
+[ ] Cleanup + reorganize
