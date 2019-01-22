@@ -778,7 +778,7 @@
 
   <wsdl:service name="TabTAPI_Service">
     <wsdl:port name="TabTAPI_Port" binding="tns:TabTAPI_Binding">
-      <soap:address location='https://resultats.aftt.be/api/index.php?s=vttl'/>
+      <soap:address location='https://resultats.aftt.be/api/index.php?s=aftt'/>
     </wsdl:port>
   </wsdl:service>
 
