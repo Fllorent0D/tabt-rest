@@ -7,9 +7,9 @@
   },
   "main": "index.js",
   "scripts": {
-    "start": "node index.js --cache=false",
-    "cluster": "node clusters.js",
-    "cluster-no-cache": "node clusters.js --cache=false"
+    "start": "node $NODE_DEBUG_OPTION index.js --cache=false",
+    "cluster": "node $NODE_DEBUG_OPTION clusters.js",
+    "cluster-no-cache": "node $NODE_DEBUG_OPTION clusters.js --cache=false"
   },
   "dependencies": {
     "app-root-path": "^2.1.0",
