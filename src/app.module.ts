@@ -2,15 +2,15 @@ import { CacheModule, MiddlewareConsumer, Module, NestModule } from '@nestjs/com
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ProvidersModule } from './providers/providers.module';
-import { DivisionsModule } from './divisions/divisions.module';
+import { DivisionsModule } from './api/divisions/divisions.module';
 import { ConfigModule } from './config/config.module';
 import { CommonModule } from './common/common.module';
 import { LoggerMiddleware } from './common/middleware/logger.middleware';
-import { ClubModule } from './club/club.module';
-import { TournamentModule } from './tournament/tournament.module';
-import { SeasonModule } from './season/season.module';
-import { MemberModule } from './member/member.module';
-import { MatchModule } from './match/match.module';
+import { ClubModule } from './api/club/club.module';
+import { TournamentModule } from './api/tournament/tournament.module';
+import { SeasonModule } from './api/season/season.module';
+import { MemberModule } from './api/member/member.module';
+import { MatchModule } from './api/match/match.module';
 
 @Module({
   imports: [
