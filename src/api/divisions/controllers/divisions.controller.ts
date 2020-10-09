@@ -24,7 +24,6 @@ import { TabtCredentials } from '../../../common/decorators/TabtCredentials.deco
 @Controller('divisions')
 @TabtHeaders()
 @ApiTags('Divisions')
-@TabtHeaders()
 export class DivisionsController {
 
   constructor(
