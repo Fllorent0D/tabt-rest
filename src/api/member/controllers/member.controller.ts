@@ -1,8 +1,9 @@
 import { Controller, Get, NotFoundException, Param, ParseIntPipe, Query } from '@nestjs/common';
-import { GetMembersInput, MemberEntry } from '../../../entity/tabt/TabTAPI_Port';
+import { Credentials, GetMembersInput, MemberEntry } from '../../../entity/tabt/TabTAPI_Port';
 import { ApiNotFoundResponse, ApiOkResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { MemberService } from '../providers/member.service';
 import { TabtHeaders } from '../../../common/headers/tabt-headers';
+import { TabtCredentials } from '../../../common/decorators/TabtCredentials.decorator';
 
 @ApiTags('Members')
 @Controller('members')
@@ -17,10 +18,13 @@ export class MemberController {
   @Get()
   @ApiOkResponse({
     type: [MemberEntry],
-    description: 'List of players found with specific search criterias'
+    description: 'List of players found with specific search criterias',
   })
-  async findAll(@Query() input: GetMembersInput): Promise<MemberEntry[]> {
-    return this.memberService.getMembers(input);
+  async findAll(
+    @Query() input: GetMembersInput,
+    @TabtCredentials() credentials: Credentials,
+  ): Promise<MemberEntry[]> {
+    return this.memberService.getMembers({ ...input, Credentials: credentials });
   }
 
   @Get(':UniqueIndex')
@@ -32,8 +36,9 @@ export class MemberController {
   async findById(
     @Query() input: GetMembersInput,
     @Param('UniqueIndex', ParseIntPipe) id: number,
+    @TabtCredentials() credentials: Credentials,
   ): Promise<MemberEntry> {
-    const found = await this.memberService.getMembers({ ...input, UniqueIndex: id });
+    const found = await this.memberService.getMembers({ ...input, UniqueIndex: id, Credentials: credentials });
     if (found.length === 1) {
       return found[0];
     }

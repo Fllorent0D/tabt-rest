@@ -10,7 +10,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const options = new DocumentBuilder()
     .setTitle('TabT Rest')
-    .setDescription('The Tabt REST API description')
+    .setDescription('This api is a bridge to the TabT SOAP API. It contacts TabT and cache results in order to reduce latency for some requests. More documentation will come.')
     .setVersion('1.0')
     .addTag('Seasons')
     .addTag('Clubs')

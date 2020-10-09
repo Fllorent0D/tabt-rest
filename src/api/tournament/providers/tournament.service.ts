@@ -2,7 +2,7 @@ import { Inject, Injectable, Logger } from '@nestjs/common';
 import {
   GetTournamentsInput,
   TournamentEntry,
-  TabTAPISoap, TournamentRegisterOutput,
+  TabTAPISoap, TournamentRegisterOutput, TournamentRegisterInput,
 } from '../../../entity/tabt/TabTAPI_Port';
 import { CacheService } from '../../../providers/cache/cache.service';
 import { RegisterTournamentDTO } from '../dto/tournaments.dto';
@@ -28,7 +28,7 @@ export class TournamentService {
     return this.cacheService.getAndSetInCache(CACHE_KEY, input, getter, 3600);
   }
 
-  async registerToTournament(tournamentId: number, serieId: number, input: RegisterTournamentDTO): Promise<TournamentRegisterOutput[]> {
+  async registerToTournament(tournamentId: number, serieId: number, input: TournamentRegisterInput): Promise<TournamentRegisterOutput[]> {
     return this.tabtClient.TournamentRegisterAsync({...input, TournamentUniqueIndex: tournamentId, SerieUniqueIndex: serieId });
   }
 }

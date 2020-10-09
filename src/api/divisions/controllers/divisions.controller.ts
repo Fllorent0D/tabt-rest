@@ -8,26 +8,23 @@ import {
   Query,
   UseInterceptors,
 } from '@nestjs/common';
-import { DivisionEntry, GetDivisionsInput, GetDivisionRankingInput, RankingEntry } from '../../../entity/tabt/TabTAPI_Port';
+import {
+  DivisionEntry,
+  GetDivisionsInput,
+  GetDivisionRankingInput,
+  RankingEntry, Credentials,
+} from '../../../entity/tabt/TabTAPI_Port';
 import { DivisionService } from '../providers/division.service';
 import { ApiHeaders, ApiNotFoundResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { TabtException } from '../../../common/filter/tabt-exceptions.filter';
 import { DivisionRankingService } from '../providers/division-ranking.service';
 import { TabtHeaders } from '../../../common/headers/tabt-headers';
+import { TabtCredentials } from '../../../common/decorators/TabtCredentials.decorator';
 
 @Controller('divisions')
 @TabtHeaders()
 @ApiTags('Divisions')
-@ApiHeaders([
-  {
-    name: 'X-Tabt-Account',
-    description: 'Account to query',
-  },
-  {
-    name: 'X-Tabt-Password',
-    description: 'Password of account',
-  },
-])
+@TabtHeaders()
 export class DivisionsController {
 
   constructor(
@@ -46,8 +43,11 @@ export class DivisionsController {
     status: 400,
     type: TabtException,
   })
-  findAll(@Query() query: GetDivisionsInput): Promise<DivisionEntry[]> {
-    return this.divisionService.getDivisionsAsync(query);
+  findAll(
+    @Query() query: GetDivisionsInput,
+    @TabtCredentials() credentials: Credentials,
+  ): Promise<DivisionEntry[]> {
+    return this.divisionService.getDivisionsAsync({ ...query, Credentials: credentials });
   }
 
   @Get(':DivisionId')
@@ -61,8 +61,12 @@ export class DivisionsController {
     status: 400,
     type: TabtException,
   })
-  async findOne(@Param('DivisionId', ParseIntPipe) id: number, @Query() query: GetDivisionsInput): Promise<DivisionEntry> {
-    const division = await this.divisionService.getDivisionsByIdAsync(id, query);
+  async findOne(
+    @Param('DivisionId', ParseIntPipe) id: number,
+    @Query() query: GetDivisionsInput,
+    @TabtCredentials() credentials: Credentials,
+  ): Promise<DivisionEntry> {
+    const division = await this.divisionService.getDivisionsByIdAsync(id, { ...query, Credentials: credentials });
     if (!division) {
       throw new NotFoundException();
     }
@@ -79,8 +83,12 @@ export class DivisionsController {
     status: 400,
     type: TabtException,
   })
-  async findRankingDivision(@Param('DivisionId', ParseIntPipe) id: number, @Query() query: GetDivisionRankingInput): Promise<RankingEntry[]> {
-    return this.divisionRankingService.getDivisionRanking(id, query);
+  async findRankingDivision(
+    @Param('DivisionId', ParseIntPipe) id: number,
+    @Query() query: GetDivisionRankingInput,
+    @TabtCredentials() credentials: Credentials,
+  ): Promise<RankingEntry[]> {
+    return this.divisionRankingService.getDivisionRanking(id, { ...query, Credentials: credentials });
   }
 
   @Get(':DivisionId/matches')
@@ -93,8 +101,12 @@ export class DivisionsController {
     status: 400,
     type: TabtException,
   })
-  async findMatchesDivision(@Param('DivisionId', ParseIntPipe) id: number, @Query() query: GetDivisionRankingInput): Promise<RankingEntry[]> {
-    return this.divisionRankingService.getDivisionRanking(id, query);
+  async findMatchesDivision(
+    @Param('DivisionId', ParseIntPipe) id: number,
+    @Query() query: GetDivisionRankingInput,
+    @TabtCredentials() credentials: Credentials,
+  ): Promise<RankingEntry[]> {
+    return this.divisionRankingService.getDivisionRanking(id, { ...query, Credentials: credentials });
   }
 
 }
