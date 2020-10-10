@@ -3,10 +3,10 @@ import { ClubController } from './controllers/club.controller';
 import { ClubService } from './providers/club.service';
 import { ClubMemberService } from './providers/club-member.service';
 import { ClubTeamService } from './providers/club-team.service';
-import { ProvidersModule } from '../../providers/providers.module';
+import { CommonModule } from '../../common/common.module';
 
 @Module({
-  imports:[ProvidersModule],
+  imports:[CommonModule],
   controllers: [ClubController],
   providers: [ClubService, ClubTeamService, ClubMemberService]
 })

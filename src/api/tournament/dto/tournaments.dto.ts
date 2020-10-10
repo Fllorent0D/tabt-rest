@@ -1,4 +1,3 @@
-import { GetTournamentsInput } from '../../../entity/tabt/TabTAPI_Port';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class GetTournamentsDTO {

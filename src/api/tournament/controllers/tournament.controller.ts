@@ -3,19 +3,18 @@ import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import {
   Credentials,
   GetTournamentsInput,
-  IGetTournamentsOutput,
-  SeasonEntry,
-  TournamentEntry, TournamentSerieEntry,
+  TournamentEntry,
+  TournamentSerieEntry,
 } from '../../../entity/tabt/TabTAPI_Port';
 import { TabtException } from '../../../common/filter/tabt-exceptions.filter';
 import { TournamentService } from '../providers/tournament.service';
 import { GetTournamentDTO, GetTournamentsDTO, RegisterTournamentDTO } from '../dto/tournaments.dto';
-import { TabtHeaders } from '../../../common/headers/tabt-headers';
-import { TabtCredentials } from '../../../common/decorators/TabtCredentials.decorator';
+import { TabtHeadersDecorator } from '../../../common/decorators/tabt-headers.decorator';
+import { TabtCredentials } from '../../../common/decorators/tabt-credentials.decorator';
 
 @ApiTags('Tournaments')
 @Controller('tournaments')
-@TabtHeaders()
+@TabtHeadersDecorator()
 export class TournamentController {
   constructor(private tournamentService: TournamentService) {
   }

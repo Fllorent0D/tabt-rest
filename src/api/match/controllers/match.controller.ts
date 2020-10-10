@@ -1,20 +1,17 @@
-import { Controller, Get, NotFoundException, Param, ParseIntPipe, Query } from '@nestjs/common';
+import { Controller, Get, NotFoundException, Param, Query } from '@nestjs/common';
 import { ApiNotFoundResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import {
-  TeamMatchesEntry,
-  MemberEntry,
-  GetMatchesInput, Credentials,
-} from '../../../entity/tabt/TabTAPI_Port';
+import { GetMatchesInput, MemberEntry, TeamMatchesEntry } from '../../../entity/tabt/TabTAPI_Port';
 import { MatchService } from '../providers/match.service';
-import { TabtHeaders } from '../../../common/headers/tabt-headers';
-import { TabtCredentials } from '../../../common/decorators/TabtCredentials.decorator';
+import { TabtHeadersDecorator } from '../../../common/decorators/tabt-headers.decorator';
+import { ContextService } from '../../../common/context/context.service';
 
 @ApiTags('Matches')
 @Controller('matches')
-@TabtHeaders()
+@TabtHeadersDecorator()
 export class MatchController {
   constructor(
     private matchService: MatchService,
+    private contextServicetest: ContextService
   ) {
   }
 
@@ -24,10 +21,10 @@ export class MatchController {
     description: 'List of team matches entries',
   })
   async findAll(
-    @Query() input: GetMatchesInput,
-    @TabtCredentials() credentials: Credentials,
+    @Query() input: GetMatchesInput
   ): Promise<TeamMatchesEntry[]> {
-    return this.matchService.getMatches({ ...input, Credentials: credentials });
+    console.log(this.contextServicetest.context);
+    return this.matchService.getMatches({ ...input });
   }
 
   @Get(':MatchUniqueId')
@@ -39,9 +36,8 @@ export class MatchController {
   async findById(
     @Query() input: GetMatchesInput,
     @Param('MatchUniqueId') id: string,
-    @TabtCredentials() credentials: Credentials,
   ): Promise<TeamMatchesEntry> {
-    const found = await this.matchService.getMatches({ ...input, Credentials: credentials, MatchUniqueId: id });
+    const found = await this.matchService.getMatches({ ...input, MatchUniqueId: id });
     if (found.length === 1) {
       return found[0];
     }

@@ -1,11 +1,11 @@
-import { Inject, Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import {
   GetTournamentsInput,
   TournamentEntry,
-  TabTAPISoap, TournamentRegisterOutput, TournamentRegisterInput,
+  TournamentRegisterInput,
+  TournamentRegisterOutput,
 } from '../../../entity/tabt/TabTAPI_Port';
-import { CacheService } from '../../../providers/cache/cache.service';
-import { RegisterTournamentDTO } from '../dto/tournaments.dto';
+import { TabtClientService } from '../../../common/tabt-client/tabt-client.service';
 
 export const CACHE_KEY = 'TOURNAMENTS';
 
@@ -14,21 +14,20 @@ export class TournamentService {
   private readonly logger = new Logger('TournamentService', true);
 
   constructor(
-    @Inject('TABT_CLIENT') private tabtClient: TabTAPISoap,
-    private cacheService: CacheService,
+    private tabtClient: TabtClientService,
   ) {
   }
 
   async getTournaments(input: GetTournamentsInput): Promise<TournamentEntry[]> {
-    const getter = async () => {
-      const [result] = await this.tabtClient.GetTournamentsAsync(input);
-      this.logger.debug('Fetched seasons from TabT');
-      return result.TournamentEntries;
-    };
-    return this.cacheService.getAndSetInCache(CACHE_KEY, input, getter, 3600);
+    const [result] = await this.tabtClient.GetTournamentsAsync(input);
+    return result.TournamentEntries;
   }
 
   async registerToTournament(tournamentId: number, serieId: number, input: TournamentRegisterInput): Promise<TournamentRegisterOutput[]> {
-    return this.tabtClient.TournamentRegisterAsync({...input, TournamentUniqueIndex: tournamentId, SerieUniqueIndex: serieId });
+    return this.tabtClient.TournamentRegisterAsync({
+      ...input,
+      TournamentUniqueIndex: tournamentId,
+      SerieUniqueIndex: serieId,
+    });
   }
 }

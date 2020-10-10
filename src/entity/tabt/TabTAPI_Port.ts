@@ -1,6 +1,5 @@
 import { Client } from 'soap';
-import { ApiExtraModels, ApiProperty, ApiPropertyOptional, OmitType } from '@nestjs/swagger';
-import { ApiModelPropertyOptional } from '@nestjs/swagger/dist/decorators/api-model-property.decorator';
+import { ApiProperty, ApiPropertyOptional, OmitType } from '@nestjs/swagger';
 
 export class Credentials {
 

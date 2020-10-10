@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { MatchController } from './controllers/match.controller';
 import { MatchService } from './providers/match.service';
-import { ProvidersModule } from '../../providers/providers.module';
+import { CommonModule } from '../../common/common.module';
 
 @Module({
-  imports: [ProvidersModule],
+  imports: [CommonModule],
   controllers: [MatchController],
   providers: [MatchService]
 })

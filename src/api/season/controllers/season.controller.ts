@@ -1,9 +1,8 @@
 import { Controller, Get } from '@nestjs/common';
 import { SeasonService } from '../providers/season.service';
-import { ApiExtension, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Credentials, SeasonEntry } from '../../../entity/tabt/TabTAPI_Port';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { SeasonEntry } from '../../../entity/tabt/TabTAPI_Port';
 import { TabtException } from '../../../common/filter/tabt-exceptions.filter';
-import { TabtCredentials } from '../../../common/decorators/TabtCredentials.decorator';
 
 @Controller('seasons')
 @ApiTags('Seasons')

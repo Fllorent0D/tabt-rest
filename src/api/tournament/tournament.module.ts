@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { TournamentService } from './providers/tournament.service';
 import { TournamentController } from './controllers/tournament.controller';
-import { ProvidersModule } from '../../providers/providers.module';
+import { CommonModule } from '../../common/common.module';
 
 @Module({
-  imports: [ProvidersModule],
+  imports: [CommonModule],
   providers: [TournamentService],
   controllers: [TournamentController]
 })

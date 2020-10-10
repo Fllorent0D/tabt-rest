@@ -1,22 +1,22 @@
 import { Controller, Get, NotFoundException, Param, Query } from '@nestjs/common';
 import { ApiNotFoundResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
 import {
-  ClubEntry, Credentials,
-  DivisionEntry,
+  ClubEntry,
   GetClubsInput,
-  GetMembersInput, GetMembersInputFromClub, GetTeamsInputFromClub,
-  MemberEntry, TeamEntry,
+  GetMembersInputFromClub,
+  GetTeamsInputFromClub,
+  MemberEntry,
+  TeamEntry,
 } from '../../../entity/tabt/TabTAPI_Port';
 import { ClubService } from '../providers/club.service';
 import { ClubMemberService } from '../providers/club-member.service';
 import { ClubTeamService } from '../providers/club-team.service';
 import { TabtException } from '../../../common/filter/tabt-exceptions.filter';
-import { TabtHeaders } from '../../../common/headers/tabt-headers';
-import { TabtCredentials } from '../../../common/decorators/TabtCredentials.decorator';
+import { TabtHeadersDecorator } from '../../../common/decorators/tabt-headers.decorator';
 
 @ApiTags('Clubs')
 @Controller('clubs')
-@TabtHeaders()
+@TabtHeadersDecorator()
 export class ClubController {
   constructor(
     private clubService: ClubService,
@@ -36,10 +36,9 @@ export class ClubController {
     type: TabtException,
   })
   findAll(
-    @TabtCredentials() credentials: Credentials,
     @Query() input: GetClubsInput,
   ) {
-    return this.clubService.getClubs({ ...input, Credentials: credentials });
+    return this.clubService.getClubs(input);
   }
 
   @Get(':ClubIndex')
@@ -56,9 +55,8 @@ export class ClubController {
   async findbyId(
     @Query() input: GetClubsInput,
     @Param('ClubIndex') uniqueIndex: string,
-    @TabtCredentials() credentials: Credentials,
   ) {
-    const value = await this.clubService.getClubsById({ ...input, Credentials: credentials }, uniqueIndex);
+    const value = await this.clubService.getClubsById({ ...input }, uniqueIndex);
     if (!value) {
       throw new NotFoundException();
     }
@@ -78,9 +76,8 @@ export class ClubController {
   getClubMembers(
     @Query() input: GetMembersInputFromClub,
     @Param('ClubIndex') uniqueIndex: string,
-    @TabtCredentials() credentials: Credentials,
   ) {
-    return this.clubMemberService.getClubsMembers({ ...input, Club: uniqueIndex, Credentials: credentials });
+    return this.clubMemberService.getClubsMembers({ ...input, Club: uniqueIndex });
   }
 
   @Get(':ClubIndex/teams')
@@ -96,8 +93,7 @@ export class ClubController {
   getClubTeams(
     @Query() input: GetTeamsInputFromClub,
     @Param('ClubIndex') uniqueIndex: string,
-    @TabtCredentials() credentials: Credentials,
   ) {
-    return this.clubTeamService.getClubsTeams({ ...input, Club: uniqueIndex, Credentials: credentials });
+    return this.clubTeamService.getClubsTeams({ ...input, Club: uniqueIndex });
   }
 }

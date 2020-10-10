@@ -1,25 +1,19 @@
-import { Inject, Injectable, Logger } from '@nestjs/common';
-import { ClubEntry, GetClubsInput, GetMembersInput, MemberEntry, TabTAPISoap } from '../../../entity/tabt/TabTAPI_Port';
-import { CacheService } from '../../../providers/cache/cache.service';
+import { Injectable, Logger } from '@nestjs/common';
+import { GetMembersInput, MemberEntry } from '../../../entity/tabt/TabTAPI_Port';
+import { TabtClientService } from '../../../common/tabt-client/tabt-client.service';
 
-const CACHE_KEY = 'MEMBERS-';
 
 @Injectable()
 export class MemberService {
   private readonly logger = new Logger('MemberService', true);
 
   constructor(
-    @Inject('TABT_CLIENT') private tabtClient: TabTAPISoap,
-    private cacheService: CacheService,
+    private tabtClient: TabtClientService,
   ) {
   }
 
   async getMembers(input: GetMembersInput): Promise<MemberEntry[]> {
-    const getter = async () => {
-      const [result] = await this.tabtClient.GetMembersAsync(input);
-      this.logger.debug('Fetched clubs from TabT');
-      return result.MemberEntries;
-    };
-    return this.cacheService.getAndSetInCache(CACHE_KEY, input, getter, 3600);
+    const [result] = await this.tabtClient.GetMembersAsync(input);
+    return result.MemberEntries;
   }
 }
