@@ -1,0 +1,45 @@
+name: Build and deploy staging
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on:
+  push:
+    branches: [ main ]
+
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+      - name: Setup
+        env:
+          NODE_ENV: "production"
+        run: npm install
+      - name: Build
+        run: npm run ci
+      - name: Deploy to Server
+        uses: easingthemes/ssh-deploy@v2.1.1
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_STAGING_PRIVATEKEY }}
+          ARGS: "-rltgoDzvO"
+          SOURCE: ""
+          REMOTE_HOST: ${{ secrets.SSH_STAGING_HOST }}
+          REMOTE_USER: ${{ secrets.SSH_STAGING_USER }}
+          TARGET: ${{ secrets.SSH_STAGING_TARGET }}
+      - name: Restarting TabT instance
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_STAGING_HOST }}
+          username: ${{ secrets.SSH_STAGING_USER }}
+          key: ${{ secrets.SSH_STAGING_PRIVATEKEY }}
+          script: cd ${{ secrets.SSH_STAGING_TARGET }} && pm2 restart tabt-rest-pm2.json

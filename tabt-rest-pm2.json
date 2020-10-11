@@ -1,0 +1,7 @@
+{
+  "apps" : [{
+    "name"        : "tabt-rest",
+    "script"      : "./dist/main.js",
+    "exec_mode"   : "fork"
+  }]
+}
