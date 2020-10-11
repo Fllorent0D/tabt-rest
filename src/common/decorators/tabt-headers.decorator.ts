@@ -20,7 +20,7 @@ export function TabtHeadersDecorator() {
     ApiHeader({
       name: HeaderKeys.X_TABT_DATABASE,
       enum:[TABT_LANGUAGE.AFTT, TABT_LANGUAGE.VTTL],
-      description: "Language"
+      description: "Database to query"
     })
   );
 }
