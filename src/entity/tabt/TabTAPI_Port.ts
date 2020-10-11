@@ -328,7 +328,7 @@ export class GetDivisionsInput {
   Season?: number;
   /** xsd:number(undefined) */
   @ApiPropertyOptional({ type: Number })
-  Level?: Number;
+  Level?: number;
   /** ShowDivisionNameType(no,yes,short) */
   @ApiPropertyOptional({ enum: ['no', 'yes', 'short'] })
   ShowDivisionName?: 'no' | 'yes' | 'short';
