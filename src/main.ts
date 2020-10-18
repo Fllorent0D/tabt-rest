@@ -9,6 +9,7 @@ import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.setGlobalPrefix(process.env.API_PREFIX)
   const options = new DocumentBuilder()
     .setTitle('TabT Rest')
     .setDescription('This api is a bridge to the TabT SOAP API. It contacts TabT and cache results in order to reduce latency for some requests. More documentation will come.')
@@ -22,13 +23,15 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api', app, document);
+
   app.use(compression());
   app.use(helmet());
   app.use(responseTime());
 
   app.useGlobalFilters(new TabtExceptionsFilter());
   app.useGlobalPipes(new ValidationPipe());
-  await app.listen(3000);
+
+  await app.listen(process.env.PORT);
 }
 
 bootstrap();

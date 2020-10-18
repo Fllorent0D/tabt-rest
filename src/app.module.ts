@@ -2,19 +2,19 @@ import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ServicesModule } from './services/services.module';
-import { ConfigModule } from './config/config.module';
 import { CommonModule } from './common/common.module';
 import { LoggerMiddleware } from './web/middlewares/logger/logger.middleware';
 import { WebModule } from './web/web.module';
 import { ApiModule } from './api/api.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
     ServicesModule,
-    ConfigModule,
     CommonModule,
     ApiModule,
-    WebModule
+    WebModule,
+    ConfigModule.forRoot()
   ],
   controllers: [AppController],
   providers: [

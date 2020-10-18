@@ -12,7 +12,7 @@ const asyncProviders = [
   {
     provide: 'tabt-aftt',
     useFactory: async () => {
-      return createClientAsync('https://resultats.aftt.be/api/?wsdl', {
+      return createClientAsync(process.env.AFTT_WSDL, {
         returnFault: true,
       });
     },
@@ -20,7 +20,7 @@ const asyncProviders = [
   {
     provide: 'tabt-vttl',
     useFactory: async () => {
-      return createClientAsync('https://api.vttl.be/?wsdl', {
+      return createClientAsync(process.env.VTLL_WSDL, {
         returnFault: true,
       });
     },
