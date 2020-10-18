@@ -22,8 +22,6 @@ jobs:
         with:
           node-version: 12.x
       - name: Setup
-        env:
-          NODE_ENV: "production"
         run: npm install
       - name: Build
         run: npm run build
