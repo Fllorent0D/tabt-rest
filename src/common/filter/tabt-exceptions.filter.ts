@@ -1,12 +1,14 @@
 import { ArgumentsHost, Catch, ExceptionFilter } from '@nestjs/common';
 import { OperationalError } from 'bluebird';
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class TabtException {
-  @ApiProperty()
+  @ApiPropertyOptional()
   errorCode: number;
   @ApiProperty()
   message: string;
+  @ApiProperty()
+  statusCode: number;
 }
 
 @Catch(OperationalError)
@@ -17,6 +19,7 @@ export class TabtExceptionsFilter implements ExceptionFilter {
     const [errorCode, errorMessage] = exception.message.split(': ');
 
     response.status(400).json({
+      statusCode: 400,
       errorCode: parseInt(errorCode),
       message: errorMessage,
     }).end();

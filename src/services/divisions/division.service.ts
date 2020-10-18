@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { DivisionEntry, GetDivisionsInput } from '../../../entity/tabt/TabTAPI_Port';
-import { TabtClientService } from '../../../common/tabt-client/tabt-client.service';
+import { DivisionEntry, GetDivisionsInput } from '../../entity/tabt-soap/TabTAPI_Port';
+import { TabtClientService } from '../../common/tabt-client/tabt-client.service';
 
 
 @Injectable()
@@ -14,7 +14,7 @@ export class DivisionService {
 
   async getDivisionsAsync(input: GetDivisionsInput): Promise<DivisionEntry[]> {
     const [result] = await this.tabtClient.GetDivisionsAsync(input);
-    return result.DivisionEntries;
+    return result.DivisionEntries.map(entry => new DivisionEntry(entry));
   }
 
   async getDivisionsByIdAsync(id: number, input: GetDivisionsInput = {}): Promise<DivisionEntry> {

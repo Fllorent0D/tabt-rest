@@ -1,5 +1,5 @@
 {
-  "name": "tabt-nest",
+  "name": "tabt-rest",
   "version": "1.0.0",
   "description": "",
   "author": "",
@@ -7,7 +7,7 @@
   "license": "UNLICENSED",
   "scripts": {
     "prebuild": "rimraf dist",
-    "build": "tsc --build tsconfig.build.json\n",
+    "build": "nest build",
     "ci": "node ./node_modules/@nestjs/cli/bin/nest.js build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
@@ -29,6 +29,8 @@
     "@nestjs/swagger": "^4.6.1",
     "@nestjs/terminus": "^7.0.1",
     "cache-manager": "^3.4.0",
+    "class-transformer": "^0.3.1",
+    "class-validator": "^0.12.2",
     "compression": "^1.7.4",
     "continuation-local-storage": "^3.2.1",
     "flatted": "3.1.0",
@@ -38,11 +40,11 @@
     "nest-morgan": "^1.0.1",
     "reflect-metadata": "^0.1.13",
     "response-time": "^2.3.2",
+    "rimraf": "^3.0.2",
     "rxjs": "^6.5.4",
     "soap": "^0.33.0",
     "swagger-ui-express": "^4.1.4",
-    "uuid": "^8.3.1",
-    "rimraf": "^3.0.2"
+    "uuid": "^8.3.1"
   },
   "devDependencies": {
     "@nestjs/cli": "^7.0.0",

@@ -1,15 +1,25 @@
-import { Controller, Get, NotFoundException, Param, ParseIntPipe, Query } from '@nestjs/common';
+import {
+  ClassSerializerInterceptor,
+  Controller,
+  Get,
+  NotFoundException,
+  Param,
+  ParseIntPipe,
+  Query, UseInterceptors,
+} from '@nestjs/common';
 import {
   DivisionEntry,
-  GetDivisionRankingInput,
   GetDivisionsInput,
-  RankingEntry,
-} from '../../../entity/tabt/TabTAPI_Port';
-import { DivisionService } from '../providers/division.service';
+  RankingEntry, TeamMatchesEntry,
+} from '../../../entity/tabt-soap/TabTAPI_Port';
+import { DivisionService } from '../../../services/divisions/division.service';
 import { ApiNotFoundResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { TabtException } from '../../../common/filter/tabt-exceptions.filter';
-import { DivisionRankingService } from '../providers/division-ranking.service';
+import { DivisionRankingService } from '../../../services/divisions/division-ranking.service';
 import { TabtHeadersDecorator } from '../../../common/decorators/tabt-headers.decorator';
+import { GetDivisionMatches, GetDivisionRanking, ListAllDivisions } from '../dto/divisions.dto';
+import { MatchService } from '../../../services/matches/match.service';
+import { Level } from '../../../entity/tabt-input.interface';
 
 @Controller('divisions')
 @TabtHeadersDecorator()
@@ -19,6 +29,7 @@ export class DivisionsController {
   constructor(
     private divisionService: DivisionService,
     private divisionRankingService: DivisionRankingService,
+    private matchesService: MatchService,
   ) {
   }
 
@@ -32,13 +43,19 @@ export class DivisionsController {
     status: 400,
     type: TabtException,
   })
+  @UseInterceptors(ClassSerializerInterceptor)
+
   findAll(
-    @Query() query: GetDivisionsInput,
+    @Query() query: ListAllDivisions,
   ): Promise<DivisionEntry[]> {
-    return this.divisionService.getDivisionsAsync(query );
+    return this.divisionService.getDivisionsAsync({
+      Season: query.season,
+      Level: Level[query.level],
+      ShowDivisionName: query.showDivisionName,
+    });
   }
 
-  @Get(':DivisionId')
+  @Get(':divisionId')
   @ApiResponse({
     description: 'A specific division based on the id.',
     type: DivisionEntry,
@@ -50,17 +67,17 @@ export class DivisionsController {
     type: TabtException,
   })
   async findOne(
-    @Param('DivisionId', ParseIntPipe) id: number,
+    @Param('divisionId', ParseIntPipe) id: number,
     @Query() query: GetDivisionsInput,
   ): Promise<DivisionEntry> {
-    const division = await this.divisionService.getDivisionsByIdAsync(id, query );
+    const division = await this.divisionService.getDivisionsByIdAsync(id, query);
     if (!division) {
       throw new NotFoundException();
     }
     return division;
   }
 
-  @Get(':DivisionId/ranking')
+  @Get(':divisionId/ranking')
   @ApiResponse({
     description: 'The ranking for a specific division based on the id of the division.',
     type: [RankingEntry],
@@ -71,16 +88,20 @@ export class DivisionsController {
     type: TabtException,
   })
   async findRankingDivision(
-    @Param('DivisionId', ParseIntPipe) id: number,
-    @Query() query: GetDivisionRankingInput,
+    @Param('divisionId', ParseIntPipe) id: number,
+    @Query() query: GetDivisionRanking,
   ): Promise<RankingEntry[]> {
-    return this.divisionRankingService.getDivisionRanking(id, query );
+    return this.divisionRankingService.getDivisionRanking({
+      DivisionId: id,
+      RankingSystem: query.rankingSystem,
+      WeekName: query.week,
+    });
   }
 
-  @Get(':DivisionId/matches')
+  @Get(':divisionId/matches')
   @ApiResponse({
-    description: 'The ranking for a specific division based on the id of the division.',
-    type: [RankingEntry],
+    description: 'A list of matches.',
+    type: [TeamMatchesEntry],
     status: 200,
   })
   @ApiResponse({
@@ -88,10 +109,16 @@ export class DivisionsController {
     type: TabtException,
   })
   async findMatchesDivision(
-    @Param('DivisionId', ParseIntPipe) id: number,
-    @Query() query: GetDivisionRankingInput,
-  ): Promise<RankingEntry[]> {
-    return this.divisionRankingService.getDivisionRanking(id, query);
+    @Param('divisionId', ParseIntPipe) id: number,
+    @Query() query: GetDivisionMatches,
+  ): Promise<TeamMatchesEntry[]> {
+    return this.matchesService.getMatches({
+      DivisionId: id,
+      WeekName: query.weekName,
+      YearDateFrom: query.yearDateFrom,
+      YearDateTo: query.yearDateTo,
+      WithDetails: query.withDetails,
+    });
   }
 
 }

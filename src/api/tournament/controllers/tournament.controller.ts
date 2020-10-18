@@ -1,16 +1,14 @@
 import { Body, Controller, Get, NotFoundException, Param, ParseIntPipe, Post, Query } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import {
-  Credentials,
   GetTournamentsInput,
   TournamentEntry,
   TournamentSerieEntry,
-} from '../../../entity/tabt/TabTAPI_Port';
+} from '../../../entity/tabt-soap/TabTAPI_Port';
 import { TabtException } from '../../../common/filter/tabt-exceptions.filter';
-import { TournamentService } from '../providers/tournament.service';
-import { GetTournamentDTO, GetTournamentsDTO, RegisterTournamentDTO } from '../dto/tournaments.dto';
+import { TournamentService } from '../../../services/tournaments/tournament.service';
+import { GetTournamentDetails, GetTournaments, RegisterTournament } from '../dto/tournaments.dto';
 import { TabtHeadersDecorator } from '../../../common/decorators/tabt-headers.decorator';
-import { TabtCredentials } from '../../../common/decorators/tabt-credentials.decorator';
 
 @ApiTags('Tournaments')
 @Controller('tournaments')
@@ -30,10 +28,9 @@ export class TournamentController {
     type: TabtException,
   })
   findAll(
-    @Query() input: GetTournamentsDTO,
-    @TabtCredentials() credentials: Credentials,
+    @Query() input: GetTournaments,
   ) {
-    return this.tournamentService.getTournaments({ ...input, Credentials: credentials } as GetTournamentsInput);
+    return this.tournamentService.getTournaments({ ...input } as GetTournamentsInput);
   }
 
   @Get(':tournamentId')
@@ -47,12 +44,10 @@ export class TournamentController {
     type: TabtException,
   })
   async findById(
-    @Query() input: GetTournamentDTO, @Param('tournamentId', ParseIntPipe) id: number,
-    @TabtCredentials() credentials: Credentials,
+    @Query() input: GetTournamentDetails, @Param('tournamentId', ParseIntPipe) id: number,
   ) {
     const result = await this.tournamentService.getTournaments({
       ...input,
-      Credentials: credentials,
       TournamentUniqueIndex: id,
     });
     if (result.length === 1) {
@@ -73,10 +68,8 @@ export class TournamentController {
   })
   async getSeries(
     @Param('tournamentId', ParseIntPipe) id: number,
-    @TabtCredentials() credentials: Credentials,
   ) {
     const result = await this.tournamentService.getTournaments({
-      Credentials: credentials,
       TournamentUniqueIndex: id,
       WithRegistrations: true,
     });
@@ -92,11 +85,16 @@ export class TournamentController {
     type: TabtException,
   })
   async register(
-    @Body() input: RegisterTournamentDTO,
+    @Body() input: RegisterTournament,
     @Param('tournamentId', ParseIntPipe) tournamentId: number,
     @Param('serieId', ParseIntPipe) serieId: number,
-    @TabtCredentials() credentials: Credentials,
   ) {
-    return this.tournamentService.registerToTournament(tournamentId, serieId, { ...input, Credentials: credentials });
+    return this.tournamentService.registerToTournament({
+      TournamentUniqueIndex: tournamentId,
+      SerieUniqueIndex: serieId,
+      PlayerUniqueIndex: input.playerUniqueIndex,
+      NotifyPlayer: input.notifyPlayer,
+      Unregister: input.unregister
+    });
   }
 }

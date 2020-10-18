@@ -17,7 +17,7 @@ export class DatabaseContextService {
   }
 
 
-  get language(): string {
+  get database(): string {
     const lang: string = (<any>this.contextService.context.caller)?.[HeaderKeys.X_TABT_DATABASE];
 
     switch (lang) {

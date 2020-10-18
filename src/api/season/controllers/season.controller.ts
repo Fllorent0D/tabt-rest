@@ -1,7 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
-import { SeasonService } from '../providers/season.service';
+import { SeasonService } from '../../../services/seasons/season.service';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
-import { SeasonEntry } from '../../../entity/tabt/TabTAPI_Port';
+import { SeasonEntry } from '../../../entity/tabt-soap/TabTAPI_Port';
 import { TabtException } from '../../../common/filter/tabt-exceptions.filter';
 
 @Controller('seasons')
@@ -23,7 +23,7 @@ export class SeasonController {
     type: TabtException,
   })
   findAll() {
-    return this.seasonService.getSeasons({Credentials: {Account:'a', Password:'a'}});
+    return this.seasonService.getSeasons();
   }
 
   @Get('current')
@@ -37,7 +37,7 @@ export class SeasonController {
     type: TabtException,
   })
   findCurrentSeason() {
-    return this.seasonService.getCurrentSeason({Credentials: {Account:'a', Password:'a'}});
+    return this.seasonService.getCurrentSeason();
   }
 
 }

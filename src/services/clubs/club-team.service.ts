@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { GetClubTeamsInput, TeamEntry } from '../../../entity/tabt/TabTAPI_Port';
-import { TabtClientService } from '../../../common/tabt-client/tabt-client.service';
+import { GetClubTeamsInput, TeamEntry } from '../../entity/tabt-soap/TabTAPI_Port';
+import { TabtClientService } from '../../common/tabt-client/tabt-client.service';
 
 
 @Injectable()

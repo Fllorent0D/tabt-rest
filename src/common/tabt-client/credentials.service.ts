@@ -1,5 +1,5 @@
 import { ContextService } from '../context/context.service';
-import { Credentials } from '../../entity/tabt/TabTAPI_Port';
+import { Credentials } from '../../entity/tabt-soap/TabTAPI_Port';
 import { HeaderKeys } from '../context/context.constants';
 import { Injectable } from '@nestjs/common';
 

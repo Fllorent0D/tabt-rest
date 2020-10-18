@@ -1,4 +1,5 @@
 import { CACHE_MANAGER, CacheStore, Inject, Injectable, Logger } from '@nestjs/common';
+import { JsonUtil } from '../utils/json.util';
 
 @Injectable()
 export class CacheService {
@@ -15,6 +16,18 @@ export class CacheService {
 
   setInCache(key: string, value: any, ttl: number): Promise<void> {
     return this.cacheManager.set(key, value, { ttl }) as Promise<void>;
+  }
+
+  async getFromCacheOrGetAndCacheResult<T>(key: string, getter: () => Promise<T>, ttl = 600): Promise<T> {
+    const cached = await this.getFromCache<T>(key);
+
+    if (cached) {
+      return cached;
+    }
+
+    const result = await getter();
+    await this.setInCache(key, result, ttl);
+    return result;
   }
 
 }

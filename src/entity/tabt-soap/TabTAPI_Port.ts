@@ -1,5 +1,7 @@
 import { Client } from 'soap';
 import { ApiProperty, ApiPropertyOptional, OmitType } from '@nestjs/swagger';
+import { Transform } from 'class-transformer';
+import { Level, PlayerCategory } from '../tabt-input.interface';
 
 export class Credentials {
 
@@ -13,45 +15,6 @@ export class Credentials {
 /* tslint:disable:max-line-length no-empty-class */
 export class ITestInput {
   Credentials: Credentials;
-}
-
-export enum Level {
-  NATIONAL = 1,
-  HAINAUT = 4,
-  VLAAMS_BRABANT_BR = 5,
-  SUPER_DIVISION = 6,
-  OOST_VLANDEREN = 7,
-  ANTWERP = 8,
-  WEST_VLAANDEREN = 9,
-  LIMBURG = 10,
-  BRUSSELS_BRABANT_WALLON = 11,
-  NAMUR = 12,
-  LIEGE = 13,
-  LUXEMBOURG = 14,
-  REGION_VTTL = 15,
-  IWB = 16,
-}
-
-enum MemberStatus {
-  ACTIVE = 'A',
-  ADMINISTRATIVE = 'M',
-  NON_ACTIVE = 'I',
-  RECREANT = 'R',
-  RECREANT_RESERVE = 'V',
-  DOUBLE_AFFILIATION = 'D',
-  DOUBLE_AFFILIATION_SUPER = 'T',
-  SUPER_DIVISION = 'S',
-  LICENCE_A = 'C',
-  INDIVIDUAL_PLAYER = 'N',
-  EXTERN = 'E'
-}
-
-enum DivisionCategory {
-  MEN = 1,
-  WOMEN = 2,
-  VETERANS = 3,
-  VETERANS_WOMEN = 4,
-  YOUTH = 5,
 }
 
 export class VenueEntry {
@@ -104,7 +67,7 @@ export class ITestOutput {
 }
 
 export class GetSeasonsInput {
-  Credentials: Credentials;
+  Credentials?: Credentials;
 }
 
 export class IGetSeasonsOutput {
@@ -116,12 +79,10 @@ export class IGetSeasonsOutput {
 }
 
 export class GetClubTeamsInput {
-  Credentials: Credentials;
+  Credentials?: Credentials;
   /** xsd:string(undefined) */
-  @ApiPropertyOptional()
   Club: string;
   /** xsd:number(undefined) */
-  @ApiPropertyOptional()
   Season: number;
 }
 
@@ -134,14 +95,12 @@ export class GetClubTeamsOutput {
 }
 
 export class GetDivisionRankingInput {
-  Credentials: Credentials;
+  Credentials?: Credentials;
   /** xsd:number(undefined) */
   DivisionId: number;
   /** xsd:string(undefined) */
-  @ApiPropertyOptional()
   WeekName: string;
   /** xsd:number(undefined) */
-  @ApiPropertyOptional()
   RankingSystem: number;
 }
 
@@ -198,46 +157,32 @@ export class GetDivisionRankingOutput {
 }
 
 export class GetMatchesInput {
-  Credentials: Credentials;
+  Credentials?: Credentials;
   /** xsd:number(undefined) */
-  @ApiPropertyOptional()
-  DivisionId: number;
+  DivisionId?: number;
   /** xsd:string(undefined) */
-  @ApiPropertyOptional()
-  Club: string;
+  Club?: string;
   /** xsd:string(undefined) */
-  @ApiPropertyOptional()
-  Team: string;
+  Team?: string;
   /** xsd:number(undefined) */
-  @ApiPropertyOptional()
-  DivisionCategory: number;
+  DivisionCategory?: number;
   /** xsd:number(undefined) */
-  @ApiPropertyOptional()
-  Season: number;
-  /** xsd:string(undefined) */
-  @ApiPropertyOptional()
-  WeekName: string;
+  Season?: number;
+  WeekName?: string;
   /** xsd:number(undefined) */
-  @ApiPropertyOptional()
-  Level: number;
+  Level?: number;
   /** ShowDivisionNameType(no,yes,short) */
-  @ApiPropertyOptional()
-  ShowDivisionName: 'no' | 'yes' | 'short';
+  ShowDivisionName?: 'no' | 'yes' | 'short';
   /** xsd:date(undefined) */
-  @ApiPropertyOptional()
-  YearDateFrom: string;
+  YearDateFrom?: string;
   /** xsd:date(undefined) */
-  @ApiPropertyOptional()
-  YearDateTo: string;
+  YearDateTo?: string;
   /** xsd:boolean(undefined) */
-  @ApiPropertyOptional()
-  WithDetails: boolean;
+  WithDetails?: boolean;
   /** xsd:string(undefined) */
-  @ApiPropertyOptional()
-  MatchId: string;
+  MatchId?: string;
   /** xsd:string(undefined) */
-  @ApiPropertyOptional()
-  MatchUniqueId: string;
+  MatchUniqueId?: string;
 }
 
 export class GetMatchesOutput {
@@ -247,40 +192,25 @@ export class GetMatchesOutput {
 }
 
 export class GetMembersInput {
-  Credentials: Credentials;
+  Credentials?: Credentials;
   /** xsd:string(undefined) */
-  @ApiPropertyOptional()
-  Club: string;
+  Club?: string;
   /** xsd:number(undefined) */
-  @ApiPropertyOptional()
-  Season: number;
+  Season?: number;
   /** xsd:number(undefined) */
-  @ApiPropertyOptional()
-  PlayerCategory: number;
+  PlayerCategory?: number;
   /** xsd:number(undefined) */
-  @ApiPropertyOptional()
-  UniqueIndex: number;
+  UniqueIndex?: number;
   /** xsd:string(undefined) */
-  @ApiPropertyOptional()
-  NameSearch: string;
+  NameSearch?: string;
   /** xsd:boolean(undefined) */
-  @ApiPropertyOptional()
-  ExtendedInformation: boolean;
+  ExtendedInformation?: boolean;
   /** xsd:boolean(undefined) */
-  @ApiPropertyOptional()
-  RankingPointsInformation: boolean;
+  RankingPointsInformation?: boolean;
   /** xsd:boolean(undefined) */
-  @ApiPropertyOptional()
-  WithResults: boolean;
+  WithResults?: boolean;
   /** xsd:boolean(undefined) */
-  @ApiPropertyOptional()
-  WithOpponentRankingEvaluation: boolean;
-}
-
-export class GetMembersInputFromClub extends OmitType(GetMembersInput, ['Club'] as const) {
-}
-
-export class GetTeamsInputFromClub extends OmitType(GetClubTeamsInput, ['Club'] as const) {
+  WithOpponentRankingEvaluation?: boolean;
 }
 
 export class IGetMembersOutput {
@@ -303,12 +233,10 @@ export class IUploadOutput {
 }
 
 export class GetClubsInput {
-  Credentials: Credentials;
+  Credentials?: Credentials;
   /** xsd:number(undefined) */
-  @ApiPropertyOptional()
   Season?: number;
   /** xsd:number(undefined) */
-  @ApiPropertyOptional()
   ClubCategory?: number;
   /** xsd:string(undefined) */
   Club?: string;
@@ -324,13 +252,10 @@ export class GetDivisionsInput {
 
   Credentials?: Credentials;
   /** xsd:number(undefined) */
-  @ApiPropertyOptional()
   Season?: number;
   /** xsd:number(undefined) */
-  @ApiPropertyOptional({ type: Number })
   Level?: number;
   /** ShowDivisionNameType(no,yes,short) */
-  @ApiPropertyOptional({ enum: ['no', 'yes', 'short'] })
   ShowDivisionName?: 'no' | 'yes' | 'short';
 }
 
@@ -358,16 +283,16 @@ export class IGetTournamentsOutput {
   TournamentEntries: Array<TournamentEntry>;
 }
 
-export class IGetMatchSystemsInput {
-  Credentials: Credentials;
+export class GetMatchSystemsInput {
+  Credentials?: Credentials;
   /** xsd:number(undefined) */
-  UniqueIndex: number;
+  UniqueIndex?: number;
 }
 
-export class IGetMatchSystemsOutput {
+export class GetMatchSystemsOutput {
   /** xsd:number(undefined) */
   MatchSystemCount: number;
-  MatchSystemEntries: Array<IMatchSystemEntries>;
+  MatchSystemEntries?: Array<MatchSystemEntry>;
 }
 
 export class TournamentRegisterInput {
@@ -406,7 +331,7 @@ export class TabTAPISoap extends Client {
   GetClubs: (input: GetClubsInput, cb: (err: any | null, result: GetClubsOutput, raw: string, soapHeader: { [k: string]: any; }) => any, options?: any, extraHeaders?: any) => void;
   GetDivisions: (input: GetDivisionsInput, cb: (err: any | null, result: IGetDivisionsOutput, raw: string, soapHeader: { [k: string]: any; }) => any, options?: any, extraHeaders?: any) => void;
   GetTournaments: (input: GetTournamentsInput, cb: (err: any | null, result: IGetTournamentsOutput, raw: string, soapHeader: { [k: string]: any; }) => any, options?: any, extraHeaders?: any) => void;
-  GetMatchSystems: (input: IGetMatchSystemsInput, cb: (err: any | null, result: IGetMatchSystemsOutput, raw: string, soapHeader: { [k: string]: any; }) => any, options?: any, extraHeaders?: any) => void;
+  GetMatchSystems: (input: GetMatchSystemsInput, cb: (err: any | null, result: GetMatchSystemsOutput, raw: string, soapHeader: { [k: string]: any; }) => any, options?: any, extraHeaders?: any) => void;
   TournamentRegister: (input: TournamentRegisterInput, cb: (err: any | null, result: TournamentRegisterOutput, raw: string, soapHeader: { [k: string]: any; }) => any, options?: any, extraHeaders?: any) => void;
 
   TestAsync: (input: ITestInput) => Promise<[ITestOutput, string, { [k: string]: any; }, any, any]>;
@@ -419,7 +344,7 @@ export class TabTAPISoap extends Client {
   GetClubsAsync: (input: GetClubsInput) => Promise<[GetClubsOutput, string, { [k: string]: any; }, any, any]>;
   GetDivisionsAsync: (input: GetDivisionsInput) => Promise<[result: IGetDivisionsOutput, raw: string, soapHeader: { [k: string]: any; }, options: any, extraHeaders: any]>;
   GetTournamentsAsync: (input: GetTournamentsInput) => Promise<[IGetTournamentsOutput, string, { [k: string]: any; }, any, any]>;
-  GetMatchSystemsAsync: (input: IGetMatchSystemsInput) => Promise<[IGetMatchSystemsOutput, string, { [k: string]: any; }, any, any]>;
+  GetMatchSystemsAsync: (input: GetMatchSystemsInput) => Promise<[GetMatchSystemsOutput, string, { [k: string]: any; }, any, any]>;
   TournamentRegisterAsync: (input: TournamentRegisterInput) => Promise<[TournamentRegisterOutput, string, { [k: string]: any; }, any, any]>;
 }
 
@@ -968,14 +893,20 @@ export class DivisionEntry {
   @ApiPropertyOptional()
   DivisionName: string;
 
-  @ApiProperty()
+  @ApiProperty({type: String})
+  //@Transform((pc) => PlayerCategory[pc], {toPlainOnly: true})
   DivisionCategory: number;
 
-  @ApiProperty()
-  Level: Level;
+  @ApiProperty({type: String})
+  //@Transform((l) => Level[l], {toPlainOnly: true})
+  Level: number;
 
   @ApiProperty()
   MatchType: number;
+
+  constructor(partial: Partial<DivisionEntry>) {
+    Object.assign(this, partial);
+  }
 }
 
 export class RegistrationEntry {
@@ -1072,38 +1003,54 @@ export class TournamentEntry {
   SerieEntries: Array<TournamentSerieEntry>;
 }
 
-export class ITeamMatchDefinitionEntries {
+export class TeamMatchDefinitionEntry {
 
+  @ApiProperty()
   Position: number;
 
+  @ApiProperty()
   Type: number;
 
+  @ApiProperty()
   HomePlayerIndex: number;
 
+  @ApiProperty()
   AwayPlayerIndex: number;
 
+  @ApiProperty()
   AllowSubstitute: boolean;
 }
 
-export class IMatchSystemEntries {
+export class MatchSystemEntry {
 
+  @ApiProperty()
   UniqueIndex: number;
 
+  @ApiProperty()
   Name: string;
 
+  @ApiProperty()
   SingleMatchCount: number;
 
+  @ApiProperty()
   DoubleMatchCount: number;
 
+  @ApiProperty()
   SetCount: number;
 
+  @ApiProperty()
   PointCount: number;
 
+  @ApiProperty()
   ForcedDoubleTeams: boolean;
 
+  @ApiProperty()
   SubstituteCount: number;
 
+  @ApiProperty()
   TeamMatchCount: number;
-  TeamMatchDefinitionEntries: Array<ITeamMatchDefinitionEntries>;
+
+  @ApiProperty()
+  TeamMatchDefinitionEntries: Array<TeamMatchDefinitionEntry>;
 }
 

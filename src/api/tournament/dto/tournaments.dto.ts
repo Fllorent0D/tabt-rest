@@ -1,25 +1,32 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { RequestBySeason } from '../../../common/dto/RequestBySeason';
+import { IsBoolean, IsNumber, IsOptional } from 'class-validator';
 
-export class GetTournamentsDTO {
-  @ApiPropertyOptional()
-  Season: number;
+export class GetTournaments extends RequestBySeason {
 }
 
-export class GetTournamentDTO {
+export class GetTournamentDetails {
   @ApiPropertyOptional()
-  WithResults?: boolean;
+  @IsOptional()
+  @IsBoolean()
+  withResults?: boolean;
 
   @ApiPropertyOptional()
-  WithRegistrations? : boolean;
+  @IsOptional()
+  @IsBoolean()
+  withRegistrations? : boolean;
 }
 
-export class RegisterTournamentDTO {
+export class RegisterTournament {
   @ApiProperty()
-  PlayerUniqueIndex: Array<number>;
+  @IsNumber({},{each: true})
+  playerUniqueIndex: Array<number>;
 
   @ApiProperty()
-  Unregister: boolean;
+  @IsBoolean()
+  unregister: boolean;
 
   @ApiProperty()
-  NotifyPlayer: boolean;
+  @IsBoolean()
+  notifyPlayer: boolean;
 }

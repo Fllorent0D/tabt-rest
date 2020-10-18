@@ -4,8 +4,8 @@ import {
   TournamentEntry,
   TournamentRegisterInput,
   TournamentRegisterOutput,
-} from '../../../entity/tabt/TabTAPI_Port';
-import { TabtClientService } from '../../../common/tabt-client/tabt-client.service';
+} from '../../entity/tabt-soap/TabTAPI_Port';
+import { TabtClientService } from '../../common/tabt-client/tabt-client.service';
 
 export const CACHE_KEY = 'TOURNAMENTS';
 
@@ -23,11 +23,7 @@ export class TournamentService {
     return result.TournamentEntries;
   }
 
-  async registerToTournament(tournamentId: number, serieId: number, input: TournamentRegisterInput): Promise<TournamentRegisterOutput[]> {
-    return this.tabtClient.TournamentRegisterAsync({
-      ...input,
-      TournamentUniqueIndex: tournamentId,
-      SerieUniqueIndex: serieId,
-    });
+  async registerToTournament(input: TournamentRegisterInput): Promise<TournamentRegisterOutput[]> {
+    return this.tabtClient.TournamentRegisterAsync(input);
   }
 }

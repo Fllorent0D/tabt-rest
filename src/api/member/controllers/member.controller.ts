@@ -1,8 +1,10 @@
 import { Controller, Get, NotFoundException, Param, ParseIntPipe, Query } from '@nestjs/common';
-import { GetMembersInput, MemberEntry } from '../../../entity/tabt/TabTAPI_Port';
+import { GetMembersInput, MemberEntry } from '../../../entity/tabt-soap/TabTAPI_Port';
 import { ApiNotFoundResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { MemberService } from '../providers/member.service';
+import { MemberService } from '../../../services/members/member.service';
 import { TabtHeadersDecorator } from '../../../common/decorators/tabt-headers.decorator';
+import { GetMember, GetMembers } from '../dto/member.dto';
+import { PlayerCategory } from '../../../entity/tabt-input.interface';
 
 @ApiTags('Members')
 @Controller('members')
@@ -20,22 +22,44 @@ export class MemberController {
     description: 'List of players found with specific search criterias',
   })
   async findAll(
-    @Query() input: GetMembersInput,
+    @Query() input: GetMembers,
   ): Promise<MemberEntry[]> {
-    return this.memberService.getMembers({ ...input });
+    return this.memberService.getMembers(
+      {
+        Club: input.club,
+        Season: input.season,
+        PlayerCategory: PlayerCategory[input.playerCategory],
+        UniqueIndex: input.uniqueIndex,
+        NameSearch: input.nameSearch,
+        ExtendedInformation: input.extendedInformation,
+        RankingPointsInformation: input.rankingPointsInformation,
+        WithResults: input.withResults,
+        WithOpponentRankingEvaluation: input.withOpponentRankingEvaluation,
+      }
+    );
   }
 
-  @Get(':UniqueIndex')
+  @Get(':uniqueIndex')
   @ApiOkResponse({
     type: MemberEntry,
     description: 'The information of a specific player',
   })
   @ApiNotFoundResponse()
   async findById(
-    @Query() input: GetMembersInput,
-    @Param('UniqueIndex', ParseIntPipe) id: number,
+    @Query() input: GetMember,
+    @Param('uniqueIndex', ParseIntPipe) id: number,
   ): Promise<MemberEntry> {
-    const found = await this.memberService.getMembers({ ...input, UniqueIndex: id });
+    const found = await this.memberService.getMembers({
+      Club: input.club,
+      Season: input.season,
+      PlayerCategory: PlayerCategory[input.playerCategory],
+      UniqueIndex: id,
+      NameSearch: input.nameSearch,
+      ExtendedInformation: input.extendedInformation,
+      RankingPointsInformation: input.rankingPointsInformation,
+      WithResults: input.withResults,
+      WithOpponentRankingEvaluation: input.withOpponentRankingEvaluation,
+    });
     if (found.length === 1) {
       return found[0];
     }

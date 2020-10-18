@@ -5,6 +5,7 @@ import { TournamentModule } from './tournament/tournament.module';
 import { SeasonModule } from './season/season.module';
 import { MemberModule } from './member/member.module';
 import { MatchModule } from './match/match.module';
+import { HealthModule } from './health/health.module';
 
 @Module({
   imports: [
@@ -13,7 +14,8 @@ import { MatchModule } from './match/match.module';
     TournamentModule,
     SeasonModule,
     MemberModule,
-    MatchModule
+    MatchModule,
+    HealthModule
   ],
 })
 export class ApiModule {

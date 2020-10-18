@@ -5,6 +5,7 @@ import * as helmet from 'helmet';
 import * as compression from 'compression';
 import * as responseTime from 'response-time';
 import { TabtExceptionsFilter } from './common/filter/tabt-exceptions.filter';
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -26,7 +27,7 @@ async function bootstrap() {
   app.use(responseTime());
 
   app.useGlobalFilters(new TabtExceptionsFilter());
-
+  app.useGlobalPipes(new ValidationPipe());
   await app.listen(3000);
 }
 
