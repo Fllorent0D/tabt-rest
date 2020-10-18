@@ -1,7 +1,7 @@
 import { ApiPropertyOptional, OmitType } from '@nestjs/swagger';
-import { IsBoolean, IsEnum, isEnum, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsEnum, IsOptional, IsString } from 'class-validator';
 import { Transform } from 'class-transformer';
-import { GetMembersInput, Player } from '../../../entity/tabt-soap/TabTAPI_Port';
+import { GetMembersInput } from '../../../entity/tabt-soap/TabTAPI_Port';
 import { RequestBySeason } from '../../../common/dto/RequestBySeason';
 import { PlayerCategory, TabtInputInterface } from '../../../entity/tabt-input.interface';
 

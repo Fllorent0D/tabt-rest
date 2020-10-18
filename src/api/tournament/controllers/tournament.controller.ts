@@ -1,10 +1,6 @@
 import { Body, Controller, Get, NotFoundException, Param, ParseIntPipe, Post, Query } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
-import {
-  GetTournamentsInput,
-  TournamentEntry,
-  TournamentSerieEntry,
-} from '../../../entity/tabt-soap/TabTAPI_Port';
+import { GetTournamentsInput, TournamentEntry, TournamentSerieEntry } from '../../../entity/tabt-soap/TabTAPI_Port';
 import { TabtException } from '../../../common/filter/tabt-exceptions.filter';
 import { TournamentService } from '../../../services/tournaments/tournament.service';
 import { GetTournamentDetails, GetTournaments, RegisterTournament } from '../dto/tournaments.dto';

@@ -1,5 +1,5 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { IsInt, IsNumber, IsOptional } from 'class-validator';
+import { IsInt, IsOptional } from 'class-validator';
 import { Transform } from 'class-transformer';
 
 export class RequestBySeason {

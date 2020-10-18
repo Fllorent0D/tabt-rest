@@ -2,7 +2,7 @@ import { ApiPropertyOptional } from '@nestjs/swagger';
 import { IsBoolean, IsEnum, IsNumber, IsOptional, IsString, Matches } from 'class-validator';
 import { Transform } from 'class-transformer';
 import { RequestBySeason } from '../../../common/dto/RequestBySeason';
-import { PlayerCategory, Level } from '../../../entity/tabt-input.interface';
+import { Level, PlayerCategory } from '../../../entity/tabt-input.interface';
 
 export class GetMatches extends RequestBySeason{
   @ApiPropertyOptional()

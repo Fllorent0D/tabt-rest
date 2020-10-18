@@ -5,12 +5,14 @@ import {
   NotFoundException,
   Param,
   ParseIntPipe,
-  Query, UseInterceptors,
+  Query,
+  UseInterceptors,
 } from '@nestjs/common';
 import {
   DivisionEntry,
   GetDivisionsInput,
-  RankingEntry, TeamMatchesEntry,
+  RankingEntry,
+  TeamMatchesEntry,
 } from '../../../entity/tabt-soap/TabTAPI_Port';
 import { DivisionService } from '../../../services/divisions/division.service';
 import { ApiNotFoundResponse, ApiResponse, ApiTags } from '@nestjs/swagger';

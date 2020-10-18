@@ -1,5 +1,4 @@
 import { CACHE_MANAGER, CacheStore, Inject, Injectable, Logger } from '@nestjs/common';
-import { JsonUtil } from '../utils/json.util';
 
 @Injectable()
 export class CacheService {

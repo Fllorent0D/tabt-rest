@@ -1,10 +1,6 @@
 import { Controller, Get, NotFoundException, Param, Query } from '@nestjs/common';
 import { ApiNotFoundResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
-import {
-  ClubEntry,
-  MemberEntry,
-  TeamEntry,
-} from '../../../entity/tabt-soap/TabTAPI_Port';
+import { ClubEntry, MemberEntry, TeamEntry } from '../../../entity/tabt-soap/TabTAPI_Port';
 import { ClubService } from '../../../services/clubs/club.service';
 import { ClubMemberService } from '../../../services/clubs/club-member.service';
 import { ClubTeamService } from '../../../services/clubs/club-team.service';

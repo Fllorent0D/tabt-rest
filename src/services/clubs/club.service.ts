@@ -1,6 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ClubEntry, GetClubsInput } from '../../entity/tabt-soap/TabTAPI_Port';
-import { CacheService } from '../../common/cache/cache.service';
 import { TabtClientService } from '../../common/tabt-client/tabt-client.service';
 
 const CACHE_KEY = 'CLUBS-';

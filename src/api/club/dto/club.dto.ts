@@ -1,4 +1,3 @@
-import { GetClubTeamsInput, GetMembersInput } from '../../../entity/tabt-soap/TabTAPI_Port';
 import { ApiPropertyOptional, OmitType } from '@nestjs/swagger';
 import { RequestBySeason } from '../../../common/dto/RequestBySeason';
 import { GetMembers } from '../../member/dto/member.dto';

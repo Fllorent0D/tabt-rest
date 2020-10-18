@@ -1,7 +1,5 @@
 import { Client } from 'soap';
-import { ApiProperty, ApiPropertyOptional, OmitType } from '@nestjs/swagger';
-import { Transform } from 'class-transformer';
-import { Level, PlayerCategory } from '../tabt-input.interface';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class Credentials {
 
