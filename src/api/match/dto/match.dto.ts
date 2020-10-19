@@ -31,6 +31,7 @@ export class GetMatches extends RequestBySeason{
   @ApiPropertyOptional({
     type: IsNumber
   })
+  @IsOptional()
   @IsNumber()
   weekName: string;
 
