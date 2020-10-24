@@ -1,9 +1,10 @@
 # TabT-Rest 
-This api is a bridge to the TabT SOAP API. It contacts TabT and cache results in order to reduce latency for some requests. More documentation will come.
 ![Coverage:branches](./badges/badge-branches.svg)
 ![Coverage:functions](./badges/badge-functions.svg)
 ![Coverage:lines](./badges/badge-lines.svg)
 ![Coverage:statements](./badges/badge-statements.svg)
+
+This api is a bridge to the TabT SOAP API. It contacts TabT and cache results in order to reduce latency for some requests. More documentation will come.
 
 ## Prerequisites
 
