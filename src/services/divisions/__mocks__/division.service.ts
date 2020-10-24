@@ -16,11 +16,11 @@ export class DivisionService {
     'MatchType': 2,
   }];
 
-  async getDivisionsAsync(input: GetDivisionsInput): Promise<DivisionEntry[]> {
+  async getDivisions(input: GetDivisionsInput): Promise<DivisionEntry[]> {
     return Promise.resolve(this.divisions);
   }
 
-  async getDivisionsByIdAsync(id: number, input: GetDivisionsInput = {}): Promise<DivisionEntry> {
+  async getDivisionsById(id: number, input: GetDivisionsInput = {}): Promise<DivisionEntry> {
     return Promise.resolve(this.divisions[0]);
 
   }

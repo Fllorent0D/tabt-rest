@@ -5,7 +5,7 @@ import { MatchService } from '../../../services/matches/match.service';
 import { TabtHeadersDecorator } from '../../../common/decorators/tabt-headers.decorator';
 import { ContextService } from '../../../common/context/context.service';
 import { MatchSystemService } from '../../../services/matches/match-system.service';
-import { GetMatches } from '../dto/match.dto';
+import { GetMatch, GetMatches } from '../dto/match.dto';
 import { Level, PlayerCategory } from '../../../entity/tabt-input.interface';
 
 @ApiTags('Matches')
@@ -15,7 +15,6 @@ export class MatchController {
   constructor(
     private matchService: MatchService,
     private matchSystemService: MatchSystemService,
-    private contextServicetest: ContextService,
   ) {
   }
 
@@ -27,7 +26,6 @@ export class MatchController {
   async findAll(
     @Query() input: GetMatches,
   ): Promise<TeamMatchesEntry[]> {
-    console.log(this.contextServicetest.context);
     return this.matchService.getMatches({
       DivisionId: input.divisionId,
       Club: input.club,
@@ -72,12 +70,12 @@ export class MatchController {
 
   @Get(':matchUniqueId')
   @ApiOkResponse({
-    type: MemberEntry,
+    type: TeamMatchesEntry,
     description: 'The information of a specific player',
   })
   @ApiNotFoundResponse()
   async findById(
-    @Query() input: GetMatches,
+    @Query() input: GetMatch,
     @Param('matchUniqueId') id: string,
   ): Promise<TeamMatchesEntry> {
     const found = await this.matchService.getMatches({
@@ -96,7 +94,7 @@ export class MatchController {
       MatchUniqueId: id
     });
 
-    if (found.length === 1) {
+    if (found.length) {
       return found[0];
     }
     throw new NotFoundException();

@@ -19,7 +19,7 @@ import { ApiNotFoundResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { TabtException } from '../../../common/filter/tabt-exceptions.filter';
 import { DivisionRankingService } from '../../../services/divisions/division-ranking.service';
 import { TabtHeadersDecorator } from '../../../common/decorators/tabt-headers.decorator';
-import { GetDivisionMatches, GetDivisionRanking, ListAllDivisions } from '../dto/divisions.dto';
+import { GetDivisionMatches, GetDivisionRanking, GetDivisions } from '../dto/divisions.dto';
 import { MatchService } from '../../../services/matches/match.service';
 import { Level } from '../../../entity/tabt-input.interface';
 
@@ -46,13 +46,12 @@ export class DivisionsController {
     type: TabtException,
   })
   @UseInterceptors(ClassSerializerInterceptor)
-
   findAll(
-    @Query() query: ListAllDivisions,
+    @Query() query: GetDivisions,
   ): Promise<DivisionEntry[]> {
-    return this.divisionService.getDivisionsAsync({
+    return this.divisionService.getDivisions({
       Season: query.season,
-      Level: Level[query.level],
+      Level: Level[query.level] as unknown as number,
       ShowDivisionName: query.showDivisionName,
     });
   }
@@ -70,9 +69,12 @@ export class DivisionsController {
   })
   async findOne(
     @Param('divisionId', ParseIntPipe) id: number,
-    @Query() query: GetDivisionsInput,
+    @Query() query: GetDivisions,
   ): Promise<DivisionEntry> {
-    const division = await this.divisionService.getDivisionsByIdAsync(id, query);
+    const division = await this.divisionService.getDivisionsById(id, {
+      Season: query.season,
+      ShowDivisionName: query.showDivisionName,
+    });
     if (!division) {
       throw new NotFoundException();
     }
@@ -96,7 +98,7 @@ export class DivisionsController {
     return this.divisionRankingService.getDivisionRanking({
       DivisionId: id,
       RankingSystem: query.rankingSystem,
-      WeekName: query.week,
+      WeekName: query.weekName,
     });
   }
 

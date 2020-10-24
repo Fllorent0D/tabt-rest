@@ -1,10 +1,10 @@
-import { ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiPropertyOptional, OmitType } from '@nestjs/swagger';
 import { IsBoolean, IsEnum, IsNumber, IsOptional, IsString, Matches } from 'class-validator';
 import { Transform } from 'class-transformer';
-import { RequestBySeason } from '../../../common/dto/RequestBySeason';
+import { RequestBySeasonDto } from '../../../common/dto/request-by-season.dto';
 import { Level, PlayerCategory } from '../../../entity/tabt-input.interface';
 
-export class GetMatches extends RequestBySeason{
+export class GetMatches extends RequestBySeasonDto {
   @ApiPropertyOptional()
   @IsOptional()
   @IsNumber()
@@ -22,25 +22,25 @@ export class GetMatches extends RequestBySeason{
   team?: string;
 
   @ApiPropertyOptional({
-    enum: PlayerCategory
+    enum: PlayerCategory,
   })
   @IsEnum(PlayerCategory)
   @IsOptional()
-  divisionCategory?: PlayerCategory;
+  divisionCategory?: string;
 
   @ApiPropertyOptional({
-    type: IsNumber
+    type: IsNumber,
   })
   @IsOptional()
   @IsNumber()
-  weekName: string;
+  weekName?: string;
 
   @ApiPropertyOptional({
-    enum: Level
+    enum: Level,
   })
   @IsEnum(Level)
   @IsOptional()
-  level?: Level;
+  level?: string;
 
   @ApiPropertyOptional()
   @IsEnum(['no', 'yes', 'short'])
@@ -48,7 +48,7 @@ export class GetMatches extends RequestBySeason{
   showDivisionName?: 'no' | 'yes' | 'short';
 
   @ApiPropertyOptional({
-    description: 'YYYY-MM-DD'
+    description: 'YYYY-MM-DD',
   })
   @IsOptional()
   @IsString()
@@ -56,7 +56,7 @@ export class GetMatches extends RequestBySeason{
   yearDateFrom?: string;
 
   @ApiPropertyOptional({
-    description: 'YYYY-MM-DD'
+    description: 'YYYY-MM-DD',
   })
   @IsOptional()
   @IsString()
@@ -65,7 +65,7 @@ export class GetMatches extends RequestBySeason{
 
   @ApiPropertyOptional()
   @IsOptional()
-  @Transform((val) => Boolean(val), {toClassOnly: true})
+  @Transform((val) => Boolean(val), { toClassOnly: true })
   @IsBoolean()
   withDetails?: boolean;
 
@@ -78,4 +78,7 @@ export class GetMatches extends RequestBySeason{
   @IsOptional()
   @IsString()
   matchUniqueId?: string;
+}
+
+export class GetMatch extends OmitType(GetMatches, ['matchUniqueId'] as const) {
 }

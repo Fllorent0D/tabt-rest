@@ -1,11 +1,11 @@
 import { ApiPropertyOptional, PickType } from '@nestjs/swagger';
 import { IsEnum, IsIn, IsInt, IsNumber, IsOptional } from 'class-validator';
-import { RequestBySeason } from '../../../common/dto/RequestBySeason';
+import { RequestBySeasonDto } from '../../../common/dto/request-by-season.dto';
 import { Transform } from 'class-transformer';
 import { GetMatches } from '../../match/dto/match.dto';
 import { Level } from '../../../entity/tabt-input.interface';
 
-export class ListAllDivisions extends RequestBySeason {
+export class GetDivisions extends RequestBySeasonDto {
   @ApiPropertyOptional({ enum: Level })
   @IsOptional()
   @IsEnum(Level)
@@ -24,7 +24,7 @@ export class GetDivisionRanking {
   @Transform(id => parseInt(id), { toClassOnly: true })
   @IsOptional()
   @IsNumber()
-  week?: string;
+  weekName?: string;
 
   @ApiPropertyOptional()
   @Transform(id => parseInt(id), { toClassOnly: true })

@@ -4,7 +4,7 @@ import { ClubService } from '../../../services/clubs/club.service';
 import { ClubTeamService } from '../../../services/clubs/club-team.service';
 import { ClubMemberService } from '../../../services/clubs/club-member.service';
 import { GetMembersFromClub, ListAllClubs } from '../dto/club.dto';
-import { RequestBySeason } from '../../../common/dto/RequestBySeason';
+import { RequestBySeasonDto } from '../../../common/dto/request-by-season.dto';
 import { NotFoundException } from '@nestjs/common';
 
 jest.mock('../../../services/clubs/club.service');
@@ -51,7 +51,7 @@ describe('ClubController', () => {
 
   describe('findbyId', () => {
     it('should call club service with correct params', async () => {
-      const input: RequestBySeason = { season: 18 };
+      const input: RequestBySeasonDto = { season: 18 };
 
       const getAllClubSpy = jest.spyOn(clubService, 'getClubById');
 
@@ -62,7 +62,7 @@ describe('ClubController', () => {
     });
 
     it('should throw an exeption if not found', async () => {
-      const input: RequestBySeason = { season: 18 };
+      const input: RequestBySeasonDto = { season: 18 };
 
       jest.spyOn(clubService, 'getClubById').mockResolvedValue(null);
 
@@ -104,7 +104,7 @@ describe('ClubController', () => {
 
   describe('getClubTeams', () => {
     it('should call club teams service with correct params', async () => {
-      const input: RequestBySeason = { season: 18 };
+      const input: RequestBySeasonDto = { season: 18 };
 
       const getAllTeamsSpy = jest.spyOn(clubTeamService, 'getClubsTeams');
 

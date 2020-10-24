@@ -7,7 +7,7 @@ import { ClubTeamService } from '../../../services/clubs/club-team.service';
 import { TabtException } from '../../../common/filter/tabt-exceptions.filter';
 import { TabtHeadersDecorator } from '../../../common/decorators/tabt-headers.decorator';
 import { GetMembersFromClub, ListAllClubs } from '../dto/club.dto';
-import { RequestBySeason } from '../../../common/dto/RequestBySeason';
+import { RequestBySeasonDto } from '../../../common/dto/request-by-season.dto';
 import { ClubCategory, PlayerCategory } from '../../../entity/tabt-input.interface';
 
 @ApiTags('Clubs')
@@ -51,7 +51,7 @@ export class ClubController {
   })
   async findbyId(
     @Param('clubIndex') uniqueIndex: string,
-    @Query() input: RequestBySeason,
+    @Query() input: RequestBySeasonDto,
   ) {
     const value = await this.clubService.getClubById({ Season: input.season }, uniqueIndex);
     if (!value) {
@@ -98,7 +98,7 @@ export class ClubController {
     type: TabtException,
   })
   getClubTeams(
-    @Query() input: RequestBySeason,
+    @Query() input: RequestBySeasonDto,
     @Param('clubIndex') uniqueIndex: string,
   ) {
     return this.clubTeamService.getClubsTeams({ Club: uniqueIndex, Season: input.season });

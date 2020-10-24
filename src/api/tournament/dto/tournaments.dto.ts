@@ -1,8 +1,8 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { RequestBySeason } from '../../../common/dto/RequestBySeason';
+import { RequestBySeasonDto } from '../../../common/dto/request-by-season.dto';
 import { IsBoolean, IsNumber, IsOptional } from 'class-validator';
 
-export class GetTournaments extends RequestBySeason {
+export class GetTournaments extends RequestBySeasonDto {
 }
 
 export class GetTournamentDetails {

@@ -1,9 +1,9 @@
 import { ApiPropertyOptional, OmitType } from '@nestjs/swagger';
-import { RequestBySeason } from '../../../common/dto/RequestBySeason';
+import { RequestBySeasonDto } from '../../../common/dto/request-by-season.dto';
 import { GetMembers } from '../../member/dto/member.dto';
 import { ClubCategory } from '../../../entity/tabt-input.interface';
 
-export class ListAllClubs extends RequestBySeason {
+export class ListAllClubs extends RequestBySeasonDto {
   @ApiPropertyOptional({ enum: ClubCategory })
   clubCategory: string;
 }

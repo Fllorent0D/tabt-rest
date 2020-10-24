@@ -12,13 +12,13 @@ export class DivisionService {
   ) {
   }
 
-  async getDivisionsAsync(input: GetDivisionsInput): Promise<DivisionEntry[]> {
+  async getDivisions(input: GetDivisionsInput): Promise<DivisionEntry[]> {
     const [result] = await this.tabtClient.GetDivisionsAsync(input);
     return result.DivisionEntries.map(entry => new DivisionEntry(entry));
   }
 
-  async getDivisionsByIdAsync(id: number, input: GetDivisionsInput = {}): Promise<DivisionEntry> {
-    const divisions = await this.getDivisionsAsync(input);
+  async getDivisionsById(id: number, input: GetDivisionsInput = {}): Promise<DivisionEntry> {
+    const divisions = await this.getDivisions(input);
     return divisions.find((division) => division.DivisionId === id);
   }
 }

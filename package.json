@@ -91,6 +91,10 @@
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
     },
+    "coveragePathIgnorePatterns": [
+      ".dto.ts",
+      "entity"
+    ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node",
     "coverageReporters": [

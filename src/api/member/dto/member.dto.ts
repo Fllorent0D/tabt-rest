@@ -2,10 +2,10 @@ import { ApiPropertyOptional, OmitType } from '@nestjs/swagger';
 import { IsBoolean, IsEnum, IsOptional, IsString } from 'class-validator';
 import { Transform } from 'class-transformer';
 import { GetMembersInput } from '../../../entity/tabt-soap/TabTAPI_Port';
-import { RequestBySeason } from '../../../common/dto/RequestBySeason';
+import { RequestBySeasonDto } from '../../../common/dto/request-by-season.dto';
 import { PlayerCategory, TabtInputInterface } from '../../../entity/tabt-input.interface';
 
-export class GetMembers extends RequestBySeason {
+export class GetMembers extends RequestBySeasonDto {
   @ApiPropertyOptional()
   @IsString()
   @IsOptional()
