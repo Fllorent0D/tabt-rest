@@ -17,9 +17,11 @@
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:cov": "jest --coverage",
+    "test:coverage": "npm test -- --coverage",
+    "test:badges": "npm run test:coverage  && jest-coverage-badges output ./badges",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "npm test -- --config ./test/jest-e2e.json",
+    "jest-coverage-badges": "jest-coverage-badges"
   },
   "dependencies": {
     "@nestjs/common": "^7.0.0",
@@ -32,7 +34,6 @@
     "class-transformer": "^0.3.1",
     "class-validator": "^0.12.2",
     "compression": "^1.7.4",
-    "continuation-local-storage": "^3.2.1",
     "flatted": "3.1.0",
     "helmet": "^4.1.1",
     "lodash": "^4.17.20",
@@ -42,7 +43,6 @@
     "pino-pretty": "^4.3.0",
     "reflect-metadata": "^0.1.13",
     "response-time": "^2.3.2",
-    "rimraf": "^3.0.2",
     "rxjs": "^6.5.4",
     "soap": "^0.33.0",
     "swagger-ui-express": "^4.1.4",
@@ -64,7 +64,9 @@
     "eslint-config-prettier": "^6.10.0",
     "eslint-plugin-import": "^2.20.1",
     "husky": "^4.3.0",
+    "rimraf": "^3.0.2",
     "jest": "26.4.2",
+    "jest-coverage-badges": "1.1.2",
     "prettier": "^1.19.1",
     "supertest": "^4.0.2",
     "ts-jest": "26.2.0",
@@ -90,6 +92,11 @@
       "^.+\\.(t|j)s$": "ts-jest"
     },
     "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "coverageReporters": [
+      "json-summary",
+      "text",
+      "lcov"
+    ]
   }
 }
