@@ -26,7 +26,7 @@ export class TournamentController {
   findAll(
     @Query() input: GetTournaments,
   ) {
-    return this.tournamentService.getTournaments({ ...input } as GetTournamentsInput);
+    return this.tournamentService.getTournaments({ Season: input.season } as GetTournamentsInput);
   }
 
   @Get(':tournamentId')
@@ -40,13 +40,15 @@ export class TournamentController {
     type: TabtException,
   })
   async findById(
-    @Query() input: GetTournamentDetails, @Param('tournamentId', ParseIntPipe) id: number,
+    @Query() input: GetTournamentDetails,
+    @Param('tournamentId', ParseIntPipe) id: number,
   ) {
     const result = await this.tournamentService.getTournaments({
-      ...input,
+      WithRegistrations: input.withRegistrations,
+      WithResults: input.withResults,
       TournamentUniqueIndex: id,
     });
-    if (result.length === 1) {
+    if (result.length) {
       return result[0];
     }
     throw new NotFoundException();
@@ -69,7 +71,7 @@ export class TournamentController {
       TournamentUniqueIndex: id,
       WithRegistrations: true,
     });
-    if (result.length === 1) {
+    if (result.length) {
       return result[0].SerieEntries;
     }
     throw new NotFoundException();
