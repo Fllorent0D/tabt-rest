@@ -677,7 +677,7 @@ export class MatchDetails {
 export class TeamMatchesEntry {
 
   @ApiPropertyOptional()
-  DivisionName: string;
+  DivisionName?: string;
 
   @ApiProperty()
   MatchId: string;
@@ -696,8 +696,9 @@ export class TeamMatchesEntry {
 
   @ApiProperty()
   VenueClub: string;
+
   @ApiProperty()
-  VenueEntry: VenueEntry;
+  VenueEntry: Omit<VenueEntry, 'ClubVenue' | 'Id'>;
 
   @ApiProperty()
   HomeClub: string;
@@ -717,11 +718,11 @@ export class TeamMatchesEntry {
   @ApiProperty()
   MatchUniqueId: number;
 
-  @ApiProperty()
-  NextWeekName: string;
+  @ApiPropertyOptional()
+  NextWeekName?: string;
 
-  @ApiProperty()
-  PreviousWeekName: string;
+  @ApiPropertyOptional()
+  PreviousWeekName?: string;
 
   @ApiProperty()
   IsHomeForfeited: boolean;
@@ -730,7 +731,7 @@ export class TeamMatchesEntry {
   IsAwayForfeited: boolean;
 
   @ApiPropertyOptional()
-  MatchDetails: MatchDetails;
+  MatchDetails?: MatchDetails;
 
   @ApiProperty()
   DivisionId: number;
@@ -970,15 +971,15 @@ export class TournamentSerieEntry {
   @ApiProperty()
   Name: string;
 
-  @ApiProperty()
-  ResultCount: number;
+  @ApiPropertyOptional()
+  ResultCount?: number;
 
-  @ApiProperty()
-  ResultEntries: Array<TournamentSerieResultEntry>;
-  @ApiProperty()
-  RegistrationCount: number;
-  @ApiProperty()
-  RegistrationEntries: Array<RegistrationEntry>;
+  @ApiPropertyOptional()
+  ResultEntries?: Array<TournamentSerieResultEntry>;
+  @ApiPropertyOptional()
+  RegistrationCount?: number;
+  @ApiPropertyOptional()
+  RegistrationEntries?: Array<RegistrationEntry>;
 }
 
 export class TournamentEntry {
@@ -1005,7 +1006,7 @@ export class TournamentEntry {
   RegistrationDate: string;
 
   @ApiProperty()
-  Venue: VenueEntry;
+  Venue: Pick<VenueEntry, 'Name' | 'Street' | 'Town'>;
 
   @ApiProperty()
   SerieCount: number;
@@ -1031,8 +1032,8 @@ export class TeamMatchDefinitionEntry {
   @ApiProperty()
   AwayPlayerIndex: number;
 
-  @ApiProperty()
-  AllowSubstitute: boolean;
+  @ApiPropertyOptional()
+  AllowSubstitute?: boolean;
 }
 
 export class MatchSystemEntry {

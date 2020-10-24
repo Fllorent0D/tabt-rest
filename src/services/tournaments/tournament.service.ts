@@ -23,7 +23,8 @@ export class TournamentService {
     return result.TournamentEntries.map((t) => new TournamentEntry(t));
   }
 
-  async registerToTournament(input: TournamentRegisterInput): Promise<TournamentRegisterOutput[]> {
-    return this.tabtClient.TournamentRegisterAsync(input);
+  async registerToTournament(input: TournamentRegisterInput): Promise<TournamentRegisterOutput> {
+    const [result] = await this.tabtClient.TournamentRegisterAsync(input);
+    return result;
   }
 }
