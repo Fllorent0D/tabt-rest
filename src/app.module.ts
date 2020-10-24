@@ -1,10 +1,8 @@
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ServicesModule } from './services/services.module';
 import { CommonModule } from './common/common.module';
-import { LoggerMiddleware } from './web/middlewares/logger/logger.middleware';
-import { WebModule } from './web/web.module';
 import { ApiModule } from './api/api.module';
 import { ConfigModule } from '@nestjs/config';
 import { LoggerModule } from 'nestjs-pino';
@@ -16,7 +14,6 @@ import { HeaderKeys } from './common/context/context.constants';
     ServicesModule,
     CommonModule,
     ApiModule,
-    WebModule,
     ConfigModule.forRoot(),
     LoggerModule.forRoot({
       pinoHttp: {
@@ -40,10 +37,5 @@ import { HeaderKeys } from './common/context/context.constants';
     AppService,
   ],
 })
-export class AppModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(LoggerMiddleware)
-      .forRoutes('/');
-  }
+export class AppModule {
 }
