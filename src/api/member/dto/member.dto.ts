@@ -14,7 +14,7 @@ export class GetMembers extends RequestBySeason {
   @ApiPropertyOptional({enum: PlayerCategory})
   @IsOptional()
   @IsEnum(PlayerCategory)
-  playerCategory: string;
+  playerCategory?: string;
 
   @ApiPropertyOptional()
   @IsOptional()
