@@ -53,7 +53,7 @@ export class ClubController {
     @Param('clubIndex') uniqueIndex: string,
     @Query() input: RequestBySeason,
   ) {
-    const value = await this.clubService.getClubsById({ Season: input.season }, uniqueIndex);
+    const value = await this.clubService.getClubById({ Season: input.season }, uniqueIndex);
     if (!value) {
       throw new NotFoundException();
     }

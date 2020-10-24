@@ -7,9 +7,11 @@ import * as responseTime from 'response-time';
 import { TabtExceptionsFilter } from './common/filter/tabt-exceptions.filter';
 import { ValidationPipe } from '@nestjs/common';
 import { PackageService } from './common/package/package.service';
+import { Logger } from 'nestjs-pino';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.useLogger(app.get(Logger))
   const packageService = app.get(PackageService)
   app.setGlobalPrefix(process.env.API_PREFIX)
   const options = new DocumentBuilder()

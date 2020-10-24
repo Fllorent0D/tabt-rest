@@ -5,6 +5,7 @@ import { HttpUtil } from '../utils/http.util';
 import { GuidUtil } from '../utils/guid.util';
 import { REQUEST } from '@nestjs/core';
 import { PackageService } from '../package/package.service';
+import { PinoLogger } from 'nestjs-pino';
 
 @Injectable({scope: Scope.REQUEST})
 export class ContextService {
@@ -16,7 +17,8 @@ export class ContextService {
 
   constructor(
     @Inject(REQUEST) request,
-    private readonly packageService: PackageService
+    private readonly packageService: PackageService,
+    private readonly loggerService: PinoLogger
   ) {
     this.runnerContext = {
       name: this.packageService.name,
@@ -38,7 +40,7 @@ export class ContextService {
     return {
       runner: this.runnerContext,
       caller: {
-        correlationId: GuidUtil.generateUuid(),
+        correlationId: request['id'],
         ...Array.from(this.httpHeaderKeys).reduce((acc: any, x: any) => {
           const httpHeaderValue = HttpUtil.getHeaderValue(request, x);
           if (httpHeaderValue) {

@@ -18,7 +18,7 @@ export class ClubService {
     return result.ClubEntries
   }
 
-  async getClubsById(input: GetClubsInput, uniqueIndex: string): Promise<ClubEntry> {
+  async getClubById(input: GetClubsInput, uniqueIndex: string): Promise<ClubEntry> {
     const clubs = await this.getClubs(input);
     return clubs.find((club) => club.UniqueIndex === uniqueIndex);
   }

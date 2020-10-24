@@ -1,5 +1,7 @@
 import { Client } from 'soap';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { Transform } from 'class-transformer';
+import { Level, PlayerCategory } from '../tabt-input.interface';
 
 export class Credentials {
 
@@ -733,13 +735,16 @@ export class TeamMatchesEntry {
   @ApiProperty()
   DivisionId: number;
 
-  @ApiProperty()
+  @ApiProperty({ enum: PlayerCategory })
+  @Transform((pc) => PlayerCategory[pc], { toPlainOnly: true })
   DivisionCategory: number;
 
-  @ApiProperty()
+  @ApiProperty({type: Boolean})
+  @Transform((value) => value === 'Y', { toPlainOnly: true })
   IsHomeWithdrawn: string;
 
-  @ApiProperty()
+  @ApiProperty({type: Boolean})
+  @Transform((value) => value === 'Y', { toPlainOnly: true })
   IsAwayWithdrawn: string;
 
   @ApiProperty()
@@ -747,6 +752,10 @@ export class TeamMatchesEntry {
 
   @ApiProperty()
   IsLocked: boolean;
+
+  constructor(partial: Partial<TeamMatchesEntry>) {
+    Object.assign(this, partial);
+  }
 }
 
 export class MemberEntryResultEntry {
@@ -775,7 +784,7 @@ export class MemberEntryResultEntry {
   @ApiProperty()
   SetAgainst: number;
   /** http://api.frenoy.net/TabTAPI#CompetitionType(C,T) */
-  @ApiProperty()
+  @ApiProperty({enum: ['C', 'T']})
   CompetitionType: 'C' | 'T';
 
   @ApiProperty()
@@ -823,39 +832,39 @@ export class MemberEntry {
   Status: string;
 
   @ApiProperty()
-  Club: string;
+  Club?: string;
   /** http://api.frenoy.net/TabTAPI#GenderType(M,F) */
   @ApiProperty()
-  Gender: 'M' | 'F';
+  Gender?: 'M' | 'F';
 
   @ApiProperty()
-  Category: string;
+  Category?: string;
   /** http://api.frenoy.net/TabTAPI#xsd:date(undefined) */
   @ApiPropertyOptional()
-  BirthDate: string;
+  BirthDate?: string;
 
   @ApiPropertyOptional()
-  MedicalAttestation: boolean;
+  MedicalAttestation?: boolean;
 
   @ApiPropertyOptional()
-  RankingPointsCount: number;
+  RankingPointsCount?: number;
   @ApiPropertyOptional({ type: [RankingPointsEntry] })
-  RankingPointsEntries: Array<RankingPointsEntry>;
+  RankingPointsEntries?: Array<RankingPointsEntry>;
 
   @ApiPropertyOptional()
-  Email: string;
+  Email?: string;
   @ApiPropertyOptional()
-  Phone: Phone;
+  Phone?: Phone;
   @ApiPropertyOptional()
-  Address: Address;
+  Address?: Address;
 
   @ApiPropertyOptional()
-  ResultCount: number;
+  ResultCount?: number;
   @ApiPropertyOptional({ type: [MemberEntryResultEntry] })
-  ResultEntries: Array<MemberEntryResultEntry>;
+  ResultEntries?: Array<MemberEntryResultEntry>;
 
   @ApiPropertyOptional()
-  NationalNumber: string;
+  NationalNumber?: string;
 }
 
 export class ClubEntry {
@@ -879,7 +888,7 @@ export class ClubEntry {
   VenueCount: number;
 
   @ApiProperty({ type: [VenueEntry] })
-  VenueEntries: Array<VenueEntry>;
+  VenueEntries?: Array<VenueEntry>;
 }
 
 
@@ -891,12 +900,12 @@ export class DivisionEntry {
   @ApiPropertyOptional()
   DivisionName: string;
 
-  @ApiProperty({type: String})
-  //@Transform((pc) => PlayerCategory[pc], {toPlainOnly: true})
+  @ApiProperty({ enum: PlayerCategory })
+  @Transform((pc) => PlayerCategory[pc], { toPlainOnly: true })
   DivisionCategory: number;
 
-  @ApiProperty({type: String})
-  //@Transform((l) => Level[l], {toPlainOnly: true})
+  @ApiProperty({ enum: Level })
+  @Transform((l) => Level[l], { toPlainOnly: true })
   Level: number;
 
   @ApiProperty()
@@ -945,8 +954,10 @@ export class TournamentSerieResultEntry {
 
   @ApiProperty()
   Scores: string;
+
   @ApiProperty({ type: [Player] })
   HomePlayer: Array<Player>;
+
   @ApiProperty({ type: [Player] })
   AwayPlayer: Array<Player>;
 
@@ -978,6 +989,7 @@ export class TournamentEntry {
   Name: string;
 
   @ApiProperty()
+  @Transform((l) => Level[l], { toPlainOnly: true })
   Level: number;
 
   @ApiProperty()
@@ -999,6 +1011,10 @@ export class TournamentEntry {
   SerieCount: number;
   @ApiProperty()
   SerieEntries: Array<TournamentSerieEntry>;
+
+  constructor(partial: Partial<TournamentEntry>) {
+    Object.assign(this, partial);
+  }
 }
 
 export class TeamMatchDefinitionEntry {

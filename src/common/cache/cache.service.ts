@@ -17,10 +17,11 @@ export class CacheService {
     return this.cacheManager.set(key, value, { ttl }) as Promise<void>;
   }
 
-  async getFromCacheOrGetAndCacheResult<T>(key: string, getter: () => Promise<T>, ttl = 600): Promise<T> {
+  async getFromCacheOrGetAndCacheResult<T>(key: string, getter: () => Promise<T>, ttl = 600, uuid?: string): Promise<T> {
     const cached = await this.getFromCache<T>(key);
 
     if (cached) {
+      this.logger.debug(`Found request ${uuid} in cache`)
       return cached;
     }
 

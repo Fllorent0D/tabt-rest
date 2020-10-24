@@ -38,6 +38,8 @@
     "lodash": "^4.17.20",
     "morgan": "^1.10.0",
     "nest-morgan": "^1.0.1",
+    "nestjs-pino": "^1.2.0",
+    "pino-pretty": "^4.3.0",
     "reflect-metadata": "^0.1.13",
     "response-time": "^2.3.2",
     "rimraf": "^3.0.2",

@@ -20,7 +20,7 @@ export class TournamentService {
 
   async getTournaments(input: GetTournamentsInput): Promise<TournamentEntry[]> {
     const [result] = await this.tabtClient.GetTournamentsAsync(input);
-    return result.TournamentEntries;
+    return result.TournamentEntries.map((t) => new TournamentEntry(t));
   }
 
   async registerToTournament(input: TournamentRegisterInput): Promise<TournamentRegisterOutput[]> {

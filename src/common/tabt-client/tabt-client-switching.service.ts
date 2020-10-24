@@ -4,7 +4,7 @@ import { TabTAPISoap } from '../../entity/tabt-soap/TabTAPI_Port';
 
 @Injectable()
 export class TabtClientSwitchingService {
-  private readonly logger = new Logger('CacheService', true);
+  private readonly logger = new Logger('TabtClientSwitchingService', true);
 
   constructor(
     private readonly langService: DatabaseContextService,

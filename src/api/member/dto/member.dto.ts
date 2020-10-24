@@ -5,7 +5,7 @@ import { GetMembersInput } from '../../../entity/tabt-soap/TabTAPI_Port';
 import { RequestBySeason } from '../../../common/dto/RequestBySeason';
 import { PlayerCategory, TabtInputInterface } from '../../../entity/tabt-input.interface';
 
-export class GetMembers extends RequestBySeason implements TabtInputInterface {
+export class GetMembers extends RequestBySeason {
   @ApiPropertyOptional()
   @IsString()
   @IsOptional()
@@ -49,20 +49,6 @@ export class GetMembers extends RequestBySeason implements TabtInputInterface {
   @IsBoolean()
   @IsOptional()
   withOpponentRankingEvaluation?: boolean;
-
-  toTabtInput(): GetMembersInput {
-    return {
-      Club: this.club,
-      Season: this.season,
-      // PlayerCategory: this.playerCategory,
-      UniqueIndex: this.uniqueIndex,
-      NameSearch: this.nameSearch,
-      ExtendedInformation: this.extendedInformation,
-      RankingPointsInformation: this.rankingPointsInformation,
-      WithResults: this.withResults,
-      WithOpponentRankingEvaluation: this.withOpponentRankingEvaluation,
-    };
-  }
 
 }
 

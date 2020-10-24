@@ -7,6 +7,9 @@ import { LoggerMiddleware } from './web/middlewares/logger/logger.middleware';
 import { WebModule } from './web/web.module';
 import { ApiModule } from './api/api.module';
 import { ConfigModule } from '@nestjs/config';
+import { LoggerModule } from 'nestjs-pino';
+import { GuidUtil } from './common/utils/guid.util';
+import { HeaderKeys } from './common/context/context.constants';
 
 @Module({
   imports: [
@@ -14,7 +17,23 @@ import { ConfigModule } from '@nestjs/config';
     CommonModule,
     ApiModule,
     WebModule,
-    ConfigModule.forRoot()
+    ConfigModule.forRoot(),
+    LoggerModule.forRoot({
+      pinoHttp: {
+        level: 'debug',
+        serializers: {
+          req: (req) => {
+            req.headers[HeaderKeys.X_TABT_PASSWORD] = undefined;
+            return req;
+          },
+        },
+        genReqId: () => GuidUtil.generateUuid(),
+        prettyPrint: process.env.NODE_ENV === 'production' ? false : {
+          colorize: true,
+          translateTime: true,
+        },
+      },
+    }),
   ],
   controllers: [AppController],
   providers: [

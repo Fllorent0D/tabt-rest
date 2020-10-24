@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import {
   GetClubsInput,
   GetClubsOutput,
@@ -29,6 +29,8 @@ import { TabtClientSwitchingService } from './tabt-client-switching.service';
 import { CredentialsService } from './credentials.service';
 import { CacheService } from '../cache/cache.service';
 import { DatabaseContextService } from '../context/database-context.service';
+import { ContextService } from '../context/context.service';
+import { PinoLogger } from 'nestjs-pino';
 
 // Durations in Seconds
 const ONE_DAY = 86_400;
@@ -45,7 +47,10 @@ export class TabtClientService {
     private readonly cacheService: CacheService,
     private readonly credentialsService: CredentialsService,
     private readonly databaseContextService: DatabaseContextService,
+    private readonly contextService: ContextService,
+    private readonly logger: PinoLogger
   ) {
+    this.logger.setContext(TabtClientService.name)
   }
 
   private getCacheKey(prefix: string, input: any, db: string): string {
@@ -55,8 +60,12 @@ export class TabtClientService {
   private enrichBodyAndQueryWithCache<T>(prefix: string, input: any, operation: (_: any) => Promise<T>, ttl = 600) {
     const enrichedInput = this.credentialsService.enrichInputWithCredentials(input);
     const cacheKey = this.getCacheKey(prefix, enrichedInput, this.databaseContextService.database)
-    console.log(enrichedInput)
-    return this.cacheService.getFromCacheOrGetAndCacheResult(cacheKey, () => operation(enrichedInput), ttl);
+    const getter: () => Promise<T> = () => {
+      this.logger.debug(`Requesting ${prefix} data to TabT`)
+      return operation(enrichedInput)
+    }
+
+    return this.cacheService.getFromCacheOrGetAndCacheResult(cacheKey, getter, ttl, this.contextService.context.caller.correlationId);
   }
 
   async TestAsync(input: ITestInput): Promise<[ITestOutput, string, { [k: string]: any; }, any, any]> {
