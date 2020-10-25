@@ -65,7 +65,7 @@ export class TabtClientService {
       return operation(enrichedInput)
     }
 
-    return this.cacheService.getFromCacheOrGetAndCacheResult(cacheKey, getter, ttl, this.contextService.context.caller.correlationId);
+    return this.cacheService.getFromCacheOrGetAndCacheResult(cacheKey, getter, ttl);
   }
 
   async TestAsync(input: ITestInput): Promise<[ITestOutput, string, { [k: string]: any; }, any, any]> {
