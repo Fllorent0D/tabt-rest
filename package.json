@@ -93,7 +93,10 @@
     },
     "coveragePathIgnorePatterns": [
       ".dto.ts",
-      "entity"
+      "entity",
+      ".contract.ts",
+      ".constants.ts",
+      ".decorator.ts"
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node",

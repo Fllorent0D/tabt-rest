@@ -17,8 +17,7 @@ export class ContextService {
 
   constructor(
     @Inject(REQUEST) request,
-    private readonly packageService: PackageService,
-    private readonly loggerService: PinoLogger
+    private readonly packageService: PackageService
   ) {
     this.runnerContext = {
       name: this.packageService.name,
