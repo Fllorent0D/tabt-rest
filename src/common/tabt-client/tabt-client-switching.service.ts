@@ -7,14 +7,14 @@ export class TabtClientSwitchingService {
   private readonly logger = new Logger('TabtClientSwitchingService', true);
 
   constructor(
-    private readonly langService: DatabaseContextService,
+    private readonly databaseContextService: DatabaseContextService,
     @Inject('tabt-aftt') private readonly tabtAFTT: TabTAPISoap,
     @Inject('tabt-vttl') private readonly tabtVTTL: TabTAPISoap,
   ) {
   }
 
   get tabtClient(): TabTAPISoap {
-    if (this.langService.database === TABT_LANGUAGE.AFTT) {
+    if (this.databaseContextService.database === TABT_LANGUAGE.AFTT) {
       return this.tabtAFTT;
     } else {
       return this.tabtVTTL;

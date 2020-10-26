@@ -10,15 +10,19 @@ export class CredentialsService {
 
   enrichInputWithCredentials<T>(input: T): T {
     const credentials: Credentials = {
-      Account: (<any>this.contextService.context.caller)?.[HeaderKeys.X_TABT_ACCOUNT],
-      Password: (<any>this.contextService.context.caller)?.[HeaderKeys.X_TABT_PASSWORD],
-      OnBehalfOf: (<any>this.contextService.context.caller)?.[HeaderKeys.X_TABT_ONBEHALFOF]
+      Account: (<any>this.contextService.context.caller)[HeaderKeys.X_TABT_ACCOUNT],
+      Password: (<any>this.contextService.context.caller)[HeaderKeys.X_TABT_PASSWORD],
+      OnBehalfOf: (<any>this.contextService.context.caller)[HeaderKeys.X_TABT_ONBEHALFOF],
     };
 
-    return {
-      ...input,
-      Credentials: credentials,
-    };
+    if (credentials.Account && credentials.Password) {
+      return {
+        ...input,
+        Credentials: credentials,
+      };
+    }
+
+    return input;
   }
 
 
