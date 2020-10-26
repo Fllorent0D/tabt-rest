@@ -2,10 +2,8 @@ import { Inject, Injectable, Scope } from '@nestjs/common';
 import { Context, RunnerContext } from './context.contract';
 import { TABT_HEADERS } from './context.constants';
 import { HttpUtil } from '../utils/http.util';
-import { GuidUtil } from '../utils/guid.util';
 import { REQUEST } from '@nestjs/core';
 import { PackageService } from '../package/package.service';
-import { PinoLogger } from 'nestjs-pino';
 
 @Injectable({scope: Scope.REQUEST})
 export class ContextService {
