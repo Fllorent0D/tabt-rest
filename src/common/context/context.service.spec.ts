@@ -4,6 +4,7 @@ import { ContextService } from './context.service';
 import { PackageService } from '../package/package.service';
 import { Req } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
+import { TABT_HEADERS } from './context.constants';
 
 describe('ContextService', () => {
   describe('context', () => {
@@ -15,7 +16,7 @@ describe('ContextService', () => {
           'x-tabt-account': 'test',
           'x-tabt-password': 'test2',
           'x-tabt-database': 'test4',
-          'not-registered-header': 'should not be in context'
+          'not-registered-header': 'should not be in context',
         },
       };
       const packageInfo = {
@@ -23,7 +24,7 @@ describe('ContextService', () => {
         version: '1.0.0',
       };
 
-      const ser = new ContextService(request, packageInfo as PackageService);
+      const ser = new ContextService(request, TABT_HEADERS, packageInfo as PackageService);
 
       expect(ser.context.caller).toEqual({
           'X-Tabt-Account': 'test',

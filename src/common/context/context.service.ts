@@ -15,6 +15,7 @@ export class ContextService {
 
   constructor(
     @Inject(REQUEST) request,
+    @Inject('TABT_HEADERS') tabtHeaders: string[],
     private readonly packageService: PackageService
   ) {
     this.runnerContext = {
@@ -23,7 +24,7 @@ export class ContextService {
       pid: process.pid,
     };
     this.httpHeaderKeys = new Set<string>();
-    this.registerHttpHeaders(TABT_HEADERS)
+    this.registerHttpHeaders(tabtHeaders)
 
     this.context = this.createContext(request);
   }

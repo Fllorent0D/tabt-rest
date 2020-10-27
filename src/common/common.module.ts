@@ -1,4 +1,4 @@
-import { CacheModule, Module } from '@nestjs/common';
+import { CacheModule, Module, Provider } from '@nestjs/common';
 import { createClientAsync } from 'soap';
 import { CacheService } from './cache/cache.service';
 import { ContextService } from './context/context.service';
@@ -7,8 +7,9 @@ import { DatabaseContextService } from './context/database-context.service';
 import { TabtClientService } from './tabt-client/tabt-client.service';
 import { TabtClientSwitchingService } from './tabt-client/tabt-client-switching.service';
 import { PackageService } from './package/package.service';
+import { TABT_HEADERS } from './context/context.constants';
 
-const asyncProviders = [
+const asyncProviders: Provider[] = [
   {
     provide: 'tabt-aftt',
     useFactory: async () => {
@@ -25,6 +26,10 @@ const asyncProviders = [
       });
     },
   },
+  {
+    provide: 'TABT_HEADERS',
+    useValue: TABT_HEADERS
+  }
 ];
 
 @Module({
