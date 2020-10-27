@@ -14,8 +14,8 @@ describe('ContextService', () => {
         headers: {
           'x-tabt-account': 'test',
           'x-tabt-password': 'test2',
-          'x-tabt-onbehalfof': 'test3',
           'x-tabt-database': 'test4',
+          'not-registered-header': 'should not be in context'
         },
       };
       const packageInfo = {
@@ -28,7 +28,6 @@ describe('ContextService', () => {
       expect(ser.context.caller).toEqual({
           'X-Tabt-Account': 'test',
           'X-Tabt-Database': 'test4',
-          'X-Tabt-OnBehalfOf': 'test3',
           'X-Tabt-Password': 'test2',
           'correlationId': '123',
         },
