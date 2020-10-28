@@ -1,5 +1,5 @@
 import { Test } from '@nestjs/testing';
-import { DatabaseContextService, DEFAULT_LANG, TABT_LANGUAGE } from './database-context.service';
+import { DatabaseContextService, DEFAULT_LANG, TABT_DATABASE } from './database-context.service';
 import { ContextService } from './context.service';
 
 describe('DatabaseContextService', () => {
@@ -50,7 +50,7 @@ describe('DatabaseContextService', () => {
         }})
 
       expect(service).toBeDefined();
-      expect(service.database).toBe(TABT_LANGUAGE.AFTT)
+      expect(service.database).toBe(TABT_DATABASE.AFTT)
     });
 
     it('should return VTTL database if passed in context for the request', async () => {
@@ -67,7 +67,7 @@ describe('DatabaseContextService', () => {
         }})
 
       expect(service).toBeDefined();
-      expect(service.database).toBe(TABT_LANGUAGE.VTTL)
+      expect(service.database).toBe(TABT_DATABASE.VTTL)
     });
   });
 });

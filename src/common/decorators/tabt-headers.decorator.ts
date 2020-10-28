@@ -1,7 +1,7 @@
 import { applyDecorators } from '@nestjs/common';
 import { ApiHeader } from '@nestjs/swagger';
 import { HeaderKeys } from '../context/context.constants';
-import { TABT_LANGUAGE } from '../context/database-context.service';
+import { TABT_DATABASE } from '../context/database-context.service';
 
 export function TabtHeadersDecorator() {
   return applyDecorators(
@@ -19,7 +19,7 @@ export function TabtHeadersDecorator() {
     }),
     ApiHeader({
       name: HeaderKeys.X_TABT_DATABASE,
-      enum:[TABT_LANGUAGE.AFTT, TABT_LANGUAGE.VTTL],
+      enum:[TABT_DATABASE.AFTT, TABT_DATABASE.VTTL],
       description: "Database to query"
     })
   );

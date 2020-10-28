@@ -1,9 +1,5 @@
-import { Test } from '@nestjs/testing';
-import { DatabaseContextService, DEFAULT_LANG, TABT_LANGUAGE } from './database-context.service';
 import { ContextService } from './context.service';
 import { PackageService } from '../package/package.service';
-import { Req } from '@nestjs/common';
-import { REQUEST } from '@nestjs/core';
 import { TABT_HEADERS } from './context.constants';
 
 describe('ContextService', () => {

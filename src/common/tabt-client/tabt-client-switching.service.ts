@@ -1,10 +1,9 @@
-import { Inject, Injectable, Logger } from '@nestjs/common';
-import { DatabaseContextService, TABT_LANGUAGE } from '../context/database-context.service';
+import { Inject, Injectable } from '@nestjs/common';
+import { DatabaseContextService, TABT_DATABASE } from '../context/database-context.service';
 import { TabTAPISoap } from '../../entity/tabt-soap/TabTAPI_Port';
 
 @Injectable()
 export class TabtClientSwitchingService {
-  private readonly logger = new Logger('TabtClientSwitchingService', true);
 
   constructor(
     private readonly databaseContextService: DatabaseContextService,
@@ -14,10 +13,11 @@ export class TabtClientSwitchingService {
   }
 
   get tabtClient(): TabTAPISoap {
-    if (this.databaseContextService.database === TABT_LANGUAGE.AFTT) {
-      return this.tabtAFTT;
-    } else {
-      return this.tabtVTTL;
+    switch(this.databaseContextService.database){
+      case TABT_DATABASE.AFTT:
+        return this.tabtAFTT;
+      case TABT_DATABASE.VTTL:
+        return this.tabtVTTL;
     }
   }
 
