@@ -14,7 +14,7 @@ export class Credentials {
 
 /* tslint:disable:max-line-length no-empty-class */
 export class ITestInput {
-  Credentials: Credentials;
+  Credentials?: Credentials;
 }
 
 export class VenueEntry {
@@ -83,7 +83,7 @@ export class GetClubTeamsInput {
   /** xsd:string(undefined) */
   Club: string;
   /** xsd:number(undefined) */
-  Season: number;
+  Season?: number;
 }
 
 export class GetClubTeamsOutput {
@@ -101,7 +101,7 @@ export class GetDivisionRankingInput {
   /** xsd:string(undefined) */
   WeekName: string;
   /** xsd:number(undefined) */
-  RankingSystem: number;
+  RankingSystem?: number;
 }
 
 export class RankingEntry {
@@ -220,7 +220,7 @@ export class IGetMembersOutput {
 }
 
 export class IUploadInput {
-  Credentials: Credentials;
+  Credentials?: Credentials;
   /** xsd:string(undefined) */
   Data: string;
 }

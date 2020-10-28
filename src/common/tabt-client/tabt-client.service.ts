@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import {
   GetClubsInput,
   GetClubsOutput,
@@ -29,7 +29,6 @@ import { TabtClientSwitchingService } from './tabt-client-switching.service';
 import { CredentialsService } from './credentials.service';
 import { CacheService } from '../cache/cache.service';
 import { DatabaseContextService } from '../context/database-context.service';
-import { ContextService } from '../context/context.service';
 import { PinoLogger } from 'nestjs-pino';
 
 // Durations in Seconds
@@ -43,11 +42,10 @@ const TWO_HOURS = 7_200;
 export class TabtClientService {
 
   constructor(
-    private readonly tabtClientSwitching: TabtClientSwitchingService,
+    private readonly tabtClientSwitchingService: TabtClientSwitchingService,
     private readonly cacheService: CacheService,
     private readonly credentialsService: CredentialsService,
     private readonly databaseContextService: DatabaseContextService,
-    private readonly contextService: ContextService,
     private readonly logger: PinoLogger
   ) {
     this.logger.setContext(TabtClientService.name)
@@ -69,54 +67,54 @@ export class TabtClientService {
   }
 
   async TestAsync(input: ITestInput): Promise<[ITestOutput, string, { [k: string]: any; }, any, any]> {
-    return this.enrichBodyAndQueryWithCache('test', input, this.tabtClientSwitching.tabtClient.TestAsync);
+    return this.enrichBodyAndQueryWithCache('test', input, this.tabtClientSwitchingService.tabtClient.TestAsync);
   }
 
   GetSeasonsAsync(input: GetSeasonsInput): Promise<[IGetSeasonsOutput, string, { [k: string]: any; }, any, any]> {
-    return this.enrichBodyAndQueryWithCache('season', input, this.tabtClientSwitching.tabtClient.GetSeasonsAsync, ONE_DAY);
+    return this.enrichBodyAndQueryWithCache('season', input, this.tabtClientSwitchingService.tabtClient.GetSeasonsAsync, ONE_DAY);
   }
 
   GetClubTeamsAsync(input: GetClubTeamsInput): Promise<[GetClubTeamsOutput, string, { [k: string]: any; }, any, any]> {
-    return this.enrichBodyAndQueryWithCache('club-teams', input, this.tabtClientSwitching.tabtClient.GetClubTeamsAsync, ONE_DAY);
+    return this.enrichBodyAndQueryWithCache('club-teams', input, this.tabtClientSwitchingService.tabtClient.GetClubTeamsAsync, ONE_DAY);
   }
 
   GetDivisionRankingAsync(input: GetDivisionRankingInput): Promise<[GetDivisionRankingOutput, string, { [k: string]: any; }, any, any]> {
-    return this.enrichBodyAndQueryWithCache('division-ranking', input, this.tabtClientSwitching.tabtClient.GetDivisionRankingAsync, TWO_HOURS);
+    return this.enrichBodyAndQueryWithCache('division-ranking', input, this.tabtClientSwitchingService.tabtClient.GetDivisionRankingAsync, TWO_HOURS);
   }
 
   GetMatchesAsync(input: GetMatchesInput): Promise<[GetMatchesOutput, string, { [k: string]: any; }, any, any]> {
-    return this.enrichBodyAndQueryWithCache('matches', input, this.tabtClientSwitching.tabtClient.GetMatchesAsync, ONE_HOUR);
+    return this.enrichBodyAndQueryWithCache('matches', input, this.tabtClientSwitchingService.tabtClient.GetMatchesAsync, ONE_HOUR);
   }
 
   GetMembersAsync(input: GetMembersInput): Promise<[IGetMembersOutput, string, { [k: string]: any; }, any, any]> {
-    return this.enrichBodyAndQueryWithCache('members', input, this.tabtClientSwitching.tabtClient.GetMembersAsync, ONE_DAY);
+    return this.enrichBodyAndQueryWithCache('members', input, this.tabtClientSwitchingService.tabtClient.GetMembersAsync, ONE_DAY);
   }
 
   UploadAsync(input: IUploadInput): Promise<[IUploadOutput, string, { [k: string]: any; }, any, any]> {
-    return this.tabtClientSwitching.tabtClient.UploadAsync(this.credentialsService.enrichInputWithCredentials(input));
+    return this.tabtClientSwitchingService.tabtClient.UploadAsync(this.credentialsService.enrichInputWithCredentials(input));
   }
 
   GetClubsAsync(input: GetClubsInput): Promise<[GetClubsOutput, string, { [k: string]: any; }, any, any]> {
-    return this.enrichBodyAndQueryWithCache('clubs', input, this.tabtClientSwitching.tabtClient.GetClubsAsync, ONE_DAY);
+    return this.enrichBodyAndQueryWithCache('clubs', input, this.tabtClientSwitchingService.tabtClient.GetClubsAsync, ONE_DAY);
 
   }
 
   GetDivisionsAsync(input: GetDivisionsInput): Promise<[result: IGetDivisionsOutput, raw: string, soapHeader: { [k: string]: any; }, options: any, extraHeaders: any]> {
-    return this.enrichBodyAndQueryWithCache('divisions', input, this.tabtClientSwitching.tabtClient.GetDivisionsAsync, ONE_DAY);
+    return this.enrichBodyAndQueryWithCache('divisions', input, this.tabtClientSwitchingService.tabtClient.GetDivisionsAsync, ONE_DAY);
 
   }
 
   GetTournamentsAsync(input: GetTournamentsInput): Promise<[IGetTournamentsOutput, string, { [k: string]: any; }, any, any]> {
-    return this.enrichBodyAndQueryWithCache('tournaments', input, this.tabtClientSwitching.tabtClient.GetTournamentsAsync, EIGHT_HOURS);
+    return this.enrichBodyAndQueryWithCache('tournaments', input, this.tabtClientSwitchingService.tabtClient.GetTournamentsAsync, EIGHT_HOURS);
 
   }
 
   GetMatchSystemsAsync(input: GetMatchSystemsInput): Promise<[GetMatchSystemsOutput, string, { [k: string]: any; }, any, any]> {
-    return this.enrichBodyAndQueryWithCache('match-systems', input, this.tabtClientSwitching.tabtClient.GetMatchSystemsAsync, ONE_DAY);
+    return this.enrichBodyAndQueryWithCache('match-systems', input, this.tabtClientSwitchingService.tabtClient.GetMatchSystemsAsync, ONE_DAY);
   }
 
   TournamentRegisterAsync(input: TournamentRegisterInput): Promise<[TournamentRegisterOutput, string, { [k: string]: any; }, any, any]> {
-    return this.tabtClientSwitching.tabtClient.TournamentRegisterAsync(this.credentialsService.enrichInputWithCredentials(input));
+    return this.tabtClientSwitchingService.tabtClient.TournamentRegisterAsync(this.credentialsService.enrichInputWithCredentials(input));
   }
 
 
