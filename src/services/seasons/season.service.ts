@@ -2,11 +2,8 @@ import { Injectable, Logger } from '@nestjs/common';
 import { GetSeasonsInput, SeasonEntry } from '../../entity/tabt-soap/TabTAPI_Port';
 import { TabtClientService } from '../../common/tabt-client/tabt-client.service';
 
-const CACHE_KEY = 'SEASON-';
-
 @Injectable()
 export class SeasonService {
-  private readonly logger = new Logger('ClubTeamService', true);
 
   constructor(
     private tabtClient: TabtClientService,

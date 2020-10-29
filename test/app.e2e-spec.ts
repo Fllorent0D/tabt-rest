@@ -15,10 +15,17 @@ describe('AppController (e2e)', () => {
     await app.init();
   });
 
-  it('/ (GET)', () => {
+  it('/clubs (GET)', () => {
     return request(app.getHttpServer())
-      .get('/')
+      .get('/clubs?season=17')
       .expect(200)
-      .expect('Hello World!');
+      .expect(function(res) {
+        const data = res.body;
+        console.log(data)
+
+        expect(typeof data).toBe('array');
+        expect(data.length).not.toBeLessThan(10);
+      });
+
   });
 });

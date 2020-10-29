@@ -22,6 +22,4 @@ export class ClubService {
     const clubs = await this.getClubs(input);
     return clubs.find((club) => club.UniqueIndex === uniqueIndex);
   }
-
-
 }
