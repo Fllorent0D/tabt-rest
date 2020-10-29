@@ -21,7 +21,7 @@
     "test:badges": "npm run test:coverage  && jest-coverage-badges output ./badges",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "npm test -- --config ./test/jest-e2e.json",
-    "jest-coverage-badges": "jest-coverage-badges"
+    "jest-coverage-badges": "jest-coverage-badges output ./badges"
   },
   "dependencies": {
     "@nestjs/common": "^7.0.0",
@@ -77,7 +77,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run lint"
+      "pre-commit": "npm run lint && npm run jest-coverage-badges"
     }
   },
   "jest": {
