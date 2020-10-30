@@ -1,9 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { ClubService } from './club.service';
 import { TabtClientService } from '../../common/tabt-client/tabt-client.service';
+import { ClubEntry } from '../../entity/tabt-soap/TabTAPI_Port';
+import { ClubService } from './club.service';
 
-describe('Club', () => {
-  let provider: ClubService;
+describe('ClubService', () => {
+  let service: ClubService;
+  let tabtService: TabtClientService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -12,16 +14,96 @@ describe('Club', () => {
         {
           provide: TabtClientService,
           useValue: {
-            GetSeasonsAsync: jest.fn()
-          }
-        }
-        ],
+            GetClubsAsync: jest.fn(),
+          },
+        },
+      ],
     }).compile();
-
-    provider = module.get<ClubService>(ClubService);
+    tabtService = module.get<TabtClientService>(TabtClientService);
+    service = module.get<ClubService>(ClubService);
   });
 
   it('should be defined', () => {
-    expect(provider).toBeDefined();
+    expect(service).toBeDefined();
+  });
+
+  describe('getClubs', () => {
+    it('should call the tabt service correctly and returns the club entries', async () => {
+      const clubs = [{
+        'UniqueIndex': 'L360',
+        'Name': 'Sfx',
+        'LongName': 'TT Sfx',
+        'Category': 10,
+        'CategoryName': 'Li&egrave;ge',
+        'VenueCount': 1,
+        'VenueEntries': [],
+      }, {
+        'UniqueIndex': 'abc',
+        'Name': 'dqsfqsdf',
+        'LongName': 'TT qdsfqsdf',
+        'Category': 10,
+        'CategoryName': 'Antwerp',
+        'VenueCount': 1,
+        'VenueEntries': [],
+      }] as ClubEntry[];
+      const spyOnTabt = jest.spyOn(tabtService, 'GetClubsAsync').mockResolvedValue([{
+        ClubCount: 2,
+        ClubEntries: clubs,
+      }, '', {}, null, null]);
+      const input = {};
+
+      const result = await service.getClubs(input);
+
+      expect(result).toBe(clubs);
+      expect(spyOnTabt).toBeCalledTimes(1);
+      expect(spyOnTabt).toBeCalledWith(input);
+    });
+  });
+  describe('getClubById', () => {
+    it('should call the tabt service correctly and returns the exact club', async () => {
+      const clubs = [{
+        'UniqueIndex': 'L360',
+        'Name': 'Sfx',
+        'LongName': 'TT Sfx',
+        'Category': 10,
+        'CategoryName': 'Li&egrave;ge',
+        'VenueCount': 1,
+        'VenueEntries': [],
+      }, {
+        'UniqueIndex': 'abc',
+        'Name': 'dqsfqsdf',
+        'LongName': 'TT qdsfqsdf',
+        'Category': 10,
+        'CategoryName': 'Antwerp',
+        'VenueCount': 1,
+        'VenueEntries': [],
+      }] as ClubEntry[];
+      const spyOnTabt = jest.spyOn(tabtService, 'GetClubsAsync').mockResolvedValue([{
+        ClubCount: 2,
+        ClubEntries: clubs,
+      }, '', {}, null, null]);
+      const input = {};
+
+      const result = await service.getClubById(input, 'L360');
+
+      expect(result).toBe(clubs[0]);
+      expect(spyOnTabt).toBeCalledTimes(1);
+      expect(spyOnTabt).toBeCalledWith(input);
+    });
+
+    it('should call the tabt service correctly and returns null if not found', async () => {
+      const clubs = [] as ClubEntry[];
+      const spyOnTabt = jest.spyOn(tabtService, 'GetClubsAsync').mockResolvedValue([{
+        ClubCount: 0,
+        ClubEntries: clubs,
+      }, '', {}, null, null]);
+      const input = {};
+
+      const result = await service.getClubById(input, 'L360');
+
+      expect(result).toBeUndefined();
+      expect(spyOnTabt).toBeCalledTimes(1);
+      expect(spyOnTabt).toBeCalledWith(input);
+    });
   });
 });

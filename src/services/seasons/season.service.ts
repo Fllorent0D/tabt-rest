@@ -10,13 +10,13 @@ export class SeasonService {
   ) {
   }
 
-  async getSeasons(input: GetSeasonsInput = {}): Promise<SeasonEntry[]> {
-    const [result] = await this.tabtClient.GetSeasonsAsync(input);
+  async getSeasons(): Promise<SeasonEntry[]> {
+    const [result] = await this.tabtClient.GetSeasonsAsync({});
     return result.SeasonEntries;
   }
 
-  async getCurrentSeason(input: GetSeasonsInput = {}): Promise<SeasonEntry> {
-    const season = await this.getSeasons(input);
+  async getCurrentSeason(): Promise<SeasonEntry> {
+    const season = await this.getSeasons();
     return season.find(season => season.IsCurrent);
   }
 }

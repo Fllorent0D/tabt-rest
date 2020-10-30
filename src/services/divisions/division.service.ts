@@ -17,7 +17,7 @@ export class DivisionService {
     return result.DivisionEntries.map(entry => new DivisionEntry(entry));
   }
 
-  async getDivisionsById(id: number, input: GetDivisionsInput = {}): Promise<DivisionEntry> {
+  async getDivisionsById(id: number, input: GetDivisionsInput): Promise<DivisionEntry> {
     const divisions = await this.getDivisions(input);
     return divisions.find((division) => division.DivisionId === id);
   }

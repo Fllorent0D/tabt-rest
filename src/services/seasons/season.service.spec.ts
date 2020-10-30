@@ -35,29 +35,12 @@ describe('SeasonService', () => {
         CurrentSeasonName: '1',
         SeasonEntries: seasons,
       }, '', {}, null, null]);
-      const input = {};
 
-      const result = await provider.getSeasons(input);
-
-      expect(result).toBe(seasons);
-      expect(spyOnTabt).toBeCalledTimes(1);
-      expect(spyOnTabt).toBeCalledWith(input);
-    });
-
-    it('should call the tabt service correctly with empty input if not given and returns the seasons entries', async () => {
-      const seasons = [{ Name: '1', IsCurrent: false, Season: 18 }];
-      const spyOnTabt = jest.spyOn(tabtService, 'GetSeasonsAsync').mockResolvedValue([{
-        CurrentSeason: 18,
-        CurrentSeasonName: '1',
-        SeasonEntries: seasons,
-      }, '', {}, null, null]);
-      const input = null;
-
-      const result = await provider.getSeasons(input);
+      const result = await provider.getSeasons();
 
       expect(result).toBe(seasons);
       expect(spyOnTabt).toBeCalledTimes(1);
-      expect(spyOnTabt).toBeCalledWith(input);
+      expect(spyOnTabt).toBeCalledWith({  });
     });
   });
 
@@ -70,31 +53,12 @@ describe('SeasonService', () => {
         CurrentSeasonName: '1',
         SeasonEntries: seasons,
       }, '', {}, null, null]);
-      const input = {};
 
-      const result = await provider.getCurrentSeason(input);
-
-      expect(result).toBe(currentSeason);
-      expect(spyOnTabt).toBeCalledTimes(1);
-      expect(spyOnTabt).toBeCalledWith(input);
-    });
-
-    it('should call the tabt service correctly with empty input if not given and returns the current seasons entries', async () => {
-      const currentSeason = { Name: '2', IsCurrent: true, Season: 19 };
-      const seasons = [{ Name: '1', IsCurrent: false, Season: 18 }, currentSeason];
-      const spyOnTabt = jest.spyOn(tabtService, 'GetSeasonsAsync').mockResolvedValue([{
-        CurrentSeason: 18,
-        CurrentSeasonName: '1',
-        SeasonEntries: seasons,
-      }, '', {}, null, null]);
-      const input = {};
-
-      const result = await provider.getCurrentSeason(input);
+      const result = await provider.getCurrentSeason();
 
       expect(result).toBe(currentSeason);
       expect(spyOnTabt).toBeCalledTimes(1);
-      expect(spyOnTabt).toBeCalledWith(input);
+      expect(spyOnTabt).toBeCalledWith({});
     });
   });
-
 });

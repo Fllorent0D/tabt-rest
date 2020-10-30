@@ -7,11 +7,9 @@ import {
 } from '../../entity/tabt-soap/TabTAPI_Port';
 import { TabtClientService } from '../../common/tabt-client/tabt-client.service';
 
-export const CACHE_KEY = 'TOURNAMENTS';
 
 @Injectable()
 export class TournamentService {
-  private readonly logger = new Logger('TournamentService', true);
 
   constructor(
     private tabtClient: TabtClientService,

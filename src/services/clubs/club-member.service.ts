@@ -1,11 +1,9 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { GetMembersInput, MemberEntry } from '../../entity/tabt-soap/TabTAPI_Port';
 import { TabtClientService } from '../../common/tabt-client/tabt-client.service';
 
 @Injectable()
 export class ClubMemberService {
-  private readonly logger = new Logger('ClubMemberService', true);
-
   constructor(
     private tabtClient: TabtClientService,
   ) {

@@ -298,15 +298,15 @@ export class GetMatchSystemsOutput {
 export class TournamentRegisterInput {
   Credentials?: Credentials;
   /** xsd:number(undefined) */
-  TournamentUniqueIndex?: number;
+  TournamentUniqueIndex: number;
   /** xsd:number(undefined) */
-  SerieUniqueIndex?: number;
+  SerieUniqueIndex: number;
   /** xsd:number(undefined) */
-  PlayerUniqueIndex?: Array<number>;
+  PlayerUniqueIndex: Array<number>;
   /** xsd:boolean(undefined) */
-  Unregister?: boolean;
+  Unregister: boolean;
   /** xsd:boolean(undefined) */
-  NotifyPlayer?: boolean;
+  NotifyPlayer: boolean;
 }
 
 export class TournamentRegisterOutput {
