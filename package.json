@@ -9,7 +9,7 @@
     "prebuild": "rimraf dist",
     "build": "nest build",
     "ci": "node ./node_modules/@nestjs/cli/bin/nest.js build",
-    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "format": "prettier --write \\\"src/**/*.ts\\\" \\\"test-e2e/**/*.ts\\\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
@@ -20,7 +20,7 @@
     "test:coverage": "npm test -- --coverage",
     "test:badges": "npm run test:coverage  && jest-coverage-badges output ./badges",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "npm test -- --config ./test/jest-e2e.json",
+    "test:e2e": "npm test -- --config test-e2e/jest-e2e.json",
     "jest-coverage-badges": "jest-coverage-badges output ./badges"
   },
   "dependencies": {
