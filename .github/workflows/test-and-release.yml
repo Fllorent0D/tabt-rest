@@ -45,7 +45,7 @@ jobs:
         with:
           node-version: 12.x
       - name: Setup
-        run: npm ci
+        run: npm install
       - name: Build
         run: npm run build
       - name: Deploy to Server
