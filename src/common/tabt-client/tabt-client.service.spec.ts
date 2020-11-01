@@ -131,7 +131,7 @@ describe('TabtClientSwitchingService', () => {
 
     it('should query the cache for GetClubTeamsAsync with the enriched input', async () => {
       const input: GetClubTeamsInput = {
-        Club: 'L360'
+        Club: 'L360',
       };
       const enrichedInput = {
         Credentials: {
@@ -150,7 +150,7 @@ describe('TabtClientSwitchingService', () => {
       await cacheSpy.mock.calls[0][1]();
 
       expect(cacheSpy).toHaveBeenCalledTimes(1);
-      expect(cacheSpy).toHaveBeenCalledWith('club-teams-aftt-'+JSON.stringify(enrichedInput), expect.any(Function), expect.any(Number));
+      expect(cacheSpy).toHaveBeenCalledWith('club-teams-aftt-' + JSON.stringify(enrichedInput), expect.any(Function), expect.any(Number));
       expect(enrichSpy).toHaveBeenCalledTimes(1);
       expect(enrichSpy).toHaveBeenCalledWith(input);
       expect(operationSpy).toHaveBeenCalledTimes(1);
@@ -160,7 +160,7 @@ describe('TabtClientSwitchingService', () => {
     it('should query the cache for GetDivisionRankingAsync with the enriched input', async () => {
       const input: GetDivisionRankingInput = {
         DivisionId: 123,
-        WeekName: "2"
+        WeekName: '2',
       };
       const enrichedInput = {
         Credentials: {
@@ -179,7 +179,7 @@ describe('TabtClientSwitchingService', () => {
       await cacheSpy.mock.calls[0][1]();
 
       expect(cacheSpy).toHaveBeenCalledTimes(1);
-      expect(cacheSpy).toHaveBeenCalledWith('division-ranking-aftt-'+JSON.stringify(enrichedInput), expect.any(Function), expect.any(Number));
+      expect(cacheSpy).toHaveBeenCalledWith('division-ranking-aftt-' + JSON.stringify(enrichedInput), expect.any(Function), expect.any(Number));
       expect(enrichSpy).toHaveBeenCalledTimes(1);
       expect(enrichSpy).toHaveBeenCalledWith(input);
       expect(operationSpy).toHaveBeenCalledTimes(1);
@@ -187,8 +187,7 @@ describe('TabtClientSwitchingService', () => {
     });
 
     it('should query the cache for GetMatchesAsync with the enriched input', async () => {
-      const input: GetMatchesInput = {
-      };
+      const input: GetMatchesInput = {};
       const enrichedInput = {
         Credentials: {
           Account: 'test',
@@ -206,15 +205,14 @@ describe('TabtClientSwitchingService', () => {
       await cacheSpy.mock.calls[0][1]();
 
       expect(cacheSpy).toHaveBeenCalledTimes(1);
-      expect(cacheSpy).toHaveBeenCalledWith('matches-aftt-'+JSON.stringify(enrichedInput), expect.any(Function), expect.any(Number));
+      expect(cacheSpy).toHaveBeenCalledWith('matches-aftt-' + JSON.stringify(enrichedInput), expect.any(Function), expect.any(Number));
       expect(enrichSpy).toHaveBeenCalledTimes(1);
       expect(enrichSpy).toHaveBeenCalledWith(input);
       expect(operationSpy).toHaveBeenCalledTimes(1);
       expect(operationSpy).toHaveBeenCalledWith(enrichedInput);
     });
     it('should query the cache for GetMembersAsync with the enriched input', async () => {
-      const input: GetMembersInput = {
-      };
+      const input: GetMembersInput = {};
       const enrichedInput = {
         Credentials: {
           Account: 'test',
@@ -232,7 +230,7 @@ describe('TabtClientSwitchingService', () => {
       await cacheSpy.mock.calls[0][1]();
 
       expect(cacheSpy).toHaveBeenCalledTimes(1);
-      expect(cacheSpy).toHaveBeenCalledWith('members-aftt-'+JSON.stringify(enrichedInput), expect.any(Function), expect.any(Number));
+      expect(cacheSpy).toHaveBeenCalledWith('members-aftt-' + JSON.stringify(enrichedInput), expect.any(Function), expect.any(Number));
       expect(enrichSpy).toHaveBeenCalledTimes(1);
       expect(enrichSpy).toHaveBeenCalledWith(input);
       expect(operationSpy).toHaveBeenCalledTimes(1);
@@ -241,7 +239,7 @@ describe('TabtClientSwitchingService', () => {
 
     it('should query the cache for UploadAsync with the enriched input', async () => {
       const input: IUploadInput = {
-        Data: '123'
+        Data: '123',
       };
       const enrichedInput = {
         Credentials: {
@@ -264,8 +262,7 @@ describe('TabtClientSwitchingService', () => {
       expect(operationSpy).toHaveBeenCalledWith(enrichedInput);
     });
     it('should query the cache for GetClubsAsync with the enriched input', async () => {
-      const input: GetClubsInput = {
-      };
+      const input: GetClubsInput = {};
       const enrichedInput = {
         Credentials: {
           Account: 'test',
@@ -283,7 +280,7 @@ describe('TabtClientSwitchingService', () => {
       await cacheSpy.mock.calls[0][1]();
 
       expect(cacheSpy).toHaveBeenCalledTimes(1);
-      expect(cacheSpy).toHaveBeenCalledWith('clubs-aftt-'+JSON.stringify(enrichedInput), expect.any(Function), expect.any(Number));
+      expect(cacheSpy).toHaveBeenCalledWith('clubs-aftt-' + JSON.stringify(enrichedInput), expect.any(Function), expect.any(Number));
       expect(enrichSpy).toHaveBeenCalledTimes(1);
       expect(enrichSpy).toHaveBeenCalledWith(input);
       expect(operationSpy).toHaveBeenCalledTimes(1);
@@ -291,8 +288,7 @@ describe('TabtClientSwitchingService', () => {
     });
 
     it('should query the cache for GetDivisionsAsync with the enriched input', async () => {
-      const input: GetDivisionsInput = {
-      };
+      const input: GetDivisionsInput = {};
       const enrichedInput = {
         Credentials: {
           Account: 'test',
@@ -310,7 +306,7 @@ describe('TabtClientSwitchingService', () => {
       await cacheSpy.mock.calls[0][1]();
 
       expect(cacheSpy).toHaveBeenCalledTimes(1);
-      expect(cacheSpy).toHaveBeenCalledWith('divisions-aftt-'+JSON.stringify(enrichedInput), expect.any(Function), expect.any(Number));
+      expect(cacheSpy).toHaveBeenCalledWith('divisions-aftt-' + JSON.stringify(enrichedInput), expect.any(Function), expect.any(Number));
       expect(enrichSpy).toHaveBeenCalledTimes(1);
       expect(enrichSpy).toHaveBeenCalledWith(input);
       expect(operationSpy).toHaveBeenCalledTimes(1);
@@ -318,8 +314,7 @@ describe('TabtClientSwitchingService', () => {
     });
 
     it('should query the cache for GetTournamentsAsync with the enriched input', async () => {
-      const input: GetTournamentsInput = {
-      };
+      const input: GetTournamentsInput = {};
       const enrichedInput = {
         Credentials: {
           Account: 'test',
@@ -337,7 +332,7 @@ describe('TabtClientSwitchingService', () => {
       await cacheSpy.mock.calls[0][1]();
 
       expect(cacheSpy).toHaveBeenCalledTimes(1);
-      expect(cacheSpy).toHaveBeenCalledWith('tournaments-aftt-'+JSON.stringify(enrichedInput), expect.any(Function), expect.any(Number));
+      expect(cacheSpy).toHaveBeenCalledWith('tournaments-aftt-' + JSON.stringify(enrichedInput), expect.any(Function), expect.any(Number));
       expect(enrichSpy).toHaveBeenCalledTimes(1);
       expect(enrichSpy).toHaveBeenCalledWith(input);
       expect(operationSpy).toHaveBeenCalledTimes(1);
@@ -345,8 +340,7 @@ describe('TabtClientSwitchingService', () => {
     });
 
     it('should query the cache for GetMatchSystemsAsync with the enriched input', async () => {
-      const input: GetMatchSystemsInput = {
-      };
+      const input: GetMatchSystemsInput = {};
       const enrichedInput = {
         Credentials: {
           Account: 'test',
@@ -364,7 +358,7 @@ describe('TabtClientSwitchingService', () => {
       await cacheSpy.mock.calls[0][1]();
 
       expect(cacheSpy).toHaveBeenCalledTimes(1);
-      expect(cacheSpy).toHaveBeenCalledWith('match-systems-aftt-'+JSON.stringify(enrichedInput), expect.any(Function), expect.any(Number));
+      expect(cacheSpy).toHaveBeenCalledWith('match-systems-aftt-' + JSON.stringify(enrichedInput), expect.any(Function), expect.any(Number));
       expect(enrichSpy).toHaveBeenCalledTimes(1);
       expect(enrichSpy).toHaveBeenCalledWith(input);
       expect(operationSpy).toHaveBeenCalledTimes(1);
@@ -372,6 +366,11 @@ describe('TabtClientSwitchingService', () => {
     });
     it('should go directly to tabt for TournamentRegisterAsync with the enriched input', async () => {
       const input: TournamentRegisterInput = {
+        TournamentUniqueIndex: 1,
+        SerieUniqueIndex: 1,
+        PlayerUniqueIndex: [123],
+        Unregister: false,
+        NotifyPlayer: true,
       };
       const enrichedInput = {
         Credentials: {
