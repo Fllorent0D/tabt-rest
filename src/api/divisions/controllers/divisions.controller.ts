@@ -15,7 +15,7 @@ import {
   TeamMatchesEntry,
 } from '../../../entity/tabt-soap/TabTAPI_Port';
 import { DivisionService } from '../../../services/divisions/division.service';
-import { ApiNotFoundResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiNotFoundResponse, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { TabtException } from '../../../common/filter/tabt-exceptions.filter';
 import { DivisionRankingService } from '../../../services/divisions/division-ranking.service';
 import { TabtHeadersDecorator } from '../../../common/decorators/tabt-headers.decorator';
@@ -36,6 +36,9 @@ export class DivisionsController {
   }
 
   @Get()
+  @ApiOperation({
+    operationId: 'findAll'
+  })
   @ApiResponse({
     description: 'List of divisions for a specific season.',
     type: [DivisionEntry],
@@ -57,6 +60,9 @@ export class DivisionsController {
   }
 
   @Get(':divisionId')
+  @ApiOperation({
+    operationId: 'findById'
+  })
   @ApiResponse({
     description: 'A specific division based on the id.',
     type: DivisionEntry,
@@ -82,6 +88,9 @@ export class DivisionsController {
   }
 
   @Get(':divisionId/ranking')
+  @ApiOperation({
+    operationId: 'findDivisionRanking'
+  })
   @ApiResponse({
     description: 'The ranking for a specific division based on the id of the division.',
     type: [RankingEntry],
@@ -103,6 +112,9 @@ export class DivisionsController {
   }
 
   @Get(':divisionId/matches')
+  @ApiOperation({
+    operationId: 'findDivisionMatches'
+  })
   @ApiResponse({
     description: 'A list of matches.',
     type: [TeamMatchesEntry],

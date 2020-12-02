@@ -1,5 +1,5 @@
 import { Body, Controller, Get, NotFoundException, Param, ParseIntPipe, Post, Query } from '@nestjs/common';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { GetTournamentsInput, TournamentEntry, TournamentSerieEntry } from '../../../entity/tabt-soap/TabTAPI_Port';
 import { TabtException } from '../../../common/filter/tabt-exceptions.filter';
 import { TournamentService } from '../../../services/tournaments/tournament.service';
@@ -14,6 +14,9 @@ export class TournamentController {
   }
 
   @Get()
+  @ApiOperation({
+    operationId: 'findAll'
+  })
   @ApiResponse({
     description: 'A list of tournament.',
     type: [TournamentEntry],
@@ -30,6 +33,9 @@ export class TournamentController {
   }
 
   @Get(':tournamentId')
+  @ApiOperation({
+    operationId: 'findById'
+  })
   @ApiResponse({
     description: 'A specific tournament.',
     type: TournamentEntry,
@@ -55,6 +61,9 @@ export class TournamentController {
   }
 
   @Get(':tournamentId/series')
+  @ApiOperation({
+    operationId: 'findSeriesTournament'
+  })
   @ApiResponse({
     description: 'A specific tournament.',
     type: [TournamentSerieEntry],
@@ -78,6 +87,9 @@ export class TournamentController {
   }
 
   @Post(':tournamentId/serie/:serieId/register')
+  @ApiOperation({
+    operationId: 'registerToSerieId'
+  })
   @ApiResponse({
     status: 400,
     type: TabtException,

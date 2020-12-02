@@ -1,5 +1,5 @@
 import { Controller, Get, NotFoundException, Param, Query } from '@nestjs/common';
-import { ApiNotFoundResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiNotFoundResponse, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ClubEntry, MemberEntry, TeamEntry } from '../../../entity/tabt-soap/TabTAPI_Port';
 import { ClubService } from '../../../services/clubs/club.service';
 import { ClubMemberService } from '../../../services/clubs/club-member.service';
@@ -22,6 +22,9 @@ export class ClubController {
   }
 
   @Get()
+  @ApiOperation({
+    operationId: 'findAllClubs'
+  })
   @ApiResponse({
     description: 'A list of clubs.',
     type: [ClubEntry],
@@ -39,6 +42,9 @@ export class ClubController {
   }
 
   @Get(':clubIndex')
+  @ApiOperation({
+    operationId: 'findById'
+  })
   @ApiResponse({
     description: 'A specific club based on the uniqueIndex.',
     type: ClubEntry,
@@ -61,6 +67,9 @@ export class ClubController {
   }
 
   @Get(':clubIndex/members')
+  @ApiOperation({
+    operationId: 'findClubMembers'
+  })
   @ApiResponse({
     description: 'A list of members from a specific club.',
     type: [MemberEntry],
@@ -88,6 +97,9 @@ export class ClubController {
   }
 
   @Get(':clubIndex/teams')
+  @ApiOperation({
+    operationId: 'findClubTeams'
+  })
   @ApiResponse({
     description: 'A list of teams from a specific club.',
     type: [TeamEntry],

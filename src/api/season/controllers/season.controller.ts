@@ -1,6 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 import { SeasonService } from '../../../services/seasons/season.service';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { SeasonEntry } from '../../../entity/tabt-soap/TabTAPI_Port';
 import { TabtException } from '../../../common/filter/tabt-exceptions.filter';
 
@@ -13,6 +13,9 @@ export class SeasonController {
   }
 
   @Get()
+  @ApiOperation({
+    operationId: 'findAll'
+  })
   @ApiResponse({
     description: 'A list of seasons.',
     type: [SeasonEntry],
@@ -27,6 +30,9 @@ export class SeasonController {
   }
 
   @Get('current')
+  @ApiOperation({
+    operationId: 'findCurrentSeason'
+  })
   @ApiResponse({
     description: 'The current season.',
     type: SeasonEntry,

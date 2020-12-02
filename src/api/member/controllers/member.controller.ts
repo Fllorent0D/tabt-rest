@@ -1,6 +1,6 @@
 import { Controller, Get, NotFoundException, Param, ParseIntPipe, Query } from '@nestjs/common';
 import { MemberEntry } from '../../../entity/tabt-soap/TabTAPI_Port';
-import { ApiNotFoundResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { MemberService } from '../../../services/members/member.service';
 import { TabtHeadersDecorator } from '../../../common/decorators/tabt-headers.decorator';
 import { GetMember, GetMembers } from '../dto/member.dto';
@@ -17,6 +17,9 @@ export class MemberController {
   }
 
   @Get()
+  @ApiOperation({
+    operationId: 'findAll'
+  })
   @ApiOkResponse({
     type: [MemberEntry],
     description: 'List of players found with specific search criterias',
@@ -43,6 +46,9 @@ export class MemberController {
   @ApiOkResponse({
     type: MemberEntry,
     description: 'The information of a specific player',
+  })
+  @ApiOperation({
+    operationId: 'findById'
   })
   @ApiNotFoundResponse()
   async findById(

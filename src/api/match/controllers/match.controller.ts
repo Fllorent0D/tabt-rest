@@ -1,5 +1,5 @@
 import { Controller, Get, NotFoundException, Param, ParseIntPipe, Query } from '@nestjs/common';
-import { ApiNotFoundResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { MatchSystemEntry, MemberEntry, TeamMatchesEntry } from '../../../entity/tabt-soap/TabTAPI_Port';
 import { MatchService } from '../../../services/matches/match.service';
 import { TabtHeadersDecorator } from '../../../common/decorators/tabt-headers.decorator';
@@ -19,6 +19,9 @@ export class MatchController {
   }
 
   @Get()
+  @ApiOperation({
+    operationId: 'findAll'
+  })
   @ApiOkResponse({
     type: [TeamMatchesEntry],
     description: 'List of team matches entries',
@@ -44,6 +47,9 @@ export class MatchController {
   }
 
   @Get('systems')
+  @ApiOperation({
+    operationId: 'findAllMatchSystems'
+  })
   @ApiOkResponse({
     type: [MatchSystemEntry],
     description: 'The list of match system',
@@ -53,6 +59,9 @@ export class MatchController {
   }
 
   @Get('systems/:matchSystemId')
+  @ApiOperation({
+    operationId: 'findMatchSystemById'
+  })
   @ApiOkResponse({
     type: MatchSystemEntry,
     description: 'A specific match system',
@@ -69,9 +78,12 @@ export class MatchController {
   }
 
   @Get(':matchUniqueId')
+  @ApiOperation({
+    operationId: 'findById'
+  })
   @ApiOkResponse({
     type: TeamMatchesEntry,
-    description: 'The information of a specific player',
+    description: 'The information of a specific match',
   })
   @ApiNotFoundResponse()
   async findById(
