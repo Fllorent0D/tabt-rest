@@ -10,7 +10,7 @@ import { PackageService } from './common/package/package.service';
 import { Logger } from 'nestjs-pino';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {cors: true});
   app.useLogger(app.get(Logger))
   const packageService = app.get(PackageService)
   app.setGlobalPrefix(process.env.API_PREFIX)
