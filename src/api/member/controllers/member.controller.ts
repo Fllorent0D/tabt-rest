@@ -18,7 +18,7 @@ export class MemberController {
 
   @Get()
   @ApiOperation({
-    operationId: 'findAll'
+    operationId: 'findAllMembers'
   })
   @ApiOkResponse({
     type: [MemberEntry],
@@ -48,7 +48,7 @@ export class MemberController {
     description: 'The information of a specific player',
   })
   @ApiOperation({
-    operationId: 'findById'
+    operationId: 'findMemberById'
   })
   @ApiNotFoundResponse()
   async findById(

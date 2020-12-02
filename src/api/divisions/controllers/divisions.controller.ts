@@ -37,7 +37,7 @@ export class DivisionsController {
 
   @Get()
   @ApiOperation({
-    operationId: 'findAll'
+    operationId: 'findAllDivisions'
   })
   @ApiResponse({
     description: 'List of divisions for a specific season.',
@@ -61,7 +61,7 @@ export class DivisionsController {
 
   @Get(':divisionId')
   @ApiOperation({
-    operationId: 'findById'
+    operationId: 'findDivisionById'
   })
   @ApiResponse({
     description: 'A specific division based on the id.',

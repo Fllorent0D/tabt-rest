@@ -20,7 +20,7 @@ export class MatchController {
 
   @Get()
   @ApiOperation({
-    operationId: 'findAll'
+    operationId: 'findAllMatches'
   })
   @ApiOkResponse({
     type: [TeamMatchesEntry],
@@ -79,7 +79,7 @@ export class MatchController {
 
   @Get(':matchUniqueId')
   @ApiOperation({
-    operationId: 'findById'
+    operationId: 'findMatchById'
   })
   @ApiOkResponse({
     type: TeamMatchesEntry,

@@ -43,7 +43,7 @@ export class ClubController {
 
   @Get(':clubIndex')
   @ApiOperation({
-    operationId: 'findById'
+    operationId: 'findClubById'
   })
   @ApiResponse({
     description: 'A specific club based on the uniqueIndex.',

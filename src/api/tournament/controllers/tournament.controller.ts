@@ -15,7 +15,7 @@ export class TournamentController {
 
   @Get()
   @ApiOperation({
-    operationId: 'findAll'
+    operationId: 'findAllTournaments'
   })
   @ApiResponse({
     description: 'A list of tournament.',
@@ -34,7 +34,7 @@ export class TournamentController {
 
   @Get(':tournamentId')
   @ApiOperation({
-    operationId: 'findById'
+    operationId: 'findTournamentById'
   })
   @ApiResponse({
     description: 'A specific tournament.',
@@ -62,7 +62,7 @@ export class TournamentController {
 
   @Get(':tournamentId/series')
   @ApiOperation({
-    operationId: 'findSeriesTournament'
+    operationId: 'findSeriesByTournament'
   })
   @ApiResponse({
     description: 'A specific tournament.',
@@ -88,7 +88,7 @@ export class TournamentController {
 
   @Post(':tournamentId/serie/:serieId/register')
   @ApiOperation({
-    operationId: 'registerToSerieId'
+    operationId: 'registerToSerie'
   })
   @ApiResponse({
     status: 400,

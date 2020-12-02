@@ -19,7 +19,7 @@ export class GetDivisions extends RequestBySeasonDto {
 
 export class GetDivisionRanking {
   @ApiPropertyOptional({
-    type: IsNumber,
+    type: Number,
   })
   @Transform(id => parseInt(id), { toClassOnly: true })
   @IsOptional()

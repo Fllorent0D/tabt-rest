@@ -29,7 +29,7 @@ export class GetMatches extends RequestBySeasonDto {
   divisionCategory?: string;
 
   @ApiPropertyOptional({
-    type: IsNumber,
+    type: Number,
   })
   @IsOptional()
   @IsNumber()

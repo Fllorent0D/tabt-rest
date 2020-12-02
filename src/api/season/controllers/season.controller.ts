@@ -14,7 +14,7 @@ export class SeasonController {
 
   @Get()
   @ApiOperation({
-    operationId: 'findAll'
+    operationId: 'findAllSeason'
   })
   @ApiResponse({
     description: 'A list of seasons.',
