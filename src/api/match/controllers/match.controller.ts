@@ -106,7 +106,7 @@ export class MatchController {
       MatchUniqueId: id
     });
 
-    if (found.length) {
+    if (found?.length) {
       return found[0];
     }
     throw new NotFoundException();
