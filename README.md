@@ -52,7 +52,11 @@ pm2 start ./dist/index.js
 ## Release History
 
 * 1.0.0
-    * First complete implementation with OpenApi specs
+    * First complete implementation with OpenApi specs.
+* 1.0.1
+    * OpenApi operationId.
+* 1.0.2
+    * Bug fixes 
 
 ## Meta
 
