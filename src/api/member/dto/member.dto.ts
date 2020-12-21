@@ -41,7 +41,7 @@ export class GetMembers extends RequestBySeasonDto {
   @Transform((a) => Boolean(a))
   @IsBoolean()
   @IsOptional()
-  withResults: boolean;
+  withResults?: boolean;
 
   @ApiPropertyOptional()
   @Transform((a) => Boolean(a))
