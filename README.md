@@ -59,6 +59,8 @@ pm2 start ./dist/index.js
     * Bug fixes 
 * 1.0.3
     * Align with Tabt 0.7.24
+* 1.0.4
+    * Disable automatic conversation for DTOs
 
 ## Meta
 

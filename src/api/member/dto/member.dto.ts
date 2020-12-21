@@ -1,9 +1,8 @@
 import { ApiPropertyOptional, OmitType } from '@nestjs/swagger';
 import { IsBoolean, IsEnum, IsOptional, IsString } from 'class-validator';
 import { Transform } from 'class-transformer';
-import { GetMembersInput } from '../../../entity/tabt-soap/TabTAPI_Port';
 import { RequestBySeasonDto } from '../../../common/dto/request-by-season.dto';
-import { PlayerCategory, TabtInputInterface } from '../../../entity/tabt-input.interface';
+import { PlayerCategory } from '../../../entity/tabt-input.interface';
 
 export class GetMembers extends RequestBySeasonDto {
   @ApiPropertyOptional()
@@ -18,6 +17,7 @@ export class GetMembers extends RequestBySeasonDto {
 
   @ApiPropertyOptional()
   @IsOptional()
+  @Transform(id => parseInt(id), { toClassOnly: true })
   uniqueIndex?: number;
 
   @ApiPropertyOptional()
@@ -26,21 +26,25 @@ export class GetMembers extends RequestBySeasonDto {
   nameSearch?: string;
 
   @ApiPropertyOptional()
+  @Transform((a) => Boolean(a))
   @IsBoolean()
   @IsOptional()
   extendedInformation?: boolean;
 
   @ApiPropertyOptional()
+  @Transform((a) => Boolean(a))
   @IsBoolean()
   @IsOptional()
   rankingPointsInformation?: boolean;
 
   @ApiPropertyOptional()
+  @Transform((a) => Boolean(a))
   @IsBoolean()
   @IsOptional()
-  withResults?: boolean;
+  withResults: boolean;
 
   @ApiPropertyOptional()
+  @Transform((a) => Boolean(a))
   @IsBoolean()
   @IsOptional()
   withOpponentRankingEvaluation?: boolean;

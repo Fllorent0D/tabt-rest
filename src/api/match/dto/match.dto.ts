@@ -8,6 +8,7 @@ export class GetMatches extends RequestBySeasonDto {
   @ApiPropertyOptional()
   @IsOptional()
   @IsNumber()
+  @Transform(id => parseInt(id), { toClassOnly: true })
   divisionId?: number;
 
   @ApiPropertyOptional()
@@ -64,6 +65,7 @@ export class GetMatches extends RequestBySeasonDto {
 
   @ApiPropertyOptional()
   @IsOptional()
+  @Transform((val) => Boolean(val), { toClassOnly: true })
   @IsBoolean()
   withDetails?: boolean;
 

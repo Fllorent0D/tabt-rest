@@ -36,12 +36,7 @@ async function bootstrap() {
   app.use(responseTime());
 
   app.useGlobalFilters(new TabtExceptionsFilter());
-  app.useGlobalPipes(new ValidationPipe({
-    transform: true,
-    transformOptions: {
-      enableImplicitConversion: true
-    },
-  }));
+  app.useGlobalPipes(new ValidationPipe());
 
   await app.listen(process.env.PORT);
 }
