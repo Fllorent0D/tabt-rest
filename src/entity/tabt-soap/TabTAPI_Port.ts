@@ -795,6 +795,9 @@ export class MemberEntryResultEntry {
   MatchId: string;
 
   @ApiPropertyOptional()
+  MatchUniqueId: string;
+
+  @ApiPropertyOptional()
   TournamentName: string;
 
   @ApiPropertyOptional()
@@ -833,7 +836,7 @@ export class MemberEntry {
   Status: string;
 
   @ApiProperty()
-  Club?: string;
+  Club: string;
   /** http://api.frenoy.net/TabTAPI#GenderType(M,F) */
   @ApiProperty()
   Gender?: 'M' | 'F';
@@ -861,6 +864,7 @@ export class MemberEntry {
 
   @ApiPropertyOptional()
   ResultCount?: number;
+
   @ApiPropertyOptional({ type: [MemberEntryResultEntry] })
   ResultEntries?: Array<MemberEntryResultEntry>;
 
@@ -920,8 +924,13 @@ export class DivisionEntry {
 export class RegistrationEntry {
   @ApiProperty()
   UniqueIndex: number;
+
+  @ApiProperty()
+  RegistrationDate: string;
+
   @ApiProperty()
   Member: MemberEntry;
+
   @ApiProperty()
   Club: ClubEntry;
 }

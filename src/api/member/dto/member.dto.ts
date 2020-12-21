@@ -18,7 +18,6 @@ export class GetMembers extends RequestBySeasonDto {
 
   @ApiPropertyOptional()
   @IsOptional()
-  @Transform(id => parseInt(id), { toClassOnly: true })
   uniqueIndex?: number;
 
   @ApiPropertyOptional()
@@ -27,25 +26,21 @@ export class GetMembers extends RequestBySeasonDto {
   nameSearch?: string;
 
   @ApiPropertyOptional()
-  @Transform((a) => Boolean(a))
   @IsBoolean()
   @IsOptional()
   extendedInformation?: boolean;
 
   @ApiPropertyOptional()
-  @Transform((a) => Boolean(a))
   @IsBoolean()
   @IsOptional()
   rankingPointsInformation?: boolean;
 
   @ApiPropertyOptional()
-  @Transform((a) => Boolean(a))
   @IsBoolean()
   @IsOptional()
   withResults?: boolean;
 
   @ApiPropertyOptional()
-  @Transform((a) => Boolean(a))
   @IsBoolean()
   @IsOptional()
   withOpponentRankingEvaluation?: boolean;

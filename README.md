@@ -57,6 +57,8 @@ pm2 start ./dist/index.js
     * OpenApi operationId.
 * 1.0.2
     * Bug fixes 
+* 1.0.3
+    * Align with Tabt 0.7.24
 
 ## Meta
 

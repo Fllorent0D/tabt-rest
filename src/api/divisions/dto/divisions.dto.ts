@@ -21,13 +21,11 @@ export class GetDivisionRanking {
   @ApiPropertyOptional({
     type: Number,
   })
-  @Transform(id => parseInt(id), { toClassOnly: true })
   @IsOptional()
   @IsNumber()
   weekName?: string;
 
   @ApiPropertyOptional()
-  @Transform(id => parseInt(id), { toClassOnly: true })
   @IsOptional()
   @IsInt()
   rankingSystem?: number;

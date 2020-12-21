@@ -11,9 +11,11 @@ export class ClubMemberService {
         LastName: 'GUSTIN',
         Ranking: 'D4',
         Status: 'A',
+        Club: 'L360',
       },
         {
           Position: 2,
+          Club: 'L360',
           UniqueIndex: 120502,
           RankingIndex: 2,
           FirstName: 'ALFRED',
