@@ -13,7 +13,10 @@ export class MatchService {
 
   async getMatches(input: GetMatchesInput): Promise<TeamMatchesEntry[]> {
     const [result] = await this.tabtClient.GetMatchesAsync(input);
-    return result.TeamMatchesEntries.map(tme => new TeamMatchesEntry(tme));
+    if (result.MatchCount === 0) {
+      return [];
+    }
+    return result.TeamMatchesEntries?.map(tme => new TeamMatchesEntry(tme));
   }
 
 }
