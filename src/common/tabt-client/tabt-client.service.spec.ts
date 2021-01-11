@@ -21,7 +21,6 @@ describe('TabtClientSwitchingService', () => {
   let service: TabtClientService;
   let cacheService: CacheService;
   let databaseContextService: DatabaseContextService;
-  let loggerService: PinoLogger;
   let credentialsService: CredentialsService;
   let tabtClientSwitchingService: TabtClientSwitchingService;
 
@@ -60,7 +59,6 @@ describe('TabtClientSwitchingService', () => {
     service = moduleRef.get<TabtClientService>(TabtClientService);
     cacheService = moduleRef.get<CacheService>(CacheService);
     databaseContextService = moduleRef.get<DatabaseContextService>(DatabaseContextService);
-    loggerService = moduleRef.get<PinoLogger>(PinoLogger);
     credentialsService = moduleRef.get<CredentialsService>(CredentialsService);
     tabtClientSwitchingService = moduleRef.get<TabtClientSwitchingService>(TabtClientSwitchingService);
 
@@ -91,12 +89,9 @@ describe('TabtClientSwitchingService', () => {
       const enrichSpy = jest.spyOn(credentialsService, 'enrichInputWithCredentials').mockReturnValue(enrichedInput);
 
       await service.TestAsync(input);
-      // Fake the cache calling the getter
-      await cacheSpy.mock.calls[0][1]();
 
 
-      expect(cacheSpy).toHaveBeenCalledTimes(1);
-      expect(cacheSpy).toHaveBeenCalledWith('test-aftt-{"Credentials":{"Account":"test","Password":"test"}}', expect.any(Function), expect.any(Number));
+      expect(cacheSpy).toHaveBeenCalledTimes(0);
       expect(enrichSpy).toHaveBeenCalledTimes(1);
       expect(enrichSpy).toHaveBeenCalledWith(input);
       expect(operationSpy).toHaveBeenCalledTimes(1);

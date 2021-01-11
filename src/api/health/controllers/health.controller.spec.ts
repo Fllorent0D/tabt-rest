@@ -1,12 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { HealthController } from './health.controller';
 import { DNSHealthIndicator, HealthCheckResult, HealthCheckService } from '@nestjs/terminus';
-import exp from 'constants';
+import { TestRequestService } from '../../../services/test/test-request.service';
 
 describe('HealthController', () => {
   let controller: HealthController;
   let healthCheckService: HealthCheckService;
   let dnsService: DNSHealthIndicator;
+  let testService: TestRequestService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -24,12 +25,19 @@ describe('HealthController', () => {
             pingCheck: jest.fn(),
           },
         },
+        {
+          provide: TestRequestService,
+          useValue: {
+            testRequest: jest.fn(),
+          }
+        }
       ],
     }).compile();
 
     controller = module.get<HealthController>(HealthController);
     healthCheckService = module.get<HealthCheckService>(HealthCheckService);
     dnsService = module.get<DNSHealthIndicator>(DNSHealthIndicator);
+    testService = module.get<TestRequestService>(TestRequestService);
   });
 
   it('should be defined', () => {
@@ -49,5 +57,12 @@ describe('HealthController', () => {
     expect(dnsSpy).toHaveBeenNthCalledWith(1, 'AFTT API', 'https://resultats.aftt.be/api/?wsdl');
     expect(dnsSpy).toHaveBeenNthCalledWith(2, 'VTTL API', 'https://api.vttl.be/?wsdl');
     expect(checkSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it('should test the request', () => {
+    const spy = jest.spyOn(testService, 'testRequest');
+
+    controller.test();
+    expect(spy).toHaveBeenCalledTimes(1);
   });
 });
