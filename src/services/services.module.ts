@@ -10,6 +10,7 @@ import { SeasonService } from './seasons/season.service';
 import { TournamentService } from './tournaments/tournament.service';
 import { CommonModule } from '../common/common.module';
 import { MatchSystemService } from './matches/match-system.service';
+import { TestRequestService } from './test/test-request.service';
 
 const services = [
   ClubService,
@@ -21,7 +22,8 @@ const services = [
   MemberService,
   SeasonService,
   TournamentService,
-  MatchSystemService
+  MatchSystemService,
+  TestRequestService
 ];
 
 @Module({

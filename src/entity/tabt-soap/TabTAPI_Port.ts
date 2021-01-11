@@ -41,28 +41,40 @@ export class VenueEntry {
   Comment: string;
 }
 
-export class ITestOutput {
+export class TestOutput {
+
   /** xsd:string(undefined) */
+  @ApiProperty()
   Timestamp: string;
   /** xsd:string(undefined) */
+  @ApiProperty()
   ApiVersion: string;
   /** xsd:boolean(undefined) */
+  @ApiProperty()
   IsValidAccount: boolean;
   /** SupportedLanguages(en,fr,nl) */
+  @ApiProperty({enum: ['en', 'fr', 'nl']})
   Language: 'en' | 'fr' | 'nl';
   /** xsd:string(undefined) */
+  @ApiProperty()
   Database: string;
   /** xsd:string(undefined) */
+  @ApiProperty()
   RequestorIp: string;
   /** xsd:number(undefined) */
+  @ApiProperty()
   ConsumedTicks: number;
   /** xsd:number(undefined) */
+  @ApiProperty()
   CurrentQuota: number;
   /** xsd:number(undefined) */
+  @ApiProperty()
   AllowedQuota: number;
   /** xsd:string(undefined) */
+  @ApiProperty()
   PhpVersion: string;
   /** xsd:string(undefined) */
+  @ApiProperty()
   DbVersion: string;
 }
 
@@ -321,7 +333,7 @@ export class TournamentRegisterOutput {
 }
 
 export class TabTAPISoap extends Client {
-  Test: (input: ITestInput, cb: (err: any | null, result: ITestOutput, raw: string, soapHeader: { [k: string]: any; }) => any, options?: any, extraHeaders?: any) => void;
+  Test: (input: ITestInput, cb: (err: any | null, result: TestOutput, raw: string, soapHeader: { [k: string]: any; }) => any, options?: any, extraHeaders?: any) => void;
   GetSeasons: (input: GetSeasonsInput, cb: (err: any | null, result: IGetSeasonsOutput, raw: string, soapHeader: { [k: string]: any; }) => any, options?: any, extraHeaders?: any) => void;
   GetClubTeams: (input: GetClubTeamsInput, cb: (err: any | null, result: GetClubTeamsOutput, raw: string, soapHeader: { [k: string]: any; }) => any, options?: any, extraHeaders?: any) => void;
   GetDivisionRanking: (input: GetDivisionRankingInput, cb: (err: any | null, result: GetDivisionRankingOutput, raw: string, soapHeader: { [k: string]: any; }) => any, options?: any, extraHeaders?: any) => void;
@@ -334,7 +346,7 @@ export class TabTAPISoap extends Client {
   GetMatchSystems: (input: GetMatchSystemsInput, cb: (err: any | null, result: GetMatchSystemsOutput, raw: string, soapHeader: { [k: string]: any; }) => any, options?: any, extraHeaders?: any) => void;
   TournamentRegister: (input: TournamentRegisterInput, cb: (err: any | null, result: TournamentRegisterOutput, raw: string, soapHeader: { [k: string]: any; }) => any, options?: any, extraHeaders?: any) => void;
 
-  TestAsync: (input: ITestInput) => Promise<[ITestOutput, string, { [k: string]: any; }, any, any]>;
+  TestAsync: (input: ITestInput) => Promise<[TestOutput, string, { [k: string]: any; }, any, any]>;
   GetSeasonsAsync: (input: GetSeasonsInput) => Promise<[IGetSeasonsOutput, string, { [k: string]: any; }, any, any]>;
   GetClubTeamsAsync: (input: GetClubTeamsInput) => Promise<[GetClubTeamsOutput, string, { [k: string]: any; }, any, any]>;
   GetDivisionRankingAsync: (input: GetDivisionRankingInput) => Promise<[GetDivisionRankingOutput, string, { [k: string]: any; }, any, any]>;

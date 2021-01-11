@@ -19,7 +19,7 @@ import {
   IGetSeasonsOutput,
   IGetTournamentsOutput,
   ITestInput,
-  ITestOutput,
+  TestOutput,
   IUploadInput,
   IUploadOutput,
   TournamentRegisterInput,
@@ -66,8 +66,8 @@ export class TabtClientService {
     return this.cacheService.getFromCacheOrGetAndCacheResult(cacheKey, getter, ttl);
   }
 
-  async TestAsync(input: ITestInput): Promise<[ITestOutput, string, { [k: string]: any; }, any, any]> {
-    return this.enrichBodyAndQueryWithCache('test', input, this.tabtClientSwitchingService.tabtClient.TestAsync);
+  async TestAsync(input: ITestInput): Promise<[TestOutput, string, { [k: string]: any; }, any, any]> {
+    return this.tabtClientSwitchingService.tabtClient.TestAsync(this.credentialsService.enrichInputWithCredentials(input));
   }
 
   GetSeasonsAsync(input: GetSeasonsInput): Promise<[IGetSeasonsOutput, string, { [k: string]: any; }, any, any]> {

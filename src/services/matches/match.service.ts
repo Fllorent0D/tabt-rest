@@ -16,7 +16,7 @@ export class MatchService {
     if (result.MatchCount === 0) {
       return [];
     }
-    return result.TeamMatchesEntries?.map(tme => new TeamMatchesEntry(tme));
+    return result.TeamMatchesEntries.map(tme => new TeamMatchesEntry(tme));
   }
 
 }
