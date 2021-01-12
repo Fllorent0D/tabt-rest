@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { HealthController } from './health.controller';
 import { DNSHealthIndicator, HealthCheckResult, HealthCheckService } from '@nestjs/terminus';
 import { TestRequestService } from '../../../services/test/test-request.service';
+import { ContextService } from '../../../common/context/context.service';
 
 describe('HealthController', () => {
   let controller: HealthController;
@@ -29,6 +30,12 @@ describe('HealthController', () => {
           provide: TestRequestService,
           useValue: {
             testRequest: jest.fn(),
+          }
+        },
+        {
+          provide: ContextService,
+          useValue: {
+            context: {},
           }
         }
       ],
