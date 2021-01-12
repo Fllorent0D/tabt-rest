@@ -51,23 +51,23 @@ export class TabtClientService {
     this.logger.setContext(TabtClientService.name)
   }
 
-  private getCacheKey(prefix: string, input: any, db: string): string {
+  private static getCacheKey(prefix: string, input: any, db: string): string {
     return `${prefix}-${db}-${JSON.stringify(input)}`;
   }
 
-  private enrichBodyAndQueryWithCache<T>(prefix: string, input: any, operation: (_: any) => Promise<T>, ttl = 600) {
+  private enrichBodyAndQueryWithCache<T>(prefix: string, input: any, operation: (operation: any, options: any, headers: any) => Promise<T>, ttl) {
     const enrichedInput = this.credentialsService.enrichInputWithCredentials(input);
-    const cacheKey = this.getCacheKey(prefix, enrichedInput, this.databaseContextService.database)
+    const cacheKey = TabtClientService.getCacheKey(prefix, enrichedInput, this.databaseContextService.database)
     const getter: () => Promise<T> = () => {
       this.logger.debug(`Requesting ${prefix} data to TabT`)
-      return operation(enrichedInput)
+      return operation(enrichedInput, null, this.credentialsService.extraHeaders);
     }
 
     return this.cacheService.getFromCacheOrGetAndCacheResult(cacheKey, getter, ttl);
   }
 
-  async TestAsync(input: ITestInput): Promise<[TestOutput, string, { [k: string]: any; }, any, any]> {
-    return this.tabtClientSwitchingService.tabtClient.TestAsync(this.credentialsService.enrichInputWithCredentials(input));
+  TestAsync(input: ITestInput): Promise<[TestOutput, string, { [k: string]: any; }, any, any]> {
+    return this.tabtClientSwitchingService.tabtClient.TestAsync(this.credentialsService.enrichInputWithCredentials(input), null, this.credentialsService.extraHeaders);
   }
 
   GetSeasonsAsync(input: GetSeasonsInput): Promise<[IGetSeasonsOutput, string, { [k: string]: any; }, any, any]> {
@@ -91,7 +91,7 @@ export class TabtClientService {
   }
 
   UploadAsync(input: IUploadInput): Promise<[IUploadOutput, string, { [k: string]: any; }, any, any]> {
-    return this.tabtClientSwitchingService.tabtClient.UploadAsync(this.credentialsService.enrichInputWithCredentials(input));
+    return this.tabtClientSwitchingService.tabtClient.UploadAsync(this.credentialsService.enrichInputWithCredentials(input), null, this.credentialsService.extraHeaders);
   }
 
   GetClubsAsync(input: GetClubsInput): Promise<[GetClubsOutput, string, { [k: string]: any; }, any, any]> {
@@ -114,7 +114,7 @@ export class TabtClientService {
   }
 
   TournamentRegisterAsync(input: TournamentRegisterInput): Promise<[TournamentRegisterOutput, string, { [k: string]: any; }, any, any]> {
-    return this.tabtClientSwitchingService.tabtClient.TournamentRegisterAsync(this.credentialsService.enrichInputWithCredentials(input));
+    return this.tabtClientSwitchingService.tabtClient.TournamentRegisterAsync(this.credentialsService.enrichInputWithCredentials(input), null, this.credentialsService.extraHeaders);
   }
 
 

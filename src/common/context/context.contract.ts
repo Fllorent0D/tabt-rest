@@ -7,6 +7,7 @@ export interface RunnerContext {
 export interface CallerContext {
     [key: string]: string;
     correlationId: string;
+    remoteAddress: string;
 }
 
 export interface Context {

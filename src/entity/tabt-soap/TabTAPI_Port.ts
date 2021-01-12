@@ -72,10 +72,10 @@ export class TestOutput {
   AllowedQuota: number;
   /** xsd:string(undefined) */
   @ApiProperty()
-  PhpVersion: string;
+  PhpVersion?: string;
   /** xsd:string(undefined) */
   @ApiProperty()
-  DbVersion: string;
+  DbVersion?: string;
 }
 
 export class GetSeasonsInput {
@@ -346,18 +346,18 @@ export class TabTAPISoap extends Client {
   GetMatchSystems: (input: GetMatchSystemsInput, cb: (err: any | null, result: GetMatchSystemsOutput, raw: string, soapHeader: { [k: string]: any; }) => any, options?: any, extraHeaders?: any) => void;
   TournamentRegister: (input: TournamentRegisterInput, cb: (err: any | null, result: TournamentRegisterOutput, raw: string, soapHeader: { [k: string]: any; }) => any, options?: any, extraHeaders?: any) => void;
 
-  TestAsync: (input: ITestInput) => Promise<[TestOutput, string, { [k: string]: any; }, any, any]>;
-  GetSeasonsAsync: (input: GetSeasonsInput) => Promise<[IGetSeasonsOutput, string, { [k: string]: any; }, any, any]>;
-  GetClubTeamsAsync: (input: GetClubTeamsInput) => Promise<[GetClubTeamsOutput, string, { [k: string]: any; }, any, any]>;
-  GetDivisionRankingAsync: (input: GetDivisionRankingInput) => Promise<[GetDivisionRankingOutput, string, { [k: string]: any; }, any, any]>;
-  GetMatchesAsync: (input: GetMatchesInput) => Promise<[GetMatchesOutput, string, { [k: string]: any; }, any, any]>;
-  GetMembersAsync: (input: GetMembersInput) => Promise<[IGetMembersOutput, string, { [k: string]: any; }, any, any]>;
-  UploadAsync: (input: IUploadInput) => Promise<[IUploadOutput, string, { [k: string]: any; }, any, any]>;
-  GetClubsAsync: (input: GetClubsInput) => Promise<[GetClubsOutput, string, { [k: string]: any; }, any, any]>;
-  GetDivisionsAsync: (input: GetDivisionsInput) => Promise<[result: IGetDivisionsOutput, raw: string, soapHeader: { [k: string]: any; }, options: any, extraHeaders: any]>;
-  GetTournamentsAsync: (input: GetTournamentsInput) => Promise<[IGetTournamentsOutput, string, { [k: string]: any; }, any, any]>;
-  GetMatchSystemsAsync: (input: GetMatchSystemsInput) => Promise<[GetMatchSystemsOutput, string, { [k: string]: any; }, any, any]>;
-  TournamentRegisterAsync: (input: TournamentRegisterInput) => Promise<[TournamentRegisterOutput, string, { [k: string]: any; }, any, any]>;
+  TestAsync: (input: ITestInput, option?: any, headers?: { [k: string]: string; }) => Promise<[TestOutput, string, { [k: string]: any; }, any, any]>;
+  GetSeasonsAsync: (input: GetSeasonsInput, option?: any, headers?: { [k: string]: string; }) => Promise<[IGetSeasonsOutput, string, { [k: string]: any; }, any, any]>;
+  GetClubTeamsAsync: (input: GetClubTeamsInput, option?: any, headers?: { [k: string]: string; }) => Promise<[GetClubTeamsOutput, string, { [k: string]: any; }, any, any]>;
+  GetDivisionRankingAsync: (input: GetDivisionRankingInput, option?: any, headers?: { [k: string]: string; }) => Promise<[GetDivisionRankingOutput, string, { [k: string]: any; }, any, any]>;
+  GetMatchesAsync: (input: GetMatchesInput, option?: any, headers?: { [k: string]: string; }) => Promise<[GetMatchesOutput, string, { [k: string]: any; }, any, any]>;
+  GetMembersAsync: (input: GetMembersInput, option?: any, headers?: { [k: string]: string; }) => Promise<[IGetMembersOutput, string, { [k: string]: any; }, any, any]>;
+  UploadAsync: (input: IUploadInput, option?: any, headers?: { [k: string]: string; }) => Promise<[IUploadOutput, string, { [k: string]: any; }, any, any]>;
+  GetClubsAsync: (input: GetClubsInput, option?: any, headers?: { [k: string]: string; }) => Promise<[GetClubsOutput, string, { [k: string]: any; }, any, any]>;
+  GetDivisionsAsync: (input: GetDivisionsInput, option?: any, headers?: { [k: string]: string; }) => Promise<[result: IGetDivisionsOutput, raw: string, soapHeader: { [k: string]: any; }, options: any, extraHeaders: any]>;
+  GetTournamentsAsync: (input: GetTournamentsInput, option?: any, headers?: { [k: string]: string; }) => Promise<[IGetTournamentsOutput, string, { [k: string]: any; }, any, any]>;
+  GetMatchSystemsAsync: (input: GetMatchSystemsInput, option?: any, headers?: { [k: string]: string; }) => Promise<[GetMatchSystemsOutput, string, { [k: string]: any; }, any, any]>;
+  TournamentRegisterAsync: (input: TournamentRegisterInput, option?: any, headers?: { [k: string]: string; }) => Promise<[TournamentRegisterOutput, string, { [k: string]: any; }, any, any]>;
 }
 
 export class SeasonEntry {

@@ -1,6 +1,7 @@
 import { Test } from '@nestjs/testing';
 import { CredentialsService } from './credentials.service';
 import { ContextService } from '../context/context.service';
+import { HeaderKeys } from '../context/context.constants';
 
 describe('CredentialsService', () => {
   let service: CredentialsService;
@@ -76,5 +77,50 @@ describe('CredentialsService', () => {
       });
     });
 
+  });
+  describe('extraHeaders', () => {
+    it('should set x-forwarded-host to the received one', () => {
+      Object.defineProperty(contextService, 'context', {
+        value: {
+          runner: {
+            name: 'test',
+            version: '1.0.0',
+            pid: 1234,
+          },
+          caller: {
+            correlationId: '123',
+            [HeaderKeys.X_FORWARDED_FOR]: '12.12.12.12',
+            'remoteAddress': '11.11.11.11',
+          },
+        },
+      });
+
+      const result = service.extraHeaders;
+
+      expect(result).toEqual({
+        [HeaderKeys.X_FORWARDED_FOR]: '12.12.12.12',
+      });
+    });
+    it('should set x-forwarded-host to the remote address', () => {
+      Object.defineProperty(contextService, 'context', {
+        value: {
+          runner: {
+            name: 'test',
+            version: '1.0.0',
+            pid: 1234,
+          },
+          caller: {
+            correlationId: '123',
+            'remoteAddress': '11.11.11.11',
+          },
+        },
+      });
+
+      const result = service.extraHeaders;
+
+      expect(result).toEqual({
+        [HeaderKeys.X_FORWARDED_FOR]: '11.11.11.11',
+      });
+    });
   });
 });

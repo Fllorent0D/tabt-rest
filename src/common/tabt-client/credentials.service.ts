@@ -25,5 +25,10 @@ export class CredentialsService {
     return input;
   }
 
+  get extraHeaders(): { [header: string]: string } {
+    return {
+      [HeaderKeys.X_FORWARDED_FOR]: this.contextService.context.caller[HeaderKeys.X_FORWARDED_FOR] || this.contextService.context.caller.remoteAddress,
+    };
+  }
 
 }

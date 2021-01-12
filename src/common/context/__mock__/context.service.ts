@@ -1,4 +1,5 @@
 import { Context } from '../context.contract';
+import { HeaderKeys } from '../context.constants';
 
 export class ContextService {
 
@@ -17,6 +18,8 @@ export class ContextService {
       },
       caller: {
         correlationId: '123',
+        remoteAddress: '12.12.12.12',
+        [HeaderKeys.X_FORWARDED_FOR]: '11.11.11.11'
       },
     };
   }

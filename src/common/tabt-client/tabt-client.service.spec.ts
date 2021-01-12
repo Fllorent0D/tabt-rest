@@ -12,6 +12,7 @@ import {
   GetMatchesInput, GetMatchSystemsInput, GetMembersInput,
   GetSeasonsInput, GetTournamentsInput, IUploadInput, TournamentRegisterInput,
 } from '../../entity/tabt-soap/TabTAPI_Port';
+import { HeaderKeys } from '../context/context.constants';
 
 jest.mock('../context/database-context.service');
 jest.mock('../cache/cache.service');
@@ -67,6 +68,12 @@ describe('TabtClientSwitchingService', () => {
         return TABT_DATABASE.AFTT;
       },
     });
+
+    Object.defineProperty(credentialsService, 'extraHeaders', {
+      get() {
+        return { [HeaderKeys.X_FORWARDED_FOR]: '12.12.12.12' };
+      },
+    });
   });
 
   it('should be initialized', () => {
@@ -95,7 +102,7 @@ describe('TabtClientSwitchingService', () => {
       expect(enrichSpy).toHaveBeenCalledTimes(1);
       expect(enrichSpy).toHaveBeenCalledWith(input);
       expect(operationSpy).toHaveBeenCalledTimes(1);
-      expect(operationSpy).toHaveBeenCalledWith(enrichedInput);
+      expect(operationSpy).toHaveBeenCalledWith(enrichedInput, null, expect.anything());
     });
 
     it('should query the cache for GetSeasonsAsync with the enriched input', async () => {
@@ -121,7 +128,7 @@ describe('TabtClientSwitchingService', () => {
       expect(enrichSpy).toHaveBeenCalledTimes(1);
       expect(enrichSpy).toHaveBeenCalledWith(input);
       expect(operationSpy).toHaveBeenCalledTimes(1);
-      expect(operationSpy).toHaveBeenCalledWith(enrichedInput);
+      expect(operationSpy).toHaveBeenCalledWith(enrichedInput, null, expect.anything());
     });
 
     it('should query the cache for GetClubTeamsAsync with the enriched input', async () => {
@@ -149,7 +156,7 @@ describe('TabtClientSwitchingService', () => {
       expect(enrichSpy).toHaveBeenCalledTimes(1);
       expect(enrichSpy).toHaveBeenCalledWith(input);
       expect(operationSpy).toHaveBeenCalledTimes(1);
-      expect(operationSpy).toHaveBeenCalledWith(enrichedInput);
+      expect(operationSpy).toHaveBeenCalledWith(enrichedInput, null, expect.anything());
     });
 
     it('should query the cache for GetDivisionRankingAsync with the enriched input', async () => {
@@ -178,7 +185,7 @@ describe('TabtClientSwitchingService', () => {
       expect(enrichSpy).toHaveBeenCalledTimes(1);
       expect(enrichSpy).toHaveBeenCalledWith(input);
       expect(operationSpy).toHaveBeenCalledTimes(1);
-      expect(operationSpy).toHaveBeenCalledWith(enrichedInput);
+      expect(operationSpy).toHaveBeenCalledWith(enrichedInput, null, expect.anything());
     });
 
     it('should query the cache for GetMatchesAsync with the enriched input', async () => {
@@ -204,7 +211,7 @@ describe('TabtClientSwitchingService', () => {
       expect(enrichSpy).toHaveBeenCalledTimes(1);
       expect(enrichSpy).toHaveBeenCalledWith(input);
       expect(operationSpy).toHaveBeenCalledTimes(1);
-      expect(operationSpy).toHaveBeenCalledWith(enrichedInput);
+      expect(operationSpy).toHaveBeenCalledWith(enrichedInput, null, expect.anything());
     });
     it('should query the cache for GetMembersAsync with the enriched input', async () => {
       const input: GetMembersInput = {};
@@ -229,7 +236,7 @@ describe('TabtClientSwitchingService', () => {
       expect(enrichSpy).toHaveBeenCalledTimes(1);
       expect(enrichSpy).toHaveBeenCalledWith(input);
       expect(operationSpy).toHaveBeenCalledTimes(1);
-      expect(operationSpy).toHaveBeenCalledWith(enrichedInput);
+      expect(operationSpy).toHaveBeenCalledWith(enrichedInput, null, expect.anything());
     });
 
     it('should query the cache for UploadAsync with the enriched input', async () => {
@@ -254,7 +261,7 @@ describe('TabtClientSwitchingService', () => {
       expect(enrichSpy).toHaveBeenCalledTimes(1);
       expect(enrichSpy).toHaveBeenCalledWith(input);
       expect(operationSpy).toHaveBeenCalledTimes(1);
-      expect(operationSpy).toHaveBeenCalledWith(enrichedInput);
+      expect(operationSpy).toHaveBeenCalledWith(enrichedInput, null, expect.anything());
     });
     it('should query the cache for GetClubsAsync with the enriched input', async () => {
       const input: GetClubsInput = {};
@@ -279,7 +286,7 @@ describe('TabtClientSwitchingService', () => {
       expect(enrichSpy).toHaveBeenCalledTimes(1);
       expect(enrichSpy).toHaveBeenCalledWith(input);
       expect(operationSpy).toHaveBeenCalledTimes(1);
-      expect(operationSpy).toHaveBeenCalledWith(enrichedInput);
+      expect(operationSpy).toHaveBeenCalledWith(enrichedInput, null, expect.anything());
     });
 
     it('should query the cache for GetDivisionsAsync with the enriched input', async () => {
@@ -305,7 +312,7 @@ describe('TabtClientSwitchingService', () => {
       expect(enrichSpy).toHaveBeenCalledTimes(1);
       expect(enrichSpy).toHaveBeenCalledWith(input);
       expect(operationSpy).toHaveBeenCalledTimes(1);
-      expect(operationSpy).toHaveBeenCalledWith(enrichedInput);
+      expect(operationSpy).toHaveBeenCalledWith(enrichedInput, null, expect.anything());
     });
 
     it('should query the cache for GetTournamentsAsync with the enriched input', async () => {
@@ -331,7 +338,7 @@ describe('TabtClientSwitchingService', () => {
       expect(enrichSpy).toHaveBeenCalledTimes(1);
       expect(enrichSpy).toHaveBeenCalledWith(input);
       expect(operationSpy).toHaveBeenCalledTimes(1);
-      expect(operationSpy).toHaveBeenCalledWith(enrichedInput);
+      expect(operationSpy).toHaveBeenCalledWith(enrichedInput, null, expect.anything());
     });
 
     it('should query the cache for GetMatchSystemsAsync with the enriched input', async () => {
@@ -357,7 +364,7 @@ describe('TabtClientSwitchingService', () => {
       expect(enrichSpy).toHaveBeenCalledTimes(1);
       expect(enrichSpy).toHaveBeenCalledWith(input);
       expect(operationSpy).toHaveBeenCalledTimes(1);
-      expect(operationSpy).toHaveBeenCalledWith(enrichedInput);
+      expect(operationSpy).toHaveBeenCalledWith(enrichedInput, null, expect.anything());
     });
     it('should go directly to tabt for TournamentRegisterAsync with the enriched input', async () => {
       const input: TournamentRegisterInput = {
@@ -385,7 +392,7 @@ describe('TabtClientSwitchingService', () => {
       expect(enrichSpy).toHaveBeenCalledTimes(1);
       expect(enrichSpy).toHaveBeenCalledWith(input);
       expect(operationSpy).toHaveBeenCalledTimes(1);
-      expect(operationSpy).toHaveBeenCalledWith(enrichedInput);
+      expect(operationSpy).toHaveBeenCalledWith(enrichedInput, null, expect.anything());
     });
   });
 });

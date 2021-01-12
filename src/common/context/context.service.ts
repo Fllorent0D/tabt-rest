@@ -1,6 +1,5 @@
 import { Inject, Injectable, Scope } from '@nestjs/common';
 import { Context, RunnerContext } from './context.contract';
-import { TABT_HEADERS } from './context.constants';
 import { HttpUtil } from '../utils/http.util';
 import { REQUEST } from '@nestjs/core';
 import { PackageService } from '../package/package.service';
@@ -39,6 +38,7 @@ export class ContextService {
       runner: this.runnerContext,
       caller: {
         correlationId: request['id'],
+        remoteAddress: request['connection']['remoteAddress'] === '::1' ? '127.0.0.1' : request['connection']['remoteAddress'],
         ...Array.from(this.httpHeaderKeys).reduce((acc: any, x: any) => {
           const httpHeaderValue = HttpUtil.getHeaderValue(request, x);
           if (httpHeaderValue) {
