@@ -2,8 +2,10 @@ import { Controller, Get } from '@nestjs/common';
 import { DNSHealthIndicator, HealthCheck, HealthCheckService } from '@nestjs/terminus';
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { TestRequestService } from '../../../services/test/test-request.service';
-import { MemberEntry, TestOutput } from '../../../entity/tabt-soap/TabTAPI_Port';
+import { TestOutput } from '../../../entity/tabt-soap/TabTAPI_Port';
 import { TabtHeadersDecorator } from '../../../common/decorators/tabt-headers.decorator';
+import { Context } from '../../../common/context/context.contract';
+import { ContextService } from '../../../common/context/context.service';
 
 @ApiTags('Health')
 @Controller('health')
@@ -11,12 +13,14 @@ export class HealthController {
   constructor(
     private health: HealthCheckService,
     private dns: DNSHealthIndicator,
-    private testRequest: TestRequestService
-  ) {}
+    private testRequest: TestRequestService,
+    private contextService: ContextService,
+  ) {
+  }
 
   @Get()
   @ApiOperation({
-    operationId: 'checkHealth'
+    operationId: 'checkHealth',
   })
   @HealthCheck()
   check() {
@@ -28,7 +32,7 @@ export class HealthController {
 
   @Get('test')
   @ApiOperation({
-    operationId: 'testRequest'
+    operationId: 'testRequest',
   })
   @ApiOkResponse({
     type: TestOutput,
@@ -37,6 +41,15 @@ export class HealthController {
   @TabtHeadersDecorator()
   test() {
     return this.testRequest.testRequest();
+  }
+
+  @Get('context')
+  @ApiOperation({
+    operationId: 'testRequest',
+  })
+  @TabtHeadersDecorator()
+  context() {
+    return this.contextService.context;
   }
 
 
