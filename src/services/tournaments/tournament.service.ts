@@ -18,6 +18,9 @@ export class TournamentService {
 
   async getTournaments(input: GetTournamentsInput): Promise<TournamentEntry[]> {
     const [result] = await this.tabtClient.GetTournamentsAsync(input);
+    if (result.TournamentCount === 0) {
+      return [];
+    }
     return result.TournamentEntries.map((t) => new TournamentEntry(t));
   }
 

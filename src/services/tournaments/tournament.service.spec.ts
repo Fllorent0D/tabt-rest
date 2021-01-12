@@ -65,6 +65,22 @@ describe('SeasonService', () => {
       expect(spyOnTabt).toBeCalledTimes(1);
       expect(spyOnTabt).toBeCalledWith(input);
     });
+    it('should call the tabt service correctly and return an empty array if no tournament found', async () => {
+      const tournaments = [];
+      const spyOnTabt = jest.spyOn(tabtService, 'GetTournamentsAsync').mockResolvedValue([{
+        TournamentCount: 0,
+        TournamentEntries: tournaments,
+      }, '', {}, null, null]);
+      const input = {
+        Season: 18,
+      };
+
+      const result = await provider.getTournaments(input);
+
+      expect(result).toEqual(tournaments);
+      expect(spyOnTabt).toBeCalledTimes(1);
+      expect(spyOnTabt).toBeCalledWith(input);
+    });
   });
 
   describe('registerToTournament', () => {

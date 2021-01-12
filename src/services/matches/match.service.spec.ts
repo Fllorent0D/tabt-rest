@@ -38,12 +38,30 @@ describe('MatchService', () => {
         TeamMatchesEntries: matches,
       }, '', {}, null, null]);
       const input = {
-        Club: 'L360'
+        Club: 'L360',
       };
 
       const result = await service.getMatches(input);
 
       expect(result).toBeDefined();
+      expect(result[0]).toBeInstanceOf(TeamMatchesEntry);
+      expect(spyOnTabt).toBeCalledTimes(1);
+      expect(spyOnTabt).toBeCalledWith(input);
+    });
+    it('should return an empty array if no matches are returned', async () => {
+      const matches = [] as TeamMatchesEntry[];
+      const spyOnTabt = jest.spyOn(tabtService, 'GetMatchesAsync').mockResolvedValue([{
+        MatchCount: 0,
+        TeamMatchesEntries: matches,
+      }, '', {}, null, null]);
+      const input = {
+        Club: 'L360',
+      };
+
+      const result = await service.getMatches(input);
+      expect(result).toBeInstanceOf(Array);
+      expect(result).toBeDefined();
+      expect(result.length).toBe(0);
       expect(spyOnTabt).toBeCalledTimes(1);
       expect(spyOnTabt).toBeCalledWith(input);
     });

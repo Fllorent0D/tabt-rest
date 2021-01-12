@@ -80,7 +80,7 @@ export class TournamentController {
       TournamentUniqueIndex: id,
       WithRegistrations: true,
     });
-    if (result?.length) {
+    if (result.length) {
       return result[0].SerieEntries;
     }
     throw new NotFoundException();

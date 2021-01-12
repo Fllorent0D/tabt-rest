@@ -66,7 +66,7 @@ export class MemberController {
       WithResults: input.withResults,
       WithOpponentRankingEvaluation: input.withOpponentRankingEvaluation,
     });
-    if (found?.length === 1) {
+    if (found.length === 1) {
       return found[0];
     }
     throw new NotFoundException();
