@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { TabtClientService } from '../../common/tabt-client/tabt-client.service';
-import { ClubEntry, DivisionEntry } from '../../entity/tabt-soap/TabTAPI_Port';
+import { DivisionEntry } from '../../entity/tabt-soap/TabTAPI_Port';
 import { DivisionService } from './division.service';
 
 describe('DivisionService', () => {

@@ -1,6 +1,6 @@
 import { Controller, Get, NotFoundException, Param, Query } from '@nestjs/common';
 import { ApiNotFoundResponse, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { ClubEntry, MemberEntry, TeamEntry } from '../../../entity/tabt-soap/TabTAPI_Port';
+import { ClubEntry, MemberEntry, TeamEntry, VenueEntryWithAddress } from '../../../entity/tabt-soap/TabTAPI_Port';
 import { ClubService } from '../../../services/clubs/club.service';
 import { ClubMemberService } from '../../../services/clubs/club-member.service';
 import { ClubTeamService } from '../../../services/clubs/club-team.service';
@@ -9,6 +9,7 @@ import { TabtHeadersDecorator } from '../../../common/decorators/tabt-headers.de
 import { GetMembersFromClub, ListAllClubs } from '../dto/club.dto';
 import { RequestBySeasonDto } from '../../../common/dto/request-by-season.dto';
 import { ClubCategory, PlayerCategory } from '../../../entity/tabt-input.interface';
+import { GeocoderService } from '../../../services/geocoder/geocoder.service';
 
 @ApiTags('Clubs')
 @Controller('clubs')
@@ -18,12 +19,13 @@ export class ClubController {
     private clubService: ClubService,
     private clubTeamService: ClubTeamService,
     private clubMemberService: ClubMemberService,
+    private geocoderService: GeocoderService,
   ) {
   }
 
   @Get()
   @ApiOperation({
-    operationId: 'findAllClubs'
+    operationId: 'findAllClubs',
   })
   @ApiResponse({
     description: 'A list of clubs.',
@@ -43,7 +45,7 @@ export class ClubController {
 
   @Get(':clubIndex')
   @ApiOperation({
-    operationId: 'findClubById'
+    operationId: 'findClubById',
   })
   @ApiResponse({
     description: 'A specific club based on the uniqueIndex.',
@@ -68,7 +70,7 @@ export class ClubController {
 
   @Get(':clubIndex/members')
   @ApiOperation({
-    operationId: 'findClubMembers'
+    operationId: 'findClubMembers',
   })
   @ApiResponse({
     description: 'A list of members from a specific club.',
@@ -98,7 +100,7 @@ export class ClubController {
 
   @Get(':clubIndex/teams')
   @ApiOperation({
-    operationId: 'findClubTeams'
+    operationId: 'findClubTeams',
   })
   @ApiResponse({
     description: 'A list of teams from a specific club.',
@@ -114,5 +116,38 @@ export class ClubController {
     @Param('clubIndex') uniqueIndex: string,
   ) {
     return this.clubTeamService.getClubsTeams({ Club: uniqueIndex, Season: input.season });
+  }
+
+  @Get(':clubIndex/venues')
+  @ApiOperation({
+    operationId: 'findClubVenues',
+  })
+  @ApiResponse({
+    description: 'A club GPS coordinates for venues.',
+    type: [VenueEntryWithAddress],
+    status: 200,
+  })
+  async getClubVenuesDetails(
+    @Query() input: RequestBySeasonDto,
+    @Param('clubIndex') uniqueIndex: string,
+  ) {
+    const club = await this.clubService.getClubById({ Season: input.season }, uniqueIndex);
+    const venues: VenueEntryWithAddress[] = [];
+    for (const venue of club.VenueEntries) {
+      try {
+        const [street, houseNumber] = venue.Street.split(', ');
+
+        const postalCode = venue.Town.slice(0,4);
+        const town = venue.Town.slice(5);
+
+        const test = await this.geocoderService.search(`${houseNumber} ${street}`, town, postalCode);
+        console.log(test);
+        venues.push({ ...venue, Address: test });
+      } catch (e) {
+        venues.push(venue);
+      }
+    }
+    return venues;
+
   }
 }

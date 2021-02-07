@@ -1,9 +1,8 @@
 import { Controller, Get, NotFoundException, Param, ParseIntPipe, Query } from '@nestjs/common';
 import { ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { MatchSystemEntry, MemberEntry, TeamMatchesEntry } from '../../../entity/tabt-soap/TabTAPI_Port';
+import { MatchSystemEntry, TeamMatchesEntry } from '../../../entity/tabt-soap/TabTAPI_Port';
 import { MatchService } from '../../../services/matches/match.service';
 import { TabtHeadersDecorator } from '../../../common/decorators/tabt-headers.decorator';
-import { ContextService } from '../../../common/context/context.service';
 import { MatchSystemService } from '../../../services/matches/match-system.service';
 import { GetMatch, GetMatches } from '../dto/match.dto';
 import { Level, PlayerCategory } from '../../../entity/tabt-input.interface';

@@ -3,7 +3,6 @@ import { MatchController } from './match.controller';
 import { MatchService } from '../../../services/matches/match.service';
 import { MatchSystemService } from '../../../services/matches/match-system.service';
 import { GetMatch, GetMatches } from '../dto/match.dto';
-import { PlayerCategory } from '../../../entity/tabt-input.interface';
 import { NotFoundException } from '@nestjs/common';
 
 jest.mock('../../../services/matches/match.service');

@@ -6,6 +6,7 @@ import { SeasonModule } from './season/season.module';
 import { MemberModule } from './member/member.module';
 import { MatchModule } from './match/match.module';
 import { HealthModule } from './health/health.module';
+import { InternalIdentifiersModule } from './internal-identifiers/internal-identifiers.module';
 
 @Module({
   imports: [
@@ -15,7 +16,8 @@ import { HealthModule } from './health/health.module';
     SeasonModule,
     MemberModule,
     MatchModule,
-    HealthModule
+    HealthModule,
+    InternalIdentifiersModule
   ],
 })
 export class ApiModule {

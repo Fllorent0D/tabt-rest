@@ -4,7 +4,6 @@ import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { TestRequestService } from '../../../services/test/test-request.service';
 import { TestOutput } from '../../../entity/tabt-soap/TabTAPI_Port';
 import { TabtHeadersDecorator } from '../../../common/decorators/tabt-headers.decorator';
-import { Context } from '../../../common/context/context.contract';
 import { ContextService } from '../../../common/context/context.service';
 
 @ApiTags('Health')

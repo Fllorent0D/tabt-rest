@@ -8,9 +8,15 @@ import { CacheService } from '../cache/cache.service';
 import {
   GetClubsInput,
   GetClubTeamsInput,
-  GetDivisionRankingInput, GetDivisionsInput,
-  GetMatchesInput, GetMatchSystemsInput, GetMembersInput,
-  GetSeasonsInput, GetTournamentsInput, IUploadInput, TournamentRegisterInput,
+  GetDivisionRankingInput,
+  GetDivisionsInput,
+  GetMatchesInput,
+  GetMatchSystemsInput,
+  GetMembersInput,
+  GetSeasonsInput,
+  GetTournamentsInput,
+  IUploadInput,
+  TournamentRegisterInput,
 } from '../../entity/tabt-soap/TabTAPI_Port';
 import { HeaderKeys } from '../context/context.constants';
 

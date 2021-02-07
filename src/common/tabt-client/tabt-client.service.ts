@@ -19,9 +19,9 @@ import {
   IGetSeasonsOutput,
   IGetTournamentsOutput,
   ITestInput,
-  TestOutput,
   IUploadInput,
   IUploadOutput,
+  TestOutput,
   TournamentRegisterInput,
   TournamentRegisterOutput,
 } from '../../entity/tabt-soap/TabTAPI_Port';
@@ -51,13 +51,9 @@ export class TabtClientService {
     this.logger.setContext(TabtClientService.name)
   }
 
-  private static getCacheKey(prefix: string, input: any, db: string): string {
-    return `${prefix}-${db}-${JSON.stringify(input)}`;
-  }
-
   private enrichBodyAndQueryWithCache<T>(prefix: string, input: any, operation: (operation: any, options: any, headers: any) => Promise<T>, ttl) {
     const enrichedInput = this.credentialsService.enrichInputWithCredentials(input);
-    const cacheKey = TabtClientService.getCacheKey(prefix, enrichedInput, this.databaseContextService.database)
+    const cacheKey = CacheService.getCacheKey(prefix, enrichedInput, this.databaseContextService.database)
     const getter: () => Promise<T> = () => {
       this.logger.debug(`Requesting ${prefix} data to TabT`)
       return operation(enrichedInput, null, this.credentialsService.extraHeaders);

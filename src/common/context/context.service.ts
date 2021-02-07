@@ -1,4 +1,4 @@
-import { Inject, Injectable, Ip, Scope } from '@nestjs/common';
+import { Inject, Injectable, Scope } from '@nestjs/common';
 import { Context, RunnerContext } from './context.contract';
 import { HttpUtil } from '../utils/http.util';
 import { REQUEST } from '@nestjs/core';

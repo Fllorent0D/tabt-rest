@@ -2,6 +2,7 @@ import { Client } from 'soap';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 import { Level, PlayerCategory } from '../tabt-input.interface';
+import { OSMAddress } from '../osm/osm-search.model';
 
 export class Credentials {
 
@@ -39,6 +40,10 @@ export class VenueEntry {
 
   @ApiProperty()
   Comment: string;
+}
+
+export class VenueEntryWithAddress extends VenueEntry {
+  Address?: OSMAddress
 }
 
 export class TestOutput {

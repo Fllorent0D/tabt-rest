@@ -2,7 +2,6 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { TournamentController } from './tournament.controller';
 import { TournamentService } from '../../../services/tournaments/tournament.service';
 import { GetTournamentDetails, RegisterTournament } from '../dto/tournaments.dto';
-import { GetMember } from '../../member/dto/member.dto';
 import { NotFoundException } from '@nestjs/common';
 
 jest.mock('../../../services/tournaments/tournament.service');

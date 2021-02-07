@@ -8,12 +8,7 @@ import {
   Query,
   UseInterceptors,
 } from '@nestjs/common';
-import {
-  DivisionEntry,
-  GetDivisionsInput,
-  RankingEntry,
-  TeamMatchesEntry,
-} from '../../../entity/tabt-soap/TabTAPI_Port';
+import { DivisionEntry, RankingEntry, TeamMatchesEntry } from '../../../entity/tabt-soap/TabTAPI_Port';
 import { DivisionService } from '../../../services/divisions/division.service';
 import { ApiNotFoundResponse, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { TabtException } from '../../../common/filter/tabt-exceptions.filter';

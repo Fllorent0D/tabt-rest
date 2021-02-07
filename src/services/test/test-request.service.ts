@@ -1,5 +1,5 @@
-import { Injectable, Logger } from '@nestjs/common';
-import { GetSeasonsInput, TestOutput, SeasonEntry } from '../../entity/tabt-soap/TabTAPI_Port';
+import { Injectable } from '@nestjs/common';
+import { TestOutput } from '../../entity/tabt-soap/TabTAPI_Port';
 import { TabtClientService } from '../../common/tabt-client/tabt-client.service';
 
 @Injectable()

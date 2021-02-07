@@ -1,4 +1,4 @@
-import { CACHE_MANAGER, CacheStore, Inject, Injectable, Logger } from '@nestjs/common';
+import { CACHE_MANAGER, CacheStore, Inject, Injectable } from '@nestjs/common';
 
 @Injectable()
 export class CacheService {
@@ -13,6 +13,10 @@ export class CacheService {
 
   setInCache(key: string, value: any, ttl: number): Promise<void> {
     return this.cacheManager.set(key, value, { ttl }) as Promise<void>;
+  }
+
+  static getCacheKey(prefix: string, input: any, db: string): string {
+    return `${prefix}-${db}-${JSON.stringify(input)}`;
   }
 
   async getFromCacheOrGetAndCacheResult<T>(key: string, getter: () => Promise<T>, ttl = 600): Promise<T> {
