@@ -53,7 +53,7 @@ export class TabtClientService {
 
   private enrichBodyAndQueryWithCache<T>(prefix: string, input: any, operation: (operation: any, options: any, headers: any) => Promise<T>, ttl) {
     const enrichedInput = this.credentialsService.enrichInputWithCredentials(input);
-    const cacheKey = CacheService.getCacheKey(prefix, enrichedInput, this.databaseContextService.database)
+    const cacheKey = this.cacheService.getCacheKey(prefix, enrichedInput, this.databaseContextService.database)
     const getter: () => Promise<T> = () => {
       this.logger.debug(`Requesting ${prefix} data to TabT`)
       return operation(enrichedInput, null, this.credentialsService.extraHeaders);

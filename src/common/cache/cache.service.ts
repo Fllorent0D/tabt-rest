@@ -15,7 +15,7 @@ export class CacheService {
     return this.cacheManager.set(key, value, { ttl }) as Promise<void>;
   }
 
-  static getCacheKey(prefix: string, input: any, db: string): string {
+  getCacheKey(prefix: string, input: any, db: string): string {
     return `${prefix}-${db}-${JSON.stringify(input)}`;
   }
 

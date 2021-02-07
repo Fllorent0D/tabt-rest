@@ -6,6 +6,7 @@ import { ClubMemberService } from '../../../services/clubs/club-member.service';
 import { GetMembersFromClub, ListAllClubs } from '../dto/club.dto';
 import { RequestBySeasonDto } from '../../../common/dto/request-by-season.dto';
 import { NotFoundException } from '@nestjs/common';
+import { GeocoderService } from '../../../services/geocoder/geocoder.service';
 
 jest.mock('../../../services/clubs/club.service');
 jest.mock('../../../services/clubs/club-member.service');
@@ -21,7 +22,7 @@ describe('ClubController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [ClubController],
-      providers: [ClubService, ClubTeamService, ClubMemberService],
+      providers: [ClubService, ClubTeamService, ClubMemberService, { provide: GeocoderService, useValue: {} }],
     }).compile();
 
     controller = module.get<ClubController>(ClubController);

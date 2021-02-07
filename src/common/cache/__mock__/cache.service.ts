@@ -8,6 +8,10 @@ export class CacheService {
     return Promise.resolve();
   }
 
+  getCacheKey(prefix: string, input: any, db: string): string {
+    return `${prefix}-${db}-${JSON.stringify(input)}`;
+  }
+
   async getFromCacheOrGetAndCacheResult<T>(key: string, getter: () => Promise<T>, ttl = 600): Promise<T> {
     return Promise.resolve({} as T);
   }
