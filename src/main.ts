@@ -18,7 +18,7 @@ async function bootstrap() {
     .setTitle('TabT Rest')
     .setDescription('This api is a bridge to the TabT SOAP API. It contacts TabT and cache results in order to reduce latency for some requests. More documentation will come.')
     .setVersion('1.0')
-    .setContact('Florent Cardoen', 'http://floca.be', 'f.cardoen@me.com')
+    .setContact('Florent Cardoen', 'http://floca.be/', 'f.cardoen@me.com')
     .setVersion(packageService.version)
     .setLicense('GNU General Public License v3.0', 'https://github.com/Fllorent0D/TabT-Rest/blob/main/LICENSE')
     .addTag('Seasons')
