@@ -110,7 +110,7 @@ describe('MatchController', () => {
     it('should thrown an 404 exception if match is not found', async () => {
       const input: GetMatch = {};
 
-      const spy = jest.spyOn(matchService, 'getMatches').mockResolvedValue([]);
+      jest.spyOn(matchService, 'getMatches').mockResolvedValue([]);
 
       expect(controller.findById(input, 'id')).rejects.toEqual(new NotFoundException());
     });

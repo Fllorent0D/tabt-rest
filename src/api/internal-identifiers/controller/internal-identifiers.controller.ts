@@ -1,4 +1,4 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, Query, Render } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { InternalIdentifiers, UniqueIdentifiers } from '../dto/register.dto';
 import { InternalIdMapperService } from '../../../services/id-mapper/internal-id-mapper.service';
@@ -31,4 +31,11 @@ export class InternalIdentifiersController {
       clubInternalIdentifier: clubId,
     };
   }
+
+  @Render('redirect-register')
+  @Get('/register')
+  register() {
+    return;
+  }
+
 }

@@ -64,7 +64,6 @@ describe('CacheService', () => {
     it('should use the getter if key not in cache', async () => {
       const key = 'aaa';
       const value = 'bbb';
-      const ttl = 10;
       const getter = jest.fn().mockResolvedValue(value);
 
       const getSpy = jest.spyOn(cache, 'get').mockReturnValue(null);

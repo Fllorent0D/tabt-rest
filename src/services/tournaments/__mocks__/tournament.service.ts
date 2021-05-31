@@ -60,6 +60,7 @@ export class TournamentService {
   }
 
   async registerToTournament(input: TournamentRegisterInput): Promise<TournamentRegisterOutput> {
+
     return Promise.resolve({ Success: true, MessageCount: 0, MessageEntries: [] });
   }
 }
