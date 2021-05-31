@@ -20,7 +20,7 @@ import { join } from 'path';
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'static'),
       serveRoot: '/static',
-      exclude: ['/api*']
+      exclude: ['/api*'],
     }),
     LoggerModule.forRoot({
       pinoHttp: {
