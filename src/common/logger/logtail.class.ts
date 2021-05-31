@@ -13,6 +13,6 @@ export class LogtailLogger {
   static writeToLogtail(stringified: string): void {
     const { level, msg, ...context } = JSON.parse(stringified);
 
-    LogtailLogger.logger.log(msg, level, context).then(r => console.log('response', r));
+    LogtailLogger.logger.log(msg, level, context);
   }
 }
