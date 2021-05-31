@@ -1,6 +1,6 @@
 {
   "name": "tabt-rest",
-  "version": "1.3.0",
+  "version": "1.3.0her",
   "description": "",
   "author": "",
   "private": true,
@@ -10,7 +10,7 @@
     "build": "nest build",
     "ci": "node ./node_modules/@nestjs/cli/bin/nest.js build",
     "format": "prettier --write \\\"src/**/*.ts\\\" \\\"test-e2e/**/*.ts\\\"",
-    "start": "nest start",
+    "start": "node dist/main",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
