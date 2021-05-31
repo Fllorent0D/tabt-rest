@@ -8,12 +8,14 @@ import { TabtExceptionsFilter } from './common/filter/tabt-exceptions.filter';
 import { ValidationPipe } from '@nestjs/common';
 import { PackageService } from './common/package/package.service';
 import { Logger } from 'nestjs-pino';
+import { LogtailLogger } from './common/logger/logtail.class';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, {cors: true});
-  app.useLogger(app.get(Logger))
-  const packageService = app.get(PackageService)
-  app.setGlobalPrefix(process.env.API_PREFIX)
+  const app = await NestFactory.create(AppModule, { cors: true });
+  app.useLogger(app.get(Logger));
+  const packageService = app.get(PackageService);
+  LogtailLogger.initialize();
+  app.setGlobalPrefix(process.env.API_PREFIX);
   const options = new DocumentBuilder()
     .setTitle('TabT Rest')
     .setDescription('This api is a bridge to the TabT SOAP API. It contacts TabT and cache results in order to reduce latency for some requests. More documentation will come.')

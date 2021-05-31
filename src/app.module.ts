@@ -10,6 +10,7 @@ import { GuidUtil } from './common/utils/guid.util';
 import { HeaderKeys } from './common/context/context.constants';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { LogtailLogger } from './common/logger/logtail.class';
 
 @Module({
   imports: [
@@ -23,7 +24,7 @@ import { join } from 'path';
       exclude: ['/api*'],
     }),
     LoggerModule.forRoot({
-      pinoHttp: {
+      pinoHttp: [{
         level: 'debug',
         serializers: {
           req: (req) => {
@@ -31,12 +32,21 @@ import { join } from 'path';
             return req;
           },
         },
+        formatters: {
+          level: (label) => {
+            return { level: label };
+          },
+        },
         genReqId: () => GuidUtil.generateUuid(),
         prettyPrint: process.env.NODE_ENV === 'production' ? false : {
           colorize: true,
           translateTime: true,
         },
-      },
+      }, {
+        write: (msg: string) => {
+          LogtailLogger.writeToLogtail(msg);
+        },
+      }],
     }),
   ],
   controllers: [AppController],
