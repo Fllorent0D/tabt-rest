@@ -29,7 +29,7 @@ export class TournamentController {
   findAll(
     @Query() input: GetTournaments,
   ) {
-    return this.tournamentService.getTournaments({ Season: input.season } as GetTournamentsInput);
+    return this.tournamentService.getTournaments({ } as GetTournamentsInput);
   }
 
   @Get(':tournamentId')

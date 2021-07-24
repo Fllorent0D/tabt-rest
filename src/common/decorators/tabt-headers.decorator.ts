@@ -21,6 +21,10 @@ export function TabtHeadersDecorator() {
       name: HeaderKeys.X_TABT_DATABASE,
       enum:[TABT_DATABASE.AFTT, TABT_DATABASE.VTTL],
       description: "Database to query"
+    }),
+    ApiHeader({
+      name: HeaderKeys.X_TABT_SEASON,
+      description: "Season name to query"
     })
   );
 }

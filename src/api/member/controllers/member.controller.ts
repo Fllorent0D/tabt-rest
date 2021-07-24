@@ -30,7 +30,6 @@ export class MemberController {
     return this.memberService.getMembers(
       {
         Club: input.club,
-        Season: input.season,
         PlayerCategory: PlayerCategory[input.playerCategory],
         UniqueIndex: input.uniqueIndex,
         NameSearch: input.nameSearch,
@@ -57,7 +56,6 @@ export class MemberController {
   ): Promise<MemberEntry> {
     const found = await this.memberService.getMembers({
       Club: input.club,
-      Season: input.season,
       PlayerCategory: PlayerCategory[input.playerCategory],
       UniqueIndex: id,
       NameSearch: input.nameSearch,

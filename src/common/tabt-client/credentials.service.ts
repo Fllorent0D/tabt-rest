@@ -2,6 +2,7 @@ import { ContextService } from '../context/context.service';
 import { Credentials } from '../../entity/tabt-soap/TabTAPI_Port';
 import { HeaderKeys } from '../context/context.constants';
 import { Injectable } from '@nestjs/common';
+import { CallerContext, Context } from '../context/context.contract';
 
 @Injectable()
 export class CredentialsService {
@@ -9,11 +10,18 @@ export class CredentialsService {
   }
 
   enrichInputWithCredentials<T>(input: T): T {
+    const callerContext: CallerContext = this.contextService.context.caller;
+
     const credentials: Credentials = {
-      Account: (<any>this.contextService.context.caller)[HeaderKeys.X_TABT_ACCOUNT],
-      Password: (<any>this.contextService.context.caller)[HeaderKeys.X_TABT_PASSWORD],
-      OnBehalfOf: (<any>this.contextService.context.caller)[HeaderKeys.X_TABT_ONBEHALFOF],
+      Account: callerContext[HeaderKeys.X_TABT_ACCOUNT],
+      Password: callerContext[HeaderKeys.X_TABT_PASSWORD],
+      OnBehalfOf: Number(callerContext[HeaderKeys.X_TABT_ONBEHALFOF]),
     };
+
+
+    if (callerContext[HeaderKeys.X_TABT_SEASON]) {
+      input['Season'] = Number(callerContext[HeaderKeys.X_TABT_SEASON]);
+    }
 
     if (credentials.Account && credentials.Password) {
       return {

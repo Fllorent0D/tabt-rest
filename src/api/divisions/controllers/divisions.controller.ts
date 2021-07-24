@@ -48,7 +48,6 @@ export class DivisionsController {
     @Query() query: GetDivisions,
   ): Promise<DivisionEntry[]> {
     return this.divisionService.getDivisions({
-      Season: query.season,
       Level: Level[query.level] as unknown as number,
       ShowDivisionName: query.showDivisionName,
     });
@@ -73,7 +72,6 @@ export class DivisionsController {
     @Query() query: GetDivisions,
   ): Promise<DivisionEntry> {
     const division = await this.divisionService.getDivisionsById(id, {
-      Season: query.season,
       ShowDivisionName: query.showDivisionName,
     });
     if (!division) {

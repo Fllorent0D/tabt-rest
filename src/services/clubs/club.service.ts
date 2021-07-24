@@ -11,13 +11,13 @@ export class ClubService {
   ) {
   }
 
-  async getClubs(input: GetClubsInput): Promise<ClubEntry[]> {
+  async getClubs(input: GetClubsInput = {}): Promise<ClubEntry[]> {
     const [result] = await this.tabtClient.GetClubsAsync(input);
     return result.ClubEntries;
   }
 
-  async getClubById(input: GetClubsInput, uniqueIndex: string): Promise<ClubEntry | undefined> {
-    const clubs = await this.getClubs(input);
+  async getClubById(uniqueIndex: string): Promise<ClubEntry | undefined> {
+    const clubs = await this.getClubs();
     return clubs.find((club) => club.UniqueIndex === uniqueIndex);
   }
 }

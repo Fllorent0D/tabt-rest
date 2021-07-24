@@ -40,7 +40,7 @@ export class ClubController {
   findAll(
     @Query() input: ListAllClubs,
   ) {
-    return this.clubService.getClubs({ ClubCategory: ClubCategory[input.clubCategory], Season: input.season });
+    return this.clubService.getClubs({ ClubCategory: ClubCategory[input.clubCategory] });
   }
 
   @Get(':clubIndex')
@@ -59,9 +59,8 @@ export class ClubController {
   })
   async findbyId(
     @Param('clubIndex') uniqueIndex: string,
-    @Query() input: RequestBySeasonDto,
   ) {
-    const value = await this.clubService.getClubById({ Season: input.season }, uniqueIndex);
+    const value = await this.clubService.getClubById(uniqueIndex);
     if (!value) {
       throw new NotFoundException();
     }
@@ -87,7 +86,6 @@ export class ClubController {
   ) {
     return this.clubMemberService.getClubsMembers({
       Club: uniqueIndex,
-      Season: input.season,
       PlayerCategory: PlayerCategory[input.playerCategory] as unknown as number,
       UniqueIndex: input.uniqueIndex,
       NameSearch: input.nameSearch,
@@ -115,7 +113,7 @@ export class ClubController {
     @Query() input: RequestBySeasonDto,
     @Param('clubIndex') uniqueIndex: string,
   ) {
-    return this.clubTeamService.getClubsTeams({ Club: uniqueIndex, Season: input.season });
+    return this.clubTeamService.getClubsTeams({ Club: uniqueIndex });
   }
 
   @Get(':clubIndex/venues')
@@ -131,7 +129,7 @@ export class ClubController {
     @Query() input: RequestBySeasonDto,
     @Param('clubIndex') uniqueIndex: string,
   ) {
-    const club = await this.clubService.getClubById({ Season: input.season }, uniqueIndex);
+    const club = await this.clubService.getClubById(uniqueIndex);
     const venues: VenueEntryWithAddress[] = [];
     for (const venue of club.VenueEntries) {
       try {

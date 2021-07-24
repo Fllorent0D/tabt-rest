@@ -32,7 +32,7 @@ async function bootstrap() {
     .addTag('Register')
     .build();
   const document = SwaggerModule.createDocument(app, options);
-  SwaggerModule.setup('api/doc', app, document);
+  SwaggerModule.setup('api', app, document);
 
   app.use(compression());
   app.use(helmet());

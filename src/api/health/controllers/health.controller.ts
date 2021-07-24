@@ -1,5 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
-import { DNSHealthIndicator, HealthCheck, HealthCheckService } from '@nestjs/terminus';
+import { DNSHealthIndicator, HealthCheck, HealthCheckService, HttpHealthIndicator } from '@nestjs/terminus';
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { TestRequestService } from '../../../services/test/test-request.service';
 import { TestOutput } from '../../../entity/tabt-soap/TabTAPI_Port';
@@ -11,7 +11,7 @@ import { ContextService } from '../../../common/context/context.service';
 export class HealthController {
   constructor(
     private health: HealthCheckService,
-    private dns: DNSHealthIndicator,
+    private healthIndicator: HttpHealthIndicator,
     private testRequest: TestRequestService,
     private contextService: ContextService,
   ) {
@@ -24,8 +24,8 @@ export class HealthController {
   @HealthCheck()
   check() {
     return this.health.check([
-      () => this.dns.pingCheck('AFTT API', 'https://resultats.aftt.be/api/?wsdl'),
-      () => this.dns.pingCheck('VTTL API', 'https://api.vttl.be/?wsdl'),
+      () => this.healthIndicator.pingCheck('AFTT API', 'https://resultats.aftt.be/api/?wsdl'),
+      () => this.healthIndicator.pingCheck('VTTL API', 'https://api.vttl.be/?wsdl'),
     ]);
   }
 
@@ -44,7 +44,7 @@ export class HealthController {
 
   @Get('context')
   @ApiOperation({
-    operationId: 'testRequest',
+    operationId: 'context',
   })
   @TabtHeadersDecorator()
   context() {

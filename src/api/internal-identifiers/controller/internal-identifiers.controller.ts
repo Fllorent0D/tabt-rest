@@ -23,8 +23,10 @@ export class InternalIdentifiersController {
   async findAll(
     @Query() input: UniqueIdentifiers,
   ): Promise<InternalIdentifiers> {
-    const playerId = await this.internalMapper.getInternalPlayerId(input.playerUniqueIndex);
-    const clubId = await this.internalMapper.getInternalClubId(input.clubUniqueIndex);
+    const [playerId, clubId] = await Promise.all([
+      this.internalMapper.getInternalPlayerId(input.playerUniqueIndex),
+      this.internalMapper.getInternalClubId(input.clubUniqueIndex),
+    ]);
 
     return {
       playerInternalIdentifier: playerId,
