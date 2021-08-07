@@ -1,0 +1,101 @@
+definitions:
+  TestOutput:
+    additionalProperties: true
+    default: {}
+    description: The root schema comprises the entire JSON document.
+    examples:
+      -   AllowedQuota: 8000
+          ApiVersion: 0.7.25
+          ConsumedTicks: 1891
+          CurrentQuota: 0
+          Database: vttl
+          IsValidAccount: false
+          Language: nl
+          RequestorIp: 91.177.215.17
+          Timestamp: '2020-09-20T15:37:45.000Z'
+    properties:
+      AllowedQuota:
+        $id: '#/properties/AllowedQuota'
+        default: 0
+        description: An explanation about the purpose of this instance.
+        examples:
+          - 8000
+        title: The AllowedQuota schema
+        type: integer
+      ApiVersion:
+        $id: '#/properties/ApiVersion'
+        default: ''
+        description: An explanation about the purpose of this instance.
+        examples:
+          - 0.7.25
+        title: The ApiVersion schema
+        type: string
+      ConsumedTicks:
+        $id: '#/properties/ConsumedTicks'
+        default: 0
+        description: An explanation about the purpose of this instance.
+        examples:
+          - 1891
+        title: The ConsumedTicks schema
+        type: integer
+      CurrentQuota:
+        $id: '#/properties/CurrentQuota'
+        default: 0
+        description: An explanation about the purpose of this instance.
+        examples:
+          - 0
+        title: The CurrentQuota schema
+        type: integer
+      Database:
+        $id: '#/properties/Database'
+        default: ''
+        description: An explanation about the purpose of this instance.
+        examples:
+          - vttl
+        title: The Database schema
+        type: string
+      IsValidAccount:
+        $id: '#/properties/IsValidAccount'
+        default: false
+        description: An explanation about the purpose of this instance.
+        examples:
+          - false
+        title: The IsValidAccount schema
+        type: boolean
+      Language:
+        $id: '#/properties/Language'
+        default: ''
+        description: An explanation about the purpose of this instance.
+        examples:
+          - nl
+        title: The Language schema
+        type: string
+      RequestorIp:
+        $id: '#/properties/RequestorIp'
+        default: ''
+        description: An explanation about the purpose of this instance.
+        examples:
+          - 91.177.215.17
+        title: The RequestorIp schema
+        type: string
+      Timestamp:
+        $id: '#/properties/Timestamp'
+        default: ''
+        description: An explanation about the purpose of this instance.
+        examples:
+          - '2020-09-20T15:37:45.000Z'
+        title: The Timestamp schema
+        type: string
+    required:
+      - Timestamp
+      - ApiVersion
+      - IsValidAccount
+      - Language
+      - Database
+      - RequestorIp
+      - ConsumedTicks
+      - CurrentQuota
+      - AllowedQuota
+    title: TestOutput
+    type: object
+

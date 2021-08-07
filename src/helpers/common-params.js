@@ -16,7 +16,7 @@ createSoapArg = (req, params, needCredentials = true) => {
         }
     });
 
-    if(needCredentials && !!_.get(req.headers, 'x-frenoy-login') && !!_.get(req.headers, 'x-frenoy-password')){
+    if(needCredentials && !!_.get(req.headers, 'x-tabt-login') && !!_.get(req.headers, 'x-tabt-password')){
         _.set(args, 'Credentials.Account', _.get(req.headers, 'x-frenoy-login'));
         _.set(args, 'Credentials.Password', _.get(req.headers, 'x-frenoy-password'));
         _.set(args, 'Credentials.OnBehalfOf', _.get(req.headers, 'x-frenoy-f'));

@@ -1,5 +1,6 @@
 const appRoot = require('app-root-path');
-const winston = require('winston');
+const { createLogger, format, transports } = require('winston');
+const { combine, timestamp, json, colorize, simple } = format;
 
 // define the custom settings for each transport (file, console)
 const options = {
@@ -7,33 +8,26 @@ const options = {
         level: 'info',
         filename: `${appRoot.path}/logs/app.log`,
         handleExceptions: true,
-        json: true,
-        maxsize: 5242880, // 5MB
-        maxFiles: 5,
-        colorize: false,
-    },
-    error: {
-        level: 'error',
-        filename: `${appRoot.path}/logs/error.log`,
-        handleExceptions: true,
-        json: true,
-        maxSize: 5242880, // 5MB
-        maxFiles: 5,
-        colorize: false,
+        format: combine(
+          timestamp(),
+          json()
+        ),
     },
     console: {
         level: 'debug',
         handleExceptions: true,
-        json: false,
-        colorize: true,
+        format: combine(
+          colorize(),
+          simple()
+        ),
     },
 };
 
 // instantiate a new Winston Logger with the settings defined above
-const logger = winston.createLogger({
+const logger = createLogger({
     transports: [
-        new winston.transports.File(options.file),
-        new winston.transports.Console(options.console)
+        new transports.File(options.file),
+        new transports.Console(options.console)
     ],
     exitOnError: false, // do not exit on handled exceptions
 });

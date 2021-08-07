@@ -4,6 +4,19 @@ const cache = require('./helpers/cache');
 const commonResponse = require('./helpers/common-response');
 
 const routes = [
+    /**
+     * @swagger
+     * /test:
+     *   get:
+     *     description: Returns Test information
+     *     produces:
+     *      - application/json
+     *     responses:
+     *       200:
+     *         description: Information about current TabT instance
+     *         schema:
+     *           $ref: '#/definitions/TestOutput'
+     */
     {
         route: '/test',
         method: 'GET',
