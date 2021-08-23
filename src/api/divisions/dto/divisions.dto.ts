@@ -5,7 +5,7 @@ import { Transform } from 'class-transformer';
 import { GetMatches } from '../../match/dto/match.dto';
 import { Level } from '../../../entity/tabt-input.interface';
 
-export class GetDivisions extends RequestBySeasonDto {
+export class GetDivisions {
   @ApiPropertyOptional({ enum: Level })
   @IsOptional()
   @IsEnum(Level)

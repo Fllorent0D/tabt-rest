@@ -37,6 +37,7 @@ export class GeocoderService {
 
     const data = response.data;
     this.logger.debug(data);
+    console.log(data);
     if (data.length > 0) {
       return data[0];
     }

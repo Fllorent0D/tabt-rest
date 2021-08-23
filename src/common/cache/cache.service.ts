@@ -1,5 +1,14 @@
 import { CACHE_MANAGER, CacheStore, Inject, Injectable } from '@nestjs/common';
 
+// Durations in Seconds
+
+export enum TTL_DURATION {
+  ONE_DAY = 86_400,
+  EIGHT_HOURS = 28_800,
+  ONE_HOUR = 3_600,
+  TWO_HOURS = 7_200,
+}
+
 @Injectable()
 export class CacheService {
   constructor(

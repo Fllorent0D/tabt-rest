@@ -8,6 +8,7 @@ import { TabtClientService } from './tabt-client/tabt-client.service';
 import { TabtClientSwitchingService } from './tabt-client/tabt-client-switching.service';
 import { PackageService } from './package/package.service';
 import { TABT_HEADERS } from './context/context.constants';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 const asyncProviders: Provider[] = [
   {
@@ -44,14 +45,14 @@ const asyncProviders: Provider[] = [
     DatabaseContextService,
     TabtClientService,
     TabtClientSwitchingService,
-    PackageService
+    PackageService,
   ],
   exports: [
     ...asyncProviders,
     CacheService,
     ContextService,
     TabtClientService,
-    PackageService
+    PackageService,
   ],
 })
 export class CommonModule {

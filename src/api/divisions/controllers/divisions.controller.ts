@@ -17,6 +17,9 @@ import { TabtHeadersDecorator } from '../../../common/decorators/tabt-headers.de
 import { GetDivisionMatches, GetDivisionRanking, GetDivisions } from '../dto/divisions.dto';
 import { MatchService } from '../../../services/matches/match.service';
 import { Level } from '../../../entity/tabt-input.interface';
+import { RequestBySeasonDto } from '../../../common/dto/request-by-season.dto';
+import { MatchesMembersRankerService } from '../../../services/matches/matches-members-ranker.service';
+import { MemberResults } from '../../../common/dto/member-ranking.dto';
 
 @Controller('divisions')
 @TabtHeadersDecorator()
@@ -27,12 +30,13 @@ export class DivisionsController {
     private divisionService: DivisionService,
     private divisionRankingService: DivisionRankingService,
     private matchesService: MatchService,
+    private matchesMembersRankerService: MatchesMembersRankerService
   ) {
   }
 
   @Get()
   @ApiOperation({
-    operationId: 'findAllDivisions'
+    operationId: 'findAllDivisions',
   })
   @ApiResponse({
     description: 'List of divisions for a specific season.',
@@ -55,7 +59,7 @@ export class DivisionsController {
 
   @Get(':divisionId')
   @ApiOperation({
-    operationId: 'findDivisionById'
+    operationId: 'findDivisionById',
   })
   @ApiResponse({
     description: 'A specific division based on the id.',
@@ -82,7 +86,7 @@ export class DivisionsController {
 
   @Get(':divisionId/ranking')
   @ApiOperation({
-    operationId: 'findDivisionRanking'
+    operationId: 'findDivisionRanking',
   })
   @ApiResponse({
     description: 'The ranking for a specific division based on the id of the division.',
@@ -106,7 +110,7 @@ export class DivisionsController {
 
   @Get(':divisionId/matches')
   @ApiOperation({
-    operationId: 'findDivisionMatches'
+    operationId: 'findDivisionMatches',
   })
   @ApiResponse({
     description: 'A list of matches.',
@@ -128,6 +132,26 @@ export class DivisionsController {
       YearDateTo: query.yearDateTo,
       WithDetails: query.withDetails,
     });
+  }
+
+  @Get(':divisionId/members/ranking')
+  @ApiOperation({
+    operationId: 'findDivisionMembers',
+  })
+  @ApiResponse({
+    description: 'A ranking of members playing in a given division.',
+    type: [MemberResults],
+    status: 200,
+  })
+  @ApiResponse({
+    status: 400,
+    type: TabtException,
+  })
+  async findMembersInDivision(
+    @Param('divisionId', ParseIntPipe) id: number,
+    @Query() query: RequestBySeasonDto,
+  ): Promise<MemberResults[]> {
+    return this.matchesMembersRankerService.getMembersRankingFromDivision(id, query.season);
   }
 
 }

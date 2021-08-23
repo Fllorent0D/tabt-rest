@@ -40,10 +40,19 @@ export class VenueEntry {
 
   @ApiProperty()
   Comment: string;
+
+  @ApiPropertyOptional()
+  Lat?: string;
+
+  @ApiPropertyOptional()
+  Lon?: string;
+
+  @ApiPropertyOptional()
+  BoundingBox?: string[];
 }
 
 export class VenueEntryWithAddress extends VenueEntry {
-  Address?: OSMAddress
+  Address?: OSMAddress;
 }
 
 export class TestOutput {
@@ -58,7 +67,7 @@ export class TestOutput {
   @ApiProperty()
   IsValidAccount: boolean;
   /** SupportedLanguages(en,fr,nl) */
-  @ApiProperty({enum: ['en', 'fr', 'nl']})
+  @ApiProperty({ enum: ['en', 'fr', 'nl'] })
   Language: 'en' | 'fr' | 'nl';
   /** xsd:string(undefined) */
   @ApiProperty()
@@ -199,7 +208,7 @@ export class GetMatchesInput {
   /** xsd:string(undefined) */
   MatchId?: string;
   /** xsd:string(undefined) */
-  MatchUniqueId?: string;
+  MatchUniqueId?: number;
 }
 
 export class GetMatchesOutput {
@@ -757,11 +766,11 @@ export class TeamMatchesEntry {
   @Transform((pc) => PlayerCategory[pc], { toPlainOnly: true })
   DivisionCategory: number;
 
-  @ApiProperty({type: Boolean})
+  @ApiProperty({ type: Boolean })
   @Transform((value) => value === 'Y', { toPlainOnly: true })
   IsHomeWithdrawn: string;
 
-  @ApiProperty({type: Boolean})
+  @ApiProperty({ type: Boolean })
   @Transform((value) => value === 'Y', { toPlainOnly: true })
   IsAwayWithdrawn: string;
 
@@ -802,7 +811,7 @@ export class MemberEntryResultEntry {
   @ApiProperty()
   SetAgainst: number;
   /** http://api.frenoy.net/TabTAPI#CompetitionType(C,T) */
-  @ApiProperty({enum: ['C', 'T']})
+  @ApiProperty({ enum: ['C', 'T'] })
   CompetitionType: 'C' | 'T';
 
   @ApiProperty()
@@ -1000,11 +1009,13 @@ export class TournamentSerieEntry {
   @ApiPropertyOptional()
   ResultCount?: number;
 
-  @ApiPropertyOptional()
+  @ApiPropertyOptional({type: [TournamentSerieResultEntry]})
   ResultEntries?: Array<TournamentSerieResultEntry>;
+
   @ApiPropertyOptional()
   RegistrationCount?: number;
-  @ApiPropertyOptional()
+
+  @ApiPropertyOptional({type: [RegistrationEntry]})
   RegistrationEntries?: Array<RegistrationEntry>;
 }
 
@@ -1031,12 +1042,13 @@ export class TournamentEntry {
   @ApiProperty()
   RegistrationDate: string;
 
-  @ApiProperty()
-  Venue: Pick<VenueEntry, 'Name' | 'Street' | 'Town'>;
+  @ApiPropertyOptional()
+  Venue?: Pick<VenueEntry, 'Name' | 'Street' | 'Town' | 'BoundingBox' | 'Lat' | 'Lon'>;
 
   @ApiProperty()
   SerieCount: number;
-  @ApiProperty()
+
+  @ApiProperty({type: [TournamentSerieEntry]} )
   SerieEntries: Array<TournamentSerieEntry>;
 
   constructor(partial: Partial<TournamentEntry>) {

@@ -2,7 +2,7 @@ import { IsNumber, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 
-export class UniqueIdentifiers {
+export class UniqueIdentifiersDTO {
   @IsString()
   @ApiProperty()
   clubUniqueIndex: string;
@@ -13,7 +13,7 @@ export class UniqueIdentifiers {
   playerUniqueIndex: number;
 }
 
-export class InternalIdentifiers {
+export class InternalIdentifiersDTO {
   @ApiProperty()
   @IsNumber()
   clubInternalIdentifier: number;
@@ -22,3 +22,11 @@ export class InternalIdentifiers {
   @IsNumber()
   playerInternalIdentifier: number;
 }
+
+export class RedirectLinkDTO {
+  @ApiProperty()
+  @IsString()
+  url: string;
+
+}
+

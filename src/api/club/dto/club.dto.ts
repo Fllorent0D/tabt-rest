@@ -3,7 +3,7 @@ import { RequestBySeasonDto } from '../../../common/dto/request-by-season.dto';
 import { GetMembers } from '../../member/dto/member.dto';
 import { ClubCategory } from '../../../entity/tabt-input.interface';
 
-export class ListAllClubs extends RequestBySeasonDto {
+export class ListAllClubs {
   @ApiPropertyOptional({ enum: ClubCategory })
   clubCategory: string;
 }

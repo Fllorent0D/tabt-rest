@@ -5,17 +5,21 @@ import { TabtException } from '../../../common/filter/tabt-exceptions.filter';
 import { TournamentService } from '../../../services/tournaments/tournament.service';
 import { GetTournamentDetails, GetTournaments, RegisterTournament } from '../dto/tournaments.dto';
 import { TabtHeadersDecorator } from '../../../common/decorators/tabt-headers.decorator';
+import { GeocoderService } from '../../../services/geocoder/geocoder.service';
 
 @ApiTags('Tournaments')
 @Controller('tournaments')
 @TabtHeadersDecorator()
 export class TournamentController {
-  constructor(private tournamentService: TournamentService) {
+  constructor(
+    private readonly tournamentService: TournamentService,
+    private readonly geocoderService: GeocoderService,
+  ) {
   }
 
   @Get()
   @ApiOperation({
-    operationId: 'findAllTournaments'
+    operationId: 'findAllTournaments',
   })
   @ApiResponse({
     description: 'A list of tournament.',
@@ -29,12 +33,12 @@ export class TournamentController {
   findAll(
     @Query() input: GetTournaments,
   ) {
-    return this.tournamentService.getTournaments({ } as GetTournamentsInput);
+    return this.tournamentService.getTournaments({} as GetTournamentsInput);
   }
 
   @Get(':tournamentId')
   @ApiOperation({
-    operationId: 'findTournamentById'
+    operationId: 'findTournamentById',
   })
   @ApiResponse({
     description: 'A specific tournament.',
@@ -62,7 +66,7 @@ export class TournamentController {
 
   @Get(':tournamentId/series')
   @ApiOperation({
-    operationId: 'findSeriesByTournament'
+    operationId: 'findSeriesByTournament',
   })
   @ApiResponse({
     description: 'A specific tournament.',
@@ -88,7 +92,7 @@ export class TournamentController {
 
   @Post(':tournamentId/serie/:serieId/register')
   @ApiOperation({
-    operationId: 'registerToSerie'
+    operationId: 'registerToSerie',
   })
   @ApiResponse({
     status: 400,
@@ -104,7 +108,7 @@ export class TournamentController {
       SerieUniqueIndex: serieId,
       PlayerUniqueIndex: input.playerUniqueIndex,
       NotifyPlayer: input.notifyPlayer,
-      Unregister: input.unregister
+      Unregister: input.unregister,
     });
   }
 }

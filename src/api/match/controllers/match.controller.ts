@@ -40,7 +40,7 @@ export class MatchController {
       YearDateFrom: input.yearDateFrom,
       WithDetails: input.withDetails,
       MatchId: input.matchId,
-      MatchUniqueId: input.matchUniqueId
+      MatchUniqueId: Number(input.matchUniqueId)
     });
   }
 
@@ -86,7 +86,7 @@ export class MatchController {
   @ApiNotFoundResponse()
   async findById(
     @Query() input: GetMatch,
-    @Param('matchUniqueId') id: string,
+    @Param('matchUniqueId', ParseIntPipe) id: number,
   ): Promise<TeamMatchesEntry> {
     const found = await this.matchService.getMatches({
       DivisionId: input.divisionId,

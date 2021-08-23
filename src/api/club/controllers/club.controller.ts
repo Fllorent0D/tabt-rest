@@ -1,4 +1,4 @@
-import { Controller, Get, NotFoundException, Param, Query } from '@nestjs/common';
+import { Controller, Get, NotFoundException, Param, ParseIntPipe, Query } from '@nestjs/common';
 import { ApiNotFoundResponse, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ClubEntry, MemberEntry, TeamEntry, VenueEntryWithAddress } from '../../../entity/tabt-soap/TabTAPI_Port';
 import { ClubService } from '../../../services/clubs/club.service';
@@ -10,6 +10,8 @@ import { GetMembersFromClub, ListAllClubs } from '../dto/club.dto';
 import { RequestBySeasonDto } from '../../../common/dto/request-by-season.dto';
 import { ClubCategory, PlayerCategory } from '../../../entity/tabt-input.interface';
 import { GeocoderService } from '../../../services/geocoder/geocoder.service';
+import { MatchesMembersRankerService } from '../../../services/matches/matches-members-ranker.service';
+import { MemberResults } from '../../../common/dto/member-ranking.dto';
 
 @ApiTags('Clubs')
 @Controller('clubs')
@@ -20,6 +22,7 @@ export class ClubController {
     private clubTeamService: ClubTeamService,
     private clubMemberService: ClubMemberService,
     private geocoderService: GeocoderService,
+    private matchesMembersRankerService: MatchesMembersRankerService
   ) {
   }
 
@@ -147,5 +150,26 @@ export class ClubController {
     }
     return venues;
 
+  }
+
+
+  @Get(':clubIndex/members/ranking')
+  @ApiOperation({
+    operationId: 'findDivisionMembers',
+  })
+  @ApiResponse({
+    description: 'A ranking of members playing in a given division.',
+    type: [MemberResults],
+    status: 200,
+  })
+  @ApiResponse({
+    status: 400,
+    type: TabtException,
+  })
+  async findClubMembersRanking(
+    @Param('clubIndex') id: string,
+    @Query() query: RequestBySeasonDto,
+  ): Promise<MemberResults[]> {
+    return this.matchesMembersRankerService.getMembersRankingFromClub(id, query.season);
   }
 }

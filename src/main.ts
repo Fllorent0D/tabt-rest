@@ -29,10 +29,9 @@ async function bootstrap() {
     .addTag('Matches')
     .addTag('Divisions')
     .addTag('Tournaments')
-    .addTag('Register')
     .build();
   const document = SwaggerModule.createDocument(app, options);
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup(process.env.API_PREFIX, app, document);
 
   app.use(compression());
   app.use(helmet());

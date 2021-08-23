@@ -13,6 +13,9 @@ import { MatchSystemService } from './matches/match-system.service';
 import { TestRequestService } from './test/test-request.service';
 import { GeocoderService } from './geocoder/geocoder.service';
 import { InternalIdMapperService } from './id-mapper/internal-id-mapper.service';
+import { Head2headService } from './members/head2head.service';
+import { EloMemberService } from './members/elo-member.service';
+import { MatchesMembersRankerService } from './matches/matches-members-ranker.service';
 
 const services = [
   ClubService,
@@ -27,7 +30,10 @@ const services = [
   MatchSystemService,
   TestRequestService,
   GeocoderService,
-  InternalIdMapperService
+  InternalIdMapperService,
+  Head2headService,
+  EloMemberService,
+  MatchesMembersRankerService
 ];
 
 @Module({

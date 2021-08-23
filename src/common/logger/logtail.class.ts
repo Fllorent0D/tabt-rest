@@ -11,8 +11,16 @@ export class LogtailLogger {
   }
 
   static writeToLogtail(stringified: string): void {
-    const { level, msg, ...context } = JSON.parse(stringified);
+    console.log('LOL:::', stringified);
+    /*
+    try {
+      const { level, msg, ...context } = JSON.parse(stringified);
+      LogtailLogger.logger.log(msg, level, context);
 
-    LogtailLogger.logger.log(msg, level, context);
+    } catch (e) {
+      LogtailLogger.logger.error(e.message);
+      console.error(e);
+    }
+    */
   }
 }

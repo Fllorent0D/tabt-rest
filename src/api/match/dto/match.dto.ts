@@ -4,7 +4,7 @@ import { Transform } from 'class-transformer';
 import { RequestBySeasonDto } from '../../../common/dto/request-by-season.dto';
 import { Level, PlayerCategory } from '../../../entity/tabt-input.interface';
 
-export class GetMatches extends RequestBySeasonDto {
+export class GetMatches {
   @ApiPropertyOptional()
   @IsOptional()
   @IsNumber()
@@ -33,6 +33,7 @@ export class GetMatches extends RequestBySeasonDto {
   })
   @IsOptional()
   @IsNumber()
+  @Transform(id => parseInt(id), { toClassOnly: true })
   weekName?: string;
 
   @ApiPropertyOptional({

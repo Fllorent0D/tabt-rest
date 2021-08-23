@@ -1,16 +1,15 @@
-import { ApiPropertyOptional, OmitType } from '@nestjs/swagger';
-import { IsBoolean, IsEnum, IsOptional, IsString } from 'class-validator';
+import { ApiProperty, ApiPropertyOptional, OmitType } from '@nestjs/swagger';
+import { IsBoolean, IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
 import { Transform } from 'class-transformer';
-import { RequestBySeasonDto } from '../../../common/dto/request-by-season.dto';
 import { PlayerCategory } from '../../../entity/tabt-input.interface';
 
-export class GetMembers extends RequestBySeasonDto {
+export class GetMembers {
   @ApiPropertyOptional()
   @IsString()
   @IsOptional()
   club?: string;
 
-  @ApiPropertyOptional({enum: PlayerCategory})
+  @ApiPropertyOptional({ enum: PlayerCategory })
   @IsOptional()
   @IsEnum(PlayerCategory)
   playerCategory?: string;
@@ -52,4 +51,14 @@ export class GetMembers extends RequestBySeasonDto {
 }
 
 export class GetMember extends OmitType(GetMembers, ['uniqueIndex']) {
+}
+
+export class WeeklyELO {
+  @ApiProperty()
+  @IsNumber()
+  weekName: number;
+
+  @ApiProperty()
+  @IsNumber()
+  elo: number;
 }

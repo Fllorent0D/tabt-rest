@@ -1,6 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { ServicesModule } from './services/services.module';
 import { CommonModule } from './common/common.module';
 import { ApiModule } from './api/api.module';
@@ -19,9 +17,9 @@ import { LogtailLogger } from './common/logger/logtail.class';
     ApiModule,
     ConfigModule.forRoot(),
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'static'),
-      serveRoot: '/static',
-      exclude: ['/api*'],
+      rootPath: join(__dirname, '..', process.env.STATIC_PREFIX),
+      serveRoot: '/' + process.env.STATIC_PREFIX,
+      exclude: [`/${process.env.API_PREFIX}*`],
     }),
     LoggerModule.forRoot({
       pinoHttp: [{
@@ -48,10 +46,6 @@ import { LogtailLogger } from './common/logger/logtail.class';
         },
       }],
     }),
-  ],
-  controllers: [AppController],
-  providers: [
-    AppService,
   ],
 })
 export class AppModule {

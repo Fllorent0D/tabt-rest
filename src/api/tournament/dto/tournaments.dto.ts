@@ -3,7 +3,7 @@ import { RequestBySeasonDto } from '../../../common/dto/request-by-season.dto';
 import { IsBoolean, IsNumber, IsOptional } from 'class-validator';
 import { Transform } from 'class-transformer';
 
-export class GetTournaments extends RequestBySeasonDto {
+export class GetTournaments {
 }
 
 export class GetTournamentDetails {

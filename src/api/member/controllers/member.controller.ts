@@ -3,27 +3,32 @@ import { MemberEntry } from '../../../entity/tabt-soap/TabTAPI_Port';
 import { ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { MemberService } from '../../../services/members/member.service';
 import { TabtHeadersDecorator } from '../../../common/decorators/tabt-headers.decorator';
-import { GetMember, GetMembers } from '../dto/member.dto';
+import { GetMember, GetMembers, WeeklyELO } from '../dto/member.dto';
 import { PlayerCategory } from '../../../entity/tabt-input.interface';
+import { EloMemberService } from '../../../services/members/elo-member.service';
+import { RequestBySeasonDto } from '../../../common/dto/request-by-season.dto';
+import { SeasonService } from '../../../services/seasons/season.service';
 
 @ApiTags('Members')
 @Controller('members')
-@TabtHeadersDecorator()
 export class MemberController {
 
   constructor(
     private memberService: MemberService,
+    private eloMemberService: EloMemberService,
+    private seasonService: SeasonService,
   ) {
   }
 
   @Get()
   @ApiOperation({
-    operationId: 'findAllMembers'
+    operationId: 'findAllMembers',
   })
   @ApiOkResponse({
     type: [MemberEntry],
     description: 'List of players found with specific search criterias',
   })
+  @TabtHeadersDecorator()
   async findAll(
     @Query() input: GetMembers,
   ): Promise<MemberEntry[]> {
@@ -37,7 +42,7 @@ export class MemberController {
         RankingPointsInformation: input.rankingPointsInformation,
         WithResults: input.withResults,
         WithOpponentRankingEvaluation: input.withOpponentRankingEvaluation,
-      }
+      },
     );
   }
 
@@ -47,9 +52,10 @@ export class MemberController {
     description: 'The information of a specific player',
   })
   @ApiOperation({
-    operationId: 'findMemberById'
+    operationId: 'findMemberById',
   })
   @ApiNotFoundResponse()
+  @TabtHeadersDecorator()
   async findById(
     @Query() input: GetMember,
     @Param('uniqueIndex', ParseIntPipe) id: number,
@@ -68,6 +74,33 @@ export class MemberController {
       return found[0];
     }
     throw new NotFoundException();
+  }
+
+  @Get(':uniqueIndex/elo')
+  @ApiOkResponse({
+    type: [WeeklyELO],
+    description: 'The list of ELO points for a player in a season',
+  })
+  @ApiOperation({
+    operationId: 'findMemberEloHistory',
+  })
+  @ApiNotFoundResponse({
+    description: 'No points found for given player',
+  })
+  async findELOHistory(
+    @Param('uniqueIndex', ParseIntPipe) id: number,
+    @Query() { season }: RequestBySeasonDto,
+  ) {
+    if (!season) {
+      const currentSeason = await this.seasonService.getCurrentSeason();
+      season = currentSeason.Season;
+    }
+    const elos = await this.eloMemberService.getEloWeekly(id, season);
+    if (elos.length) {
+      return elos;
+    } else {
+      throw new NotFoundException('No ELO points found');
+    }
   }
 
 }
