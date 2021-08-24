@@ -30,6 +30,7 @@ import { CredentialsService } from './credentials.service';
 import { CacheService, TTL_DURATION } from '../cache/cache.service';
 import { DatabaseContextService } from '../context/database-context.service';
 import { PinoLogger } from 'nestjs-pino';
+import { LogtailLogger } from '../logger/logger.class';
 
 
 @Injectable()
@@ -40,9 +41,9 @@ export class TabtClientService {
     private readonly cacheService: CacheService,
     private readonly credentialsService: CredentialsService,
     private readonly databaseContextService: DatabaseContextService,
-    private readonly logger: PinoLogger
+    private readonly logger: LogtailLogger
   ) {
-    this.logger.setContext(TabtClientService.name)
+    //this.logger.setContext(TabtClientService.name)
   }
 
   private enrichBodyAndQueryWithCache<T>(prefix: string, input: any, operation: (operation: any, options: any, headers: any) => Promise<T>, ttl) {

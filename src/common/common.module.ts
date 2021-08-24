@@ -8,7 +8,9 @@ import { TabtClientService } from './tabt-client/tabt-client.service';
 import { TabtClientSwitchingService } from './tabt-client/tabt-client-switching.service';
 import { PackageService } from './package/package.service';
 import { TABT_HEADERS } from './context/context.constants';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { LoggerModule } from 'nestjs-pino';
+import { LogtailLogger } from './logger/logger.class';
+import { ConfigModule } from '@nestjs/config';
 
 const asyncProviders: Provider[] = [
   {
@@ -36,6 +38,7 @@ const asyncProviders: Provider[] = [
 @Module({
   imports: [
     CacheModule.register(),
+    ConfigModule
   ],
   providers: [
     ...asyncProviders,
@@ -46,6 +49,7 @@ const asyncProviders: Provider[] = [
     TabtClientService,
     TabtClientSwitchingService,
     PackageService,
+    LogtailLogger
   ],
   exports: [
     ...asyncProviders,
@@ -53,6 +57,7 @@ const asyncProviders: Provider[] = [
     ContextService,
     TabtClientService,
     PackageService,
+    LogtailLogger
   ],
 })
 export class CommonModule {

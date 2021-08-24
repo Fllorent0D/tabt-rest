@@ -1,15 +1,14 @@
-import { HttpService, Injectable } from '@nestjs/common';
+import { HttpService, Injectable, LoggerService } from '@nestjs/common';
 import { OSMAddress } from '../../entity/osm/osm-search.model';
-import { PinoLogger } from 'nestjs-pino';
+import { LogtailLogger } from '../../common/logger/logger.class';
 
 @Injectable()
 export class GeocoderService {
 
   constructor(
     private httpClient: HttpService,
-    private readonly logger: PinoLogger,
+    private readonly logger: LogtailLogger
   ) {
-    this.logger.setContext(GeocoderService.name);
   }
 
 
