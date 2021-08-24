@@ -12,7 +12,7 @@ import { LogtailLogger } from './common/logger/logger.class';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { cors: true });
-  const logger = await app.resolve(LogtailLogger)
+  //const logger = await app.resolve(LogtailLogger)
   //app.useLogger(logger);
 
   const packageService = app.get(PackageService);
