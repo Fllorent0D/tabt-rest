@@ -8,10 +8,9 @@ import { TabtClientService } from './tabt-client/tabt-client.service';
 import { TabtClientSwitchingService } from './tabt-client/tabt-client-switching.service';
 import { PackageService } from './package/package.service';
 import { TABT_HEADERS } from './context/context.constants';
-import { LoggerModule } from 'nestjs-pino';
 import { LogtailLogger } from './logger/logger.class';
 import { ConfigModule } from '@nestjs/config';
-
+import * as redisStore from 'cache-manager-redis-store';
 const asyncProviders: Provider[] = [
   {
     provide: 'tabt-aftt',
@@ -31,14 +30,25 @@ const asyncProviders: Provider[] = [
   },
   {
     provide: 'TABT_HEADERS',
-    useValue: TABT_HEADERS
-  }
+    useValue: TABT_HEADERS,
+  },
 ];
 
 @Module({
   imports: [
-    CacheModule.register(),
-    ConfigModule
+    CacheModule.registerAsync({
+      useFactory: () => {
+        const redisUrl = process.env.REDIS_TLS_URL;
+        if (redisUrl) {
+          return {
+            url: redisUrl
+          }
+        } else {
+          return null;
+        }
+      },
+    }),
+    ConfigModule,
   ],
   providers: [
     ...asyncProviders,
@@ -49,7 +59,7 @@ const asyncProviders: Provider[] = [
     TabtClientService,
     TabtClientSwitchingService,
     PackageService,
-    LogtailLogger
+    LogtailLogger,
   ],
   exports: [
     ...asyncProviders,
@@ -57,7 +67,7 @@ const asyncProviders: Provider[] = [
     ContextService,
     TabtClientService,
     PackageService,
-    LogtailLogger
+    LogtailLogger,
   ],
 })
 export class CommonModule {
