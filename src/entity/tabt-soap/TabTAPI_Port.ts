@@ -767,12 +767,10 @@ export class TeamMatchesEntry {
   DivisionCategory: number;
 
   @ApiProperty({ type: Boolean })
-  @Transform((value) => value === 'Y', { toPlainOnly: true })
-  IsHomeWithdrawn: string;
+  IsHomeWithdrawn: boolean;
 
   @ApiProperty({ type: Boolean })
-  @Transform((value) => value === 'Y', { toPlainOnly: true })
-  IsAwayWithdrawn: string;
+  IsAwayWithdrawn: boolean;
 
   @ApiProperty()
   IsValidated: boolean;
@@ -782,6 +780,9 @@ export class TeamMatchesEntry {
 
   constructor(partial: Partial<TeamMatchesEntry>) {
     Object.assign(this, partial);
+    this.IsAwayWithdrawn = (partial.IsAwayWithdrawn as unknown as string) !== 'N';
+
+    this.IsHomeWithdrawn = (partial.IsHomeWithdrawn as unknown as string) !== 'N';
   }
 }
 
@@ -1009,13 +1010,13 @@ export class TournamentSerieEntry {
   @ApiPropertyOptional()
   ResultCount?: number;
 
-  @ApiPropertyOptional({type: [TournamentSerieResultEntry]})
+  @ApiPropertyOptional({ type: [TournamentSerieResultEntry] })
   ResultEntries?: Array<TournamentSerieResultEntry>;
 
   @ApiPropertyOptional()
   RegistrationCount?: number;
 
-  @ApiPropertyOptional({type: [RegistrationEntry]})
+  @ApiPropertyOptional({ type: [RegistrationEntry] })
   RegistrationEntries?: Array<RegistrationEntry>;
 }
 
@@ -1048,7 +1049,7 @@ export class TournamentEntry {
   @ApiProperty()
   SerieCount: number;
 
-  @ApiProperty({type: [TournamentSerieEntry]} )
+  @ApiProperty({ type: [TournamentSerieEntry] })
   SerieEntries: Array<TournamentSerieEntry>;
 
   constructor(partial: Partial<TournamentEntry>) {
