@@ -13,7 +13,7 @@ export class MemberService {
   }
 
   async getMembers(input: GetMembersInput): Promise<MemberEntry[]> {
-    const [result] = await this.tabtClient.GetMembersAsync(input);
+    const result = await this.tabtClient.GetMembersAsync(input);
     if (result.MemberCount === 0) {
       return [];
     }

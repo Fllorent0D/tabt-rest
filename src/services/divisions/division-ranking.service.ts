@@ -12,7 +12,7 @@ export class DivisionRankingService {
   }
 
   async getDivisionRanking(input: GetDivisionRankingInput): Promise<RankingEntry[]> {
-    const [result] = await this.tabtClient.GetDivisionRankingAsync({ ...input });
+    const result = await this.tabtClient.GetDivisionRankingAsync({ ...input });
     return result.RankingEntries;
   }
 }

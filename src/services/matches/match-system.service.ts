@@ -12,12 +12,12 @@ export class MatchSystemService {
   }
 
   async getMatchSystems(): Promise<MatchSystemEntry[]> {
-    const [response] = await this.tabtClient.GetMatchSystemsAsync({});
+    const response = await this.tabtClient.GetMatchSystemsAsync({});
     return response.MatchSystemEntries;
   }
 
   async getMatchSystemsById(id: number): Promise<MatchSystemEntry | null> {
-    const [response] = await this.tabtClient.GetMatchSystemsAsync({ UniqueIndex: id });
+    const response = await this.tabtClient.GetMatchSystemsAsync({ UniqueIndex: id });
     if (response.MatchSystemEntries?.length === 1) {
       return response.MatchSystemEntries[0];
     }

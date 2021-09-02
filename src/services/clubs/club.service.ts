@@ -12,7 +12,7 @@ export class ClubService {
   }
 
   async getClubs(input: GetClubsInput = {}): Promise<ClubEntry[]> {
-    const [result] = await this.tabtClient.GetClubsAsync(input);
+    const result = await this.tabtClient.GetClubsAsync(input);
     return result.ClubEntries;
   }
 

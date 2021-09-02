@@ -13,7 +13,7 @@ export class DivisionService {
   }
 
   async getDivisions(input: GetDivisionsInput): Promise<DivisionEntry[]> {
-    const [result] = await this.tabtClient.GetDivisionsAsync(input);
+    const result = await this.tabtClient.GetDivisionsAsync(input);
     return result.DivisionEntries.map(entry => new DivisionEntry(entry));
   }
 

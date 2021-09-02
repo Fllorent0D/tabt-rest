@@ -11,7 +11,7 @@ export class SeasonService {
   }
 
   async getSeasons(): Promise<SeasonEntry[]> {
-    const [result] = await this.tabtClient.GetSeasonsAsync({});
+    const result = await this.tabtClient.GetSeasonsAsync({});
     return result.SeasonEntries;
   }
 
