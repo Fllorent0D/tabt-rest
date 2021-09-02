@@ -14,23 +14,28 @@ export class LogtailLogger implements LoggerService {
   }
 
   debug(message: any, context?: string): any {
+    console.log(message, context)
     this.logger.debug(message, { context })
   }
 
   error(message: any, trace?: string, context?: string): any {
+    console.log(message, context)
     this.logger.error(message, { context, trace })
   }
 
   log(message: any, context?: string): any {
+    console.log(message, context)
     this.logger.log(message, LogLevel.Info, { context })
   }
 
   verbose(message: any, context?: string): any {
+    console.log(message, context)
     this.logger.debug(message, { context })
 
   }
 
   warn(message: any, context?: string): any {
+    console.log(message, context)
     this.logger.warn(message, { context })
   }
 
