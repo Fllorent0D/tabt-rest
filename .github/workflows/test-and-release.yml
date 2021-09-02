@@ -67,4 +67,4 @@ jobs:
           host: ${{ secrets.SSH_STAGING_HOST }}
           username: ${{ secrets.SSH_STAGING_USER }}
           key: ${{ secrets.SSH_STAGING_PRIVATEKEY }}
-          script: cd ${{ secrets.SSH_STAGING_TARGET }} && pm2 restart tabt-rest-pm2.json
+          script: cd ${{ secrets.SSH_STAGING_TARGET }} && pm2 reload tabt-rest-pm2.json
