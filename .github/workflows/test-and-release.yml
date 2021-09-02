@@ -65,6 +65,7 @@ jobs:
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_STAGING_HOST }}
+          port: ${{ secrets.SSH_REMOTE_PORT }}
           username: ${{ secrets.SSH_STAGING_USER }}
           key: ${{ secrets.SSH_STAGING_PRIVATEKEY }}
           script: cd ${{ secrets.SSH_STAGING_TARGET }} && pm2 reload tabt-rest-pm2.json
