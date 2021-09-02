@@ -43,10 +43,7 @@ const asyncProviders: Provider[] = [
         if (redisUrl) {
           return {
             store: redisStore,
-            url: redisUrl,
-            tls: {
-              rejectUnauthorized: false
-            }
+            url: redisUrl
           }
         } else {
           return null;

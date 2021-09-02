@@ -17,10 +17,12 @@ export class CacheService {
   }
 
   getFromCache<T>(key: string): Promise<T> {
+    console.log('get cacthe', key)
     return this.cacheManager.get(key) as Promise<T | undefined>;
   }
 
   setInCache(key: string, value: any, ttl: number): Promise<void> {
+    console.log('set cacthe', key)
     return this.cacheManager.set(key, value, { ttl }) as Promise<void>;
   }
 
