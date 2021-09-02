@@ -1,7 +1,6 @@
 import { ApiPropertyOptional, OmitType } from '@nestjs/swagger';
 import { IsBoolean, IsEnum, IsNumber, IsOptional, IsString, Matches } from 'class-validator';
 import { Transform } from 'class-transformer';
-import { RequestBySeasonDto } from '../../../common/dto/request-by-season.dto';
 import { Level, PlayerCategory } from '../../../entity/tabt-input.interface';
 
 export class GetMatches {

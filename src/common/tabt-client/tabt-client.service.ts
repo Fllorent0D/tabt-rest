@@ -29,7 +29,6 @@ import { TabtClientSwitchingService } from './tabt-client-switching.service';
 import { CredentialsService } from './credentials.service';
 import { CacheService, TTL_DURATION } from '../cache/cache.service';
 import { DatabaseContextService } from '../context/database-context.service';
-import { PinoLogger } from 'nestjs-pino';
 import { LogtailLogger } from '../logger/logger.class';
 
 

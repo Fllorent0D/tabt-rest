@@ -1,11 +1,10 @@
 import { Body, Controller, Get, NotFoundException, Param, ParseIntPipe, Post, Query } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { GetTournamentsInput, TournamentEntry, TournamentSerieEntry } from '../../../entity/tabt-soap/TabTAPI_Port';
+import { TournamentEntry, TournamentSerieEntry } from '../../../entity/tabt-soap/TabTAPI_Port';
 import { TabtException } from '../../../common/filter/tabt-exceptions.filter';
 import { TournamentService } from '../../../services/tournaments/tournament.service';
 import { GetTournamentDetails, GetTournaments, RegisterTournament } from '../dto/tournaments.dto';
 import { TabtHeadersDecorator } from '../../../common/decorators/tabt-headers.decorator';
-import { GeocoderService } from '../../../services/geocoder/geocoder.service';
 
 @ApiTags('Tournaments')
 @Controller('tournaments')
@@ -13,7 +12,6 @@ import { GeocoderService } from '../../../services/geocoder/geocoder.service';
 export class TournamentController {
   constructor(
     private readonly tournamentService: TournamentService,
-    private readonly geocoderService: GeocoderService,
   ) {
   }
 
@@ -33,7 +31,7 @@ export class TournamentController {
   findAll(
     @Query() input: GetTournaments,
   ) {
-    return this.tournamentService.getTournaments({} as GetTournamentsInput);
+    return this.tournamentService.getTournaments(input);
   }
 
   @Get(':tournamentId')

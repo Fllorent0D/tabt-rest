@@ -7,7 +7,7 @@ import * as responseTime from 'response-time';
 import { TabtExceptionsFilter } from './common/filter/tabt-exceptions.filter';
 import { ValidationPipe } from '@nestjs/common';
 import { PackageService } from './common/package/package.service';
-import { LogtailLogger } from './common/logger/logger.class';
+
 //import { Logger } from 'nestjs-pino';
 
 async function bootstrap() {

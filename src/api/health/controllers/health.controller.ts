@@ -1,5 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
-import { DNSHealthIndicator, HealthCheck, HealthCheckService, HttpHealthIndicator } from '@nestjs/terminus';
+import { HealthCheck, HealthCheckService, HttpHealthIndicator } from '@nestjs/terminus';
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { TestRequestService } from '../../../services/test/test-request.service';
 import { TestOutput } from '../../../entity/tabt-soap/TabTAPI_Port';

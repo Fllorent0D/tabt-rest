@@ -11,6 +11,7 @@ import { TABT_HEADERS } from './context/context.constants';
 import { LogtailLogger } from './logger/logger.class';
 import { ConfigModule } from '@nestjs/config';
 import * as redisStore from 'cache-manager-redis-store';
+
 const asyncProviders: Provider[] = [
   {
     provide: 'tabt-aftt',

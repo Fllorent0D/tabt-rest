@@ -2,7 +2,7 @@ import { ContextService } from '../context/context.service';
 import { Credentials } from '../../entity/tabt-soap/TabTAPI_Port';
 import { HeaderKeys } from '../context/context.constants';
 import { Injectable } from '@nestjs/common';
-import { CallerContext, Context } from '../context/context.contract';
+import { CallerContext } from '../context/context.contract';
 
 @Injectable()
 export class CredentialsService {
