@@ -40,7 +40,9 @@ const asyncProviders: Provider[] = [
       useFactory: () => {
         const redisUrl = process.env.REDIS_TLS_URL;
         if (redisUrl) {
+          console.log('redis ur Dl ')
           return {
+            store: redisStore,
             url: redisUrl
           }
         } else {
