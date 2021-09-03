@@ -723,7 +723,7 @@ export class TeamMatchesEntry {
   @ApiProperty()
   VenueClub: string;
 
-  @ApiProperty()
+  @ApiProperty({ type: VenueEntry })
   VenueEntry: Omit<VenueEntry, 'ClubVenue' | 'Id'>;
 
   @ApiProperty()

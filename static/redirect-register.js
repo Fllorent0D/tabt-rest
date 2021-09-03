@@ -2,10 +2,14 @@
   const urlParams = new URLSearchParams(window.location.search);
   const playerId = urlParams.get('internalPlayerId');
   const clubId = urlParams.get('internalClubId');
+  const db = urlParams.get('database');
+
+  const aftt = 'https://resultats.aftt.be/index.php?menu=0&register=1';
+  const vttl = 'https://competitie.vttl.be/index.php?menu=0&register=1';
 
   const form = document.createElement('form');
   form.method = 'POST';
-  form.action = 'https://resultats.aftt.be/index.php?menu=0&register=1';
+  form.action = db === 'aftt' ? aftt : vttl;
 
 
   const playerIdField = document.createElement('input');

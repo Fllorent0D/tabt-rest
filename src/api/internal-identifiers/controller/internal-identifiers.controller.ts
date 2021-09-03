@@ -53,7 +53,7 @@ export class InternalIdentifiersController {
     ]);
 
     return {
-      url: this.configService.get<string>('HOST') + this.configService.get<string>('STATIC_PREFIX') + `/redirect-register.html?internalPlayerId=${playerId}&internalClubId=${clubId}`,
+      url: this.configService.get<string>('HOST') + this.configService.get<string>('STATIC_PREFIX') + `/redirect-register.html?internalPlayerId=${playerId}&internalClubId=${clubId}&database=${input.database}`,
     };
   }
 }
