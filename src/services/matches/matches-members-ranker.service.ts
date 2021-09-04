@@ -120,7 +120,9 @@ export class MatchesMembersRankerService {
       result.winPourcentage = Math.round((result.win / result.played) * 100);
       result.losePourcentage = Math.round((result.lose / result.played) * 100);
     }
-    return members.sort((a, b) => a.winPourcentage > b.winPourcentage ? -1 : 1);
+    return members
+      .filter((member) => member.played > 0)
+      .sort((a, b) => ((a.played * 100) + a.winPourcentage) > ((b.played * 100) + b.winPourcentage) ? -1 : 1);
   }
 
 }
