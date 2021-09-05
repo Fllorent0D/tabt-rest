@@ -9,6 +9,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { PackageService } from './common/package/package.service';
 import {tracer} from 'dd-trace';
 import { StatsD } from 'hot-shots';
+import { DatadogService } from './common/logger/datadog.service';
 //import { Logger } from 'nestjs-pino';
 
 async function bootstrap() {
@@ -17,6 +18,7 @@ async function bootstrap() {
   //app.useLogger(logger);
 
   const packageService = app.get(PackageService);
+  const datadog = app.get(DatadogService);
   app.setGlobalPrefix(process.env.API_PREFIX);
 
   const options = new DocumentBuilder()
@@ -36,12 +38,11 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup(process.env.API_PREFIX, app, document);
   tracer.init();
-  new StatsD();
   app.use(compression());
   app.use(helmet());
   app.use(responseTime());
 
-  app.useGlobalFilters(new TabtExceptionsFilter());
+  app.useGlobalFilters(new TabtExceptionsFilter(datadog));
   app.useGlobalPipes(new ValidationPipe());
 
   await app.listen(process.env.PORT);

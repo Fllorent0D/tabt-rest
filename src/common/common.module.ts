@@ -11,6 +11,7 @@ import { TABT_HEADERS } from './context/context.constants';
 import { LogtailLogger } from './logger/logger.class';
 import { ConfigModule } from '@nestjs/config';
 import * as redisStore from 'cache-manager-redis-store';
+import { DatadogService } from './logger/datadog.service';
 
 const asyncProviders: Provider[] = [
   {
@@ -62,6 +63,7 @@ const asyncProviders: Provider[] = [
     TabtClientSwitchingService,
     PackageService,
     LogtailLogger,
+    DatadogService
   ],
   exports: [
     ...asyncProviders,
@@ -70,6 +72,7 @@ const asyncProviders: Provider[] = [
     TabtClientService,
     PackageService,
     LogtailLogger,
+    DatadogService
   ],
 })
 export class CommonModule {

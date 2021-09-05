@@ -30,6 +30,7 @@ import { CredentialsService } from './credentials.service';
 import { CacheService, TTL_DURATION } from '../cache/cache.service';
 import { DatabaseContextService } from '../context/database-context.service';
 import { LogtailLogger } from '../logger/logger.class';
+import { DatadogService } from '../logger/datadog.service';
 
 
 @Injectable()
@@ -40,7 +41,7 @@ export class TabtClientService {
     private readonly cacheService: CacheService,
     private readonly credentialsService: CredentialsService,
     private readonly databaseContextService: DatabaseContextService,
-    private readonly logger: LogtailLogger,
+    private readonly datadog: DatadogService,
   ) {
     //this.logger.setContext(TabtClientService.name)
   }
@@ -49,7 +50,7 @@ export class TabtClientService {
     const enrichedInput = this.credentialsService.enrichInputWithCredentials(input);
     const cacheKey = this.cacheService.getCacheKey(prefix, enrichedInput, this.databaseContextService.database);
     const getter: () => Promise<T> = () => {
-      this.logger.debug(`Requesting ${prefix} data to TabT`);
+      this.datadog.statsD.event('tabt-call', `Requesting ${prefix} data to TabT`, {alert_type: 'info'});
       return operation(enrichedInput, null, this.credentialsService.extraHeaders);
     };
 

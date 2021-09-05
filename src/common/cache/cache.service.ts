@@ -1,5 +1,6 @@
 import { CACHE_MANAGER, CacheStore, Inject, Injectable } from '@nestjs/common';
 import {createHash} from 'crypto';
+import { DatadogService } from '../logger/datadog.service';
 
 // Durations in Seconds
 
@@ -14,16 +15,17 @@ export enum TTL_DURATION {
 export class CacheService {
   constructor(
     @Inject(CACHE_MANAGER) private cacheManager: CacheStore,
+    private readonly dataDogService: DatadogService
   ) {
   }
 
   getFromCache<T>(key: string): Promise<T> {
-    console.log('get cacthe', key)
+    this.dataDogService.statsD.increment('cache.get')
     return this.cacheManager.get(key) as Promise<T | undefined>;
   }
 
   setInCache(key: string, value: any, ttl: number): Promise<void> {
-    console.log('set cacthe', key)
+    this.dataDogService.statsD.increment('cache.set')
     return this.cacheManager.set(key, value, { ttl }) as Promise<void>;
   }
 
@@ -35,8 +37,11 @@ export class CacheService {
     const cached = await this.getFromCache<T>(key);
 
     if (cached) {
+      this.dataDogService.statsD.increment('cache.found')
       return cached;
     }
+
+    this.dataDogService.statsD.increment('cache.not_found')
 
     const result = await getter();
     await this.setInCache(key, result, ttl);
