@@ -7,7 +7,8 @@ import * as responseTime from 'response-time';
 import { TabtExceptionsFilter } from './common/filter/tabt-exceptions.filter';
 import { ValidationPipe } from '@nestjs/common';
 import { PackageService } from './common/package/package.service';
-
+import {tracer} from 'dd-trace';
+import { StatsD } from 'hot-shots';
 //import { Logger } from 'nestjs-pino';
 
 async function bootstrap() {
@@ -34,7 +35,8 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup(process.env.API_PREFIX, app, document);
-
+  tracer.init();
+  new StatsD();
   app.use(compression());
   app.use(helmet());
   app.use(responseTime());
