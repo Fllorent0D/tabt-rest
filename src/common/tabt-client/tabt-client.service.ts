@@ -50,7 +50,7 @@ export class TabtClientService {
     const enrichedInput = this.credentialsService.enrichInputWithCredentials(input);
     const cacheKey = this.cacheService.getCacheKey(prefix, enrichedInput, this.databaseContextService.database);
     const getter: () => Promise<T> = () => {
-      this.datadog.statsD.event('tabt-call', `Requesting ${prefix} data to TabT`, {alert_type: 'info'});
+      //this.datadog.statsD.event('tabt-call', `Requesting ${prefix} data to TabT`, {alert_type: 'info'});
       return operation(enrichedInput, null, this.credentialsService.extraHeaders);
     };
 

@@ -37,7 +37,7 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup(process.env.API_PREFIX, app, document);
-  tracer.init();
+  datadog.statsD.event(`${packageService.name} ${packageService.version} started`);
   app.use(compression());
   app.use(helmet());
   app.use(responseTime());
