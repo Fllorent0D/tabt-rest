@@ -1,4 +1,5 @@
 import { CACHE_MANAGER, CacheStore, Inject, Injectable } from '@nestjs/common';
+import {createHash} from 'crypto';
 
 // Durations in Seconds
 
@@ -27,7 +28,7 @@ export class CacheService {
   }
 
   getCacheKey(prefix: string, input: any, db: string): string {
-    return `${prefix}-${db}-${JSON.stringify(input)}`;
+    return createHash('md5').update(`${prefix}-${db}-${JSON.stringify(input)}`).digest('hex');
   }
 
   async getFromCacheOrGetAndCacheResult<T>(key: string, getter: () => Promise<T>, ttl = 600): Promise<T> {
