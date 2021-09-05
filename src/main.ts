@@ -1,3 +1,4 @@
+import './tracer';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
@@ -7,10 +8,7 @@ import * as responseTime from 'response-time';
 import { TabtExceptionsFilter } from './common/filter/tabt-exceptions.filter';
 import { ValidationPipe } from '@nestjs/common';
 import { PackageService } from './common/package/package.service';
-import {tracer} from 'dd-trace';
-import { StatsD } from 'hot-shots';
 import { DatadogService } from './common/logger/datadog.service';
-//import { Logger } from 'nestjs-pino';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { cors: true });
