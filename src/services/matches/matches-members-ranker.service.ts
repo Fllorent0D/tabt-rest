@@ -41,19 +41,20 @@ export class MatchesMembersRankerService {
     return this.cacheService.getFromCacheOrGetAndCacheResult(`members-ranking-club-${club}-${season}`, getter, TTL_DURATION.EIGHT_HOURS);
   }
 
-  async getMembersRankingFromTeam(club: string, team: string, season: number): Promise<MemberResults[]> {
+  async getMembersRankingFromTeam(club: string, teamId: string, season: number): Promise<MemberResults[]> {
     // Télécharger les matchs
+    const [divisionId] = teamId.split('-');
     const getter = async () => {
       const matches = await this.matchService.getMatches({
         Season: season,
         Club: club,
-        Team: team,
+        DivisionId: Number(divisionId),
         WithDetails: true,
       });
 
-      return this.computeRanking(matches);
+      return this.computeRanking(matches, club);
     };
-    return this.cacheService.getFromCacheOrGetAndCacheResult(`members-ranking-team-${club}-${team}-${season}`, getter, TTL_DURATION.EIGHT_HOURS);
+    return this.cacheService.getFromCacheOrGetAndCacheResult(`members-ranking-team-${club}-${teamId}-${season}`, getter, TTL_DURATION.EIGHT_HOURS);
   }
 
   computeRanking(matches: TeamMatchesEntry[], keepClub?: string): MemberResults[] {

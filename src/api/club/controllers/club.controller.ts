@@ -119,6 +119,27 @@ export class ClubController {
     return this.clubTeamService.getClubsTeams({ Club: uniqueIndex });
   }
 
+  @Get(':clubIndex/teams/:teamId/ranking')
+  @ApiOperation({
+    operationId: 'findClubTeamsMemberRanking',
+  })
+  @ApiResponse({
+    description: 'A list of teams from a specific club.',
+    type: [TeamEntry],
+    status: 200,
+  })
+  @ApiResponse({
+    status: 400,
+    type: TabtException,
+  })
+  getClubTeamsMembersRanking(
+    @Query() input: RequestBySeasonDto,
+    @Param('clubIndex') clubIndex: string,
+    @Param('teamId') teamId: string,
+  ) {
+    return this.matchesMembersRankerService.getMembersRankingFromTeam(clubIndex, teamId, input.season);
+  }
+
   @Get(':clubIndex/venues')
   @ApiOperation({
     operationId: 'findClubVenues',
