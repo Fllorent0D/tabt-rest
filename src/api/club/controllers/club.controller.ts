@@ -124,8 +124,8 @@ export class ClubController {
     operationId: 'findClubTeamsMemberRanking',
   })
   @ApiResponse({
-    description: 'A list of teams from a specific club.',
-    type: [TeamEntry],
+    description: 'A ranking of all players from a team.',
+    type: [MemberResults],
     status: 200,
   })
   @ApiResponse({

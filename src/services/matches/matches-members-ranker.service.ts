@@ -51,7 +51,7 @@ export class MatchesMembersRankerService {
         DivisionId: Number(divisionId),
         WithDetails: true,
       });
-
+      new Boolean('true')
       return this.computeRanking(matches, club);
     };
     return this.cacheService.getFromCacheOrGetAndCacheResult(`members-ranking-team-${club}-${teamId}-${season}`, getter, TTL_DURATION.EIGHT_HOURS);
