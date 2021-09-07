@@ -12,8 +12,6 @@ import { DatadogService } from './common/logger/datadog.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { cors: true });
-  //const logger = await app.resolve(LogtailLogger)
-  //app.useLogger(logger);
 
   const packageService = app.get(PackageService);
   const datadog = app.get(DatadogService);
@@ -35,7 +33,7 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup(process.env.API_PREFIX, app, document);
-  datadog.statsD.event(`${packageService.name} ${packageService.version} started`);
+  datadog.statsD?.event(`${packageService.name} ${packageService.version} started`);
   app.use(compression());
   app.use(helmet());
   app.use(responseTime());

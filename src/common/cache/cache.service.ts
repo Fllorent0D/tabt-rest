@@ -25,12 +25,12 @@ export class CacheService {
   }
 
   getFromCache<T>(key: string): Promise<T> {
-    this.dataDogService.statsD.increment('cache.get');
+    this.dataDogService.statsD?.increment('cache.get');
     return this.cacheManager.get(CacheService.hashKey(key)) as Promise<T | undefined>;
   }
 
   setInCache(key: string, value: any, ttl: number): Promise<void> {
-    this.dataDogService.statsD.increment('cache.set');
+    this.dataDogService.statsD?.increment('cache.set');
     return this.cacheManager.set(CacheService.hashKey(key), value, { ttl }) as Promise<void>;
   }
 
@@ -43,11 +43,11 @@ export class CacheService {
     const cached = await this.getFromCache<T>(key);
 
     if (cached) {
-      this.dataDogService.statsD.increment('cache.found');
+      this.dataDogService.statsD?.increment('cache.found');
       return cached;
     }
 
-    this.dataDogService.statsD.increment('cache.not_found');
+    this.dataDogService.statsD?.increment('cache.not_found');
 
     const result = await getter();
     await this.setInCache(key, result, ttl);

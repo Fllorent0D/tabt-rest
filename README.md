@@ -14,9 +14,11 @@ This api is a bridge to the TabT SOAP API. It contacts TabT and cache results in
 ## Installation
 
 ```bash
-$ git clone https://github.com/Fllorent0D/tabt-nest
+$ git clone https://github.com/Fllorent0D/TabT-Rest.git
 $ npm install
 ```
+
+Create your own environment file (`.env`) from the `.env.example`
 
 ## Running the app
 
@@ -46,7 +48,7 @@ $ npm run test:cov
 ### Start with pm2
 
 ```sh
-pm2 start ./dist/index.js
+pm2 start tabt-rest-pm2.json
 ```
 
 ## Release History
@@ -68,7 +70,7 @@ Cardoen Florent – [@Fllorent0D](https://twitter.com/fllorent0D) – f.cardoen@
 
 ## Contributing
 
-1. Fork it (<https://github.com/Fllorent0D/Tabt-GraphQL>)
+1. Fork it (<https://github.com/Fllorent0D/Tabt-Rest>)
 2. Create your feature branch (`git checkout -b feature/fooBar`)
 3. Commit your changes (`git commit -am 'Add some fooBar'`)
 4. Push to the branch (`git push origin feature/fooBar`)

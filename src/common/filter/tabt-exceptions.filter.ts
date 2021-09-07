@@ -22,7 +22,7 @@ export class TabtExceptionsFilter implements ExceptionFilter {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse();
     const [errorCode, errorMessage] = exception.message.split(': ');
-    this.datadog.statsD.event('tabt-error', exception.message, {alert_type: 'error'})
+    this.datadog.statsD?.event('tabt-error', exception.message, {alert_type: 'error'})
     response.status(400).json({
       statusCode: 400,
       errorCode: parseInt(errorCode),
