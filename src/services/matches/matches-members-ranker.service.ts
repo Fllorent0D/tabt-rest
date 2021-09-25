@@ -93,14 +93,14 @@ export class MatchesMembersRankerService {
 
           for (const individualMatch of matchDetails.IndividualMatchResults) {
             if (
-              (individualMatch.AwayPlayerUniqueIndex.includes(player.uniqueIndex) && !individualMatch.IsAwayForfeited && !individualMatch.IsHomeForfeited) ||
-              (individualMatch.HomePlayerUniqueIndex.includes(player.uniqueIndex) && !individualMatch.IsHomeForfeited && !individualMatch.IsAwayForfeited)
+              (individualMatch.AwayPlayerUniqueIndex?.includes(player.uniqueIndex) && !individualMatch.IsAwayForfeited && !individualMatch.IsHomeForfeited) ||
+              (individualMatch.HomePlayerUniqueIndex?.includes(player.uniqueIndex) && !individualMatch.IsHomeForfeited && !individualMatch.IsAwayForfeited)
             ) {
               playerEntry.played = playerEntry.played + 1;
 
               if (
-                (individualMatch.AwayPlayerUniqueIndex.includes(player.uniqueIndex) && individualMatch.AwaySetCount > individualMatch.HomeSetCount) ||
-                (individualMatch.HomePlayerUniqueIndex.includes(player.uniqueIndex) && individualMatch.AwaySetCount < individualMatch.HomeSetCount)
+                (individualMatch.AwayPlayerUniqueIndex?.includes(player.uniqueIndex) && individualMatch.AwaySetCount > individualMatch.HomeSetCount) ||
+                (individualMatch.HomePlayerUniqueIndex?.includes(player.uniqueIndex) && individualMatch.AwaySetCount < individualMatch.HomeSetCount)
               ) {
                 playerEntry.win = playerEntry.win + 1;
               } else {
