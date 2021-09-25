@@ -42,7 +42,7 @@ export class EloMemberService {
         const currentRow = matchesRows.item(row);
 
         const week = currentRow.childNodes[1].childNodes[0].data;
-        const elo = Number((currentRow.childNodes[19].childNodes[0].nodeValue as string).replace('&nbsp;', ''));
+        const elo = Number((currentRow.childNodes[21].childNodes[0].nodeValue as string).replace('&nbsp;', ''));
 
         if (elo) {
           elos.set(week, elo);
