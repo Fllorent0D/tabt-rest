@@ -93,8 +93,8 @@ export class MatchesMembersRankerService {
 
           for (const individualMatch of matchDetails.IndividualMatchResults) {
             if (
-              (individualMatch.AwayPlayerUniqueIndex?.includes(player.uniqueIndex) && !individualMatch.IsAwayForfeited && !individualMatch.IsHomeForfeited) ||
-              (individualMatch.HomePlayerUniqueIndex?.includes(player.uniqueIndex) && !individualMatch.IsHomeForfeited && !individualMatch.IsAwayForfeited)
+              (individualMatch && individualMatch.AwayPlayerUniqueIndex?.includes(player.uniqueIndex) && !individualMatch.IsAwayForfeited && !individualMatch.IsHomeForfeited) ||
+              (individualMatch && individualMatch.HomePlayerUniqueIndex?.includes(player.uniqueIndex) && !individualMatch.IsHomeForfeited && !individualMatch.IsAwayForfeited)
             ) {
               playerEntry.played = playerEntry.played + 1;
 
