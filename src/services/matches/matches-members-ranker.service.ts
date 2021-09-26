@@ -70,8 +70,8 @@ export class MatchesMembersRankerService {
           lastName: p.LastName,
           ranking: p.Ranking,
         });
-        const awayPlayers = matchDetails.AwayPlayers.Players.map(mapPlayer);
-        const homePlayers = matchDetails.HomePlayers.Players.map(mapPlayer);
+        const awayPlayers = (matchDetails.AwayPlayers?.Players ?? []).map(mapPlayer);
+        const homePlayers = (matchDetails.HomePlayers?.Players ?? []).map(mapPlayer);
         const matchPlayers = [
           ...((keepClub && match.HomeClub === keepClub || !keepClub) ? homePlayers : []),
           ...((keepClub && match.AwayClub === keepClub || !keepClub) ? awayPlayers : []),
