@@ -29,8 +29,8 @@ import { TabtClientSwitchingService } from './tabt-client-switching.service';
 import { CredentialsService } from './credentials.service';
 import { CacheService, TTL_DURATION } from '../cache/cache.service';
 import { DatabaseContextService } from '../context/database-context.service';
-import { LogtailLogger } from '../logger/logger.class';
 import { DatadogService } from '../logger/datadog.service';
+import { TabtException } from '../filter/tabt-exception';
 
 
 @Injectable()
@@ -49,11 +49,14 @@ export class TabtClientService {
   private enrichBodyAndQueryWithCache<T>(prefix: string, input: any, operation: (operation: any, options: any, headers: any) => Promise<T>, ttl) {
     const enrichedInput = this.credentialsService.enrichInputWithCredentials(input);
     const cacheKey = this.cacheService.getCacheKey(prefix, enrichedInput, this.databaseContextService.database);
-    const getter: () => Promise<T> = () => {
-      //this.datadog.statsD?.event('tabt-call', `Requesting ${prefix} data to TabT`, {alert_type: 'info'});
-      return operation(enrichedInput, null, this.credentialsService.extraHeaders);
-    };
+    const getter: () => Promise<T> = async () => {
+      try {
+        return await operation(enrichedInput, null, this.credentialsService.extraHeaders);
+      } catch (e) {
+        throw new TabtException(e?.root?.Envelope?.Body?.Fault?.faultcode, e?.root?.Envelope?.Body?.Fault?.faultstring);
+      }
 
+    };
     return this.cacheService.getFromCacheOrGetAndCacheResult(cacheKey, getter, ttl);
   }
 

@@ -24,7 +24,6 @@ async function bootstrap() {
     <ul><li>If possible, set a X-Application-For header string. Include the name of your application, and a way to contact you in case something would go wrong.<br>
       An example user agent string format is, which could result in the following string: beping/2.0.0 (floca.be; florent@floca.be). The use of a header like this isn’t obligated or enforced, but allows for better communication.</li></ul>
     `)
-    .setVersion('1.0')
     .setContact('Florent Cardoen', 'http://floca.be/', 'f.cardoen@me.com')
     .setVersion(packageService.version)
     .setLicense('GNU General Public License v3.0', 'https://github.com/Fllorent0D/TabT-Rest/blob/main/LICENSE')
@@ -42,7 +41,7 @@ async function bootstrap() {
   app.use(helmet());
   app.use(responseTime());
 
-  app.useGlobalFilters(new TabtExceptionsFilter(datadog));
+  //app.useGlobalFilters(new TabtExceptionsFilter(datadog));
   app.useGlobalPipes(new ValidationPipe());
 
   await app.listen(process.env.PORT);
