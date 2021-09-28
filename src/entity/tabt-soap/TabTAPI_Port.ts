@@ -400,11 +400,16 @@ export class TeamEntry {
   @ApiProperty()
   DivisionName: string;
 
-  @ApiProperty()
+  @ApiProperty({ enum: PlayerCategory })
+  @Transform((pc) => PlayerCategory[pc], { toPlainOnly: true })
   DivisionCategory: number;
 
   @ApiProperty()
   MatchType: number;
+
+  constructor(partial: Partial<TeamEntry>) {
+    Object.assign(this, partial);
+  }
 }
 
 

@@ -12,6 +12,6 @@ export class ClubTeamService {
 
   async getClubsTeams(input: GetClubTeamsInput): Promise<TeamEntry[]> {
     const result = await this.tabtClient.GetClubTeamsAsync(input);
-    return result.TeamEntries;
+    return result.TeamEntries?.map((t) => new TeamEntry(t));
   }
 }
