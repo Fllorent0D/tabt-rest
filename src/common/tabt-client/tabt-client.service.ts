@@ -51,7 +51,7 @@ export class TabtClientService {
     const cacheKey = this.cacheService.getCacheKey(prefix, enrichedInput, this.databaseContextService.database);
     const getter: () => Promise<T> = async () => {
       try {
-        return operation(enrichedInput, null, this.credentialsService.extraHeaders);
+        return await operation(enrichedInput, null, this.credentialsService.extraHeaders);
       } catch (e) {
         throw new TabtException(e?.root?.Envelope?.Body?.Fault?.faultcode, e?.root?.Envelope?.Body?.Fault?.faultstring);
       }
