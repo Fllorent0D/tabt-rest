@@ -9,7 +9,7 @@ import { Level, PlayerCategory } from '../../../entity/tabt-input.interface';
 
 @ApiTags('Matches')
 @Controller({
-  path: 'matchs',
+  path: 'matches',
   version: '1'
 })
 @TabtHeadersDecorator()
