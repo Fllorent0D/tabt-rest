@@ -25,25 +25,25 @@ export class GetMembers {
   nameSearch?: string;
 
   @ApiPropertyOptional()
-  @Transform((a) => Boolean(a))
+  @Transform((a) => Boolean(a.value))
   @IsBoolean()
   @IsOptional()
   extendedInformation?: boolean;
 
   @ApiPropertyOptional()
-  @Transform((a) => Boolean(a))
+  @Transform((a) => Boolean(a.value))
   @IsBoolean()
   @IsOptional()
   rankingPointsInformation?: boolean;
 
   @ApiPropertyOptional()
-  @Transform((a) => Boolean(a))
+  @Transform((a) => Boolean(a.value))
   @IsBoolean()
   @IsOptional()
   withResults?: boolean;
 
   @ApiPropertyOptional()
-  @Transform((a) => Boolean(a))
+  @Transform((a) => Boolean(a.value))
   @IsBoolean()
   @IsOptional()
   withOpponentRankingEvaluation?: boolean;

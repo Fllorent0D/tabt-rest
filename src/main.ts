@@ -38,7 +38,7 @@ async function bootstrap() {
     type: VersioningType.URI,
   });
   const document = SwaggerModule.createDocument(app, options);
-  SwaggerModule.setup('/', app, document);
+  SwaggerModule.setup('doc', app, document);
   datadog.statsD?.event(`${packageService.name} ${packageService.version} started`);
   app.use(compression());
   app.use(helmet());

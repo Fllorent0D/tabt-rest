@@ -65,7 +65,7 @@ export class GetMatches {
 
   @ApiPropertyOptional()
   @IsOptional()
-  @Transform((val) => Boolean(val), { toClassOnly: true })
+  @Transform((val) => Boolean(val.value), { toClassOnly: true })
   @IsBoolean()
   withDetails?: boolean;
 
