@@ -3,14 +3,18 @@ import { MemberEntry } from '../../../entity/tabt-soap/TabTAPI_Port';
 import { ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { MemberService } from '../../../services/members/member.service';
 import { TabtHeadersDecorator } from '../../../common/decorators/tabt-headers.decorator';
-import { GetMember, GetMembers, WeeklyELO } from '../dto/member.dto';
+import { GetMember, GetMembers, WeeklyELO, WeeklyNumericRanking } from '../dto/member.dto';
 import { PlayerCategory } from '../../../entity/tabt-input.interface';
 import { EloMemberService } from '../../../services/members/elo-member.service';
 import { RequestBySeasonDto } from '../../../common/dto/request-by-season.dto';
 import { SeasonService } from '../../../services/seasons/season.service';
 
 @ApiTags('Members')
-@Controller('members')
+@Controller({
+  path: 'members',
+  version: '1'
+})
+
 export class MemberController {
 
   constructor(
@@ -83,6 +87,7 @@ export class MemberController {
   })
   @ApiOperation({
     operationId: 'findMemberEloHistory',
+    deprecated: true,
   })
   @ApiNotFoundResponse({
     description: 'No points found for given player',
@@ -96,6 +101,33 @@ export class MemberController {
       season = currentSeason.Season;
     }
     const elos = await this.eloMemberService.getEloWeekly(id, season);
+    if (elos.length) {
+      return elos;
+    } else {
+      throw new NotFoundException('No ELO points found');
+    }
+  }
+
+  @Get(':uniqueIndex/numeric-rankings')
+  @ApiOkResponse({
+    type: [WeeklyNumericRanking],
+    description: 'The list of ELO points for a player in a season',
+  })
+  @ApiOperation({
+    operationId: 'findMemberNumericRankingsHistory',
+  })
+  @ApiNotFoundResponse({
+    description: 'No points found for given player',
+  })
+  async findNumericRankings(
+    @Param('uniqueIndex', ParseIntPipe) id: number,
+    @Query() { season }: RequestBySeasonDto,
+  ) {
+    if (!season) {
+      const currentSeason = await this.seasonService.getCurrentSeason();
+      season = currentSeason.Season;
+    }
+    const elos = await this.eloMemberService.getBelNumericRanking(id, season);
     if (elos.length) {
       return elos;
     } else {

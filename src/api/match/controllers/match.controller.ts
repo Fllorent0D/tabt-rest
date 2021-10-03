@@ -8,7 +8,10 @@ import { GetMatch, GetMatches } from '../dto/match.dto';
 import { Level, PlayerCategory } from '../../../entity/tabt-input.interface';
 
 @ApiTags('Matches')
-@Controller('matches')
+@Controller({
+  path: 'matchs',
+  version: '1'
+})
 @TabtHeadersDecorator()
 export class MatchController {
   constructor(

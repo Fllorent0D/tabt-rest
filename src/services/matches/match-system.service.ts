@@ -4,7 +4,7 @@ import { MatchSystemEntry } from '../../entity/tabt-soap/TabTAPI_Port';
 
 @Injectable()
 export class MatchSystemService {
-  private readonly logger = new Logger('ClubTeamService', true);
+  private readonly logger = new Logger('ClubTeamService');
 
   constructor(
     private tabtClient: TabtClientService,

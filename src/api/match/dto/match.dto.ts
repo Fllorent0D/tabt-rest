@@ -7,7 +7,7 @@ export class GetMatches {
   @ApiPropertyOptional()
   @IsOptional()
   @IsNumber()
-  @Transform(id => parseInt(id), { toClassOnly: true })
+  @Transform(id => parseInt(id.value), { toClassOnly: true })
   divisionId?: number;
 
   @ApiPropertyOptional()
@@ -32,7 +32,7 @@ export class GetMatches {
   })
   @IsOptional()
   @IsNumber()
-  @Transform(id => parseInt(id), { toClassOnly: true })
+  @Transform(id => parseInt(id.value), { toClassOnly: true })
   weekName?: string;
 
   @ApiPropertyOptional({

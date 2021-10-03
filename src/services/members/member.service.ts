@@ -5,7 +5,7 @@ import { TabtClientService } from '../../common/tabt-client/tabt-client.service'
 
 @Injectable()
 export class MemberService {
-  private readonly logger = new Logger('MemberService', true);
+  private readonly logger = new Logger('MemberService');
 
   constructor(
     private tabtClient: TabtClientService,

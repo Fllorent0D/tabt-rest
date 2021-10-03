@@ -16,7 +16,7 @@ export class GetMembers {
 
   @ApiPropertyOptional()
   @IsOptional()
-  @Transform(id => parseInt(id), { toClassOnly: true })
+  @Transform(id => parseInt(id.value), { toClassOnly: true })
   uniqueIndex?: number;
 
   @ApiPropertyOptional()
@@ -61,4 +61,18 @@ export class WeeklyELO {
   @ApiProperty()
   @IsNumber()
   elo: number;
+}
+
+export class WeeklyNumericRanking {
+  @ApiProperty()
+  @IsNumber()
+  weekName: number;
+
+  @ApiProperty()
+  @IsNumber()
+  elo: number;
+
+  @ApiProperty()
+  @IsNumber()
+  bel: number;
 }

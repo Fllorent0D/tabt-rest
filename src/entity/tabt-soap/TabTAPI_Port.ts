@@ -401,7 +401,7 @@ export class TeamEntry {
   DivisionName: string;
 
   @ApiProperty({ enum: PlayerCategory })
-  @Transform((pc) => PlayerCategory[pc], { toPlainOnly: true })
+  @Transform((pc) => PlayerCategory[pc.value], { toPlainOnly: true })
   DivisionCategory: number;
 
   @ApiProperty()
@@ -768,7 +768,7 @@ export class TeamMatchesEntry {
   DivisionId: number;
 
   @ApiProperty({ enum: PlayerCategory })
-  @Transform((pc) => PlayerCategory[pc], { toPlainOnly: true })
+  @Transform((pc) => PlayerCategory[pc.value], { toPlainOnly: true })
   DivisionCategory: number;
 
   @ApiProperty({ type: Boolean })
@@ -938,11 +938,11 @@ export class DivisionEntry {
   DivisionName: string;
 
   @ApiProperty({ enum: PlayerCategory })
-  @Transform((pc) => PlayerCategory[pc], { toPlainOnly: true })
+  @Transform((pc) => PlayerCategory[pc.value], { toPlainOnly: true })
   DivisionCategory: number;
 
   @ApiProperty({ enum: Level })
-  @Transform((l) => Level[l], { toPlainOnly: true })
+  @Transform((l) => Level[l.value], { toPlainOnly: true })
   Level: number;
 
   @ApiProperty()
@@ -1033,7 +1033,7 @@ export class TournamentEntry {
   Name: string;
 
   @ApiProperty()
-  @Transform((l) => Level[l], { toPlainOnly: true })
+  @Transform((l) => Level[l.value], { toPlainOnly: true })
   Level: number;
 
   @ApiProperty()

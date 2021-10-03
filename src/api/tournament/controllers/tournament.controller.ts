@@ -7,7 +7,10 @@ import { GetTournamentDetails, GetTournaments, RegisterTournament } from '../dto
 import { TabtHeadersDecorator } from '../../../common/decorators/tabt-headers.decorator';
 
 @ApiTags('Tournaments')
-@Controller('tournaments')
+@Controller({
+  path: 'tournaments',
+  version: '1'
+})
 @TabtHeadersDecorator()
 export class TournamentController {
   constructor(

@@ -1,4 +1,5 @@
-import { HttpModule, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
+import { HttpModule } from '@nestjs/axios';
 import { ClubService } from './clubs/club.service';
 import { ClubMemberService } from './clubs/club-member.service';
 import { ClubTeamService } from './clubs/club-team.service';

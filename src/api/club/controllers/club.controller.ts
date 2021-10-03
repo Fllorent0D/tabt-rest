@@ -22,7 +22,10 @@ import { MatchesMembersRankerService } from '../../../services/matches/matches-m
 import { MemberResults } from '../../../common/dto/member-ranking.dto';
 
 @ApiTags('Clubs')
-@Controller('clubs')
+@Controller({
+  path: 'clubs',
+  version: '1'
+})
 @TabtHeadersDecorator()
 export class ClubController {
   constructor(

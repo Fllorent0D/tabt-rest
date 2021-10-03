@@ -26,7 +26,6 @@ describe('MemberController', () => {
 
   it('should call members service with correct param', async () => {
     const input: GetMembers = {
-      season: 18,
       club: 'L360',
       uniqueIndex: 142453,
       extendedInformation: true,
@@ -57,7 +56,6 @@ describe('MemberController', () => {
 
   it('should call members service with correct param - 1 player', async () => {
     const input: GetMember = {
-      season: 18,
       club: 'L360',
       extendedInformation: true,
       nameSearch: 'florent',

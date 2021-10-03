@@ -4,7 +4,10 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { SeasonEntry } from '../../../entity/tabt-soap/TabTAPI_Port';
 import { TabtException } from '../../../common/filter/tabt-exceptions.filter';
 
-@Controller('seasons')
+@Controller({
+  path: 'seasons',
+  version: '1'
+})
 @ApiTags('Seasons')
 export class SeasonController {
   constructor(

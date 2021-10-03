@@ -21,7 +21,10 @@ import { RequestBySeasonDto } from '../../../common/dto/request-by-season.dto';
 import { MatchesMembersRankerService } from '../../../services/matches/matches-members-ranker.service';
 import { MemberResults } from '../../../common/dto/member-ranking.dto';
 
-@Controller('divisions')
+@Controller({
+  path: 'divisions',
+  version: '1'
+})
 @TabtHeadersDecorator()
 @ApiTags('Divisions')
 export class DivisionsController {

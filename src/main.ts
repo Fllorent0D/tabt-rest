@@ -5,8 +5,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as helmet from 'helmet';
 import * as compression from 'compression';
 import * as responseTime from 'response-time';
-import { TabtExceptionsFilter } from './common/filter/tabt-exceptions.filter';
-import { ValidationPipe } from '@nestjs/common';
+import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { PackageService } from './common/package/package.service';
 import { DatadogService } from './common/logger/datadog.service';
 
@@ -15,7 +14,7 @@ async function bootstrap() {
 
   const packageService = app.get(PackageService);
   const datadog = app.get(DatadogService);
-  app.setGlobalPrefix(process.env.API_PREFIX);
+  //app.setGlobalPrefix(process.env.API_PREFIX);
 
   const options = new DocumentBuilder()
     .setTitle('TabT Rest')
@@ -34,8 +33,12 @@ async function bootstrap() {
     .addTag('Divisions')
     .addTag('Tournaments')
     .build();
+
+  app.enableVersioning({
+    type: VersioningType.URI,
+  });
   const document = SwaggerModule.createDocument(app, options);
-  SwaggerModule.setup(process.env.API_PREFIX, app, document);
+  SwaggerModule.setup('/', app, document);
   datadog.statsD?.event(`${packageService.name} ${packageService.version} started`);
   app.use(compression());
   app.use(helmet());

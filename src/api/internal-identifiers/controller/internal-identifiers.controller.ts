@@ -5,7 +5,10 @@ import { InternalIdMapperService } from '../../../services/id-mapper/internal-id
 import { ConfigService } from '@nestjs/config';
 
 @ApiTags('Internal Identifiers')
-@Controller('internal-identifiers')
+@Controller({
+  path: 'internal-identifiers',
+  version: '1'
+})
 export class InternalIdentifiersController {
 
   constructor(

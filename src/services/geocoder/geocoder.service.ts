@@ -1,4 +1,6 @@
-import { HttpService, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
+import { HttpService } from '@nestjs/axios';
+
 import { OSMAddress } from '../../entity/osm/osm-search.model';
 import { LogtailLogger } from '../../common/logger/logger.class';
 

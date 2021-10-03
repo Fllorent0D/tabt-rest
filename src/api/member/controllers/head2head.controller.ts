@@ -3,7 +3,11 @@ import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Head2HeadData, Head2headService } from '../../../services/members/head2head.service';
 
 @ApiTags('Head2Head')
-@Controller('head2head')
+@Controller({
+  path: 'head2head',
+  version: '1'
+})
+
 export class Head2headController {
 
   constructor(
