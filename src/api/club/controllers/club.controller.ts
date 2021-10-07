@@ -51,6 +51,7 @@ export class ClubController {
     status: 400,
     type: TabtException,
   })
+  @UseInterceptors(ClassSerializerInterceptor)
   findAll(
     @Query() input: ListAllClubs,
   ) {
@@ -71,6 +72,7 @@ export class ClubController {
     status: 400,
     type: TabtException,
   })
+  @UseInterceptors(ClassSerializerInterceptor)
   async findbyId(
     @Param('clubIndex') uniqueIndex: string,
   ) {

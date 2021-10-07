@@ -3,6 +3,7 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 import { Level, PlayerCategory } from '../tabt-input.interface';
 import { OSMAddress } from '../osm/osm-search.model';
+import {decode} from 'he';
 
 export class Credentials {
 
@@ -919,6 +920,7 @@ export class ClubEntry {
   Category: number;
 
   @ApiProperty()
+  @Transform(({ value }) => decode(value), { toPlainOnly: true })
   CategoryName: string;
 
   @ApiProperty()
@@ -926,6 +928,10 @@ export class ClubEntry {
 
   @ApiProperty({ type: [VenueEntry] })
   VenueEntries?: Array<VenueEntry>;
+
+  constructor(partial: Partial<ClubEntry>) {
+    Object.assign(this, partial);
+  }
 }
 
 

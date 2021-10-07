@@ -13,7 +13,7 @@ export class ClubService {
 
   async getClubs(input: GetClubsInput = {}): Promise<ClubEntry[]> {
     const result = await this.tabtClient.GetClubsAsync(input);
-    return result.ClubEntries;
+    return result.ClubEntries.map(c => new ClubEntry(c));
   }
 
   async getClubById(uniqueIndex: string): Promise<ClubEntry | undefined> {
