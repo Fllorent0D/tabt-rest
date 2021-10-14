@@ -13,9 +13,8 @@ export class UniqueIdentifiersDTO {
   @IsEnum(TABT_DATABASE)
   database: TABT_DATABASE;
 
-  @IsNumber()
   @ApiProperty()
-  @Transform((a) => Number(a))
+  @Transform((a) => Number(a.value))
   playerUniqueIndex: number;
 }
 

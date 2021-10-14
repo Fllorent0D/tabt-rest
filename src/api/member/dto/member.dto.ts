@@ -2,6 +2,7 @@ import { ApiProperty, ApiPropertyOptional, OmitType } from '@nestjs/swagger';
 import { IsBoolean, IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
 import { Transform } from 'class-transformer';
 import { PlayerCategory } from '../../../entity/tabt-input.interface';
+import { RequestBySeasonDto } from '../../../common/dto/request-by-season.dto';
 
 export class GetMembers {
   @ApiPropertyOptional()
@@ -75,4 +76,10 @@ export class WeeklyNumericRanking {
   @ApiProperty()
   @IsNumber()
   bel: number;
+}
+
+export class WeeklyNumericRankingInput extends RequestBySeasonDto{
+  @ApiPropertyOptional({enum: PlayerCategory})
+  @IsEnum(PlayerCategory)
+  category: PlayerCategory;
 }

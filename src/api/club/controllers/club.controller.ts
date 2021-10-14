@@ -190,7 +190,7 @@ export class ClubController {
 
   @Get(':clubIndex/members/ranking')
   @ApiOperation({
-    operationId: 'findDivisionMembers',
+    operationId: 'findMembersRanking',
   })
   @ApiResponse({
     description: 'A ranking of members playing in a given division.',

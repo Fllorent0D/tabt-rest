@@ -3,7 +3,7 @@ import { MemberEntry } from '../../../entity/tabt-soap/TabTAPI_Port';
 import { ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { MemberService } from '../../../services/members/member.service';
 import { TabtHeadersDecorator } from '../../../common/decorators/tabt-headers.decorator';
-import { GetMember, GetMembers, WeeklyELO, WeeklyNumericRanking } from '../dto/member.dto';
+import { GetMember, GetMembers, WeeklyELO, WeeklyNumericRanking, WeeklyNumericRankingInput } from '../dto/member.dto';
 import { PlayerCategory } from '../../../entity/tabt-input.interface';
 import { EloMemberService } from '../../../services/members/elo-member.service';
 import { RequestBySeasonDto } from '../../../common/dto/request-by-season.dto';
@@ -12,7 +12,7 @@ import { SeasonService } from '../../../services/seasons/season.service';
 @ApiTags('Members')
 @Controller({
   path: 'members',
-  version: '1'
+  version: '1',
 })
 
 export class MemberController {
@@ -121,13 +121,14 @@ export class MemberController {
   })
   async findNumericRankings(
     @Param('uniqueIndex', ParseIntPipe) id: number,
-    @Query() { season }: RequestBySeasonDto,
+    @Query() { season, category }: WeeklyNumericRankingInput,
   ) {
     if (!season) {
       const currentSeason = await this.seasonService.getCurrentSeason();
       season = currentSeason.Season;
     }
-    const elos = await this.eloMemberService.getBelNumericRanking(id, season);
+    console.log(category);
+    const elos = await this.eloMemberService.getBelNumericRanking(id, season, category);
     if (elos.length) {
       return elos;
     } else {

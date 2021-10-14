@@ -5,6 +5,7 @@ import { DOMParser } from 'xmldom';
 import { WeeklyELO, WeeklyNumericRanking } from '../../api/member/dto/member.dto';
 import { CacheService, TTL_DURATION } from '../../common/cache/cache.service';
 import { firstValueFrom } from 'rxjs';
+import { PlayerCategory } from '../../entity/tabt-input.interface';
 
 @Injectable()
 export class EloMemberService {
@@ -27,18 +28,18 @@ export class EloMemberService {
     return this.cacheService.getFromCacheOrGetAndCacheResult(`elo-wk-${playerId}-${season}`, getter, TTL_DURATION.EIGHT_HOURS);
   }
 
-  public async getBelNumericRanking(playerId: number, season: number): Promise<WeeklyNumericRanking[]> {
+  public async getBelNumericRanking(playerId: number, season: number, category: PlayerCategory = PlayerCategory.MEN): Promise<WeeklyNumericRanking[]> {
     const getter = async () => {
       const playerUniqueIndex = await this.internalIdService.getInternalPlayerId(playerId);
-      return this.getELOsAndNumeric(playerUniqueIndex, season);
+      return this.getELOsAndNumeric(playerUniqueIndex, season, category);
     };
 
-    return this.cacheService.getFromCacheOrGetAndCacheResult(`elo-bel-wk-${playerId}-${season}`, getter, TTL_DURATION.EIGHT_HOURS);
+    return this.cacheService.getFromCacheOrGetAndCacheResult(`elo-bel-wk-${PlayerCategory[category]}-${playerId}-${season}`, getter, TTL_DURATION.EIGHT_HOURS);
   }
 
 
-  private async getRankingTablePage(uniquePlayerId: number, season: number): Promise<HTMLElementTagNameMap['table']> {
-    const page = await firstValueFrom(this.httpService.get<string>(`https://resultats.aftt.be/?menu=6&season=${season}&result=1&sel=${uniquePlayerId}&category=1&show_elo_in_table=1`, {
+  private async getRankingTablePage(uniquePlayerId: number, season: number, category: PlayerCategory): Promise<HTMLElementTagNameMap['table']> {
+    const page = await firstValueFrom(this.httpService.get<string>(`https://resultats.aftt.be/?menu=6&season=${season}&result=1&sel=${uniquePlayerId}&category=${PlayerCategory[category]}&show_elo_in_table=1`, {
       responseType: 'text',
     }));
     const domParser = new DOMParser({ errorHandler: () => void (0) });
@@ -48,7 +49,7 @@ export class EloMemberService {
   }
 
   private async getELOsFromAFTT(uniquePlayerId: number, season: number): Promise<WeeklyELO[]> {
-    const table = await this.getRankingTablePage(uniquePlayerId, season);
+    const table = await this.getRankingTablePage(uniquePlayerId, season, PlayerCategory.MEN);
 
     // #match_list > table > tbody > tr:nth-child(2)
     if (table) {
@@ -73,8 +74,8 @@ export class EloMemberService {
     return [];
   }
 
-  private async getELOsAndNumeric(uniquePlayerId: number, season: number): Promise<WeeklyNumericRanking[]> {
-    const table = await this.getRankingTablePage(uniquePlayerId, season);
+  private async getELOsAndNumeric(uniquePlayerId: number, season: number, category: PlayerCategory): Promise<WeeklyNumericRanking[]> {
+    const table = await this.getRankingTablePage(uniquePlayerId, season, category);
 
     // #match_list > table > tbody > tr:nth-child(2)
     if (table) {
