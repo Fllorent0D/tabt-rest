@@ -3,7 +3,7 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 import { Level, PlayerCategory } from '../tabt-input.interface';
 import { OSMAddress } from '../osm/osm-search.model';
-import {decode} from 'he';
+import { decode } from 'he';
 
 export class Credentials {
 
