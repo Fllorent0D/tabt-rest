@@ -26,15 +26,13 @@ describe('TournamentController', () => {
 
   describe('Tournaments', () => {
     it('should call tournaments service with correct params', async () => {
-      const input = {
-        season: 20,
-      };
+      const input = {};
       const spy = jest.spyOn(tournamentService, 'getTournaments');
       const result = await controller.findAll(input);
 
       expect(result).toBeDefined();
       expect(result[0]).toBeDefined();
-      expect(spy).toHaveBeenCalledWith({ Season: 20 });
+      expect(spy).toHaveBeenCalledWith({ });
     });
     it('should call tournaments service with correct params to find one tournament', async () => {
       const input: GetTournamentDetails = {

@@ -46,7 +46,7 @@ describe('CredentialsService', () => {
       expect(result).toEqual({
         'Credentials': {
           'Account': 'florent',
-          'OnBehalfOf': 'on behalf of ...',
+          // 'OnBehalfOf': 'on behalf of ...',
           'Password': 'the password',
         },
         'test': 'It\'s the test',

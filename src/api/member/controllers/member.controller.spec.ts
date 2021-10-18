@@ -3,8 +3,12 @@ import { MemberController } from './member.controller';
 import { MemberService } from '../../../services/members/member.service';
 import { GetMember, GetMembers } from '../dto/member.dto';
 import { NotFoundException } from '@nestjs/common';
+import { SeasonService } from '../../../services/seasons/season.service';
+import { EloMemberService } from '../../../services/members/elo-member.service';
 
 jest.mock('../../../services/members/member.service');
+jest.mock('../../../services/seasons/season.service');
+jest.mock('../../../services/members/elo-member.service');
 
 describe('MemberController', () => {
   let controller: MemberController;
@@ -13,7 +17,7 @@ describe('MemberController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [MemberController],
-      providers: [MemberService],
+      providers: [MemberService, SeasonService, EloMemberService],
     }).compile();
 
     controller = module.get<MemberController>(MemberController);
@@ -47,7 +51,6 @@ describe('MemberController', () => {
       'NameSearch': 'florent',
       'PlayerCategory': 1,
       'RankingPointsInformation': true,
-      'Season': 18,
       'UniqueIndex': 142453,
       'WithOpponentRankingEvaluation': true,
       'WithResults': true,
@@ -76,7 +79,6 @@ describe('MemberController', () => {
       'NameSearch': 'florent',
       'PlayerCategory': 1,
       'RankingPointsInformation': true,
-      'Season': 18,
       'UniqueIndex': 142453,
       'WithOpponentRankingEvaluation': true,
       'WithResults': true,

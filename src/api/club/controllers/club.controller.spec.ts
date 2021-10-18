@@ -7,10 +7,12 @@ import { GetMembersFromClub, ListAllClubs } from '../dto/club.dto';
 import { RequestBySeasonDto } from '../../../common/dto/request-by-season.dto';
 import { NotFoundException } from '@nestjs/common';
 import { GeocoderService } from '../../../services/geocoder/geocoder.service';
+import { MatchesMembersRankerService } from '../../../services/matches/matches-members-ranker.service';
 
 jest.mock('../../../services/clubs/club.service');
 jest.mock('../../../services/clubs/club-member.service');
 jest.mock('../../../services/clubs/club-team.service');
+jest.mock('../../../services/matches/matches-members-ranker.service');
 
 describe('ClubController', () => {
   let controller: ClubController;
@@ -22,7 +24,7 @@ describe('ClubController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [ClubController],
-      providers: [ClubService, ClubTeamService, ClubMemberService, { provide: GeocoderService, useValue: {} }],
+      providers: [ClubService, ClubTeamService, ClubMemberService, { provide: GeocoderService, useValue: {} }, MatchesMembersRankerService],
     }).compile();
 
     controller = module.get<ClubController>(ClubController);
@@ -38,7 +40,7 @@ describe('ClubController', () => {
 
   describe('findAll', () => {
     it('should call club service with correct params', async () => {
-      const input: ListAllClubs = { season: 18, clubCategory: 'LIEGE' };
+      const input: ListAllClubs = { clubCategory: 'LIEGE' };
 
       const getAllClubSpy = jest.spyOn(clubService, 'getClubs');
 
@@ -46,36 +48,31 @@ describe('ClubController', () => {
       const response = await controller.findAll(input);
       expect(response).toBeDefined();
       expect(response[0]).toBeDefined();
-      expect(getAllClubSpy).toHaveBeenCalledWith({ 'ClubCategory': 10, 'Season': 18 });
+      expect(getAllClubSpy).toHaveBeenCalledWith({ 'ClubCategory': 10 });
     });
   });
 
   describe('findbyId', () => {
     it('should call club service with correct params', async () => {
-      const input: RequestBySeasonDto = { season: 18 };
-
       const getAllClubSpy = jest.spyOn(clubService, 'getClubById');
 
-      const response = await controller.findbyId('L360', input);
+      const response = await controller.findbyId('L360');
 
       expect(response).toBeDefined();
-      expect(getAllClubSpy).toHaveBeenCalledWith({ 'Season': 18 }, 'L360');
+      expect(getAllClubSpy).toHaveBeenCalledWith('L360');
     });
 
     it('should throw an exeption if not found', async () => {
-      const input: RequestBySeasonDto = { season: 18 };
-
       jest.spyOn(clubService, 'getClubById').mockResolvedValue(null);
 
       // Weird syntaxt... ToThrown is not supported with async/await
-      expect(controller.findbyId('L360', input)).rejects.toEqual(new NotFoundException());
+      expect(controller.findbyId('L360')).rejects.toEqual(new NotFoundException());
     });
   });
 
   describe('getClubMembers', () => {
     it('should call club members service with correct params', async () => {
       const input: GetMembersFromClub = {
-        season: 18,
         playerCategory: 'MEN',
         uniqueIndex: 142453,
         nameSearch: 'Florent',
@@ -95,7 +92,6 @@ describe('ClubController', () => {
         'NameSearch': 'Florent',
         'PlayerCategory': 1,
         'RankingPointsInformation': true,
-        'Season': 18,
         'UniqueIndex': 142453,
         'WithOpponentRankingEvaluation': false,
         'WithResults': true,
@@ -112,7 +108,7 @@ describe('ClubController', () => {
       const response = await controller.getClubTeams(input, 'L360');
 
       expect(response).toBeDefined();
-      expect(getAllTeamsSpy).toHaveBeenCalledWith({ 'Season': 18, 'Club': 'L360' });
+      expect(getAllTeamsSpy).toHaveBeenCalledWith({ 'Club': 'L360' });
     });
   });
 

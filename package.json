@@ -1,6 +1,6 @@
 {
   "name": "tabt-rest",
-  "version": "1.7.0",
+  "version": "1.7.1",
   "description": "",
   "author": "",
   "private": true,
@@ -61,9 +61,9 @@
     "xmldom": "^0.6.0"
   },
   "devDependencies": {
-    "@nestjs/cli": "^7.0.0",
-    "@nestjs/schematics": "^7.0.0",
-    "@nestjs/testing": "^7.0.0",
+    "@nestjs/cli": "^8.1.2",
+    "@nestjs/schematics": "^8.0.3",
+    "@nestjs/testing": "^8.1.1",
     "@types/bluebird": "^3.5.32",
     "@types/compression": "^1.7.2",
     "@types/continuation-local-storage": "^3.2.3",

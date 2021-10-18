@@ -41,9 +41,8 @@ describe('MatchController', () => {
         yearDateFrom: '1995-10-17',
         yearDateTo: '1995-10-17',
         matchId: 'abc',
-        matchUniqueId: 'abxc',
+        matchUniqueId: '1234',
         withDetails: true,
-        season: 18,
       };
 
       const spy = jest.spyOn(matchService, 'getMatches');
@@ -59,8 +58,7 @@ describe('MatchController', () => {
         'DivisionId': 1,
         'Level': 1,
         'MatchId': 'abc',
-        'MatchUniqueId': 'abxc',
-        'Season': 18,
+        'MatchUniqueId': 1234,
         'ShowDivisionName': 'no',
         'Team': 'aze',
         'WeekName': '1',
@@ -82,12 +80,11 @@ describe('MatchController', () => {
         yearDateTo: '1995-10-17',
         matchId: 'abc',
         withDetails: true,
-        season: 18,
       };
 
       const spy = jest.spyOn(matchService, 'getMatches');
 
-      const result = await controller.findById(input, 'id');
+      const result = await controller.findById(input, 1234);
 
       expect(result).toBeDefined();
       expect(spy).toHaveBeenCalledWith({
@@ -96,8 +93,7 @@ describe('MatchController', () => {
         'DivisionId': 1,
         'Level': 1,
         'MatchId': 'abc',
-        'MatchUniqueId': 'id',
-        'Season': 18,
+        'MatchUniqueId': 1234,
         'ShowDivisionName': 'no',
         'Team': 'aze',
         'WeekName': '1',
@@ -112,7 +108,7 @@ describe('MatchController', () => {
 
       jest.spyOn(matchService, 'getMatches').mockResolvedValue([]);
 
-      expect(controller.findById(input, 'id')).rejects.toEqual(new NotFoundException());
+      expect(controller.findById(input, 1234)).rejects.toEqual(new NotFoundException());
     });
   });
 

@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { InternalIdMapperService } from '../id-mapper/internal-id-mapper.service';
 import { DOMParser } from 'xmldom';
@@ -30,8 +30,16 @@ export class EloMemberService {
 
   public async getBelNumericRanking(playerId: number, season: number, category: PlayerCategory = PlayerCategory.MEN): Promise<WeeklyNumericRanking[]> {
     const getter = async () => {
-      const playerUniqueIndex = await this.internalIdService.getInternalPlayerId(playerId);
-      return this.getELOsAndNumeric(playerUniqueIndex, season, category);
+      try {
+        const playerUniqueIndex = await this.internalIdService.getInternalPlayerId(playerId);
+        return this.getELOsAndNumeric(playerUniqueIndex, season, category);
+      } catch (e) {
+        console.log(e.message.indexOf('Player Id not found'))
+        if (e.message.indexOf('Player Id not found') > -1) {
+          throw new NotFoundException('Player not found');
+        }
+        throw e;
+      }
     };
 
     return this.cacheService.getFromCacheOrGetAndCacheResult(`elo-bel-wk-${PlayerCategory[category]}-${playerId}-${season}`, getter, TTL_DURATION.EIGHT_HOURS);

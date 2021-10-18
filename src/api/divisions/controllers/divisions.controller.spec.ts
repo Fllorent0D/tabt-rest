@@ -5,10 +5,12 @@ import { DivisionRankingService } from '../../../services/divisions/division-ran
 import { MatchService } from '../../../services/matches/match.service';
 import { GetDivisionMatches, GetDivisionRanking, GetDivisions } from '../dto/divisions.dto';
 import { NotFoundException } from '@nestjs/common';
+import { MatchesMembersRankerService } from '../../../services/matches/matches-members-ranker.service';
 
 jest.mock('../../../services/matches/match.service');
 jest.mock('../../../services/divisions/division.service');
 jest.mock('../../../services/divisions/division-ranking.service');
+jest.mock('../../../services/matches/matches-members-ranker.service');
 
 describe('DivisionsController', () => {
   let controller: DivisionsController;
@@ -19,7 +21,7 @@ describe('DivisionsController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [DivisionsController],
-      providers: [DivisionService, DivisionRankingService, MatchService],
+      providers: [DivisionService, DivisionRankingService, MatchService, MatchesMembersRankerService],
     }).compile();
 
     controller = module.get<DivisionsController>(DivisionsController);
@@ -37,7 +39,6 @@ describe('DivisionsController', () => {
       const input: GetDivisions = {
         level: 'NATIONAL',
         showDivisionName: 'yes',
-        season: 18,
       };
 
       const spy = jest.spyOn(divisionService, 'getDivisions');
@@ -47,7 +48,6 @@ describe('DivisionsController', () => {
       expect(result).toBeDefined();
       expect(result[0]).toBeDefined();
       expect(spy).toHaveBeenCalledWith({
-        Season: 18,
         Level: 1,
         ShowDivisionName: 'yes',
       });
@@ -56,7 +56,6 @@ describe('DivisionsController', () => {
     it('should call division service with correct params for 1 division', async () => {
       const input: GetDivisions = {
         showDivisionName: 'yes',
-        season: 18,
       };
 
       const spy = jest.spyOn(divisionService, 'getDivisionsById');
@@ -65,7 +64,6 @@ describe('DivisionsController', () => {
 
       expect(result).toBeDefined();
       expect(spy).toHaveBeenCalledWith(12, {
-        Season: 18,
         ShowDivisionName: 'yes',
       });
     });
@@ -73,7 +71,6 @@ describe('DivisionsController', () => {
     it('should return 404 when division id is not found', async () => {
       const input: GetDivisions = {
         showDivisionName: 'yes',
-        season: 18,
       };
 
       jest.spyOn(divisionService, 'getDivisionsById').mockResolvedValue(null);

@@ -56,7 +56,7 @@ export class MatchesMembersRankerService {
     return this.cacheService.getFromCacheOrGetAndCacheResult(`members-ranking-team-${club}-${teamId}-${season}`, getter, TTL_DURATION.EIGHT_HOURS);
   }
 
-  computeRanking(matches: TeamMatchesEntry[], keepClub?: string): MemberResults[] {
+  private computeRanking(matches: TeamMatchesEntry[], keepClub?: string): MemberResults[] {
     const players: Map<number, MemberResults> = new Map<number, MemberResults>();
 
     for (const match of matches) {

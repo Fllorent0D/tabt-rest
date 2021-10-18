@@ -57,7 +57,7 @@ export class GetMember extends OmitType(GetMembers, ['uniqueIndex']) {
 export class WeeklyELO {
   @ApiProperty()
   @IsNumber()
-  weekName: number;
+  weekName: string;
 
   @ApiProperty()
   @IsNumber()
@@ -67,7 +67,7 @@ export class WeeklyELO {
 export class WeeklyNumericRanking {
   @ApiProperty()
   @IsNumber()
-  weekName: number;
+  weekName: string;
 
   @ApiProperty()
   @IsNumber()

@@ -41,7 +41,6 @@ export class TabtClientService {
     private readonly cacheService: CacheService,
     private readonly credentialsService: CredentialsService,
     private readonly databaseContextService: DatabaseContextService,
-    private readonly datadog: DatadogService,
   ) {
     //this.logger.setContext(TabtClientService.name)
   }
