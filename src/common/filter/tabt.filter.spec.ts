@@ -1,12 +1,15 @@
 import { TabtExceptionsFilter } from './tabt-exceptions.filter';
 import { OperationalError } from 'bluebird';
 import { ArgumentsHost } from '@nestjs/common';
-
+import { DatadogService } from '../logger/datadog.service';
+import { PackageService } from '../package/package.service';
+jest.mock('../logger/datadog.service')
+jest.mock('../logger/datadog.service')
 describe('TabtFilter', () => {
   let filter: TabtExceptionsFilter;
-
   beforeEach(() => {
-    filter = new TabtExceptionsFilter();
+    const dataDog = new DatadogService({} as PackageService);
+    filter = new TabtExceptionsFilter(dataDog);
   });
 
   it('should be defined', () => {

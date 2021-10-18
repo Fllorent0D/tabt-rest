@@ -1,8 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { TournamentService } from './tournament.service';
 import { TabtClientService } from '../../common/tabt-client/tabt-client.service';
+import { IGetTournamentsOutput, TournamentEntry } from '../../entity/tabt-soap/TabTAPI_Port';
 
-describe('SeasonService', () => {
+describe('TournamentService', () => {
   let provider: TournamentService;
   let tabtService: TabtClientService;
 
@@ -30,7 +31,7 @@ describe('SeasonService', () => {
 
   describe('getTournaments', () => {
     it('should call the tabt service correctly and returns the tournament entries', async () => {
-      const tournaments = [{
+      const tournaments: Array<TournamentEntry> = [{
         'UniqueIndex': 3649,
         'Name': 'B-dgfhdfghdgfh',
         'Level': 8,
@@ -51,10 +52,12 @@ describe('SeasonService', () => {
           },
         ],
       }];
-      const spyOnTabt = jest.spyOn(tabtService, 'GetTournamentsAsync').mockResolvedValue([{
+      const tabtOutput: IGetTournamentsOutput = {
         TournamentCount: 1,
         TournamentEntries: tournaments,
-      }, '', {}, null, null]);
+      }
+
+      const spyOnTabt = jest.spyOn(tabtService, 'GetTournamentsAsync').mockResolvedValue(tabtOutput);
       const input = {
         Season: 18,
       };
@@ -67,10 +70,10 @@ describe('SeasonService', () => {
     });
     it('should call the tabt service correctly and return an empty array if no tournament found', async () => {
       const tournaments = [];
-      const spyOnTabt = jest.spyOn(tabtService, 'GetTournamentsAsync').mockResolvedValue([{
+      const spyOnTabt = jest.spyOn(tabtService, 'GetTournamentsAsync').mockResolvedValue({
         TournamentCount: 0,
         TournamentEntries: tournaments,
-      }, '', {}, null, null]);
+      });
       const input = {
         Season: 18,
       };

@@ -1,6 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { CacheService } from './cache.service';
 import { CACHE_MANAGER, CacheStore } from '@nestjs/common';
+import { DatadogService } from '../logger/datadog.service';
+
+jest.mock('../logger/datadog.service');
 
 describe('CacheService', () => {
   let provider: CacheService;
@@ -8,7 +11,11 @@ describe('CacheService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [CacheService, { provide: CACHE_MANAGER, useValue: ({ get: jest.fn(), set: jest.fn() }) }],
+      providers: [
+        CacheService,
+        { provide: CACHE_MANAGER, useValue: ({ get: jest.fn(), set: jest.fn() }) },
+        DatadogService
+      ],
     }).compile();
 
     provider = module.get<CacheService>(CacheService);
@@ -27,7 +34,7 @@ describe('CacheService', () => {
 
       provider.getFromCache(key);
 
-      expect(spy).toHaveBeenCalledWith(key);
+      expect(spy).toHaveBeenCalledWith('47bce5c74f589f4867dbd57e9ca9f808');
     });
   });
   describe('setInCache', () => {
@@ -39,7 +46,7 @@ describe('CacheService', () => {
 
       provider.setInCache(key, value, ttl);
 
-      expect(spy).toHaveBeenCalledWith(key, value, { ttl });
+      expect(spy).toHaveBeenCalledWith('47bce5c74f589f4867dbd57e9ca9f808', value, { ttl });
     });
   });
   describe('getFromCacheOrGetAndCacheResult', () => {
@@ -56,7 +63,7 @@ describe('CacheService', () => {
 
       expect(result).toBe(value);
       expect(getSpy).toHaveBeenCalledTimes(1);
-      expect(getSpy).toHaveBeenCalledWith(key);
+      expect(getSpy).toHaveBeenCalledWith('47bce5c74f589f4867dbd57e9ca9f808');
       expect(setSpy).toHaveBeenCalledTimes(0);
       expect(getter).toHaveBeenCalledTimes(0);
     });
@@ -73,9 +80,9 @@ describe('CacheService', () => {
 
       expect(result).toBe(value);
       expect(getSpy).toHaveBeenCalledTimes(1);
-      expect(getSpy).toHaveBeenCalledWith(key);
+      expect(getSpy).toHaveBeenCalledWith('47bce5c74f589f4867dbd57e9ca9f808');
       expect(setSpy).toHaveBeenCalledTimes(1);
-      expect(setSpy).toHaveBeenCalledWith(key, value, { ttl: 600 });
+      expect(setSpy).toHaveBeenCalledWith('47bce5c74f589f4867dbd57e9ca9f808', value, { ttl: 600 });
       expect(getter).toHaveBeenCalledTimes(1);
     });
   });

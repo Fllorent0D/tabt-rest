@@ -40,10 +40,10 @@ describe('ClubMemberService', () => {
         'Status': 'A',
         'Club': 'N051',
       }] as MemberEntry[];
-      const spyOnTabt = jest.spyOn(tabtService, 'GetMembersAsync').mockResolvedValue([{
+      const spyOnTabt = jest.spyOn(tabtService, 'GetMembersAsync').mockResolvedValue({
         MemberCount: 1,
         MemberEntries: members,
-      }, '', {}, null, null]);
+      });
       const input = {
         Club: 'L360',
       };

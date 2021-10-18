@@ -46,15 +46,15 @@ describe('ClubService', () => {
         'VenueCount': 1,
         'VenueEntries': [],
       }] as ClubEntry[];
-      const spyOnTabt = jest.spyOn(tabtService, 'GetClubsAsync').mockResolvedValue([{
+      const spyOnTabt = jest.spyOn(tabtService, 'GetClubsAsync').mockResolvedValue({
         ClubCount: 2,
         ClubEntries: clubs,
-      }, '', {}, null, null]);
+      });
       const input = {};
 
       const result = await service.getClubs(input);
 
-      expect(result).toBe(clubs);
+      expect(result).toEqual(clubs);
       expect(spyOnTabt).toBeCalledTimes(1);
       expect(spyOnTabt).toBeCalledWith(input);
     });
@@ -78,28 +78,28 @@ describe('ClubService', () => {
         'VenueCount': 1,
         'VenueEntries': [],
       }] as ClubEntry[];
-      const spyOnTabt = jest.spyOn(tabtService, 'GetClubsAsync').mockResolvedValue([{
+      const spyOnTabt = jest.spyOn(tabtService, 'GetClubsAsync').mockResolvedValue({
         ClubCount: 2,
         ClubEntries: clubs,
-      }, '', {}, null, null]);
+      });
       const input = {};
 
-      const result = await service.getClubById(input, 'L360');
+      const result = await service.getClubById('L360');
 
-      expect(result).toBe(clubs[0]);
+      expect(result).toEqual(clubs[0]);
       expect(spyOnTabt).toBeCalledTimes(1);
       expect(spyOnTabt).toBeCalledWith(input);
     });
 
     it('should call the tabt service correctly and returns null if not found', async () => {
       const clubs = [] as ClubEntry[];
-      const spyOnTabt = jest.spyOn(tabtService, 'GetClubsAsync').mockResolvedValue([{
+      const spyOnTabt = jest.spyOn(tabtService, 'GetClubsAsync').mockResolvedValue({
         ClubCount: 0,
         ClubEntries: clubs,
-      }, '', {}, null, null]);
+      });
       const input = {};
 
-      const result = await service.getClubById(input, 'L360');
+      const result = await service.getClubById('L360');
 
       expect(result).toBeUndefined();
       expect(spyOnTabt).toBeCalledTimes(1);

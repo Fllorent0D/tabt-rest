@@ -1,13 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { HealthController } from './health.controller';
-import { DNSHealthIndicator, HealthCheckResult, HealthCheckService } from '@nestjs/terminus';
+import { HealthCheckResult, HealthCheckService, HttpHealthIndicator } from '@nestjs/terminus';
 import { TestRequestService } from '../../../services/test/test-request.service';
 import { ContextService } from '../../../common/context/context.service';
 
 describe('HealthController', () => {
   let controller: HealthController;
   let healthCheckService: HealthCheckService;
-  let dnsService: DNSHealthIndicator;
+  let httpHealthIndicator: HttpHealthIndicator;
   let testService: TestRequestService;
 
   beforeEach(async () => {
@@ -21,7 +21,7 @@ describe('HealthController', () => {
           },
         },
         {
-          provide: DNSHealthIndicator,
+          provide: HttpHealthIndicator,
           useValue: {
             pingCheck: jest.fn(),
           },
@@ -43,7 +43,7 @@ describe('HealthController', () => {
 
     controller = module.get<HealthController>(HealthController);
     healthCheckService = module.get<HealthCheckService>(HealthCheckService);
-    dnsService = module.get<DNSHealthIndicator>(DNSHealthIndicator);
+    httpHealthIndicator = module.get<HttpHealthIndicator>(HttpHealthIndicator);
     testService = module.get<TestRequestService>(TestRequestService);
   });
 
@@ -52,7 +52,7 @@ describe('HealthController', () => {
   });
 
   it('should ping both wsdl', () => {
-    const dnsSpy = jest.spyOn(dnsService, 'pingCheck');
+    const dnsSpy = jest.spyOn(httpHealthIndicator, 'pingCheck');
 
     const checkSpy = jest.spyOn(healthCheckService, 'check').mockImplementation((fns) => {
       fns.map((fn) => fn());

@@ -7,14 +7,21 @@ import { CredentialsService } from './credentials.service';
 import { CacheService } from '../cache/cache.service';
 import {
   GetClubsInput,
+  GetClubsOutput,
   GetClubTeamsInput,
   GetDivisionRankingInput,
+  GetDivisionRankingOutput,
   GetDivisionsInput,
   GetMatchesInput,
+  GetMatchesOutput,
   GetMatchSystemsInput,
+  GetMatchSystemsOutput,
   GetMembersInput,
   GetSeasonsInput,
   GetTournamentsInput,
+  IGetDivisionsOutput,
+  IGetMembersOutput,
+  IGetTournamentsOutput,
   IUploadInput,
   TournamentRegisterInput,
 } from '../../entity/tabt-soap/TabTAPI_Port';
@@ -24,7 +31,7 @@ jest.mock('../context/database-context.service');
 jest.mock('../cache/cache.service');
 jest.mock('./credentials.service');
 
-describe('TabtClientSwitchingService', () => {
+describe('TabtClientService', () => {
   let service: TabtClientService;
   let cacheService: CacheService;
   let databaseContextService: DatabaseContextService;
@@ -140,7 +147,7 @@ describe('TabtClientSwitchingService', () => {
       expect(enrichSpy).toHaveBeenCalledTimes(1);
       expect(enrichSpy).toHaveBeenCalledWith(input);
       expect(operationSpy).toHaveBeenCalledTimes(1);
-      expect(operationSpy).toHaveBeenCalledWith(enrichedInput);
+      expect(operationSpy).toHaveBeenCalledWith(enrichedInput, null, expect.anything());
     });
 
     it('should query the cache for GetClubTeamsAsync with the enriched input', async () => {
@@ -158,7 +165,11 @@ describe('TabtClientSwitchingService', () => {
       const cacheKeySpy = jest.spyOn(cacheService, 'getCacheKey').mockReturnValue(cacheKey);
       const cacheSpy = jest.spyOn(cacheService, 'getFromCacheOrGetAndCacheResult');
 
-      const operationSpy = jest.spyOn(tabtClientSwitchingService.tabtClient, 'GetClubTeamsAsync');
+      const operationSpy = jest.spyOn(tabtClientSwitchingService.tabtClient, 'GetClubTeamsAsync').mockResolvedValue([{
+        ClubName: '',
+        TeamCount: 0,
+        TeamEntries: [],
+      }, '', {}, null, null]);
       const enrichSpy = jest.spyOn(credentialsService, 'enrichInputWithCredentials').mockReturnValue(enrichedInput);
 
       await service.GetClubTeamsAsync(input);
@@ -190,7 +201,7 @@ describe('TabtClientSwitchingService', () => {
       const cacheKeySpy = jest.spyOn(cacheService, 'getCacheKey').mockReturnValue(cacheKey);
 
       const cacheSpy = jest.spyOn(cacheService, 'getFromCacheOrGetAndCacheResult');
-      const operationSpy = jest.spyOn(tabtClientSwitchingService.tabtClient, 'GetDivisionRankingAsync');
+      const operationSpy = jest.spyOn(tabtClientSwitchingService.tabtClient, 'GetDivisionRankingAsync').mockResolvedValue([{} as GetDivisionRankingOutput, '', {}, null, null]);
       const enrichSpy = jest.spyOn(credentialsService, 'enrichInputWithCredentials').mockReturnValue(enrichedInput);
 
       await service.GetDivisionRankingAsync(input);
@@ -219,7 +230,7 @@ describe('TabtClientSwitchingService', () => {
       const cacheKeySpy = jest.spyOn(cacheService, 'getCacheKey').mockReturnValue(cacheKey);
 
       const cacheSpy = jest.spyOn(cacheService, 'getFromCacheOrGetAndCacheResult');
-      const operationSpy = jest.spyOn(tabtClientSwitchingService.tabtClient, 'GetMatchesAsync');
+      const operationSpy = jest.spyOn(tabtClientSwitchingService.tabtClient, 'GetMatchesAsync').mockResolvedValue([{} as GetMatchesOutput, '', {}, null, null]);
       const enrichSpy = jest.spyOn(credentialsService, 'enrichInputWithCredentials').mockReturnValue(enrichedInput);
 
       await service.GetMatchesAsync(input);
@@ -247,7 +258,7 @@ describe('TabtClientSwitchingService', () => {
       const cacheKeySpy = jest.spyOn(cacheService, 'getCacheKey').mockReturnValue(cacheKey);
 
       const cacheSpy = jest.spyOn(cacheService, 'getFromCacheOrGetAndCacheResult');
-      const operationSpy = jest.spyOn(tabtClientSwitchingService.tabtClient, 'GetMembersAsync');
+      const operationSpy = jest.spyOn(tabtClientSwitchingService.tabtClient, 'GetMembersAsync').mockResolvedValue([{} as IGetMembersOutput, '', {}, null, null]);
       const enrichSpy = jest.spyOn(credentialsService, 'enrichInputWithCredentials').mockReturnValue(enrichedInput);
 
       await service.GetMembersAsync(input);
@@ -300,7 +311,7 @@ describe('TabtClientSwitchingService', () => {
       const cacheKeySpy = jest.spyOn(cacheService, 'getCacheKey').mockReturnValue(cacheKey);
 
       const cacheSpy = jest.spyOn(cacheService, 'getFromCacheOrGetAndCacheResult');
-      const operationSpy = jest.spyOn(tabtClientSwitchingService.tabtClient, 'GetClubsAsync');
+      const operationSpy = jest.spyOn(tabtClientSwitchingService.tabtClient, 'GetClubsAsync').mockResolvedValue([{} as GetClubsOutput, '', {}, null, null]);
       const enrichSpy = jest.spyOn(credentialsService, 'enrichInputWithCredentials').mockReturnValue(enrichedInput);
 
       await service.GetClubsAsync(input);
@@ -329,7 +340,7 @@ describe('TabtClientSwitchingService', () => {
       const cacheKeySpy = jest.spyOn(cacheService, 'getCacheKey').mockReturnValue(cacheKey);
 
       const cacheSpy = jest.spyOn(cacheService, 'getFromCacheOrGetAndCacheResult');
-      const operationSpy = jest.spyOn(tabtClientSwitchingService.tabtClient, 'GetDivisionsAsync');
+      const operationSpy = jest.spyOn(tabtClientSwitchingService.tabtClient, 'GetDivisionsAsync').mockResolvedValue([{} as IGetDivisionsOutput, '', {}, null, null]);
       const enrichSpy = jest.spyOn(credentialsService, 'enrichInputWithCredentials').mockReturnValue(enrichedInput);
 
       await service.GetDivisionsAsync(input);
@@ -358,7 +369,7 @@ describe('TabtClientSwitchingService', () => {
       const cacheKeySpy = jest.spyOn(cacheService, 'getCacheKey').mockReturnValue(cacheKey);
 
       const cacheSpy = jest.spyOn(cacheService, 'getFromCacheOrGetAndCacheResult');
-      const operationSpy = jest.spyOn(tabtClientSwitchingService.tabtClient, 'GetTournamentsAsync');
+      const operationSpy = jest.spyOn(tabtClientSwitchingService.tabtClient, 'GetTournamentsAsync').mockResolvedValue([{} as IGetTournamentsOutput, '', {}, null, null]);
       const enrichSpy = jest.spyOn(credentialsService, 'enrichInputWithCredentials').mockReturnValue(enrichedInput);
 
       await service.GetTournamentsAsync(input);
@@ -387,7 +398,7 @@ describe('TabtClientSwitchingService', () => {
       const cacheKeySpy = jest.spyOn(cacheService, 'getCacheKey').mockReturnValue(cacheKey);
 
       const cacheSpy = jest.spyOn(cacheService, 'getFromCacheOrGetAndCacheResult');
-      const operationSpy = jest.spyOn(tabtClientSwitchingService.tabtClient, 'GetMatchSystemsAsync');
+      const operationSpy = jest.spyOn(tabtClientSwitchingService.tabtClient, 'GetMatchSystemsAsync').mockResolvedValue([{} as GetMatchSystemsOutput, '', {}, null, null]);
       const enrichSpy = jest.spyOn(credentialsService, 'enrichInputWithCredentials').mockReturnValue(enrichedInput);
 
       await service.GetMatchSystemsAsync(input);

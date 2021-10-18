@@ -45,10 +45,10 @@ describe('DivisionRankingService', () => {
         "Points": 51,
         "TeamClub": "H297"
       },] as RankingEntry[];
-      const spyOnTabt = jest.spyOn(tabtService, 'GetDivisionRankingAsync').mockResolvedValue([{
+      const spyOnTabt = jest.spyOn(tabtService, 'GetDivisionRankingAsync').mockResolvedValue({
         DivisionName: "r",
         RankingEntries: rankings,
-      }, '', {}, null, null]);
+      });
       const input = {
         DivisionId: 123,
         WeekName: '1'

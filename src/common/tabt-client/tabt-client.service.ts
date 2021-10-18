@@ -64,40 +64,40 @@ export class TabtClientService {
   }
 
   GetSeasonsAsync(input: GetSeasonsInput): Promise<IGetSeasonsOutput> {
-    const getter = async (input) => {
-      const [result] = await this.tabtClientSwitchingService.tabtClient.GetSeasonsAsync(input);
+    const getter = async (input, options, headers) => {
+      const [result] = await this.tabtClientSwitchingService.tabtClient.GetSeasonsAsync(input, options, headers);
       return result;
     };
     return this.enrichBodyAndQueryWithCache('season', input, getter, TTL_DURATION.ONE_DAY);
   }
 
   GetClubTeamsAsync(input: GetClubTeamsInput): Promise<GetClubTeamsOutput> {
-    const getter = async (input) => {
-      const [result] = await this.tabtClientSwitchingService.tabtClient.GetClubTeamsAsync(input);
+    const getter = async (input, options, headers) => {
+      const [result] = await this.tabtClientSwitchingService.tabtClient.GetClubTeamsAsync(input, options, headers);
       return result;
     };
     return this.enrichBodyAndQueryWithCache('club-teams', input, getter, TTL_DURATION.ONE_DAY);
   }
 
   GetDivisionRankingAsync(input: GetDivisionRankingInput): Promise<GetDivisionRankingOutput> {
-    const getter = async (input) => {
-      const [result] = await this.tabtClientSwitchingService.tabtClient.GetDivisionRankingAsync(input);
+    const getter = async (input, options, headers) => {
+      const [result] = await this.tabtClientSwitchingService.tabtClient.GetDivisionRankingAsync(input, options, headers);
       return result;
     };
     return this.enrichBodyAndQueryWithCache('division-ranking', input, getter, TTL_DURATION.TWO_HOURS);
   }
 
   GetMatchesAsync(input: GetMatchesInput): Promise<GetMatchesOutput> {
-    const getter = async (input) => {
-      const [result] = await this.tabtClientSwitchingService.tabtClient.GetMatchesAsync(input);
+    const getter = async (input, options, headers) => {
+      const [result] = await this.tabtClientSwitchingService.tabtClient.GetMatchesAsync(input, options, headers);
       return result;
     };
     return this.enrichBodyAndQueryWithCache('matches', input, getter, TTL_DURATION.ONE_HOUR);
   }
 
   GetMembersAsync(input: GetMembersInput): Promise<IGetMembersOutput> {
-    const getter = async (input) => {
-      const [result] = await this.tabtClientSwitchingService.tabtClient.GetMembersAsync(input);
+    const getter = async (input, options, headers) => {
+      const [result] = await this.tabtClientSwitchingService.tabtClient.GetMembersAsync(input, options, headers);
       return result;
     };
     return this.enrichBodyAndQueryWithCache('members', input, getter, TTL_DURATION.ONE_DAY);
@@ -108,8 +108,8 @@ export class TabtClientService {
   }
 
   GetClubsAsync(input: GetClubsInput): Promise<GetClubsOutput> {
-    const getter = async (input) => {
-      const [result] = await this.tabtClientSwitchingService.tabtClient.GetClubsAsync(input);
+    const getter = async (input, options, headers) => {
+      const [result] = await this.tabtClientSwitchingService.tabtClient.GetClubsAsync(input, options, headers);
       return result;
     };
     return this.enrichBodyAndQueryWithCache('clubs', input, getter, TTL_DURATION.ONE_DAY);
@@ -117,8 +117,8 @@ export class TabtClientService {
   }
 
   GetDivisionsAsync(input: GetDivisionsInput): Promise<IGetDivisionsOutput> {
-    const getter = async (input) => {
-      const [result] = await this.tabtClientSwitchingService.tabtClient.GetDivisionsAsync(input);
+    const getter = async (input, options, headers) => {
+      const [result] = await this.tabtClientSwitchingService.tabtClient.GetDivisionsAsync(input, options, headers);
       return result;
     };
     return this.enrichBodyAndQueryWithCache('divisions', input, getter, TTL_DURATION.ONE_DAY);
@@ -126,8 +126,8 @@ export class TabtClientService {
   }
 
   GetTournamentsAsync(input: GetTournamentsInput): Promise<IGetTournamentsOutput> {
-    const getter = async (input) => {
-      const [result] = await this.tabtClientSwitchingService.tabtClient.GetTournamentsAsync(input);
+    const getter = async (input, options, headers) => {
+      const [result] = await this.tabtClientSwitchingService.tabtClient.GetTournamentsAsync(input, options, headers);
       return result;
     };
     return this.enrichBodyAndQueryWithCache('tournaments', input, getter, TTL_DURATION.EIGHT_HOURS);
@@ -135,8 +135,8 @@ export class TabtClientService {
   }
 
   GetMatchSystemsAsync(input: GetMatchSystemsInput): Promise<GetMatchSystemsOutput> {
-    const getter = async (input) => {
-      const [result] = await this.tabtClientSwitchingService.tabtClient.GetMatchSystemsAsync(input);
+    const getter = async (input, options, headers) => {
+      const [result] = await this.tabtClientSwitchingService.tabtClient.GetMatchSystemsAsync(input, options, headers);
       return result;
     };
     return this.enrichBodyAndQueryWithCache('match-systems', input, getter, TTL_DURATION.ONE_DAY);

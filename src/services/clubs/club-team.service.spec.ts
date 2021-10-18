@@ -37,11 +37,11 @@ describe('ClubTeamService', () => {
         DivisionCategory: 1,
         MatchType: 5
       }] as TeamEntry[];
-      const spyOnTabt = jest.spyOn(tabtService, 'GetClubTeamsAsync').mockResolvedValue([{
+      const spyOnTabt = jest.spyOn(tabtService, 'GetClubTeamsAsync').mockResolvedValue({
         ClubName: "a",
         TeamCount: 1,
         TeamEntries: teams
-      }, '', {}, null, null]);
+      });
       const input = {
         Club: 'L360'
       };
