@@ -9,6 +9,7 @@ describe('HealthController', () => {
   let healthCheckService: HealthCheckService;
   let httpHealthIndicator: HttpHealthIndicator;
   let testService: TestRequestService;
+  let contextService: ContextService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -30,14 +31,14 @@ describe('HealthController', () => {
           provide: TestRequestService,
           useValue: {
             testRequest: jest.fn(),
-          }
+          },
         },
         {
           provide: ContextService,
           useValue: {
             context: {},
-          }
-        }
+          },
+        },
       ],
     }).compile();
 
@@ -45,6 +46,7 @@ describe('HealthController', () => {
     healthCheckService = module.get<HealthCheckService>(HealthCheckService);
     httpHealthIndicator = module.get<HttpHealthIndicator>(HttpHealthIndicator);
     testService = module.get<TestRequestService>(TestRequestService);
+    contextService = module.get<ContextService>(ContextService);
   });
 
   it('should be defined', () => {
@@ -71,5 +73,22 @@ describe('HealthController', () => {
 
     controller.test();
     expect(spy).toHaveBeenCalledTimes(1);
+  });
+
+  it('should return the context', () => {
+    const spy = Object.assign(contextService.context, {
+      runner: {
+        name: '123',
+        version: '1',
+        pid: 123,
+      },
+      caller: {
+        correlationId: '123',
+        remoteAddress: '123',
+      },
+    });
+
+    const res = controller.context();
+    expect(res).toEqual(spy);
   });
 });

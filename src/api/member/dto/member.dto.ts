@@ -81,5 +81,5 @@ export class WeeklyNumericRanking {
 export class WeeklyNumericRankingInput extends RequestBySeasonDto{
   @ApiPropertyOptional({enum: PlayerCategory})
   @IsEnum(PlayerCategory)
-  category: PlayerCategory;
+  category?: PlayerCategory;
 }

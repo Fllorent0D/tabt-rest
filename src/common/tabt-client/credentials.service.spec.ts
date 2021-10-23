@@ -36,6 +36,7 @@ describe('CredentialsService', () => {
             correlationId: '123',
             'X-Tabt-Account': 'florent',
             'X-Tabt-Password': 'the password',
+            'X-Tabt-Season': '18',
             'X-Tabt-OnBehalfOf': 'on behalf of ...',
           },
         },
@@ -49,6 +50,7 @@ describe('CredentialsService', () => {
           // 'OnBehalfOf': 'on behalf of ...',
           'Password': 'the password',
         },
+        'Season': 18,
         'test': 'It\'s the test',
       });
     });

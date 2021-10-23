@@ -12,8 +12,15 @@ export class TabtException extends HttpException {
         break;
       case 27:
       case 47:
+      case 53:
+      case 54:
+      case 55:
         super(faultString, 403);
         break;
+      case 34:
+        super(faultString, 429);
+        break;
+      case 52:
       default:
         super(faultString, 400);
     }

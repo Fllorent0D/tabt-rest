@@ -26,6 +26,7 @@ import {
   TournamentRegisterInput,
 } from '../../entity/tabt-soap/TabTAPI_Port';
 import { HeaderKeys } from '../context/context.constants';
+import { TabtException } from '../filter/tabt-exception';
 
 jest.mock('../context/database-context.service');
 jest.mock('../cache/cache.service');
@@ -118,6 +119,41 @@ describe('TabtClientService', () => {
       expect(enrichSpy).toHaveBeenCalledWith(input);
       expect(operationSpy).toHaveBeenCalledTimes(1);
       expect(operationSpy).toHaveBeenCalledWith(enrichedInput, null, expect.anything());
+    });
+
+    it('should return a TabtException if operation failed', async () => {
+      const input = {};
+      const enrichedInput = {
+        Credentials: {
+          Account: 'test',
+          Password: 'test',
+        },
+        ...input,
+      };
+      const cacheKey = 'cache-key';
+      jest.spyOn(cacheService, 'getCacheKey').mockReturnValue(cacheKey);
+      const cacheSpy = jest.spyOn(cacheService, 'getFromCacheOrGetAndCacheResult');
+      const error = new Error();
+      error['root'] = {
+        Envelope: {
+          Body: {
+            Fault: {
+              faultcode: '12',
+              faultstring: 'Bad error',
+            },
+          },
+        },
+      };
+      jest.spyOn(credentialsService, 'enrichInputWithCredentials').mockReturnValue(enrichedInput);
+      jest.spyOn(tabtClientSwitchingService.tabtClient, 'GetSeasonsAsync').mockRejectedValue(error)
+      try {
+        await service.GetSeasonsAsync(input);
+        await cacheSpy.mock.calls[0][1]();
+
+        throw new Error('Should have thrown error');
+      } catch (e) {
+        expect(e).toStrictEqual(new TabtException('12', 'Bad error'));
+      }
     });
 
     it('should query the cache for GetSeasonsAsync with the enriched input', async () => {

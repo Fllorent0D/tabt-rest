@@ -127,7 +127,6 @@ export class MemberController {
       const currentSeason = await this.seasonService.getCurrentSeason();
       season = currentSeason.Season;
     }
-    console.log(category);
     const elos = await this.eloMemberService.getBelNumericRanking(id, season, category);
     if (elos.length) {
       return elos;
