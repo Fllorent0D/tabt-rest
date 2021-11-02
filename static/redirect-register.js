@@ -22,7 +22,7 @@
   const clubIdField = document.createElement('input');
   clubIdField.type = 'hidden';
   clubIdField.name = 'club_id';
-  clubIdField.value = playerId;
+  clubIdField.value = clubId;
   form.appendChild(clubIdField);
 
   const stepField = document.createElement('input');
@@ -33,7 +33,4 @@
 
   document.body.appendChild(form);
   form.submit();
-
-  console.log(playerId, clubId);
-
 })();
