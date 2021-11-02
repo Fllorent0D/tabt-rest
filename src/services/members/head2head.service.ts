@@ -4,6 +4,7 @@ import { HttpService } from '@nestjs/axios';
 import { MatchService } from '../matches/match.service';
 import { TeamMatchesEntry } from '../../entity/tabt-soap/TabTAPI_Port';
 import { CacheService, TTL_DURATION } from '../../common/cache/cache.service';
+import { firstValueFrom } from 'rxjs';
 
 export interface ExtractedMatchInfo {
   weekName?: string,
@@ -46,7 +47,7 @@ export class Head2headService {
   public async getHead2HeadResults(playerUniqueIndex: number, opponentPlayerUniqueIndex: number): Promise<Head2HeadData> {
     const getter = async () => {
       const htmlPage = await this.getPageFromAFTT(playerUniqueIndex, opponentPlayerUniqueIndex);
-      const matchesExtracted = this.extractMatchesInfos(htmlPage);
+      const matchesExtracted = Head2headService.extractMatchesInfos(htmlPage);
 
       if (matchesExtracted.length > 0) {
         const matchesFound: Array<TeamMatchesEntry | undefined> = await Promise.all(matchesExtracted.map((m) => this.getMatchDetails(m)));
@@ -69,16 +70,18 @@ export class Head2headService {
   }
 
   private async getPageFromAFTT(playerA: number, playerB: number): Promise<string> {
-    const result = await this.httpService.post(`https://resultats.aftt.be/index.php?menu=4&head=1&player_1=${playerA}&player_2=${playerB}`, {
-      responseType: 'text',
-      maxRedirects: 0,
-    }).toPromise();
+    const result = await firstValueFrom(
+      this.httpService.post(`https://resultats.aftt.be/index.php?menu=4&head=1&player_1=${playerA}&player_2=${playerB}`, {
+        responseType: 'text',
+        maxRedirects: 0,
+      }),
+    );
 
     return result.data;
   }
 
-  private extractMatchesInfos(htmlPage: string): ExtractedMatchInfo[] {
-    const regex = /\?(\S+=\S+&?)+">(\D+[0-2]\d\/\d+)/gm;
+  private static extractMatchesInfos(htmlPage: string): ExtractedMatchInfo[] {
+    const regex = /(season=[0-9]+&sel=[0-9]+&detail=[0-9]+&week_name=[0-9]+&div_id=[0-9]+)">(\D+[0-2]\d\/\d+)/gm;
     const matches: ExtractedMatchInfo[] = [];
     let match: RegExpExecArray | null;
     do {
@@ -90,7 +93,6 @@ export class Head2headService {
           .map(arg => arg.split('='))
           .filter(([key]) => ['season', 'week_name', 'div_id'].includes(key)));
 
-        console.log(parsed);
         matches.push({
           matchId: match[2],
           weekName: parsed['week_name'],
@@ -101,7 +103,6 @@ export class Head2headService {
       }
 
     } while (match);
-    console.log(matches);
     return matches;
   }
 
