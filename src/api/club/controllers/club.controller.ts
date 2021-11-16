@@ -1,4 +1,12 @@
-import { Controller, Get, NotFoundException, Param, Query } from '@nestjs/common';
+import {
+  ClassSerializerInterceptor,
+  Controller,
+  Get,
+  NotFoundException,
+  Param,
+  Query,
+  UseInterceptors,
+} from '@nestjs/common';
 import { ApiNotFoundResponse, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ClubEntry, MemberEntry, TeamEntry } from '../../../entity/tabt-soap/TabTAPI_Port';
 import { ClubService } from '../../../services/clubs/club.service';
@@ -41,7 +49,7 @@ export class ClubController {
     status: 400,
     type: TabtException,
   })
-
+  @UseInterceptors(ClassSerializerInterceptor)
   findAll(
     @Query() input: ListAllClubs,
   ) {
@@ -62,7 +70,7 @@ export class ClubController {
     status: 400,
     type: TabtException,
   })
-
+  @UseInterceptors(ClassSerializerInterceptor)
   async findbyId(
     @Param('clubIndex') uniqueIndex: string,
   ) {
@@ -115,7 +123,7 @@ export class ClubController {
     status: 400,
     type: TabtException,
   })
-
+  @UseInterceptors(ClassSerializerInterceptor)
   getClubTeams(
     @Query() input: RequestBySeasonDto,
     @Param('clubIndex') uniqueIndex: string,

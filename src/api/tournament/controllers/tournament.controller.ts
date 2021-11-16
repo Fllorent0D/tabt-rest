@@ -1,4 +1,15 @@
-import { Body, Controller, Get, NotFoundException, Param, ParseIntPipe, Post, Query, Version } from '@nestjs/common';
+import {
+  Body, ClassSerializerInterceptor,
+  Controller,
+  Get,
+  NotFoundException,
+  Param,
+  ParseIntPipe,
+  Post,
+  Query,
+  UseInterceptors,
+  Version,
+} from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { TournamentEntry, TournamentSerieEntry } from '../../../entity/tabt-soap/TabTAPI_Port';
 import { TabtException } from '../../../common/filter/tabt-exceptions.filter';
@@ -51,7 +62,7 @@ export class TournamentController {
     type: TabtException,
   })
   @Version('2')
-
+  @UseInterceptors(ClassSerializerInterceptor)
   findAllV2(
     @Query() input: GetTournaments,
   ) {
@@ -99,6 +110,7 @@ export class TournamentController {
     status: 400,
     type: TabtException,
   })
+  @UseInterceptors(ClassSerializerInterceptor)
   @Version('2')
   async findByIdV2(
     @Query() input: GetTournamentDetails,

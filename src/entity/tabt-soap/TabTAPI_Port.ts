@@ -1038,7 +1038,7 @@ export class TournamentEntry {
   @ApiProperty()
   Name: string;
 
-  @ApiProperty()
+  @ApiProperty({enum: Level})
   @Transform((l) => Level[l.value], { toPlainOnly: true })
   Level: number;
 

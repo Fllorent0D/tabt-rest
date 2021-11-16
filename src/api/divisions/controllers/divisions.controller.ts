@@ -1,4 +1,13 @@
-import { Controller, Get, NotFoundException, Param, ParseIntPipe, Query } from '@nestjs/common';
+import {
+  ClassSerializerInterceptor,
+  Controller,
+  Get,
+  NotFoundException,
+  Param,
+  ParseIntPipe,
+  Query,
+  UseInterceptors,
+} from '@nestjs/common';
 import { DivisionEntry, RankingEntry, TeamMatchesEntry } from '../../../entity/tabt-soap/TabTAPI_Port';
 import { DivisionService } from '../../../services/divisions/division.service';
 import { ApiNotFoundResponse, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
@@ -41,7 +50,7 @@ export class DivisionsController {
     status: 400,
     type: TabtException,
   })
-
+  @UseInterceptors(ClassSerializerInterceptor)
   findAll(
     @Query() query: GetDivisions,
   ): Promise<DivisionEntry[]> {
@@ -65,6 +74,7 @@ export class DivisionsController {
     status: 400,
     type: TabtException,
   })
+  @UseInterceptors(ClassSerializerInterceptor)
   async findOne(
     @Param('divisionId', ParseIntPipe) id: number,
     @Query() query: GetDivisions,
