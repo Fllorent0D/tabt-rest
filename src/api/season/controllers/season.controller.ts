@@ -6,7 +6,7 @@ import { TabtException } from '../../../common/filter/tabt-exceptions.filter';
 
 @Controller({
   path: 'seasons',
-  version: '1'
+  version: '1',
 })
 @ApiTags('Seasons')
 export class SeasonController {
@@ -17,7 +17,7 @@ export class SeasonController {
 
   @Get()
   @ApiOperation({
-    operationId: 'findAllSeason'
+    operationId: 'findAllSeason',
   })
   @ApiResponse({
     description: 'A list of seasons.',
@@ -34,7 +34,7 @@ export class SeasonController {
 
   @Get('current')
   @ApiOperation({
-    operationId: 'findCurrentSeason'
+    operationId: 'findCurrentSeason',
   })
   @ApiResponse({
     description: 'The current season.',

@@ -5,8 +5,9 @@ import { CommonModule } from '../../common/common.module';
 import { ServicesModule } from '../../services/services.module';
 
 @Module({
-  imports:[CommonModule, ServicesModule],
+  imports: [CommonModule, ServicesModule],
   providers: [TournamentService],
-  controllers: [TournamentController]
+  controllers: [TournamentController],
 })
-export class TournamentModule {}
+export class TournamentModule {
+}

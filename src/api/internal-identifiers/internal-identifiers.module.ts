@@ -6,8 +6,9 @@ import { InternalIdentifiersController } from './controller/internal-identifiers
 import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports:[CommonModule, ServicesModule, ConfigModule],
+  imports: [CommonModule, ServicesModule, ConfigModule],
   controllers: [InternalIdentifiersController],
-  providers: [MemberService]
+  providers: [MemberService],
 })
-export class InternalIdentifiersModule {}
+export class InternalIdentifiersModule {
+}

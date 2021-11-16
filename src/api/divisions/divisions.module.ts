@@ -6,7 +6,7 @@ import { CommonModule } from '../../common/common.module';
 import { ServicesModule } from '../../services/services.module';
 
 @Module({
-  imports:[CommonModule, ServicesModule],
+  imports: [CommonModule, ServicesModule],
   controllers: [DivisionsController],
   providers: [DivisionService, DivisionRankingService],
 })

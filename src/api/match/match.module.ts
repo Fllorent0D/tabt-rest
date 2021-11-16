@@ -6,8 +6,9 @@ import { ServicesModule } from '../../services/services.module';
 import { Head2headController } from '../member/controllers/head2head.controller';
 
 @Module({
-  imports:[CommonModule, ServicesModule],
+  imports: [CommonModule, ServicesModule],
   controllers: [MatchController, Head2headController],
-  providers: [MatchService]
+  providers: [MatchService],
 })
-export class MatchModule {}
+export class MatchModule {
+}

@@ -7,8 +7,9 @@ import { CommonModule } from '../../common/common.module';
 import { ServicesModule } from '../../services/services.module';
 
 @Module({
-  imports:[CommonModule, ServicesModule],
+  imports: [CommonModule, ServicesModule],
   controllers: [ClubController],
-  providers: [ClubService, ClubTeamService, ClubMemberService]
+  providers: [ClubService, ClubTeamService, ClubMemberService],
 })
-export class ClubModule {}
+export class ClubModule {
+}

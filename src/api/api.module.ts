@@ -17,7 +17,7 @@ import { InternalIdentifiersModule } from './internal-identifiers/internal-ident
     MemberModule,
     MatchModule,
     HealthModule,
-    InternalIdentifiersModule
+    InternalIdentifiersModule,
   ],
 })
 export class ApiModule {

@@ -16,12 +16,12 @@ export class GetTournamentDetails {
   @IsOptional()
   @IsBoolean()
   @Transform((a) => Boolean(a.value))
-  withRegistrations? : boolean;
+  withRegistrations?: boolean;
 }
 
 export class RegisterTournament {
   @ApiProperty()
-  @IsNumber({},{each: true})
+  @IsNumber({}, { each: true })
   playerUniqueIndex: Array<number>;
 
   @ApiProperty()

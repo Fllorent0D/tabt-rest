@@ -9,7 +9,7 @@ import { ContextService } from '../../../common/context/context.service';
 @ApiTags('Health')
 @Controller({
   path: 'health',
-  version: '1'
+  version: '1',
 })
 export class HealthController {
   constructor(

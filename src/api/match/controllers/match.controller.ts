@@ -10,7 +10,7 @@ import { Level, PlayerCategory } from '../../../entity/tabt-input.interface';
 @ApiTags('Matches')
 @Controller({
   path: 'matches',
-  version: '1'
+  version: '1',
 })
 @TabtHeadersDecorator()
 export class MatchController {
@@ -22,12 +22,13 @@ export class MatchController {
 
   @Get()
   @ApiOperation({
-    operationId: 'findAllMatches'
+    operationId: 'findAllMatches',
   })
   @ApiOkResponse({
     type: [TeamMatchesEntry],
     description: 'List of team matches entries',
   })
+
   async findAll(
     @Query() input: GetMatches,
   ): Promise<TeamMatchesEntry[]> {
@@ -43,13 +44,13 @@ export class MatchController {
       YearDateFrom: input.yearDateFrom,
       WithDetails: input.withDetails,
       MatchId: input.matchId,
-      MatchUniqueId: Number(input.matchUniqueId)
+      MatchUniqueId: Number(input.matchUniqueId),
     });
   }
 
   @Get('systems')
   @ApiOperation({
-    operationId: 'findAllMatchSystems'
+    operationId: 'findAllMatchSystems',
   })
   @ApiOkResponse({
     type: [MatchSystemEntry],
@@ -61,7 +62,7 @@ export class MatchController {
 
   @Get('systems/:matchSystemId')
   @ApiOperation({
-    operationId: 'findMatchSystemById'
+    operationId: 'findMatchSystemById',
   })
   @ApiOkResponse({
     type: MatchSystemEntry,
@@ -80,7 +81,7 @@ export class MatchController {
 
   @Get(':matchUniqueId')
   @ApiOperation({
-    operationId: 'findMatchById'
+    operationId: 'findMatchById',
   })
   @ApiOkResponse({
     type: TeamMatchesEntry,
@@ -103,7 +104,7 @@ export class MatchController {
       YearDateFrom: input.yearDateFrom,
       WithDetails: input.withDetails,
       MatchId: input.matchId,
-      MatchUniqueId: id
+      MatchUniqueId: id,
     });
 
     if (found.length) {

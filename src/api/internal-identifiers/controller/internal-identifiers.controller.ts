@@ -7,7 +7,7 @@ import { ConfigService } from '@nestjs/config';
 @ApiTags('Internal Identifiers')
 @Controller({
   path: 'internal-identifiers',
-  version: '1'
+  version: '1',
 })
 export class InternalIdentifiersController {
 

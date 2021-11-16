@@ -1,4 +1,4 @@
-import { Body, Controller, Get, NotFoundException, Param, ParseIntPipe, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, NotFoundException, Param, ParseIntPipe, Post, Query, Version } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { TournamentEntry, TournamentSerieEntry } from '../../../entity/tabt-soap/TabTAPI_Port';
 import { TabtException } from '../../../common/filter/tabt-exceptions.filter';
@@ -9,7 +9,7 @@ import { TabtHeadersDecorator } from '../../../common/decorators/tabt-headers.de
 @ApiTags('Tournaments')
 @Controller({
   path: 'tournaments',
-  version: '1'
+  version: '1',
 })
 @TabtHeadersDecorator()
 export class TournamentController {
@@ -37,6 +37,27 @@ export class TournamentController {
     return this.tournamentService.getTournaments(input);
   }
 
+  @Get()
+  @ApiOperation({
+    operationId: 'findAllTournamentsV2',
+  })
+  @ApiResponse({
+    description: 'A list of tournament.',
+    type: [TournamentEntry],
+    status: 200,
+  })
+  @ApiResponse({
+    status: 400,
+    type: TabtException,
+  })
+  @Version('2')
+
+  findAllV2(
+    @Query() input: GetTournaments,
+  ) {
+    return this.tournamentService.getTournaments(input);
+  }
+
   @Get(':tournamentId')
   @ApiOperation({
     operationId: 'findTournamentById',
@@ -51,6 +72,35 @@ export class TournamentController {
     type: TabtException,
   })
   async findById(
+    @Query() input: GetTournamentDetails,
+    @Param('tournamentId', ParseIntPipe) id: number,
+  ) {
+    const result = await this.tournamentService.getTournaments({
+      WithRegistrations: input.withRegistrations,
+      WithResults: input.withResults,
+      TournamentUniqueIndex: id,
+    });
+    if (result.length) {
+      return result[0];
+    }
+    throw new NotFoundException();
+  }
+
+  @Get(':tournamentId')
+  @ApiOperation({
+    operationId: 'findTournamentByIdV2',
+  })
+  @ApiResponse({
+    description: 'A specific tournament.',
+    type: TournamentEntry,
+    status: 200,
+  })
+  @ApiResponse({
+    status: 400,
+    type: TabtException,
+  })
+  @Version('2')
+  async findByIdV2(
     @Query() input: GetTournamentDetails,
     @Param('tournamentId', ParseIntPipe) id: number,
   ) {

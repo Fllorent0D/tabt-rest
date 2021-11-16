@@ -6,6 +6,7 @@ import { ServicesModule } from '../../services/services.module';
 
 @Module({
   imports: [TerminusModule, CommonModule, ServicesModule],
-  controllers: [HealthController]
+  controllers: [HealthController],
 })
-export class HealthModule {}
+export class HealthModule {
+}

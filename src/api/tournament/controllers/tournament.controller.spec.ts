@@ -32,7 +32,7 @@ describe('TournamentController', () => {
 
       expect(result).toBeDefined();
       expect(result[0]).toBeDefined();
-      expect(spy).toHaveBeenCalledWith({ });
+      expect(spy).toHaveBeenCalledWith({});
     });
     it('should call tournaments service with correct params to find one tournament', async () => {
       const input: GetTournamentDetails = {

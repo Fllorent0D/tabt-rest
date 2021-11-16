@@ -5,7 +5,7 @@ import { Head2HeadData, Head2headService } from '../../../services/members/head2
 @ApiTags('Head2Head')
 @Controller({
   path: 'head2head',
-  version: '1'
+  version: '1',
 })
 
 export class Head2headController {

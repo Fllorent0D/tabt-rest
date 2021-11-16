@@ -11,7 +11,7 @@ describe('SeasonController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [SeasonController],
-      providers:[SeasonService]
+      providers: [SeasonService],
     }).compile();
 
     controller = module.get<SeasonController>(SeasonController);
@@ -23,22 +23,22 @@ describe('SeasonController', () => {
   });
 
   it('findAll', async () => {
-    const spy = jest.spyOn(service, 'getSeasons')
+    const spy = jest.spyOn(service, 'getSeasons');
 
     const result = await controller.findAll();
 
     expect(result).toBeDefined();
     expect(spy).toBeCalledTimes(1);
-  })
+  });
 
   it('findCurrentSeason', async () => {
-    const spy = jest.spyOn(service, 'getCurrentSeason')
+    const spy = jest.spyOn(service, 'getCurrentSeason');
 
     const result = await controller.findCurrentSeason();
 
     expect(result).toBeDefined();
     expect(spy).toBeCalledTimes(1);
-  })
+  });
 
 
 });
