@@ -99,7 +99,7 @@ export class TabtClientService {
       const [result] = await this.tabtClientSwitchingService.tabtClient.GetMembersAsync(input, options, headers);
       return result;
     };
-    return this.enrichBodyAndQueryWithCache('members', input, getter, TTL_DURATION.ONE_DAY);
+    return this.enrichBodyAndQueryWithCache('members', input, getter, TTL_DURATION.TWELVE_HOURS);
   }
 
   UploadAsync(input: IUploadInput): Promise<[IUploadOutput, string, { [k: string]: any; }, any, any]> {
