@@ -1,4 +1,4 @@
-import { CACHE_MANAGER, CacheStore, Inject, Injectable } from '@nestjs/common';
+import { CACHE_MANAGER, CacheStore, Inject, Injectable, Logger } from '@nestjs/common';
 import { createHash } from 'crypto';
 import { DatadogService } from '../logger/datadog.service';
 
@@ -14,7 +14,7 @@ export enum TTL_DURATION {
 
 @Injectable()
 export class CacheService {
-
+  private readonly logger = new Logger(CacheService.name);
   private static hashKey(key: string): string {
     return createHash('md5').update(key).digest('hex');
   }
@@ -44,10 +44,12 @@ export class CacheService {
     const cached = await this.getFromCache<T>(key);
 
     if (cached) {
+      this.logger.debug('Data found in cache');
       this.dataDogService.statsD?.increment('cache.found');
       return cached;
     }
 
+    this.logger.debug('Data not found in cache');
     this.dataDogService.statsD?.increment('cache.not_found');
 
     const result = await getter();

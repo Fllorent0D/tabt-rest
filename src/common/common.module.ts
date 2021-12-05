@@ -8,10 +8,12 @@ import { TabtClientService } from './tabt-client/tabt-client.service';
 import { TabtClientSwitchingService } from './tabt-client/tabt-client-switching.service';
 import { PackageService } from './package/package.service';
 import { TABT_HEADERS } from './context/context.constants';
-import { LogtailLogger } from './logger/logger.class';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as redisStore from 'cache-manager-redis-store';
 import { DatadogService } from './logger/datadog.service';
+import { LoggerModule } from 'nestjs-pino';
+import * as pinoms from 'pino-multi-stream';
+import * as fs from 'fs';
 
 const asyncProviders: Provider[] = [
   {
@@ -44,14 +46,43 @@ const asyncProviders: Provider[] = [
         if (redisUrl) {
           return {
             store: redisStore,
-            url: redisUrl
-          }
+            url: redisUrl,
+          };
         } else {
           return null;
         }
       },
     }),
     ConfigModule,
+    LoggerModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => {
+        return {
+          pinoHttp: [
+            {
+              level: config.get('NODE_ENV') === 'dev' ? 'debug' : 'info',
+            },
+            pinoms.multistream([
+              {
+                stream: fs.createWriteStream('./tabt-rest-logs.log'),
+              },
+              {
+                stream: pinoms.prettyStream(
+                  {
+                    prettyPrint: {
+                      colorize: true,
+                      translateTime: 'SYS:standard',
+                      ignore: 'hostname,pid',
+                    },
+                  },
+                )
+              }
+            ]),
+          ],
+        };
+      },
+    }),
   ],
   providers: [
     ...asyncProviders,
@@ -62,8 +93,7 @@ const asyncProviders: Provider[] = [
     TabtClientService,
     TabtClientSwitchingService,
     PackageService,
-    LogtailLogger,
-    DatadogService
+    DatadogService,
   ],
   exports: [
     ...asyncProviders,
@@ -71,8 +101,7 @@ const asyncProviders: Provider[] = [
     ContextService,
     TabtClientService,
     PackageService,
-    LogtailLogger,
-    DatadogService
+    DatadogService,
   ],
 })
 export class CommonModule {

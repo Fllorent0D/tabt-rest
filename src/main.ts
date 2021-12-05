@@ -8,9 +8,11 @@ import * as responseTime from 'response-time';
 import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { PackageService } from './common/package/package.service';
 import { DatadogService } from './common/logger/datadog.service';
+import { Logger } from 'nestjs-pino';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, { cors: true });
+  const app = await NestFactory.create(AppModule, { cors: true, bufferLogs: true });
+  app.useLogger(app.get(Logger));
 
   const packageService = app.get(PackageService);
   const datadog = app.get(DatadogService);
