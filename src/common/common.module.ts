@@ -12,6 +12,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as redisStore from 'cache-manager-redis-store';
 import { DatadogService } from './logger/datadog.service';
 import { LoggerModule } from 'nestjs-pino';
+import pino from 'pino';
 import * as pinoms from 'pino-multi-stream';
 import * as fs from 'fs';
 
@@ -62,6 +63,12 @@ const asyncProviders: Provider[] = [
           pinoHttp: [
             {
               level: config.get('NODE_ENV') === 'dev' ? 'debug' : 'info',
+              serializers: {
+                req: pino.stdSerializers.wrapRequestSerializer(r => {
+                  delete r.headers['x-tabt-password'];
+                  return r;
+                }),
+              },
             },
             pinoms.multistream([
               {
@@ -76,8 +83,8 @@ const asyncProviders: Provider[] = [
                       ignore: 'hostname,pid',
                     },
                   },
-                )
-              }
+                ),
+              },
             ]),
           ],
         };
