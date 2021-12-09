@@ -7,7 +7,7 @@ import { DatabaseContextService } from './context/database-context.service';
 import { TabtClientService } from './tabt-client/tabt-client.service';
 import { TabtClientSwitchingService } from './tabt-client/tabt-client-switching.service';
 import { PackageService } from './package/package.service';
-import { TABT_HEADERS } from './context/context.constants';
+import { HeaderKeys, TABT_HEADERS } from './context/context.constants';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as redisStore from 'cache-manager-redis-store';
 import { DatadogService } from './logger/datadog.service';
@@ -15,6 +15,7 @@ import { LoggerModule } from 'nestjs-pino';
 import pino from 'pino';
 import * as pinoms from 'pino-multi-stream';
 import * as fs from 'fs';
+import {cloneDeep} from 'lodash';
 
 fs.writeFileSync('./tabt-rest.pid', process.pid.toString(10));
 const logFileStream = pino.destination('./tabt-rest-logs.log');
@@ -72,8 +73,9 @@ const asyncProviders: Provider[] = [
               level: config.get('NODE_ENV') === 'dev' ? 'debug' : 'info',
               serializers: {
                 req: pino.stdSerializers.wrapRequestSerializer(r => {
-                  delete r.headers['x-tabt-password'];
-                  return r;
+                  const clonedReq = cloneDeep(r);
+                  delete clonedReq.headers[HeaderKeys.X_TABT_PASSWORD.toLowerCase()]
+                  return clonedReq;
                 }),
               },
             },
