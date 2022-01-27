@@ -91,7 +91,7 @@ describe('CacheService', () => {
 
       const result = await provider.getCacheKey(prefix, { test: 'ABC' }, value);
 
-      expect(result).toBe('ccc-bbb-{"test":"ABC"}');
+      expect(result).toBe('ccc:bbb:{"test":"ABC"}');
     });
   });
 
