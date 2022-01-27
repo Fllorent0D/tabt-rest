@@ -27,12 +27,12 @@ export class CacheService {
 
   getFromCache<T>(key: string): Promise<T> {
     this.dataDogService.statsD?.increment('cache.get');
-    return this.cacheManager.get(CacheService.hashKey(key)) as Promise<T | undefined>;
+    return this.cacheManager.get(key) as Promise<T | undefined>;
   }
 
   setInCache(key: string, value: any, ttl: number): Promise<void> {
     this.dataDogService.statsD?.increment('cache.set');
-    return this.cacheManager.set(CacheService.hashKey(key), value, { ttl }) as Promise<void>;
+    return this.cacheManager.set(key, value, { ttl }) as Promise<void>;
   }
 
   getCacheKey(prefix: string, input: any, db: string): string {

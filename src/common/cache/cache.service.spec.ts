@@ -46,7 +46,7 @@ describe('CacheService', () => {
 
       provider.setInCache(key, value, ttl);
 
-      expect(spy).toHaveBeenCalledWith('47bce5c74f589f4867dbd57e9ca9f808', value, { ttl });
+      expect(spy).toHaveBeenCalledWith('aaa', value, { ttl });
     });
   });
   describe('getFromCacheOrGetAndCacheResult', () => {
@@ -63,7 +63,7 @@ describe('CacheService', () => {
 
       expect(result).toBe(value);
       expect(getSpy).toHaveBeenCalledTimes(1);
-      expect(getSpy).toHaveBeenCalledWith('47bce5c74f589f4867dbd57e9ca9f808');
+      expect(getSpy).toHaveBeenCalledWith('aaa');
       expect(setSpy).toHaveBeenCalledTimes(0);
       expect(getter).toHaveBeenCalledTimes(0);
     });
@@ -80,9 +80,9 @@ describe('CacheService', () => {
 
       expect(result).toBe(value);
       expect(getSpy).toHaveBeenCalledTimes(1);
-      expect(getSpy).toHaveBeenCalledWith('47bce5c74f589f4867dbd57e9ca9f808');
+      expect(getSpy).toHaveBeenCalledWith('aaa');
       expect(setSpy).toHaveBeenCalledTimes(1);
-      expect(setSpy).toHaveBeenCalledWith('47bce5c74f589f4867dbd57e9ca9f808', value, { ttl: 600 });
+      expect(setSpy).toHaveBeenCalledWith('aaa', value, { ttl: 600 });
       expect(getter).toHaveBeenCalledTimes(1);
     });
     it('should return a correct cache key', async () => {
