@@ -36,7 +36,7 @@ export class CacheService {
   }
 
   getCacheKey(prefix: string, input: any, db: string): string {
-    return `${prefix}-${db}-${JSON.stringify(input)}`;
+    return `${prefix}:${db}:${JSON.stringify(input ?? {})}`;
   }
 
 
