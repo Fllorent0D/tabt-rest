@@ -34,8 +34,7 @@ describe('CacheService', () => {
 
       provider.getFromCache(key);
 
-      expect(spy).toHaveBeenCalledWith('47bce5c74f589f4867dbd57e9ca9f808');
-    });
+      expect(spy).toHaveBeenCalledWith('aaa');
   });
   describe('setInCache', () => {
     it('should set in the cache with the given params', () => {
