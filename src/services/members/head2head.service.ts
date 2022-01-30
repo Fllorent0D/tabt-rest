@@ -66,7 +66,7 @@ export class Head2headService {
       };
     };
 
-    return this.cacheService.getFromCacheOrGetAndCacheResult(`h2h-${playerUniqueIndex}-${opponentPlayerUniqueIndex}`, getter, TTL_DURATION.EIGHT_HOURS);
+    return this.cacheService.getFromCacheOrGetAndCacheResult(`head2head:${playerUniqueIndex}-${opponentPlayerUniqueIndex}`, getter, TTL_DURATION.EIGHT_HOURS);
   }
 
   private async getPageFromAFTT(playerA: number, playerB: number): Promise<string> {

@@ -85,14 +85,6 @@ describe('CacheService', () => {
       expect(setSpy).toHaveBeenCalledWith('aaa', value, { ttl: 600 });
       expect(getter).toHaveBeenCalledTimes(1);
     });
-    it('should return a correct cache key', async () => {
-      const value = 'bbb';
-      const prefix = 'ccc';
-
-      const result = await provider.getCacheKey(prefix, { test: 'ABC' }, value);
-
-      expect(result).toBe('ccc:bbb:{"test":"ABC"}');
-    });
   });
 
 

@@ -1,4 +1,3 @@
-import './tracer';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
@@ -15,7 +14,6 @@ async function bootstrap() {
   app.useLogger(app.get(Logger));
 
   const packageService = app.get(PackageService);
-  const datadog = app.get(DatadogService);
   //app.setGlobalPrefix(process.env.API_PREFIX);
 
   const options = new DocumentBuilder()
@@ -42,12 +40,10 @@ async function bootstrap() {
   });
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('doc', app, document);
-  datadog.statsD?.event(`${packageService.name} ${packageService.version} started`);
   app.use(compression());
   app.use(helmet());
   app.use(responseTime());
 
-  //app.useGlobalFilters(new TabtExceptionsFilter(datadog));
   app.useGlobalPipes(new ValidationPipe());
 
   await app.listen(process.env.PORT);

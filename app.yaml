@@ -1,0 +1,7 @@
+runtime: nodejs16
+env_variables:
+  NODE_ENV: "prod"
+  AFTT_WSDL: "https://resultats.aftt.be/api/?wsdl"
+  VTLL_WSDL: "https://api.vttl.be/?wsdl"
+  API_PREFIX: "api"
+  STATIC_PREFIX: "static"

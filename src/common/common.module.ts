@@ -17,13 +17,6 @@ import * as pinoms from 'pino-multi-stream';
 import * as fs from 'fs';
 import {cloneDeep} from 'lodash';
 
-fs.writeFileSync('./tabt-rest.pid', process.pid.toString(10));
-const logFileStream = pino.destination('./tabt-rest-logs.log');
-process.on('SIGHUP', (a) => {
-  console.log('HUP', a);
-  logFileStream.reopen();
-});
-
 const asyncProviders: Provider[] = [
   {
     provide: 'tabt-aftt',
@@ -80,9 +73,6 @@ const asyncProviders: Provider[] = [
               },
             },
             pinoms.multistream([
-              {
-                stream: logFileStream,
-              },
               {
                 stream: pinoms.prettyStream(
                   {

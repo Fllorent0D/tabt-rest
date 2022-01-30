@@ -78,6 +78,24 @@ export class WeeklyNumericRanking {
   bel: number;
 }
 
+export class WeeklyNumericRankingV2 {
+  @ApiProperty()
+  @IsNumber()
+  weekName: string;
+
+  @ApiProperty()
+  @IsNumber()
+  elo: number;
+
+  @ApiProperty()
+  @IsNumber()
+  belPts: number;
+
+  @ApiProperty()
+  @IsNumber()
+  belPos: number;
+}
+
 export class WeeklyNumericRankingInput extends RequestBySeasonDto {
   @ApiPropertyOptional({ enum: PlayerCategory })
   @IsEnum(PlayerCategory)

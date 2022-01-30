@@ -1,10 +1,11 @@
 {
   "name": "tabt-rest",
-  "version": "1.8.0",
+  "version": "1.8.1",
   "description": "",
   "author": "",
   "private": true,
   "license": "UNLICENSED",
+  "main": "dist/main.js",
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
@@ -21,7 +22,8 @@
     "test:badges": "npm run test:coverage  && jest-coverage-badges output ./badges",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "npm test -- --config test-e2e/jest-e2e.json",
-    "jest-coverage-badges": "jest-coverage-badges output ./badges"
+    "jest-coverage-badges": "jest-coverage-badges output ./badges",
+    "gcp-build": "npm run build"
   },
   "dependencies": {
     "@logtail/node": "^0.1.7",
@@ -62,6 +64,7 @@
     "xmldom": "^0.6.0"
   },
   "devDependencies": {
+    "@google-cloud/nodejs-repo-tools": "^3.3.0",
     "@nestjs/cli": "^8.1.2",
     "@nestjs/schematics": "^8.0.3",
     "@nestjs/testing": "^8.1.1",

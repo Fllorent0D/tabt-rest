@@ -25,7 +25,7 @@ export class EloMemberService {
       return this.getELOsFromAFTT(playerUniqueIndex, season);
     };
 
-    return this.cacheService.getFromCacheOrGetAndCacheResult(`elo-wk-${playerId}-${season}`, getter, TTL_DURATION.EIGHT_HOURS);
+    return this.cacheService.getFromCacheOrGetAndCacheResult(`elo-wk:${season}:${playerId}`, getter, TTL_DURATION.EIGHT_HOURS);
   }
 
   public async getBelNumericRanking(playerId: number, season: number, category: PlayerCategory = PlayerCategory.MEN): Promise<WeeklyNumericRanking[]> {
@@ -42,7 +42,7 @@ export class EloMemberService {
       }
     };
 
-    return this.cacheService.getFromCacheOrGetAndCacheResult(`elo-bel-wk-${PlayerCategory[category]}-${playerId}-${season}`, getter, TTL_DURATION.EIGHT_HOURS);
+    return this.cacheService.getFromCacheOrGetAndCacheResult(`elo-bel-wk:${season}:${PlayerCategory[category]}-${playerId}`, getter, TTL_DURATION.EIGHT_HOURS);
   }
 
 
@@ -83,6 +83,33 @@ export class EloMemberService {
   }
 
   private async getELOsAndNumeric(uniquePlayerId: number, season: number, category: PlayerCategory): Promise<WeeklyNumericRanking[]> {
+    const table = await this.getRankingTablePage(uniquePlayerId, season, category);
+
+    // #match_list > table > tbody > tr:nth-child(2)
+    if (table) {
+      const elos: Map<string, { elo: number, bel: number }> = new Map<string, { elo: number, bel: number }>();
+      const matchesRows = table.childNodes;
+      for (let row = 3; row < matchesRows.length; row = row + 2) {
+        const currentRow = matchesRows.item(row);
+
+        const week = currentRow.childNodes[1].childNodes[0]['data'];
+        const elo = Number((currentRow.childNodes[21].childNodes[0].nodeValue as string).replace('&nbsp;', ''));
+        const bel = Number((currentRow.childNodes[23].childNodes[0].nodeValue as string).replace('&nbsp;', ''));
+
+        if (elo && bel) {
+          elos.set(week, { elo, bel });
+        }
+      }
+      const arr = [];
+      for (const [key, { elo, bel }] of elos) {
+        arr.push({ weekName: key, elo, bel });
+      }
+      return arr;
+    }
+    return [];
+  }
+
+  private async getELOsAndNumericV2(uniquePlayerId: number, season: number, category: PlayerCategory): Promise<WeeklyNumericRanking[]> {
     const table = await this.getRankingTablePage(uniquePlayerId, season, category);
 
     // #match_list > table > tbody > tr:nth-child(2)

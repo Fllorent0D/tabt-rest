@@ -15,28 +15,18 @@ export enum TTL_DURATION {
 @Injectable()
 export class CacheService {
   private readonly logger = new Logger(CacheService.name);
-  private static hashKey(key: string): string {
-    return createHash('md5').update(key).digest('hex');
-  }
 
   constructor(
     @Inject(CACHE_MANAGER) private cacheManager: CacheStore,
-    private readonly dataDogService: DatadogService,
   ) {
   }
 
   getFromCache<T>(key: string): Promise<T> {
-    this.dataDogService.statsD?.increment('cache.get');
     return this.cacheManager.get(key) as Promise<T | undefined>;
   }
 
   setInCache(key: string, value: any, ttl: number): Promise<void> {
-    this.dataDogService.statsD?.increment('cache.set');
     return this.cacheManager.set(key, value, { ttl }) as Promise<void>;
-  }
-
-  getCacheKey(prefix: string, input: any, db: string): string {
-    return `${prefix}:${db}:${JSON.stringify(input ?? {})}`;
   }
 
 
@@ -45,12 +35,10 @@ export class CacheService {
 
     if (cached) {
       this.logger.debug('Data found in cache');
-      this.dataDogService.statsD?.increment('cache.found');
       return cached;
     }
 
     this.logger.debug('Data not found in cache');
-    this.dataDogService.statsD?.increment('cache.not_found');
 
     const result = await getter();
     await this.setInCache(key, result, ttl);

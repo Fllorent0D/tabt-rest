@@ -24,7 +24,7 @@ export class MatchesMembersRankerService {
 
       return this.computeRanking(matches);
     };
-    return this.cacheService.getFromCacheOrGetAndCacheResult(`members-ranking-division-${divisionId}-${season}`, getter, TTL_DURATION.EIGHT_HOURS);
+    return this.cacheService.getFromCacheOrGetAndCacheResult(`members-ranking-division:${season}:${divisionId}`, getter, TTL_DURATION.EIGHT_HOURS);
   }
 
   async getMembersRankingFromClub(club: string, season: number): Promise<MemberResults[]> {
@@ -38,7 +38,7 @@ export class MatchesMembersRankerService {
 
       return this.computeRanking(matches, club);
     };
-    return this.cacheService.getFromCacheOrGetAndCacheResult(`members-ranking-club-${club}-${season}`, getter, TTL_DURATION.EIGHT_HOURS);
+    return this.cacheService.getFromCacheOrGetAndCacheResult(`members-ranking-club:${season}:${club}`, getter, TTL_DURATION.EIGHT_HOURS);
   }
 
   async getMembersRankingFromTeam(club: string, teamId: string, season: number): Promise<MemberResults[]> {
@@ -53,7 +53,7 @@ export class MatchesMembersRankerService {
       });
       return this.computeRanking(matches, club);
     };
-    return this.cacheService.getFromCacheOrGetAndCacheResult(`members-ranking-team-${club}-${teamId}-${season}`, getter, TTL_DURATION.EIGHT_HOURS);
+    return this.cacheService.getFromCacheOrGetAndCacheResult(`members-ranking-team:${season}:${club}-${teamId}`, getter, TTL_DURATION.EIGHT_HOURS);
   }
 
   private computeRanking(matches: TeamMatchesEntry[], keepClub?: string): MemberResults[] {

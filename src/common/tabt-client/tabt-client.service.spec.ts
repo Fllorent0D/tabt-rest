@@ -105,7 +105,7 @@ describe('TabtClientService', () => {
         ...input,
       };
       const cacheKey = 'cache-key';
-      const cacheKeySpy = jest.spyOn(cacheService, 'getCacheKey').mockReturnValue(cacheKey);
+      
       const cacheSpy = jest.spyOn(cacheService, 'getFromCacheOrGetAndCacheResult');
       const operationSpy = jest.spyOn(tabtClientSwitchingService.tabtClient, 'TestAsync');
       const enrichSpy = jest.spyOn(credentialsService, 'enrichInputWithCredentials').mockReturnValue(enrichedInput);
@@ -114,7 +114,7 @@ describe('TabtClientService', () => {
 
 
       expect(cacheSpy).toHaveBeenCalledTimes(0);
-      expect(cacheKeySpy).toHaveBeenCalledTimes(0);
+      
       expect(enrichSpy).toHaveBeenCalledTimes(1);
       expect(enrichSpy).toHaveBeenCalledWith(input);
       expect(operationSpy).toHaveBeenCalledTimes(1);
@@ -131,7 +131,6 @@ describe('TabtClientService', () => {
         ...input,
       };
       const cacheKey = 'cache-key';
-      jest.spyOn(cacheService, 'getCacheKey').mockReturnValue(cacheKey);
       const cacheSpy = jest.spyOn(cacheService, 'getFromCacheOrGetAndCacheResult');
       const error = new Error();
       error['root'] = {
@@ -168,7 +167,7 @@ describe('TabtClientService', () => {
 
       const cacheSpy = jest.spyOn(cacheService, 'getFromCacheOrGetAndCacheResult');
       const cacheKey = 'cache-key';
-      const cacheKeySpy = jest.spyOn(cacheService, 'getCacheKey').mockReturnValue(cacheKey);
+      
       const operationSpy = jest.spyOn(tabtClientSwitchingService.tabtClient, 'GetSeasonsAsync')
         .mockResolvedValue([{ SeasonEntries: [], CurrentSeason: 18, CurrentSeasonName: '' }, 'test', {}, null, null]);
       const enrichSpy = jest.spyOn(credentialsService, 'enrichInputWithCredentials').mockReturnValue(enrichedInput);
@@ -178,8 +177,7 @@ describe('TabtClientService', () => {
       await cacheSpy.mock.calls[0][1]();
 
       expect(cacheSpy).toHaveBeenCalledTimes(1);
-      expect(cacheKeySpy).toHaveBeenCalledTimes(1);
-      expect(cacheSpy).toHaveBeenCalledWith(cacheKey, expect.any(Function), expect.any(Number));
+      expect(cacheSpy).toHaveBeenCalledWith('season:aftt:d9cacb07a79f0a6e86aabf4ce945bdb0', expect.any(Function), expect.any(Number));
       expect(enrichSpy).toHaveBeenCalledTimes(1);
       expect(enrichSpy).toHaveBeenCalledWith(input);
       expect(operationSpy).toHaveBeenCalledTimes(1);
@@ -198,7 +196,7 @@ describe('TabtClientService', () => {
         ...input,
       };
       const cacheKey = 'cache-key';
-      const cacheKeySpy = jest.spyOn(cacheService, 'getCacheKey').mockReturnValue(cacheKey);
+      
       const cacheSpy = jest.spyOn(cacheService, 'getFromCacheOrGetAndCacheResult');
 
       const operationSpy = jest.spyOn(tabtClientSwitchingService.tabtClient, 'GetClubTeamsAsync').mockResolvedValue([{
@@ -213,8 +211,7 @@ describe('TabtClientService', () => {
       await cacheSpy.mock.calls[0][1]();
 
       expect(cacheSpy).toHaveBeenCalledTimes(1);
-      expect(cacheKeySpy).toHaveBeenCalledTimes(1);
-      expect(cacheSpy).toHaveBeenCalledWith(cacheKey, expect.any(Function), expect.any(Number));
+      expect(cacheSpy).toHaveBeenCalledWith('club-teams:aftt:888c621c5f73b966b3119adac42af9d0', expect.any(Function), expect.any(Number));
       expect(enrichSpy).toHaveBeenCalledTimes(1);
       expect(enrichSpy).toHaveBeenCalledWith(input);
       expect(operationSpy).toHaveBeenCalledTimes(1);
@@ -234,7 +231,7 @@ describe('TabtClientService', () => {
         ...input,
       };
       const cacheKey = 'cache-key';
-      const cacheKeySpy = jest.spyOn(cacheService, 'getCacheKey').mockReturnValue(cacheKey);
+      
 
       const cacheSpy = jest.spyOn(cacheService, 'getFromCacheOrGetAndCacheResult');
       const operationSpy = jest.spyOn(tabtClientSwitchingService.tabtClient, 'GetDivisionRankingAsync').mockResolvedValue([{} as GetDivisionRankingOutput, '', {}, null, null]);
@@ -245,8 +242,7 @@ describe('TabtClientService', () => {
       await cacheSpy.mock.calls[0][1]();
 
       expect(cacheSpy).toHaveBeenCalledTimes(1);
-      expect(cacheSpy).toHaveBeenCalledWith(cacheKey, expect.any(Function), expect.any(Number));
-      expect(cacheKeySpy).toHaveBeenCalledTimes(1);
+      expect(cacheSpy).toHaveBeenCalledWith('division-ranking:aftt:2756293d6ce31ccbac0949577cd3a50a', expect.any(Function), expect.any(Number));
       expect(enrichSpy).toHaveBeenCalledTimes(1);
       expect(enrichSpy).toHaveBeenCalledWith(input);
       expect(operationSpy).toHaveBeenCalledTimes(1);
@@ -263,7 +259,7 @@ describe('TabtClientService', () => {
         ...input,
       };
       const cacheKey = 'cache-key';
-      const cacheKeySpy = jest.spyOn(cacheService, 'getCacheKey').mockReturnValue(cacheKey);
+      
 
       const cacheSpy = jest.spyOn(cacheService, 'getFromCacheOrGetAndCacheResult');
       const operationSpy = jest.spyOn(tabtClientSwitchingService.tabtClient, 'GetMatchesAsync').mockResolvedValue([{} as GetMatchesOutput, '', {}, null, null]);
@@ -274,8 +270,7 @@ describe('TabtClientService', () => {
       await cacheSpy.mock.calls[0][1]();
 
       expect(cacheSpy).toHaveBeenCalledTimes(1);
-      expect(cacheSpy).toHaveBeenCalledWith(cacheKey, expect.any(Function), expect.any(Number));
-      expect(cacheKeySpy).toHaveBeenCalledTimes(1);
+      expect(cacheSpy).toHaveBeenCalledWith('matches:aftt:d9cacb07a79f0a6e86aabf4ce945bdb0', expect.any(Function), expect.any(Number));
       expect(enrichSpy).toHaveBeenCalledTimes(1);
       expect(enrichSpy).toHaveBeenCalledWith(input);
       expect(operationSpy).toHaveBeenCalledTimes(1);
@@ -291,7 +286,7 @@ describe('TabtClientService', () => {
         ...input,
       };
       const cacheKey = 'cache-key';
-      const cacheKeySpy = jest.spyOn(cacheService, 'getCacheKey').mockReturnValue(cacheKey);
+      
 
       const cacheSpy = jest.spyOn(cacheService, 'getFromCacheOrGetAndCacheResult');
       const operationSpy = jest.spyOn(tabtClientSwitchingService.tabtClient, 'GetMembersAsync').mockResolvedValue([{} as IGetMembersOutput, '', {}, null, null]);
@@ -302,8 +297,7 @@ describe('TabtClientService', () => {
       await cacheSpy.mock.calls[0][1]();
 
       expect(cacheSpy).toHaveBeenCalledTimes(1);
-      expect(cacheSpy).toHaveBeenCalledWith(cacheKey, expect.any(Function), expect.any(Number));
-      expect(cacheKeySpy).toHaveBeenCalledTimes(1);
+      expect(cacheSpy).toHaveBeenCalledWith('members:aftt:d9cacb07a79f0a6e86aabf4ce945bdb0', expect.any(Function), expect.any(Number));
       expect(enrichSpy).toHaveBeenCalledTimes(1);
       expect(enrichSpy).toHaveBeenCalledWith(input);
       expect(operationSpy).toHaveBeenCalledTimes(1);
@@ -344,7 +338,7 @@ describe('TabtClientService', () => {
         ...input,
       };
       const cacheKey = 'cache-key';
-      const cacheKeySpy = jest.spyOn(cacheService, 'getCacheKey').mockReturnValue(cacheKey);
+      
 
       const cacheSpy = jest.spyOn(cacheService, 'getFromCacheOrGetAndCacheResult');
       const operationSpy = jest.spyOn(tabtClientSwitchingService.tabtClient, 'GetClubsAsync').mockResolvedValue([{} as GetClubsOutput, '', {}, null, null]);
@@ -355,8 +349,7 @@ describe('TabtClientService', () => {
       await cacheSpy.mock.calls[0][1]();
 
       expect(cacheSpy).toHaveBeenCalledTimes(1);
-      expect(cacheSpy).toHaveBeenCalledWith(cacheKey, expect.any(Function), expect.any(Number));
-      expect(cacheKeySpy).toHaveBeenCalledTimes(1);
+      expect(cacheSpy).toHaveBeenCalledWith('clubs:aftt:d9cacb07a79f0a6e86aabf4ce945bdb0', expect.any(Function), expect.any(Number));
       expect(enrichSpy).toHaveBeenCalledTimes(1);
       expect(enrichSpy).toHaveBeenCalledWith(input);
       expect(operationSpy).toHaveBeenCalledTimes(1);
@@ -373,7 +366,7 @@ describe('TabtClientService', () => {
         ...input,
       };
       const cacheKey = 'cache-key';
-      const cacheKeySpy = jest.spyOn(cacheService, 'getCacheKey').mockReturnValue(cacheKey);
+      
 
       const cacheSpy = jest.spyOn(cacheService, 'getFromCacheOrGetAndCacheResult');
       const operationSpy = jest.spyOn(tabtClientSwitchingService.tabtClient, 'GetDivisionsAsync').mockResolvedValue([{} as IGetDivisionsOutput, '', {}, null, null]);
@@ -384,8 +377,7 @@ describe('TabtClientService', () => {
       await cacheSpy.mock.calls[0][1]();
 
       expect(cacheSpy).toHaveBeenCalledTimes(1);
-      expect(cacheSpy).toHaveBeenCalledWith(cacheKey, expect.any(Function), expect.any(Number));
-      expect(cacheKeySpy).toHaveBeenCalledTimes(1);
+      expect(cacheSpy).toHaveBeenCalledWith('divisions:aftt:d9cacb07a79f0a6e86aabf4ce945bdb0', expect.any(Function), expect.any(Number));
       expect(enrichSpy).toHaveBeenCalledTimes(1);
       expect(enrichSpy).toHaveBeenCalledWith(input);
       expect(operationSpy).toHaveBeenCalledTimes(1);
@@ -402,7 +394,7 @@ describe('TabtClientService', () => {
         ...input,
       };
       const cacheKey = 'cache-key';
-      const cacheKeySpy = jest.spyOn(cacheService, 'getCacheKey').mockReturnValue(cacheKey);
+      
 
       const cacheSpy = jest.spyOn(cacheService, 'getFromCacheOrGetAndCacheResult');
       const operationSpy = jest.spyOn(tabtClientSwitchingService.tabtClient, 'GetTournamentsAsync').mockResolvedValue([{} as IGetTournamentsOutput, '', {}, null, null]);
@@ -413,8 +405,7 @@ describe('TabtClientService', () => {
       await cacheSpy.mock.calls[0][1]();
 
       expect(cacheSpy).toHaveBeenCalledTimes(1);
-      expect(cacheSpy).toHaveBeenCalledWith(cacheKey, expect.any(Function), expect.any(Number));
-      expect(cacheKeySpy).toHaveBeenCalledTimes(1);
+      expect(cacheSpy).toHaveBeenCalledWith('tournaments:aftt:d9cacb07a79f0a6e86aabf4ce945bdb0', expect.any(Function), expect.any(Number));
       expect(enrichSpy).toHaveBeenCalledTimes(1);
       expect(enrichSpy).toHaveBeenCalledWith(input);
       expect(operationSpy).toHaveBeenCalledTimes(1);
@@ -431,7 +422,7 @@ describe('TabtClientService', () => {
         ...input,
       };
       const cacheKey = 'cache-key';
-      const cacheKeySpy = jest.spyOn(cacheService, 'getCacheKey').mockReturnValue(cacheKey);
+      
 
       const cacheSpy = jest.spyOn(cacheService, 'getFromCacheOrGetAndCacheResult');
       const operationSpy = jest.spyOn(tabtClientSwitchingService.tabtClient, 'GetMatchSystemsAsync').mockResolvedValue([{} as GetMatchSystemsOutput, '', {}, null, null]);
@@ -442,8 +433,7 @@ describe('TabtClientService', () => {
       await cacheSpy.mock.calls[0][1]();
 
       expect(cacheSpy).toHaveBeenCalledTimes(1);
-      expect(cacheSpy).toHaveBeenCalledWith(cacheKey, expect.any(Function), expect.any(Number));
-      expect(cacheKeySpy).toHaveBeenCalledTimes(1);
+      expect(cacheSpy).toHaveBeenCalledWith('match-systems:aftt:d9cacb07a79f0a6e86aabf4ce945bdb0', expect.any(Function), expect.any(Number));
       expect(enrichSpy).toHaveBeenCalledTimes(1);
       expect(enrichSpy).toHaveBeenCalledWith(input);
       expect(operationSpy).toHaveBeenCalledTimes(1);
@@ -466,7 +456,6 @@ describe('TabtClientService', () => {
       };
       const cacheKey = 'cache-key';
 
-      const cacheKeySpy = jest.spyOn(cacheService, 'getCacheKey').mockReturnValue(cacheKey);
       const cacheSpy = jest.spyOn(cacheService, 'getFromCacheOrGetAndCacheResult');
       const operationSpy = jest.spyOn(tabtClientSwitchingService.tabtClient, 'TournamentRegisterAsync');
       const enrichSpy = jest.spyOn(credentialsService, 'enrichInputWithCredentials').mockReturnValue(enrichedInput);
@@ -474,7 +463,7 @@ describe('TabtClientService', () => {
       await service.TournamentRegisterAsync(input);
 
       expect(cacheSpy).toHaveBeenCalledTimes(0);
-      expect(cacheKeySpy).toHaveBeenCalledTimes(0);
+      
       expect(enrichSpy).toHaveBeenCalledTimes(1);
       expect(enrichSpy).toHaveBeenCalledWith(input);
       expect(operationSpy).toHaveBeenCalledTimes(1);
