@@ -1,4 +1,5 @@
 import { CACHE_MANAGER, CacheStore, Inject, Injectable, Logger } from '@nestjs/common';
+
 // Durations in Seconds
 
 export enum TTL_DURATION {
@@ -18,11 +19,15 @@ export class CacheService {
   ) {
   }
 
-  getFromCache<T>(key: string): Promise<T> {
-    return this.cacheManager.get(key) as Promise<T | undefined>;
+  async getFromCache<T>(key: string): Promise<T> {
+    const value = await this.cacheManager.get(key) as unknown as Promise<T | undefined>;
+    this.logger.debug(`Get [${key}] in cache. Found in cache: ${!!value}`);
+    return value;
+
   }
 
   setInCache(key: string, value: any, ttl: number): Promise<void> {
+    this.logger.debug(`Set [${key}] in cache. Value: ${JSON.stringify(value)}`);
     return this.cacheManager.set(key, value, { ttl }) as Promise<void>;
   }
 

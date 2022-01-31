@@ -8,13 +8,12 @@ import { TabtClientService } from './tabt-client/tabt-client.service';
 import { TabtClientSwitchingService } from './tabt-client/tabt-client-switching.service';
 import { PackageService } from './package/package.service';
 import { HeaderKeys, TABT_HEADERS } from './context/context.constants';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import * as redisStore from 'cache-manager-redis-store';
 import { DatadogService } from './logger/datadog.service';
 import { LoggerModule } from 'nestjs-pino';
 import pino from 'pino';
-import * as pinoms from 'pino-multi-stream';
-import {cloneDeep} from 'lodash';
+import { cloneDeep } from 'lodash';
 
 const asyncProviders: Provider[] = [
   {
@@ -55,39 +54,20 @@ const asyncProviders: Provider[] = [
       },
     }),
     ConfigModule,
-    LoggerModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: (config: ConfigService) => {
-        return {
-          pinoHttp: [
-            {
-              level: config.get('NODE_ENV') === 'dev' ? 'debug' : 'info',
-              serializers: {
-                req: pino.stdSerializers.wrapRequestSerializer(r => {
-                  const clonedReq = cloneDeep(r);
-                  delete clonedReq.headers[HeaderKeys.X_TABT_PASSWORD.toLowerCase()]
-                  return clonedReq;
-                }),
-              },
+    LoggerModule.forRoot({
+        pinoHttp: {
+            level: 'debug',
+            transport: { target: 'pino-pretty' },
+            serializers: {
+              req: pino.stdSerializers.wrapRequestSerializer(r => {
+                const clonedReq = cloneDeep(r);
+                delete clonedReq.headers[HeaderKeys.X_TABT_PASSWORD.toLowerCase()];
+                return clonedReq;
+              }),
             },
-            pinoms.multistream([
-              {
-                stream: pinoms.prettyStream(
-                  {
-                    prettyPrint: {
-                      colorize: true,
-                      translateTime: 'SYS:standard',
-                      ignore: 'hostname,pid',
-                    },
-                  },
-                ),
-              },
-            ]),
-          ],
-        };
+          },
       },
-    }),
+    ),
   ],
   providers: [
     ...asyncProviders,
