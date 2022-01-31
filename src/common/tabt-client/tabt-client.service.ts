@@ -166,7 +166,7 @@ export class TabtClientService {
   }
 
   private static getCacheKey(prefix: string, input: any, db: string): string {
-    return `${prefix}:${db}:${createHash('md5').update(JSON.stringify(input ?? {})).digest('hex')}`;
+    return `${prefix}:${db}:${createHash('sha256').update(JSON.stringify(input ?? {})).digest('hex')}`;
   }
 
 
