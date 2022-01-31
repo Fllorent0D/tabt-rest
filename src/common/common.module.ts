@@ -14,7 +14,6 @@ import { DatadogService } from './logger/datadog.service';
 import { LoggerModule } from 'nestjs-pino';
 import pino from 'pino';
 import * as pinoms from 'pino-multi-stream';
-import * as fs from 'fs';
 import {cloneDeep} from 'lodash';
 
 const asyncProviders: Provider[] = [

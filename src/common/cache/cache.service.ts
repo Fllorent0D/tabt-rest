@@ -1,7 +1,4 @@
 import { CACHE_MANAGER, CacheStore, Inject, Injectable, Logger } from '@nestjs/common';
-import { createHash } from 'crypto';
-import { DatadogService } from '../logger/datadog.service';
-
 // Durations in Seconds
 
 export enum TTL_DURATION {

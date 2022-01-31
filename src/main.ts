@@ -6,7 +6,6 @@ import * as compression from 'compression';
 import * as responseTime from 'response-time';
 import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { PackageService } from './common/package/package.service';
-import { DatadogService } from './common/logger/datadog.service';
 import { Logger } from 'nestjs-pino';
 
 async function bootstrap() {
