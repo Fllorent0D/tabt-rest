@@ -56,10 +56,11 @@ export class TabtClientService {
         if (e.message) {
           this.logger.error(e, e.stack);
         }
-        if(e?.root?.Envelope?.Body?.Fault?.faultcode){
+        if (e?.root?.Envelope?.Body?.Fault?.faultcode) {
           this.logger.error(`Error calling tabt: ${e?.root?.Envelope?.Body?.Fault?.faultcode} ${e?.root?.Envelope?.Body?.Fault?.faultstring}`);
+          throw new TabtException(e?.root?.Envelope?.Body?.Fault?.faultcode, e?.root?.Envelope?.Body?.Fault?.faultstring);
         }
-        throw new TabtException(e?.root?.Envelope?.Body?.Fault?.faultcode, e?.root?.Envelope?.Body?.Fault?.faultstring);
+        throw e;
       }
 
     };
@@ -107,13 +108,22 @@ export class TabtClientService {
     return this.enrichBodyAndQueryWithCache('matches', input, getter, TTL_DURATION.ONE_HOUR);
   }
 
-  GetMembersAsync(input: GetMembersInput): Promise<IGetMembersOutput> {
+  GetMembersAsync(getMembersInput: GetMembersInput): Promise<IGetMembersOutput> {
     this.logger.log('Request GetMembers method');
     const getter = async (input, options, headers) => {
       const [result] = await this.tabtClientSwitchingService.tabtClient.GetMembersAsync(input, options, headers);
+      if (getMembersInput.UniqueIndex &&
+        getMembersInput.WithResults &&
+        result.MemberEntries?.length === 1 &&
+        !result.MemberEntries[0].ResultCount &&
+        result.MemberEntries[0].ResultCount !== 0
+      ) {
+        this.logger.error({ inputToTabT: getMembersInput, outputFromTabT: result }, 'TabT-rest asked for member results but none were retrieved');
+        throw new Error('Requested results but none were retrieved');
+      }
       return result;
     };
-    return this.enrichBodyAndQueryWithCache('members', input, getter, TTL_DURATION.TWELVE_HOURS);
+    return this.enrichBodyAndQueryWithCache('members', getMembersInput, getter, TTL_DURATION.TWELVE_HOURS);
   }
 
   UploadAsync(input: IUploadInput): Promise<[IUploadOutput, string, { [k: string]: any; }, any, any]> {
