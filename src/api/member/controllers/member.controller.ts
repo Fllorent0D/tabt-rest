@@ -1,4 +1,14 @@
-import { Controller, Get, NotFoundException, Param, ParseIntPipe, Query, Version } from '@nestjs/common';
+import {
+  ClassSerializerInterceptor,
+  Controller,
+  Get,
+  NotFoundException,
+  Param,
+  ParseIntPipe,
+  Query,
+  UseInterceptors,
+  Version,
+} from '@nestjs/common';
 import { MemberEntry } from '../../../entity/tabt-soap/TabTAPI_Port';
 import { ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { MemberService } from '../../../services/members/member.service';
@@ -49,10 +59,10 @@ export class MemberController {
         PlayerCategory: PlayerCategory[input.playerCategory],
         UniqueIndex: input.uniqueIndex,
         NameSearch: input.nameSearch,
-        ExtendedInformation: input.extendedInformation,
-        RankingPointsInformation: input.rankingPointsInformation,
-        WithResults: input.withResults,
-        WithOpponentRankingEvaluation: input.withOpponentRankingEvaluation,
+        ExtendedInformation: (input.extendedInformation as unknown as string) === 'true',
+        RankingPointsInformation: (input.rankingPointsInformation as unknown as string) === 'true',
+        WithResults: (input.withResults as unknown as string) === 'true',
+        WithOpponentRankingEvaluation: (input.withOpponentRankingEvaluation as unknown as string) === 'true',
       },
     );
   }
@@ -67,6 +77,7 @@ export class MemberController {
   })
   @ApiNotFoundResponse()
   @TabtHeadersDecorator()
+  @UseInterceptors(ClassSerializerInterceptor)
   async findById(
     @Query() input: GetMember,
     @Param('uniqueIndex', ParseIntPipe) id: number,
@@ -76,10 +87,10 @@ export class MemberController {
       PlayerCategory: PlayerCategory[input.playerCategory],
       UniqueIndex: id,
       NameSearch: input.nameSearch,
-      ExtendedInformation: input.extendedInformation,
-      RankingPointsInformation: input.rankingPointsInformation,
-      WithResults: input.withResults,
-      WithOpponentRankingEvaluation: input.withOpponentRankingEvaluation,
+      ExtendedInformation: (input.extendedInformation as unknown as string) === 'true',
+      RankingPointsInformation: (input.rankingPointsInformation as unknown as string) === 'true',
+      WithResults: (input.withResults as unknown as string) === 'true',
+      WithOpponentRankingEvaluation: (input.withOpponentRankingEvaluation as unknown as string) === 'true',
     });
     if (found.length === 1) {
       return found[0];

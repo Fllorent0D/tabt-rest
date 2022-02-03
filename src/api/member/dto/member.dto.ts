@@ -38,7 +38,7 @@ export class GetMembers {
   rankingPointsInformation?: boolean;
 
   @ApiPropertyOptional()
-  @Transform((a) => Boolean(a.value))
+  @Transform((a) => a.value === 'true')
   @IsBoolean()
   @IsOptional()
   withResults?: boolean;
