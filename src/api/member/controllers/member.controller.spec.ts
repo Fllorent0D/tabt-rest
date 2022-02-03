@@ -34,19 +34,19 @@ describe('MemberController', () => {
   });
 
   it('should call members service with correct param', async () => {
-    const input: GetMembers = {
+    const input = {
       club: 'L360',
       uniqueIndex: 142453,
-      extendedInformation: true,
+      extendedInformation: 'true',
       nameSearch: 'florent',
       playerCategory: 'MEN',
-      rankingPointsInformation: true,
-      withOpponentRankingEvaluation: true,
-      withResults: true,
+      rankingPointsInformation: 'true',
+      withOpponentRankingEvaluation: 'true',
+      withResults: 'true',
     };
     const spy = jest.spyOn(service, 'getMembers');
 
-    const result = await controller.findAll(input);
+    const result = await controller.findAll(input as unknown as GetMember);
 
     expect(result).toBeDefined();
     expect(result[0]).toBeDefined();
@@ -63,18 +63,18 @@ describe('MemberController', () => {
   });
 
   it('should call members service with correct param - 1 player', async () => {
-    const input: GetMember = {
+    const input = {
       club: 'L360',
-      extendedInformation: true,
+      extendedInformation: 'true',
       nameSearch: 'florent',
       playerCategory: 'MEN',
-      rankingPointsInformation: true,
-      withOpponentRankingEvaluation: true,
-      withResults: true,
+      rankingPointsInformation: 'true',
+      withOpponentRankingEvaluation: 'true',
+      withResults: 'true',
     };
     const spy = jest.spyOn(service, 'getMembers');
 
-    const result = await controller.findById(input, 142453);
+    const result = await controller.findById(input as unknown as GetMember, 142453);
 
     expect(result).toBeDefined();
     expect(typeof result).toBe('object');
