@@ -4,6 +4,12 @@ import { MatchService } from './match.service';
 import { CacheService, TTL_DURATION } from '../../common/cache/cache.service';
 import { MemberResults } from '../../common/dto/member-ranking.dto';
 
+export enum SortSystem {
+  MOST_PLAYED,
+  BEST_PERF_PER_PCT,
+  BEST_PERF_PER_WIN,
+  // RANKING To Do
+}
 
 @Injectable()
 export class MatchesMembersRankerService {
@@ -13,7 +19,7 @@ export class MatchesMembersRankerService {
   ) {
   }
 
-  async getMembersRankingFromDivision(divisionId: number, season: number): Promise<MemberResults[]> {
+  async getMembersRankingFromDivision(divisionId: number, season: number, sortingSystem: SortSystem = SortSystem.BEST_PERF_PER_WIN): Promise<MemberResults[]> {
     // Télécharger les matchs
     const getter = async () => {
       const matches = await this.matchService.getMatches({
@@ -22,12 +28,12 @@ export class MatchesMembersRankerService {
         WithDetails: true,
       });
 
-      return this.computeRanking(matches);
+      return MatchesMembersRankerService.computeRanking(matches, sortingSystem);
     };
     return this.cacheService.getFromCacheOrGetAndCacheResult(`members-ranking-division:${season}:${divisionId}`, getter, TTL_DURATION.EIGHT_HOURS);
   }
 
-  async getMembersRankingFromClub(club: string, season: number): Promise<MemberResults[]> {
+  async getMembersRankingFromClub(club: string, season: number, sortingSystem: SortSystem = SortSystem.BEST_PERF_PER_PCT): Promise<MemberResults[]> {
     // Télécharger les matchs
     const getter = async () => {
       const matches = await this.matchService.getMatches({
@@ -36,12 +42,12 @@ export class MatchesMembersRankerService {
         WithDetails: true,
       });
 
-      return this.computeRanking(matches, club);
+      return MatchesMembersRankerService.computeRanking(matches, sortingSystem, club);
     };
     return this.cacheService.getFromCacheOrGetAndCacheResult(`members-ranking-club:${season}:${club}`, getter, TTL_DURATION.EIGHT_HOURS);
   }
 
-  async getMembersRankingFromTeam(club: string, teamId: string, season: number): Promise<MemberResults[]> {
+  async getMembersRankingFromTeam(club: string, teamId: string, season: number, sortingSystem: SortSystem = SortSystem.MOST_PLAYED): Promise<MemberResults[]> {
     // Télécharger les matchs
     const [divisionId] = teamId.split('-');
     const getter = async () => {
@@ -51,12 +57,12 @@ export class MatchesMembersRankerService {
         DivisionId: Number(divisionId),
         WithDetails: true,
       });
-      return this.computeRanking(matches, club);
+      return MatchesMembersRankerService.computeRanking(matches, sortingSystem, club);
     };
     return this.cacheService.getFromCacheOrGetAndCacheResult(`members-ranking-team:${season}:${club}-${teamId}`, getter, TTL_DURATION.EIGHT_HOURS);
   }
 
-  private computeRanking(matches: TeamMatchesEntry[], keepClub?: string): MemberResults[] {
+  private static computeRanking(matches: TeamMatchesEntry[], sortingSystem: SortSystem, keepClub?: string): MemberResults[] {
     const players: Map<number, MemberResults> = new Map<number, MemberResults>();
 
     for (const match of matches) {
@@ -112,17 +118,33 @@ export class MatchesMembersRankerService {
       }
     }
     const results = [...players.values()];
-    return this.computePctAndSort(results);
+    return MatchesMembersRankerService.computePctAndSort(results, sortingSystem);
   }
 
-  private computePctAndSort(members: MemberResults[]): MemberResults[] {
+  private static computePctAndSort(members: MemberResults[], sortSystem: SortSystem): MemberResults[] {
     for (const result of members) {
       result.winPourcentage = Math.round((result.win / result.played) * 100);
       result.losePourcentage = Math.round((result.lose / result.played) * 100);
     }
+    const mostPlayedCmpFct = (a: MemberResults, b: MemberResults) => ((a.played * 100) + a.winPourcentage) > ((b.played * 100) + b.winPourcentage) ? -1 : 1;
+    const bestPerfPctCmpFct = (a: MemberResults, b: MemberResults) => ((a.winPourcentage * 100) + a.played) > ((b.winPourcentage * 100) + b.played) ? -1 : 1;
+    const bestPerfWinCntCmpFct = (a: MemberResults, b: MemberResults) => a.win > b.win ? -1 : 1;
+    let fctToApply;
+    switch (sortSystem) {
+      case SortSystem.BEST_PERF_PER_PCT:
+        fctToApply = bestPerfPctCmpFct;
+        break;
+      case SortSystem.BEST_PERF_PER_WIN:
+        fctToApply = bestPerfWinCntCmpFct;
+        break;
+      case SortSystem.MOST_PLAYED:
+        fctToApply = mostPlayedCmpFct;
+        break;
+    }
+
     return members
       .filter((member) => member.played > 0)
-      .sort((a, b) => ((a.played * 100) + a.winPourcentage) > ((b.played * 100) + b.winPourcentage) ? -1 : 1);
+      .sort(fctToApply);
   }
 
 }
