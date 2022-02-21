@@ -28,10 +28,10 @@
   "dependencies": {
     "@logtail/node": "^0.1.7",
     "@nestjs/axios": "^0.0.2",
-    "@nestjs/common": "^8.0.9",
+    "@nestjs/common": "^8.2.6",
     "@nestjs/config": "^1.0.1",
-    "@nestjs/core": "^8.0.9",
-    "@nestjs/platform-express": "^8.0.9",
+    "@nestjs/core": "^8.2.6",
+    "@nestjs/platform-express": "^8.2.6",
     "@nestjs/serve-static": "^2.2.2",
     "@nestjs/swagger": "^5.1.0",
     "@nestjs/terminus": "^8.0.1",
