@@ -21,6 +21,7 @@ export class Head2headController {
   })
   @ApiOkResponse({
     description: 'List of all matches between 2 players',
+    type: Head2HeadData
   })
   async findAll(
     @Param('playerUniqueIndex', ParseIntPipe) playerA: number,

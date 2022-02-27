@@ -5,6 +5,7 @@ import { MatchService } from '../matches/match.service';
 import { TeamMatchesEntry } from '../../entity/tabt-soap/TabTAPI_Port';
 import { CacheService, TTL_DURATION } from '../../common/cache/cache.service';
 import { firstValueFrom } from 'rxjs';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export interface ExtractedMatchInfo {
   weekName?: string,
@@ -13,24 +14,49 @@ export interface ExtractedMatchInfo {
   matchId: string
 }
 
-export interface MatchEntryHistory {
+export class PlayersInfo {
+  @ApiProperty()
+  playerUniqueIndex: number;
+  @ApiProperty()
+  opponentPlayerUniqueIndex: number;
+  @ApiProperty()
+  playerName: string;
+  @ApiProperty()
+  opponentPlayerName: string;
+}
+
+export class MatchEntryHistory {
+  @ApiPropertyOptional()
   season?: number;
+  @ApiProperty()
   date: Date;
+  @ApiProperty({ type: TeamMatchesEntry })
   matchEntry: TeamMatchesEntry;
+  @ApiProperty()
   playerRanking: string;
+  @ApiProperty()
   opponentRanking: string;
+  @ApiProperty()
   score?: string;
 }
 
-export interface Head2HeadData {
-  playerUniqueIndex: number;
-  opponentPlayerUniqueIndex: number;
+export class Head2HeadData {
+  @ApiProperty()
   head2HeadCount: number;
+  @ApiProperty()
   victoryCount: number;
+  @ApiProperty()
   defeatCount: number;
+  @ApiPropertyOptional()
   lastVictory?: Date;
+  @ApiPropertyOptional()
+  lastDefeat?: Date;
+  @ApiPropertyOptional()
   firstVictory?: Date;
+  @ApiProperty({ type: [MatchEntryHistory] })
   matchEntryHistory: MatchEntryHistory[];
+  @ApiProperty({ type: PlayersInfo })
+  playersInfo: PlayersInfo;
 }
 
 @Injectable()
@@ -48,17 +74,16 @@ export class Head2headService {
     const getter = async () => {
       const htmlPage = await this.getPageFromAFTT(playerUniqueIndex, opponentPlayerUniqueIndex);
       const matchesExtracted = Head2headService.extractMatchesInfos(htmlPage);
-
+      const playersInfo: PlayersInfo = Head2headService.extractPlayerNames(htmlPage);
       if (matchesExtracted.length > 0) {
         const matchesFound: Array<TeamMatchesEntry | undefined> = await Promise.all(matchesExtracted.map((m) => this.getMatchDetails(m)));
         const teamMatchEntries: TeamMatchesEntry[] = matchesFound.filter(match => !!match) as TeamMatchesEntry[];
         if (teamMatchEntries.length > 0) {
-          return this.calculateHead2Head(teamMatchEntries, matchesExtracted, playerUniqueIndex, opponentPlayerUniqueIndex);
+          return this.calculateHead2Head(teamMatchEntries, matchesExtracted, playersInfo);
         }
       }
       return {
-        playerUniqueIndex: playerUniqueIndex,
-        opponentPlayerUniqueIndex: opponentPlayerUniqueIndex,
+        playersInfo,
         head2HeadCount: 0,
         victoryCount: 0,
         defeatCount: 0,
@@ -92,18 +117,38 @@ export class Head2headService {
           .split('&')
           .map(arg => arg.split('='))
           .filter(([key]) => ['season', 'week_name', 'div_id'].includes(key)));
-
         matches.push({
           matchId: match[2],
           weekName: parsed['week_name'],
           divisionId: parsed['div_id'],
-          season: parsed.season,
+          season: Number(parsed.season),
         });
 
       }
 
     } while (match);
     return matches;
+  }
+
+  private static extractPlayerNames(htmlPage: string): PlayersInfo {
+    const regex = /id="player_[0-9]" name="player_[0-9]" value="([0-9]+)\/(.+)"/gm;
+    let expExecArray: RegExpExecArray | null;
+    const names = [];
+    const uniqueIndexes = [];
+    do {
+      expExecArray = regex.exec(htmlPage);
+      if (expExecArray) {
+        uniqueIndexes.push(expExecArray[1]);
+        names.push(expExecArray[2]);
+      }
+
+    } while (expExecArray);
+    return {
+      playerName: names[0],
+      playerUniqueIndex: Number(uniqueIndexes[0]),
+      opponentPlayerName: names[1],
+      opponentPlayerUniqueIndex: Number(uniqueIndexes[1]),
+    };
   }
 
   private async getMatchDetails(matchExtracted: ExtractedMatchInfo): Promise<TeamMatchesEntry | undefined> {
@@ -120,24 +165,25 @@ export class Head2headService {
     return undefined;
   }
 
-  private calculateHead2Head(teamMatchEntries: TeamMatchesEntry[], extractedMatches: ExtractedMatchInfo[], playerUniqueIndex: number, opponentPlayerUniqueIndex: number): Head2HeadData {
+  private calculateHead2Head(teamMatchEntries: TeamMatchesEntry[], extractedMatches: ExtractedMatchInfo[], playersInfo: PlayersInfo): Head2HeadData {
     const head2HeadCount = teamMatchEntries.length;
     let victoryCount = 0;
     let defeatCount = 0;
     let lastVictory: Date | undefined;
     let firstVictory: Date | undefined;
+    let lastDefeat: Date | undefined;
     const matchEntryHistory: MatchEntryHistory[] = [];
 
     for (const match of teamMatchEntries) {
       const linkedExtractedMatch = extractedMatches.find((m) => m.matchId === match.MatchId) as ExtractedMatchInfo;
       const season: number | undefined = linkedExtractedMatch.season;
-      const isHomePlayer = match.MatchDetails.HomePlayers.Players.some(p => p.UniqueIndex === playerUniqueIndex);
+      const isHomePlayer = match.MatchDetails.HomePlayers.Players.some(p => p.UniqueIndex === playersInfo.playerUniqueIndex);
       const player = isHomePlayer ?
-        match.MatchDetails.HomePlayers.Players.find(p => p.UniqueIndex === playerUniqueIndex) :
-        match.MatchDetails.AwayPlayers.Players.find(p => p.UniqueIndex === playerUniqueIndex);
+        match.MatchDetails.HomePlayers.Players.find(p => p.UniqueIndex === playersInfo.playerUniqueIndex) :
+        match.MatchDetails.AwayPlayers.Players.find(p => p.UniqueIndex === playersInfo.playerUniqueIndex);
       const opponent = isHomePlayer ?
-        match.MatchDetails.AwayPlayers.Players.find(p => p.UniqueIndex === opponentPlayerUniqueIndex) :
-        match.MatchDetails.HomePlayers.Players.find(p => p.UniqueIndex === opponentPlayerUniqueIndex);
+        match.MatchDetails.AwayPlayers.Players.find(p => p.UniqueIndex === playersInfo.opponentPlayerUniqueIndex) :
+        match.MatchDetails.HomePlayers.Players.find(p => p.UniqueIndex === playersInfo.opponentPlayerUniqueIndex);
 
       if (!player || !opponent) {
         continue;
@@ -147,8 +193,8 @@ export class Head2headService {
         .IndividualMatchResults
         .find((individualMatch) =>
           isHomePlayer ?
-            individualMatch.HomePlayerUniqueIndex.includes(Number(playerUniqueIndex)) && individualMatch.AwayPlayerUniqueIndex.includes(Number(opponentPlayerUniqueIndex)) :
-            individualMatch.AwayPlayerUniqueIndex.includes(Number(playerUniqueIndex)) && individualMatch.HomePlayerUniqueIndex.includes(Number(opponentPlayerUniqueIndex)));
+            individualMatch.HomePlayerUniqueIndex.includes(Number(playersInfo.playerUniqueIndex)) && individualMatch.AwayPlayerUniqueIndex.includes(Number(playersInfo.opponentPlayerUniqueIndex)) :
+            individualMatch.AwayPlayerUniqueIndex.includes(Number(playersInfo.playerUniqueIndex)) && individualMatch.HomePlayerUniqueIndex.includes(Number(playersInfo.opponentPlayerUniqueIndex)));
 
       let score;
       if (individualResult) {
@@ -166,6 +212,9 @@ export class Head2headService {
           }
         } else {
           defeatCount = defeatCount + 1;
+          if (!lastDefeat || lastDefeat < new Date(match.Date)) {
+            lastDefeat = new Date(match.Date);
+          }
         }
       }
 
@@ -179,14 +228,14 @@ export class Head2headService {
       });
     }
     return {
-      playerUniqueIndex,
-      opponentPlayerUniqueIndex,
       head2HeadCount,
       defeatCount,
       victoryCount,
       lastVictory,
       firstVictory,
+      lastDefeat,
       matchEntryHistory,
+      playersInfo
     };
 
   }
