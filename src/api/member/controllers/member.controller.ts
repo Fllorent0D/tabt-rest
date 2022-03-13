@@ -25,6 +25,7 @@ import { PlayerCategory } from '../../../entity/tabt-input.interface';
 import { EloMemberService } from '../../../services/members/elo-member.service';
 import { RequestBySeasonDto } from '../../../common/dto/request-by-season.dto';
 import { SeasonService } from '../../../services/seasons/season.service';
+import { ElasticSearchService } from '../../../common/elastic/elastic-search.service';
 
 @ApiTags('Members')
 @Controller({
@@ -38,6 +39,7 @@ export class MemberController {
     private memberService: MemberService,
     private eloMemberService: EloMemberService,
     private seasonService: SeasonService,
+    private readonly elasticSearch: ElasticSearchService,
   ) {
   }
 
@@ -65,6 +67,44 @@ export class MemberController {
         WithOpponentRankingEvaluation: (input.withOpponentRankingEvaluation as unknown as string) === 'true',
       },
     );
+  }
+
+  @Get('lookup')
+  @ApiOperation({
+    operationId: 'findAllMembersLookup',
+  })
+  @ApiOkResponse({
+    type: [MemberEntry],
+    description: 'Quick search of a player',
+  })
+  async searchName(
+    @Query('query') query: string,
+  ): Promise<any> {
+    /*
+    const result = await this.elasticSearch.client.searchTemplate({
+      id: 'searchMember',
+      index: 'members',
+      params: { 'query_string': query },
+    });
+    */
+    const result = await this.elasticSearch.client.search({
+      size: 50,
+      query: {
+        multi_match: {
+          'query': query,
+          'operator': 'and',
+          'boost': 1,
+          'type': 'bool_prefix',
+          'fuzziness': 1,
+          'fields': [
+            'FullName.search-as-you-type',
+            'FullName.search-as-you-type._2gram',
+            'FullName.search-as-you-type._3gram',
+          ],
+        },
+      },
+    });
+    return result.hits.hits.map((hit) => hit._source);
   }
 
   @Get(':uniqueIndex')

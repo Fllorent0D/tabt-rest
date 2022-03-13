@@ -5,6 +5,7 @@ import { ApiModule } from './api/api.module';
 import { ConfigModule } from '@nestjs/config';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { CronModule } from './cron/cron.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { join } from 'path';
     CommonModule,
     ApiModule,
     ConfigModule.forRoot(),
+    CronModule,
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', process.env.STATIC_PREFIX),
       serveRoot: '/' + process.env.STATIC_PREFIX,

@@ -14,6 +14,7 @@ import { DatadogService } from './logger/datadog.service';
 import { LoggerModule } from 'nestjs-pino';
 import pino from 'pino';
 import { cloneDeep } from 'lodash';
+import { ElasticSearchService } from './elastic/elastic-search.service';
 
 const asyncProviders: Provider[] = [
   {
@@ -79,6 +80,7 @@ const asyncProviders: Provider[] = [
     TabtClientSwitchingService,
     PackageService,
     DatadogService,
+    ElasticSearchService
   ],
   exports: [
     ...asyncProviders,
@@ -87,6 +89,7 @@ const asyncProviders: Provider[] = [
     TabtClientService,
     PackageService,
     DatadogService,
+    ElasticSearchService
   ],
 })
 export class CommonModule {
