@@ -6,10 +6,12 @@ import { NotFoundException } from '@nestjs/common';
 import { SeasonService } from '../../../services/seasons/season.service';
 import { EloMemberService } from '../../../services/members/elo-member.service';
 import { PlayerCategory } from '../../../entity/tabt-input.interface';
+import { ElasticSearchService } from '../../../common/elastic/elastic-search.service';
 
 jest.mock('../../../services/members/member.service');
 jest.mock('../../../services/seasons/season.service');
 jest.mock('../../../services/members/elo-member.service');
+jest.mock('../../../common/elastic/elastic-search.service');
 
 describe('MemberController', () => {
   let controller: MemberController;
@@ -20,7 +22,7 @@ describe('MemberController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [MemberController],
-      providers: [MemberService, SeasonService, EloMemberService],
+      providers: [MemberService, SeasonService, EloMemberService, ElasticSearchService],
     }).compile();
 
     controller = module.get<MemberController>(MemberController);
