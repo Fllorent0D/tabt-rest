@@ -20,7 +20,7 @@ export class MembersSearchIndexService {
     this.logger.debug(`Quick members search. Query: ${queryString}`);
 
     if (searchTerms.length === 1) {
-      query = searchTerms[0] + '*';
+      query = searchTerms[0] + '* ' + searchTerms[0];
     } else {
       for (const term of searchTerms.slice(0, searchTerms.length - 1)) {
         query += `+${term}~1 `;
