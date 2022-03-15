@@ -28,7 +28,7 @@ export class MembersSearchIndexService {
       for (const term of searchTerms.slice(0, searchTerms.length - 1)) {
         query += `+${term}~1 `;
       }
-      query += `${searchTerms[searchTerms.length - 1]}* +${searchTerms[searchTerms.length - 1]}`;
+      query += `${+searchTerms[searchTerms.length - 1]}* ${searchTerms[searchTerms.length - 1]}^10`;
     }
     this.logger.debug(`Query to index: ${query}`);
     const results = this.index.search(query);
