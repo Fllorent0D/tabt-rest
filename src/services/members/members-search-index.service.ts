@@ -2,6 +2,7 @@ import { Inject, Injectable, Logger } from '@nestjs/common';
 import * as lunr from 'lunr';
 import { MemberEntry, TabTAPISoap } from '../../entity/tabt-soap/TabTAPI_Port';
 import { CacheService, TTL_DURATION } from '../../common/cache/cache.service';
+import { Timeout } from '@nestjs/schedule';
 
 @Injectable()
 export class MembersSearchIndexService {
@@ -38,6 +39,7 @@ export class MembersSearchIndexService {
     });
   }
 
+  @Timeout(0)
   async indexMembers() {
     const members = await this.cacheService.getFromCacheOrGetAndCacheResult('members:all', async () => {
       const [memberOutput] = await this.tabtAFTT.GetMembersAsync({ NameSearch: ' ' });
