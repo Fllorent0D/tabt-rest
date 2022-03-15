@@ -96,7 +96,7 @@ export class EloMemberService {
         const elo = Number((currentRow.childNodes[21].childNodes[0].nodeValue as string).replace('&nbsp;', ''));
         const bel = Number((currentRow.childNodes[23].childNodes[0].nodeValue as string).replace('&nbsp;', ''));
 
-        if (elo && bel) {
+        if (elo || bel) {
           elos.set(week, { elo, bel });
         }
       }
