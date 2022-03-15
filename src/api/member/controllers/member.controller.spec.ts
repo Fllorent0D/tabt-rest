@@ -1,17 +1,17 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { MemberController } from './member.controller';
 import { MemberService } from '../../../services/members/member.service';
-import { GetMember, GetMembers, WeeklyNumericRanking, WeeklyNumericRankingInput } from '../dto/member.dto';
+import { GetMember, WeeklyNumericRanking, WeeklyNumericRankingInput } from '../dto/member.dto';
 import { NotFoundException } from '@nestjs/common';
 import { SeasonService } from '../../../services/seasons/season.service';
 import { EloMemberService } from '../../../services/members/elo-member.service';
 import { PlayerCategory } from '../../../entity/tabt-input.interface';
-import { ElasticSearchService } from '../../../common/elastic/elastic-search.service';
+import { MembersSearchIndexService } from '../../../services/members/members-search-index.service';
 
 jest.mock('../../../services/members/member.service');
 jest.mock('../../../services/seasons/season.service');
 jest.mock('../../../services/members/elo-member.service');
-jest.mock('../../../common/elastic/elastic-search.service');
+jest.mock('../../../services/members/members-search-index.service');
 
 describe('MemberController', () => {
   let controller: MemberController;
@@ -22,7 +22,7 @@ describe('MemberController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [MemberController],
-      providers: [MemberService, SeasonService, EloMemberService, ElasticSearchService],
+      providers: [MemberService, SeasonService, EloMemberService, MembersSearchIndexService],
     }).compile();
 
     controller = module.get<MemberController>(MemberController);
