@@ -1,6 +1,7 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import * as lunr from 'lunr';
 import { MemberEntry, TabTAPISoap } from '../../entity/tabt-soap/TabTAPI_Port';
+import { CacheService, TTL_DURATION } from '../../common/cache/cache.service';
 
 @Injectable()
 export class MembersSearchIndexService {
@@ -11,6 +12,7 @@ export class MembersSearchIndexService {
 
   constructor(
     @Inject('tabt-aftt') private readonly tabtAFTT: TabTAPISoap,
+    private readonly cacheService: CacheService
   ) {
   }
 
@@ -37,14 +39,17 @@ export class MembersSearchIndexService {
   }
 
   async indexMembers() {
-    const [memberOutput] = await this.tabtAFTT.GetMembersAsync({ NameSearch: ' ' });
-    this.logger.debug(`Fetched ${memberOutput.MemberCount} member entries`);
+    const members = await this.cacheService.getFromCacheOrGetAndCacheResult('members:all', async () => {
+      const [memberOutput] = await this.tabtAFTT.GetMembersAsync({ NameSearch: ' ' });
+      return memberOutput.MemberEntries;
+    }, TTL_DURATION.TWELVE_HOURS);
+    this.logger.debug(`Fetched ${members} member entries`);
 
     this.index = lunr(function() {
       this.ref('UniqueIndex');
       this.field('FullName');
 
-      memberOutput.MemberEntries.forEach(function(doc) {
+      members.forEach(function(doc) {
         this.add({
           UniqueIndex: doc.UniqueIndex,
           FullName: doc.FirstName.toUpperCase() + ' ' + doc.LastName.toUpperCase(),
@@ -52,7 +57,7 @@ export class MembersSearchIndexService {
       }, this);
       this.build();
     });
-    this.members = memberOutput.MemberEntries;
+    this.members = members;
 
     this.logger.debug(`Index created.`);
 
