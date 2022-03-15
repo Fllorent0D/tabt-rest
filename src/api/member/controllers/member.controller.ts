@@ -15,7 +15,7 @@ import { MemberService } from '../../../services/members/member.service';
 import { TabtHeadersDecorator } from '../../../common/decorators/tabt-headers.decorator';
 import {
   GetMember,
-  GetMembers,
+  GetMembers, LookupDTO,
   WeeklyELO,
   WeeklyNumericRanking,
   WeeklyNumericRankingInput,
@@ -25,7 +25,7 @@ import { PlayerCategory } from '../../../entity/tabt-input.interface';
 import { EloMemberService } from '../../../services/members/elo-member.service';
 import { RequestBySeasonDto } from '../../../common/dto/request-by-season.dto';
 import { SeasonService } from '../../../services/seasons/season.service';
-import { ElasticSearchService } from '../../../common/elastic/elastic-search.service';
+import { MembersSearchIndexService } from '../../../services/members/members-search-index.service';
 
 @ApiTags('Members')
 @Controller({
@@ -39,7 +39,7 @@ export class MemberController {
     private memberService: MemberService,
     private eloMemberService: EloMemberService,
     private seasonService: SeasonService,
-    private readonly elasticSearch: ElasticSearchService,
+    private readonly membersSearchIndexService: MembersSearchIndexService,
   ) {
   }
 
@@ -69,6 +69,12 @@ export class MemberController {
     );
   }
 
+  @Get('index')
+  async index() {
+    await this.membersSearchIndexService.indexMembers();
+    return 'ok';
+  }
+
   @Get('lookup')
   @ApiOperation({
     operationId: 'findAllMembersLookup',
@@ -78,33 +84,10 @@ export class MemberController {
     description: 'Quick search of a player',
   })
   async searchName(
-    @Query('query') query: string,
+    @Query() params: LookupDTO,
   ): Promise<any> {
-    /*
-    const result = await this.elasticSearch.client.searchTemplate({
-      id: 'searchMember',
-      index: 'members',
-      params: { 'query_string': query },
-    });
-    */
-    const result = await this.elasticSearch.client.search({
-      size: 50,
-      query: {
-        multi_match: {
-          'query': query,
-          'operator': 'and',
-          'boost': 1,
-          'type': 'bool_prefix',
-          'fuzziness': 1,
-          'fields': [
-            'FullName.search-as-you-type',
-            'FullName.search-as-you-type._2gram',
-            'FullName.search-as-you-type._3gram',
-          ],
-        },
-      },
-    });
-    return result.hits.hits.map((hit) => hit._source);
+    console.log(params);
+     return this.membersSearchIndexService.search(params.query)
   }
 
   @Get(':uniqueIndex')

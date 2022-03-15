@@ -16,6 +16,7 @@ import { InternalIdMapperService } from './id-mapper/internal-id-mapper.service'
 import { Head2headService } from './members/head2head.service';
 import { EloMemberService } from './members/elo-member.service';
 import { MatchesMembersRankerService } from './matches/matches-members-ranker.service';
+import { MembersSearchIndexService } from './members/members-search-index.service';
 
 const services = [
   ClubService,
@@ -32,7 +33,8 @@ const services = [
   InternalIdMapperService,
   Head2headService,
   EloMemberService,
-  MatchesMembersRankerService
+  MatchesMembersRankerService,
+  MembersSearchIndexService
 ];
 
 @Module({
