@@ -13,7 +13,7 @@ export class MembersSearchIndexService {
 
   constructor(
     @Inject('tabt-aftt') private readonly tabtAFTT: TabTAPISoap,
-    private readonly cacheService: CacheService
+    private readonly cacheService: CacheService,
   ) {
   }
 
@@ -26,9 +26,13 @@ export class MembersSearchIndexService {
       query = searchTerms[0] + '* ' + searchTerms[0] + '^10';
     } else {
       for (const term of searchTerms.slice(0, searchTerms.length - 1)) {
-        query += `${term}~1 ${term}^20 `;
+        if (term.length >= 3) {
+          query += `${term}~1 ${term}^20 `;
+        }
       }
-      query += `+${searchTerms[searchTerms.length - 1]}*^10 ${searchTerms[searchTerms.length - 1]}~1 ${searchTerms[searchTerms.length - 1]}^20`;
+      if (searchTerms[searchTerms.length - 1].length > 3) {
+        query += `+${searchTerms[searchTerms.length - 1]}*^10 ${searchTerms[searchTerms.length - 1]}~1 ${searchTerms[searchTerms.length - 1]}^20`;
+      }
     }
     this.logger.debug(`Query to index: ${query}`);
     const results = this.index.search(query);
