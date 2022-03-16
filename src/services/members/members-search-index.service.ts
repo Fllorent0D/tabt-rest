@@ -30,15 +30,14 @@ export class MembersSearchIndexService {
           query += `${term}~1 ${term}^20 `;
         }
       }
-      if (searchTerms[searchTerms.length - 1].length >= 3) {
-        query += `+${searchTerms[searchTerms.length - 1]}*^10 ${searchTerms[searchTerms.length - 1]}~1 ${searchTerms[searchTerms.length - 1]}^20`;
-      }
+      query += `+${searchTerms[searchTerms.length - 1]}*^10 ${searchTerms[searchTerms.length - 1]}~1 ${searchTerms[searchTerms.length - 1]}^20`;
+
     }
     this.logger.debug(`Query to index: ${query}`);
     const results = this.index.search(query);
     this.logger.debug(`Found ${results.length} results.`);
 
-    return results.map((r) => {
+    return results.slice(0, 20).map((r) => {
       return this.members.find((member) => member.UniqueIndex === Number(r.ref));
     });
   }
