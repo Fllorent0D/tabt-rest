@@ -30,7 +30,7 @@ export class MembersSearchIndexService {
           query += `${term}~1 ${term}^20 `;
         }
       }
-      if (searchTerms[searchTerms.length - 1].length > 3) {
+      if (searchTerms[searchTerms.length - 1].length >= 3) {
         query += `+${searchTerms[searchTerms.length - 1]}*^10 ${searchTerms[searchTerms.length - 1]}~1 ${searchTerms[searchTerms.length - 1]}^20`;
       }
     }
