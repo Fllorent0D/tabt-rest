@@ -23,12 +23,12 @@ export class MembersSearchIndexService {
     this.logger.debug(`Quick members search. Query: ${queryString}`);
 
     if (searchTerms.length === 1) {
-      query = searchTerms[0] + '* ' + searchTerms[0];
+      query = searchTerms[0] + '* ' + searchTerms[0] + '^10';
     } else {
       for (const term of searchTerms.slice(0, searchTerms.length - 1)) {
-        query += `${term}~1 ${term}^10 `;
+        query += `${term}~1 ${term}^20 `;
       }
-      query += `+${searchTerms[searchTerms.length - 1]}*^10 ${searchTerms[searchTerms.length - 1]}~1 ${searchTerms[searchTerms.length - 1]}^10`;
+      query += `+${searchTerms[searchTerms.length - 1]}*^10 ${searchTerms[searchTerms.length - 1]}~1 ${searchTerms[searchTerms.length - 1]}^20`;
     }
     this.logger.debug(`Query to index: ${query}`);
     const results = this.index.search(query);
