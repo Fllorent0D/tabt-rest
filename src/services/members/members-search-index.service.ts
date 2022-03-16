@@ -26,7 +26,7 @@ export class MembersSearchIndexService {
       query = searchTerms[0] + '* ' + searchTerms[0];
     } else {
       for (const term of searchTerms.slice(0, searchTerms.length - 1)) {
-        query += `${term}~1 ${term}^10 `;
+        query += `${term}~1 ${term} `;
       }
       query += `${+searchTerms[searchTerms.length - 1]}* ${searchTerms[searchTerms.length - 1]}`;
     }
