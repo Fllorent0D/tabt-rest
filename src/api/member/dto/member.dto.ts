@@ -104,7 +104,7 @@ export class WeeklyNumericRankingInput extends RequestBySeasonDto {
 
 export class LookupDTO {
   @Type(() => String)
-  @Matches('^([a-zA-Z]|\\s)+$', 'gm', { message: 'query can only contains letters' })
+  @Matches('^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.\'-]+$', 'u', { message: 'query can only contains letters' })
   @MinLength(3)
   query: string;
 }

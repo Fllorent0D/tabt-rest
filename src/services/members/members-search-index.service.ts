@@ -19,7 +19,7 @@ export class MembersSearchIndexService {
 
   search(queryString: string) {
     let query = '';
-    const searchTerms = queryString.trim().split(' ');
+    const searchTerms = queryString.trim().replace(/-/g, ' ').split(' ');
     this.logger.debug(`Quick members search. Query: ${queryString}`);
 
     if (searchTerms.length === 1) {
@@ -30,7 +30,7 @@ export class MembersSearchIndexService {
           query += `${term}~1 ${term}^20 `;
         }
       }
-      query += `+${searchTerms[searchTerms.length - 1]}*^10 ${searchTerms[searchTerms.length - 1]}~1 ${searchTerms[searchTerms.length - 1]}^20`;
+      query += `${searchTerms[searchTerms.length - 1]}*^10 ${searchTerms[searchTerms.length - 1]}~1 ${searchTerms[searchTerms.length - 1]}^20`;
 
     }
     this.logger.debug(`Query to index: ${query}`);
