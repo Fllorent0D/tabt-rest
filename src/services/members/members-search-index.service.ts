@@ -19,7 +19,12 @@ export class MembersSearchIndexService {
 
   search(queryString: string) {
     let query = '';
-    const searchTerms = queryString.trim().replace(/-/g, ' ').split(' ');
+    const searchTerms = queryString
+      .trim()
+      .replace(/-/g, ' ')
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .split(' ');
     this.logger.debug(`Quick members search. Query: ${queryString}`);
 
     if (searchTerms.length === 1) {
