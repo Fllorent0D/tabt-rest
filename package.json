@@ -39,7 +39,7 @@
     "@nestjs/terminus": "^8.0.1",
     "@types/lunr": "^2.3.4",
     "bluebird": "^3.7.2",
-    "cache-manager": "^3.4.4",
+    "cache-manager": "^3.6.1",
     "cache-manager-redis-store": "^2.0.0",
     "class-transformer": "^0.4.0",
     "class-validator": "^0.13.1",
