@@ -47,7 +47,7 @@ export class EloMemberService {
 
 
   private async getRankingTablePage(uniquePlayerId: number, season: number, category: PlayerCategory): Promise<HTMLElementTagNameMap['table']> {
-    const page = await firstValueFrom(this.httpService.get<string>(`https://resultats.aftt.be/?menu=6&season=${season}&result=1&sel=${uniquePlayerId}&category=${PlayerCategory[category]}&show_elo_in_table=1`, {
+    const page = await firstValueFrom(this.httpService.get<string>(`https://resultats.aftt.be/?menu=6&season=${season}&result=1&sel=${uniquePlayerId}&category=${PlayerCategory[category]}&show_elo_in_table=1&refresh=1`, {
       responseType: 'text',
     }));
     const domParser = new DOMParser({ errorHandler: () => void (0) });
