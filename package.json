@@ -45,7 +45,7 @@
     "class-validator": "0.13.2",
     "compression": "1.7.4",
     "dd-trace": "1.5.0",
-    "flatted": "3.1.0",
+    "flatted": "3.2.5",
     "form-data": "3.0.1",
     "hbs": "4.2.0",
     "he": "1.2.0",
