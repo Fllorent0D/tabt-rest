@@ -7,7 +7,7 @@
   "license": "UNLICENSED",
   "main": "dist/main.js",
   "engines" : {
-    "node" : ">=16.0.0"
+    "node" : "16.x"
   },
   "scripts": {
     "prebuild": "rimraf dist",
