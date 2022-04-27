@@ -58,7 +58,7 @@ describe('MatchController', () => {
         'DivisionId': 1,
         'Level': 1,
         'MatchId': 'abc',
-        'MatchUniqueId': 1234,
+        'MatchUniqueId': '1234',
         'ShowDivisionName': 'no',
         'Team': 'aze',
         'WeekName': '1',

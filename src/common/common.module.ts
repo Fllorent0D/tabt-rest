@@ -10,7 +10,6 @@ import { PackageService } from './package/package.service';
 import { HeaderKeys, TABT_HEADERS } from './context/context.constants';
 import { ConfigModule } from '@nestjs/config';
 import * as redisStore from 'cache-manager-redis-store';
-import { DatadogService } from './logger/datadog.service';
 import { LoggerModule } from 'nestjs-pino';
 import pino from 'pino';
 import { cloneDeep } from 'lodash';
@@ -20,7 +19,7 @@ const asyncProviders: Provider[] = [
     provide: 'tabt-aftt',
     useFactory: async () => {
       return createClientAsync(process.env.AFTT_WSDL, {
-        returnFault: true,
+        returnFault: false,
       });
     },
   },
@@ -28,7 +27,7 @@ const asyncProviders: Provider[] = [
     provide: 'tabt-vttl',
     useFactory: async () => {
       return createClientAsync(process.env.VTLL_WSDL, {
-        returnFault: true,
+        returnFault: false,
       });
     },
   },
@@ -78,7 +77,6 @@ const asyncProviders: Provider[] = [
     TabtClientService,
     TabtClientSwitchingService,
     PackageService,
-    DatadogService,
   ],
   exports: [
     ...asyncProviders,
@@ -86,7 +84,6 @@ const asyncProviders: Provider[] = [
     ContextService,
     TabtClientService,
     PackageService,
-    DatadogService,
   ],
 })
 export class CommonModule {

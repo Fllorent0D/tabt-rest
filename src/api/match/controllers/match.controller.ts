@@ -44,7 +44,7 @@ export class MatchController {
       YearDateFrom: input.yearDateFrom,
       WithDetails: input.withDetails,
       MatchId: input.matchId,
-      MatchUniqueId: Number(input.matchUniqueId),
+      MatchUniqueId: input.matchUniqueId as unknown as number,
     });
   }
 

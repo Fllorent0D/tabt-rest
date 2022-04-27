@@ -32,6 +32,7 @@ async function bootstrap() {
     .addTag('Matches')
     .addTag('Divisions')
     .addTag('Tournaments')
+    .addServer(process.env.HOST)
     .build();
 
   app.enableVersioning({
@@ -40,7 +41,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('doc', app, document);
   app.use(compression());
-  app.use(helmet());
+  app.use(helmet.default());
   app.use(responseTime());
 
   app.useGlobalPipes(new ValidationPipe());

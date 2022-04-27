@@ -1,9 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { CacheService } from './cache.service';
 import { CACHE_MANAGER, CacheStore } from '@nestjs/common';
-import { DatadogService } from '../logger/datadog.service';
-
-jest.mock('../logger/datadog.service');
 
 describe('CacheService', () => {
   let provider: CacheService;
@@ -14,7 +11,6 @@ describe('CacheService', () => {
       providers: [
         CacheService,
         { provide: CACHE_MANAGER, useValue: ({ get: jest.fn(), set: jest.fn() }) },
-        DatadogService,
       ],
     }).compile();
 
