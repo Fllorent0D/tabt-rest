@@ -98,12 +98,6 @@
     "tsconfig-paths": "3.14.1",
     "typescript": "4.6.3"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint",
-      "pre-push": "npm run test"
-    }
-  },
   "jest": {
     "moduleFileExtensions": [
       "js",
