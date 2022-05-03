@@ -12,12 +12,16 @@ export class SocksProxyHttpClient extends HttpClient {
   constructor(
     private readonly configService: ConfigService,
   ) {
-    super({returnFault: false});
+    super({ returnFault: false });
+
+    this._axios = new req.Axios({ httpsAgent: this.createHttpsAgent() });
+  }
+
+  createHttpsAgent(): SocksProxyAgent {
     const proxyHost = this.configService.get('SOCKS_PROXY_HOST');
     const proxyPort = this.configService.get('SOCKS_PROXY_PORT');
     const proxyOptions = `socks5://${proxyHost}:${proxyPort}`;
-    const httpsAgent = new SocksProxyAgent(proxyOptions);
-    this._axios = new req.Axios({ httpsAgent });
+    return new SocksProxyAgent(proxyOptions);
   }
 
   async request(rurl: string, data: any, callback: (error: any, res?: any, body?: any) => any, exheaders?: IHeaders, exoptions?: IExOptions, caller?: any): Promise<any> {

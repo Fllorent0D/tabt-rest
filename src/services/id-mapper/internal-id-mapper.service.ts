@@ -3,6 +3,8 @@ import { HttpService } from '@nestjs/axios';
 
 import * as FormData from 'form-data';
 import { lastValueFrom } from 'rxjs';
+import { SocksProxyHttpClient } from '../../common/socks-proxy/socks-proxy-http-client';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class InternalIdMapperService {
@@ -10,6 +12,8 @@ export class InternalIdMapperService {
 
   constructor(
     private readonly httpService: HttpService,
+    private readonly socksProxyService: SocksProxyHttpClient,
+    private readonly configService: ConfigService,
   ) {
   }
 
@@ -31,6 +35,7 @@ export class InternalIdMapperService {
       responseType: 'text',
       maxRedirects: 0,
       headers: formdata.getHeaders(),
+      httpsAgent: this.configService.get('USE_SOCKS_PROXY') === 'true' ? this.socksProxyService.createHttpsAgent() : undefined,
     }));
     const data = response.data;
     return this.getIdFromPage(/\/\?menu=6&sel=([0-9]+)&result=1/, data);
@@ -40,6 +45,7 @@ export class InternalIdMapperService {
     const response = await lastValueFrom(this.httpService.get('https://resultats.aftt.be/club/' + clubUniqueIndex, {
       responseType: 'text',
       maxRedirects: 0,
+      httpsAgent: this.configService.get('USE_SOCKS_PROXY') === 'true' ? this.socksProxyService.createHttpsAgent() : undefined,
     }));
     const data: string = response.data;
     const regId = /index\.php\?modify=1&sel=([0-9]+)/;

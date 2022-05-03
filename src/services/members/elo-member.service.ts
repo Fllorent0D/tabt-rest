@@ -6,6 +6,8 @@ import { WeeklyELO, WeeklyNumericRanking } from '../../api/member/dto/member.dto
 import { CacheService, TTL_DURATION } from '../../common/cache/cache.service';
 import { firstValueFrom } from 'rxjs';
 import { PlayerCategory } from '../../entity/tabt-input.interface';
+import { SocksProxyHttpClient } from '../../common/socks-proxy/socks-proxy-http-client';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class EloMemberService {
@@ -15,6 +17,8 @@ export class EloMemberService {
     private readonly httpService: HttpService,
     private readonly internalIdService: InternalIdMapperService,
     private readonly cacheService: CacheService,
+    private readonly socksProxyService: SocksProxyHttpClient,
+    private readonly configService: ConfigService,
   ) {
   }
 
@@ -49,6 +53,7 @@ export class EloMemberService {
   private async getRankingTablePage(uniquePlayerId: number, season: number, category: PlayerCategory): Promise<HTMLElementTagNameMap['table']> {
     const page = await firstValueFrom(this.httpService.get<string>(`https://resultats.aftt.be/?menu=6&season=${season}&result=1&sel=${uniquePlayerId}&category=${PlayerCategory[category]}&show_elo_in_table=1`, {
       responseType: 'text',
+      httpsAgent: this.configService.get('USE_SOCKS_PROXY') === 'true' ? this.socksProxyService.createHttpsAgent() : undefined,
     }));
     const domParser = new DOMParser({ errorHandler: () => void (0) });
     const dom = domParser.parseFromString(page.data, 'text/html');
