@@ -5,6 +5,8 @@ import { TestRequestService } from '../../../services/test/test-request.service'
 import { TestOutput } from '../../../entity/tabt-soap/TabTAPI_Port';
 import { TabtHeadersDecorator } from '../../../common/decorators/tabt-headers.decorator';
 import { ContextService } from '../../../common/context/context.service';
+import { SocksProxyHttpClient } from '../../../common/socks-proxy/socks-proxy-http-client';
+import { ConfigService } from '@nestjs/config';
 
 @ApiTags('Health')
 @Controller({
@@ -17,6 +19,8 @@ export class HealthController {
     private healthIndicator: HttpHealthIndicator,
     private testRequest: TestRequestService,
     private contextService: ContextService,
+    private readonly socksProxyService: SocksProxyHttpClient,
+    private readonly configService: ConfigService,
   ) {
   }
 
@@ -27,8 +31,20 @@ export class HealthController {
   @HealthCheck()
   check() {
     return this.health.check([
-      () => this.healthIndicator.pingCheck('AFTT API', 'https://resultats.aftt.be/api/?wsdl'),
-      () => this.healthIndicator.pingCheck('VTTL API', 'https://api.vttl.be/?wsdl'),
+      () => this.healthIndicator.pingCheck(
+        'AFTT API',
+        'https://resultats.aftt.be/api/?wsdl',
+        {
+          httpsAgent: this.configService.get('USE_SOCKS_PROXY') === 'true' ? this.socksProxyService.createHttpsAgent() : undefined,
+        },
+      ),
+      () => this.healthIndicator.pingCheck(
+        'VTTL API',
+        'https://api.vttl.be/?wsdl',
+        {
+          httpsAgent: this.configService.get('USE_SOCKS_PROXY') === 'true' ? this.socksProxyService.createHttpsAgent() : undefined,
+        },
+      ),
     ]);
   }
 
