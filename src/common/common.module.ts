@@ -8,28 +8,33 @@ import { TabtClientService } from './tabt-client/tabt-client.service';
 import { TabtClientSwitchingService } from './tabt-client/tabt-client-switching.service';
 import { PackageService } from './package/package.service';
 import { HeaderKeys, TABT_HEADERS } from './context/context.constants';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as redisStore from 'cache-manager-redis-store';
 import { LoggerModule } from 'nestjs-pino';
 import pino from 'pino';
 import { cloneDeep } from 'lodash';
+import { SocksProxyHttpClient } from './socks-proxy/socks-proxy-http-client';
 
 const asyncProviders: Provider[] = [
   {
     provide: 'tabt-aftt',
-    useFactory: async () => {
+    useFactory: async (configService, socksProxy) => {
       return createClientAsync(process.env.AFTT_WSDL, {
         returnFault: false,
+        httpClient: configService.get('USE_SOCKS_PROXY') === 'true' ? socksProxy : undefined
       });
     },
+    inject:[ConfigService, SocksProxyHttpClient]
   },
   {
     provide: 'tabt-vttl',
-    useFactory: async () => {
+    useFactory: async (configService, socksProxy) => {
       return createClientAsync(process.env.VTLL_WSDL, {
         returnFault: false,
+        httpClient: configService.get('USE_SOCKS_PROXY') === 'true' ? socksProxy : undefined
       });
     },
+    inject:[ConfigService, SocksProxyHttpClient]
   },
   {
     provide: 'TABT_HEADERS',
@@ -77,6 +82,7 @@ const asyncProviders: Provider[] = [
     TabtClientService,
     TabtClientSwitchingService,
     PackageService,
+    SocksProxyHttpClient
   ],
   exports: [
     ...asyncProviders,

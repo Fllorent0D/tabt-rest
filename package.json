@@ -6,8 +6,8 @@
   "private": true,
   "license": "UNLICENSED",
   "main": "dist/main.js",
-  "engines" : {
-    "node" : "16.x"
+  "engines": {
+    "node": "16.x"
   },
   "scripts": {
     "prebuild": "rimraf dist",
@@ -64,6 +64,7 @@
     "response-time": "2.3.2",
     "rxjs": "7.5.5",
     "soap": "0.43.0",
+    "socks-proxy-agent": "^6.2.0",
     "swagger-ui-express": "4.3.0",
     "uuid": "8.3.2",
     "xmldom": "0.6.0"
