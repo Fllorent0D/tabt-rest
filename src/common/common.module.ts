@@ -90,6 +90,8 @@ const asyncProviders: Provider[] = [
     ContextService,
     TabtClientService,
     PackageService,
+    SocksProxyHttpClient,
+    ConfigModule
   ],
 })
 export class CommonModule {
