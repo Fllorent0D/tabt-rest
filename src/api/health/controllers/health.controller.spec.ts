@@ -3,6 +3,8 @@ import { HealthController } from './health.controller';
 import { HealthCheckResult, HealthCheckService, HttpHealthIndicator } from '@nestjs/terminus';
 import { TestRequestService } from '../../../services/test/test-request.service';
 import { ContextService } from '../../../common/context/context.service';
+import { ConfigService } from '@nestjs/config';
+import { SocksProxyHttpClient } from '../../../common/socks-proxy/socks-proxy-http-client';
 
 describe('HealthController', () => {
   let controller: HealthController;
@@ -39,6 +41,17 @@ describe('HealthController', () => {
             context: {},
           },
         },
+        {
+          provide: ConfigService,
+          useValue: {
+            get: () => {return;}
+          },
+        }, {
+          provide: SocksProxyHttpClient,
+          useValue: {
+            context: {},
+          },
+        },
       ],
     }).compile();
 
@@ -63,8 +76,8 @@ describe('HealthController', () => {
 
     controller.check();
     expect(dnsSpy).toHaveBeenCalledTimes(2);
-    expect(dnsSpy).toHaveBeenNthCalledWith(1, 'AFTT API', 'https://resultats.aftt.be/api/?wsdl');
-    expect(dnsSpy).toHaveBeenNthCalledWith(2, 'VTTL API', 'https://api.vttl.be/?wsdl');
+    expect(dnsSpy).toHaveBeenNthCalledWith(1, 'AFTT API', 'https://resultats.aftt.be/api/?wsdl', expect.anything());
+    expect(dnsSpy).toHaveBeenNthCalledWith(2, 'VTTL API', 'https://api.vttl.be/?wsdl', expect.anything());
     expect(checkSpy).toHaveBeenCalledTimes(1);
   });
 
