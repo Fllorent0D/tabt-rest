@@ -1,8 +1,8 @@
 # TabT-Rest 
-![Coverage:branches](./badges/badge-branches.svg)
-![Coverage:functions](./badges/badge-functions.svg)
-![Coverage:lines](./badges/badge-lines.svg)
-![Coverage:statements](./badges/badge-statements.svg)
+![Coverage:branches](./.badges/badge-branches.svg)
+![Coverage:functions](./.badges/badge-functions.svg)
+![Coverage:lines](./.badges/badge-lines.svg)
+![Coverage:statements](./.badges/badge-statements.svg)
 [![GPLv3 license](https://img.shields.io/badge/License-GPLv3-blue.svg)](http://perso.crans.org/besson/LICENSE.html)
 
 This api is a bridge to the TabT SOAP API. It contacts TabT and cache results in order to reduce latency for some requests. More documentation will come.
