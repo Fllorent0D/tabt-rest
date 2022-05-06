@@ -2,5 +2,15 @@
   "extends": [
     "config:base"
   ],
-  "commitMessagePrefix": ":arrow_up: "
+  "commitMessagePrefix": ":arrow_up: ",
+  "packageRules": [
+    {
+      "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
+      "automerge": true
+    },
+    {
+      "matchDepTypes": ["devDependencies"],
+      "automerge": true
+    }
+  ]
 }
