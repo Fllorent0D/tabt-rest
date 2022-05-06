@@ -22,10 +22,9 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "npm test -- --coverage",
-    "test:badges": "npm run test:coverage  && jest-coverage-badges output ./badges",
+    "test:badges": "npm run test:coverage  && jest-badge-generator",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "npm test -- --config test-e2e/jest-e2e.json",
-    "jest-coverage-badges": "npm run test && jest-badge-generator"
+    "test:e2e": "npm test -- --config test-e2e/jest-e2e.json"
   },
   "dependencies": {
     "@nestjs/axios": "0.0.7",
@@ -84,7 +83,7 @@
     "eslint-plugin-import": "2.26.0",
     "husky": "7.0.4",
     "jest": "28.1.0",
-    "jest-badge-generator": "^1.1.5",
+    "jest-badge-generator": "1.0.5",
     "prettier": "2.6.2",
     "rimraf": "3.0.2",
     "supertest": "6.2.3",
