@@ -7,7 +7,8 @@
   "license": "UNLICENSED",
   "main": "dist/main.js",
   "engines": {
-    "node": "16.x"
+    "node": "16.x",
+    "npm": "8.x"
   },
   "scripts": {
     "prebuild": "rimraf dist",
@@ -81,7 +82,7 @@
     "eslint": "8.15.0",
     "eslint-config-prettier": "8.5.0",
     "eslint-plugin-import": "2.26.0",
-    "husky": "7.0.4",
+    "husky": "8.0.1",
     "jest": "28.1.0",
     "jest-badge-generator": "1.0.5",
     "prettier": "2.6.2",
