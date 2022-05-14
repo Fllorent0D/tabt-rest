@@ -58,7 +58,7 @@
     "rxjs": "7.5.5",
     "soap": "0.43.0",
     "socks-proxy-agent": "6.2.0",
-    "swagger-ui-express": "4.3.0",
+    "swagger-ui-express": "4.4.0",
     "uuid": "8.3.2"
   },
   "devDependencies": {
