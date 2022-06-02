@@ -55,7 +55,7 @@ describe('CredentialsService', () => {
       });
     });
 
-    it('should not add anything if nothing given', () => {
+    it('should only add 22 as current season if nothing given', () => {
       const input = {
         test: 'It\'s the test',
       };
@@ -76,6 +76,7 @@ describe('CredentialsService', () => {
 
       expect(result).toEqual({
         'test': 'It\'s the test',
+        'Season': 22
       });
     });
 
