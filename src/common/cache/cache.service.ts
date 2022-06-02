@@ -4,6 +4,7 @@ import { CACHE_MANAGER, CacheStore, Inject, Injectable, Logger } from '@nestjs/c
 
 export enum TTL_DURATION {
   ONE_DAY = 86_400,
+  FIFTEEN_DAYS = 1_296_000,
   EIGHT_HOURS = 28_800,
   TWELVE_HOURS = 43_200,
   ONE_HOUR = 3_600,
