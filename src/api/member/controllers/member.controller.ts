@@ -69,11 +69,6 @@ export class MemberController {
     );
   }
 
-  @Get('index')
-  async index() {
-    await this.membersSearchIndexService.indexMembers();
-    return 'ok';
-  }
 
   @Get('lookup')
   @ApiOperation({

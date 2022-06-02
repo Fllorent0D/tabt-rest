@@ -5,6 +5,7 @@ import * as FormData from 'form-data';
 import { lastValueFrom } from 'rxjs';
 import { SocksProxyHttpClient } from '../../common/socks-proxy/socks-proxy-http-client';
 import { ConfigService } from '@nestjs/config';
+import * as randomUserAgent from 'random-useragent';
 
 @Injectable()
 export class InternalIdMapperService {
@@ -34,7 +35,10 @@ export class InternalIdMapperService {
     const response = await lastValueFrom(this.httpService.post('https://resultats.aftt.be/?menu=0', formdata, {
       responseType: 'text',
       maxRedirects: 0,
-      headers: formdata.getHeaders(),
+      headers: {
+        ...formdata.getHeaders(),
+        'user-agent': randomUserAgent.getRandom()
+      },
       httpsAgent: this.configService.get('USE_SOCKS_PROXY') === 'true' ? this.socksProxyService.createHttpsAgent() : undefined,
     }));
     const data = response.data;
@@ -45,6 +49,9 @@ export class InternalIdMapperService {
     const response = await lastValueFrom(this.httpService.get('https://resultats.aftt.be/club/' + clubUniqueIndex, {
       responseType: 'text',
       maxRedirects: 0,
+      headers: {
+        'user-agent': randomUserAgent.getRandom()
+      },
       httpsAgent: this.configService.get('USE_SOCKS_PROXY') === 'true' ? this.socksProxyService.createHttpsAgent() : undefined,
     }));
     const data: string = response.data;
