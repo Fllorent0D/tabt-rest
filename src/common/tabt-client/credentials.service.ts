@@ -18,10 +18,7 @@ export class CredentialsService {
       // nBehalfOf: Number(callerContext[HeaderKeys.X_TABT_ONBEHALFOF]),
     };
 
-
-    if (callerContext[HeaderKeys.X_TABT_SEASON]) {
-      input['Season'] = Number(callerContext[HeaderKeys.X_TABT_SEASON]);
-    }
+    input['Season'] = callerContext[HeaderKeys.X_TABT_SEASON] ? Number(callerContext[HeaderKeys.X_TABT_SEASON]) : 22;
 
     if (credentials.Account && credentials.Password) {
       return {
