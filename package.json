@@ -52,7 +52,7 @@
     "nestjs-pino": "2.6.0",
     "pino-http": "7.1.0",
     "pino-multi-stream": "6.0.0",
-    "pino-pretty": "7.6.1",
+    "pino-pretty": "8.0.0",
     "random-useragent": "0.5.0",
     "reflect-metadata": "0.1.13",
     "response-time": "2.3.2",
