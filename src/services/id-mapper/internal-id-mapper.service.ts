@@ -5,8 +5,8 @@ import * as FormData from 'form-data';
 import { lastValueFrom } from 'rxjs';
 import { SocksProxyHttpClient } from '../../common/socks-proxy/socks-proxy-http-client';
 import { ConfigService } from '@nestjs/config';
-import * as randomUserAgent from 'random-useragent';
 import { CacheService, TTL_DURATION } from '../../common/cache/cache.service';
+import { UserAgentsUtil } from '../../common/utils/user-agents.util';
 
 @Injectable()
 export class InternalIdMapperService {
@@ -20,7 +20,7 @@ export class InternalIdMapperService {
   ) {
   }
 
-  private getIdFromPage(regex: RegExp, page: string) {
+  private static getIdFromPage(regex: RegExp, page: string) {
     const match = page.match(regex);
 
     if (match?.[1]) {
@@ -40,12 +40,12 @@ export class InternalIdMapperService {
         maxRedirects: 0,
         headers: {
           ...formdata.getHeaders(),
-          'user-agent': randomUserAgent.getRandom(),
+          'user-agent': UserAgentsUtil.random,
         },
         httpsAgent: this.configService.get('USE_SOCKS_PROXY') === 'true' ? this.socksProxyService.createHttpsAgent() : undefined,
       }));
       const data = response.data;
-      return this.getIdFromPage(/\/\?menu=6&sel=([0-9]+)&result=1/, data);
+      return InternalIdMapperService.getIdFromPage(/\/\?menu=6&sel=([0-9]+)&result=1/, data);
     };
     return this.cacheService.getFromCacheOrGetAndCacheResult('internal-player-id:' + playerUniqueIndex, getter, TTL_DURATION.FIFTEEN_DAYS);
   }
@@ -56,13 +56,13 @@ export class InternalIdMapperService {
         responseType: 'text',
         maxRedirects: 0,
         headers: {
-          'user-agent': randomUserAgent.getRandom(),
+          'user-agent': UserAgentsUtil.random,
         },
         httpsAgent: this.configService.get('USE_SOCKS_PROXY') === 'true' ? this.socksProxyService.createHttpsAgent() : undefined,
       }));
       const data: string = response.data;
       const regId = /index\.php\?modify=1&sel=([0-9]+)/;
-      return this.getIdFromPage(regId, data);
+      return InternalIdMapperService.getIdFromPage(regId, data);
     };
     return this.cacheService.getFromCacheOrGetAndCacheResult('internal-player-id:' + clubUniqueIndex, getter, TTL_DURATION.FIFTEEN_DAYS);
   }

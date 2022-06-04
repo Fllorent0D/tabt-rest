@@ -53,13 +53,13 @@
     "pino-http": "7.1.0",
     "pino-multi-stream": "6.0.0",
     "pino-pretty": "8.0.0",
-    "random-useragent": "0.5.0",
     "reflect-metadata": "0.1.13",
     "response-time": "2.3.2",
     "rxjs": "7.5.5",
     "soap": "0.43.0",
     "socks-proxy-agent": "7.0.0",
     "swagger-ui-express": "4.4.0",
+    "user-agents": "1.0.1037",
     "uuid": "8.3.2"
   },
   "devDependencies": {
@@ -78,6 +78,7 @@
     "@types/node": "16.11.38",
     "@types/response-time": "2.3.5",
     "@types/supertest": "2.0.12",
+    "@types/user-agents": "^1.0.2",
     "@typescript-eslint/eslint-plugin": "5.27.0",
     "@typescript-eslint/parser": "5.27.0",
     "eslint": "8.17.0",

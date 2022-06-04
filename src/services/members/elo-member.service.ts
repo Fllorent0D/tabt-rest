@@ -8,7 +8,7 @@ import { firstValueFrom } from 'rxjs';
 import { PlayerCategory } from '../../entity/tabt-input.interface';
 import { SocksProxyHttpClient } from '../../common/socks-proxy/socks-proxy-http-client';
 import { ConfigService } from '@nestjs/config';
-import * as randomUserAgent from 'random-useragent';
+import { UserAgentsUtil } from '../../common/utils/user-agents.util';
 
 @Injectable()
 export class EloMemberService {
@@ -22,7 +22,6 @@ export class EloMemberService {
     private readonly configService: ConfigService,
   ) {
   }
-
 
   public async getEloWeekly(playerId: number, season: number): Promise<WeeklyELO[]> {
     const getter = async () => {
@@ -39,8 +38,8 @@ export class EloMemberService {
         const playerUniqueIndex = await this.internalIdService.getInternalPlayerId(playerId);
         return this.getELOsAndNumeric(playerUniqueIndex, season, category);
       } catch (e) {
-        console.log(e.message.indexOf('Player Id not found'))
         if (e.message.indexOf('Player Id not found') > -1) {
+          this.logger.error('Player Id not found');
           throw new NotFoundException('Player not found');
         }
         throw e;
@@ -50,12 +49,11 @@ export class EloMemberService {
     return this.cacheService.getFromCacheOrGetAndCacheResult(`elo-bel-wk:${season}:${PlayerCategory[category]}-${playerId}`, getter, TTL_DURATION.EIGHT_HOURS);
   }
 
-
   private async getRankingTablePage(uniquePlayerId: number, season: number, category: PlayerCategory): Promise<HTMLElementTagNameMap['table']> {
     const page = await firstValueFrom(this.httpService.get<string>(`https://resultats.aftt.be/?menu=6&season=${season}&result=1&sel=${uniquePlayerId}&category=${PlayerCategory[category]}&show_elo_in_table=1`, {
       responseType: 'text',
       headers: {
-        'user-agent': randomUserAgent.getRandom()
+        'user-agent': UserAgentsUtil.random,
       },
       httpsAgent: this.configService.get('USE_SOCKS_PROXY') === 'true' ? this.socksProxyService.createHttpsAgent() : undefined,
     }));

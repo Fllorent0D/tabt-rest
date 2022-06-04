@@ -7,6 +7,7 @@ import { TabtHeadersDecorator } from '../../../common/decorators/tabt-headers.de
 import { ContextService } from '../../../common/context/context.service';
 import { SocksProxyHttpClient } from '../../../common/socks-proxy/socks-proxy-http-client';
 import { ConfigService } from '@nestjs/config';
+import { UserAgentsUtil } from '../../../common/utils/user-agents.util';
 
 @ApiTags('Health')
 @Controller({
@@ -30,11 +31,15 @@ export class HealthController {
   })
   @HealthCheck()
   check() {
+    const userAgent = UserAgentsUtil.random;
     return this.health.check([
       () => this.healthIndicator.pingCheck(
         'AFTT API',
         'https://resultats.aftt.be/api/?wsdl',
         {
+          headers: {
+            'user-agent': userAgent,
+          },
           httpsAgent: this.configService.get('USE_SOCKS_PROXY') === 'true' ? this.socksProxyService.createHttpsAgent() : undefined,
         },
       ),
@@ -42,6 +47,9 @@ export class HealthController {
         'VTTL API',
         'https://api.vttl.be/?wsdl',
         {
+          headers: {
+            'user-agent': userAgent,
+          },
           httpsAgent: this.configService.get('USE_SOCKS_PROXY') === 'true' ? this.socksProxyService.createHttpsAgent() : undefined,
         },
       ),
