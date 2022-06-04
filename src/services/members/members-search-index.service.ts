@@ -53,7 +53,7 @@ export class MembersSearchIndexService {
       const [memberOutput] = await this.tabtAFTT.GetMembersAsync({ NameSearch: ' ' });
       return memberOutput.MemberEntries;
     }, TTL_DURATION.TWELVE_HOURS);
-    this.logger.debug(`Fetched ${members} member entries`);
+    this.logger.debug(`Cached ${members.length} member entries`);
 
     this.index = lunr(function() {
       this.ref('UniqueIndex');
