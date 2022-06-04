@@ -7,7 +7,6 @@ import {
   ParseIntPipe,
   Query,
   UseInterceptors,
-  Version,
 } from '@nestjs/common';
 import { MemberEntry } from '../../../entity/tabt-soap/TabTAPI_Port';
 import { ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
@@ -15,11 +14,11 @@ import { MemberService } from '../../../services/members/member.service';
 import { TabtHeadersDecorator } from '../../../common/decorators/tabt-headers.decorator';
 import {
   GetMember,
-  GetMembers, LookupDTO,
+  GetMembers,
+  LookupDTO,
   WeeklyELO,
   WeeklyNumericRanking,
   WeeklyNumericRankingInput,
-  WeeklyNumericRankingV2,
 } from '../dto/member.dto';
 import { PlayerCategory } from '../../../entity/tabt-input.interface';
 import { EloMemberService } from '../../../services/members/elo-member.service';
@@ -82,7 +81,7 @@ export class MemberController {
     @Query() params: LookupDTO,
   ): Promise<any> {
     console.log(params);
-     return this.membersSearchIndexService.search(params.query)
+    return this.membersSearchIndexService.search(params.query);
   }
 
   @Get(':uniqueIndex')
@@ -156,34 +155,6 @@ export class MemberController {
     description: 'No points found for given player',
   })
   async findNumericRankings(
-    @Param('uniqueIndex', ParseIntPipe) id: number,
-    @Query() { season, category }: WeeklyNumericRankingInput,
-  ) {
-    if (!season) {
-      const currentSeason = await this.seasonService.getCurrentSeason();
-      season = currentSeason.Season;
-    }
-    const elos = await this.eloMemberService.getBelNumericRanking(id, season, category);
-    if (elos.length) {
-      return elos;
-    } else {
-      throw new NotFoundException('No ELO points found');
-    }
-  }
-
-  @Get(':uniqueIndex/numeric-rankings')
-  @ApiOkResponse({
-    type: [WeeklyNumericRankingV2],
-    description: 'The list of ELO points for a player in a season',
-  })
-  @ApiOperation({
-    operationId: 'findMemberNumericRankingsHistoryV2',
-  })
-  @Version('2')
-  @ApiNotFoundResponse({
-    description: 'No points found for given player',
-  })
-  async findNumericRankingsV2(
     @Param('uniqueIndex', ParseIntPipe) id: number,
     @Query() { season, category }: WeeklyNumericRankingInput,
   ) {
