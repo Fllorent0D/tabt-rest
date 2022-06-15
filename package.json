@@ -50,7 +50,7 @@
     "lodash": "4.17.21",
     "lunr": "2.3.9",
     "nestjs-pino": "2.6.0",
-    "pino-http": "7.1.0",
+    "pino-http": "8.0.1",
     "pino-multi-stream": "6.0.0",
     "pino-pretty": "8.0.0",
     "reflect-metadata": "0.1.13",
