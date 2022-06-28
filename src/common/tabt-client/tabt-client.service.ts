@@ -112,15 +112,6 @@ export class TabtClientService {
     this.logger.log('Request GetMembers method');
     const getter = async (input, options, headers) => {
       const [result] = await this.tabtClientSwitchingService.tabtClient.GetMembersAsync(input, options, headers);
-      if (getMembersInput.UniqueIndex &&
-        getMembersInput.WithResults &&
-        result.MemberEntries?.length === 1 &&
-        !result.MemberEntries[0].ResultCount &&
-        result.MemberEntries[0].ResultCount !== 0
-      ) {
-        this.logger.error({ inputToTabT: getMembersInput, outputFromTabT: result }, 'TabT-rest asked for member results but none were retrieved');
-        throw new Error('Requested results but none were retrieved');
-      }
       return result;
     };
     return this.enrichBodyAndQueryWithCache('members', getMembersInput, getter, TTL_DURATION.TWELVE_HOURS);
