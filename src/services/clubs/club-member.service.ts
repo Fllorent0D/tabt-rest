@@ -11,6 +11,6 @@ export class ClubMemberService {
 
   async getClubsMembers(input: GetMembersInput): Promise<MemberEntry[]> {
     const result = await this.tabtClient.GetMembersAsync(input);
-    return result.MemberEntries;
+    return result.MemberEntries ?? [];
   }
 }
