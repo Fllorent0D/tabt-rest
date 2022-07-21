@@ -3,7 +3,7 @@
     "config:base",
     ":pinAllExceptPeerDependencies"
   ],
-  "schedule": ["before 4am on Tuesday and Thursday"],
+  "schedule": ["after 10pm and before 5:00am on Tuesday and Thursday"],
   "timezone": "Europe/Brussels",
   "commitMessagePrefix": ":arrow_up: ",
   "automergeType": "pr",
