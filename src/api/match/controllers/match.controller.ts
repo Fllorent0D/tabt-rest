@@ -1,4 +1,13 @@
-import { Controller, Get, NotFoundException, Param, ParseIntPipe, Query } from '@nestjs/common';
+import {
+  ClassSerializerInterceptor,
+  Controller,
+  Get,
+  NotFoundException,
+  Param,
+  ParseIntPipe,
+  Query,
+  UseInterceptors,
+} from '@nestjs/common';
 import { ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { MatchSystemEntry, TeamMatchesEntry } from '../../../entity/tabt-soap/TabTAPI_Port';
 import { MatchService } from '../../../services/matches/match.service';
@@ -13,6 +22,7 @@ import { Level, PlayerCategory } from '../../../entity/tabt-input.interface';
   version: '1',
 })
 @TabtHeadersDecorator()
+@UseInterceptors(ClassSerializerInterceptor)
 export class MatchController {
   constructor(
     private matchService: MatchService,
