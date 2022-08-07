@@ -67,7 +67,6 @@ export class MatchesMembersRankerService {
 
     for (const match of matches) {
       if (match.MatchDetails.DetailsCreated) {
-        console.log(match.MatchId);
         const matchDetails = match.MatchDetails;
         const mapPlayer = (p: Player) => ({
           uniqueIndex: p.UniqueIndex,
@@ -83,7 +82,6 @@ export class MatchesMembersRankerService {
         ];
 
         for (const player of matchPlayers) {
-          console.log(player);
           const playerEntry = players.get(player.uniqueIndex) ?? {
             uniqueIndex: player.uniqueIndex,
             firstName: player.firstName,

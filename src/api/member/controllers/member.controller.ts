@@ -80,7 +80,6 @@ export class MemberController {
   async searchName(
     @Query() params: LookupDTO,
   ): Promise<any> {
-    console.log(params);
     return this.membersSearchIndexService.search(params.query);
   }
 
