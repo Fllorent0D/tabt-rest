@@ -21,20 +21,20 @@ const asyncProviders: Provider[] = [
     useFactory: async (configService, socksProxy) => {
       return createClientAsync(process.env.AFTT_WSDL, {
         returnFault: false,
-        httpClient: configService.get('USE_SOCKS_PROXY') === 'true' ? socksProxy : undefined
+        httpClient: configService.get('USE_SOCKS_PROXY') === 'true' ? socksProxy : undefined,
       });
     },
-    inject:[ConfigService, SocksProxyHttpClient]
+    inject: [ConfigService, SocksProxyHttpClient],
   },
   {
     provide: 'tabt-vttl',
     useFactory: async (configService, socksProxy) => {
       return createClientAsync(process.env.VTLL_WSDL, {
         returnFault: false,
-        httpClient: configService.get('USE_SOCKS_PROXY') === 'true' ? socksProxy : undefined
+        httpClient: configService.get('USE_SOCKS_PROXY') === 'true' ? socksProxy : undefined,
       });
     },
-    inject:[ConfigService, SocksProxyHttpClient]
+    inject: [ConfigService, SocksProxyHttpClient],
   },
   {
     provide: 'TABT_HEADERS',
@@ -60,16 +60,19 @@ const asyncProviders: Provider[] = [
     ConfigModule,
     LoggerModule.forRoot({
         pinoHttp: {
-            level: 'debug',
-            transport: { target: 'pino-pretty' },
-            serializers: {
-              req: pino.stdSerializers.wrapRequestSerializer(r => {
-                const clonedReq = cloneDeep(r);
-                delete clonedReq.headers[HeaderKeys.X_TABT_PASSWORD.toLowerCase()];
-                return clonedReq;
-              }),
-            },
+          level: 'debug',
+          transport: { target: 'pino-pretty' },
+          quietReqLogger: true,
+          serializers: {
+            req: pino.stdSerializers.wrapRequestSerializer(r => {
+              const clonedReq = cloneDeep(r);
+              delete clonedReq.headers[HeaderKeys.X_TABT_PASSWORD.toLowerCase()];
+              return clonedReq;
+            }),
+            err: pino.stdSerializers.err,
+            res: pino.stdSerializers.res,
           },
+        },
       },
     ),
   ],
@@ -82,7 +85,7 @@ const asyncProviders: Provider[] = [
     TabtClientService,
     TabtClientSwitchingService,
     PackageService,
-    SocksProxyHttpClient
+    SocksProxyHttpClient,
   ],
   exports: [
     ...asyncProviders,
@@ -91,7 +94,7 @@ const asyncProviders: Provider[] = [
     TabtClientService,
     PackageService,
     SocksProxyHttpClient,
-    ConfigModule
+    ConfigModule,
   ],
 })
 export class CommonModule {
