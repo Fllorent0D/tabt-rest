@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param, ParseIntPipe } from '@nestjs/common';
 import { SeasonService } from '../../../services/seasons/season.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { SeasonEntry } from '../../../entity/tabt-soap/TabTAPI_Port';
@@ -30,6 +30,23 @@ export class SeasonController {
   })
   findAll() {
     return this.seasonService.getSeasons();
+  }
+
+  @Get('/:seasonId')
+  @ApiOperation({
+    operationId: 'findSeasonById',
+  })
+  @ApiResponse({
+    description: 'Get a specific season',
+    type: SeasonEntry,
+    status: 200,
+  })
+  @ApiResponse({
+    status: 400,
+    type: TabtException,
+  })
+  findById(@Param('seasonId', ParseIntPipe) seasonId: number) {
+    return this.seasonService.getSeasonById(seasonId);
   }
 
   @Get('current')

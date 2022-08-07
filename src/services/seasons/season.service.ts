@@ -19,4 +19,9 @@ export class SeasonService {
     const season = await this.getSeasons();
     return season.find(season => season.IsCurrent);
   }
+
+  async getSeasonById(id: number): Promise<SeasonEntry> {
+    const season = await this.getSeasons();
+    return season.find(season => season.Season === id);
+  }
 }
