@@ -1,4 +1,4 @@
-import { CacheModule, Module, Provider } from '@nestjs/common';
+import { CacheModule, Logger, Module, Provider } from '@nestjs/common';
 import { createClientAsync } from 'soap';
 import { CacheService } from './cache/cache.service';
 import { ContextService } from './context/context.service';
@@ -14,25 +14,25 @@ import { LoggerModule } from 'nestjs-pino';
 import pino from 'pino';
 import { cloneDeep } from 'lodash';
 import { SocksProxyHttpClient } from './socks-proxy/socks-proxy-http-client';
+import { createSoapClient } from './tabt-client/soap-client.factory';
+
 
 const asyncProviders: Provider[] = [
   {
     provide: 'tabt-aftt',
     useFactory: async (configService, socksProxy) => {
-      return createClientAsync(process.env.AFTT_WSDL, {
-        returnFault: false,
-        httpClient: configService.get('USE_SOCKS_PROXY') === 'true' ? socksProxy : undefined,
-      });
+      return createSoapClient(
+        process.env.AFTT_WSDL,
+        configService.get('USE_SOCKS_PROXY') === 'true' ? socksProxy : undefined);
     },
     inject: [ConfigService, SocksProxyHttpClient],
   },
   {
     provide: 'tabt-vttl',
     useFactory: async (configService, socksProxy) => {
-      return createClientAsync(process.env.VTLL_WSDL, {
-        returnFault: false,
-        httpClient: configService.get('USE_SOCKS_PROXY') === 'true' ? socksProxy : undefined,
-      });
+      return createSoapClient(
+        process.env.VTLL_WSDL,
+        configService.get('USE_SOCKS_PROXY') === 'true' ? socksProxy : undefined);
     },
     inject: [ConfigService, SocksProxyHttpClient],
   },
