@@ -32,6 +32,23 @@ export class SeasonController {
     return this.seasonService.getSeasons();
   }
 
+  @Get('current')
+  @ApiOperation({
+    operationId: 'findCurrentSeason',
+  })
+  @ApiResponse({
+    description: 'The current season.',
+    type: SeasonEntry,
+    status: 200,
+  })
+  @ApiResponse({
+    status: 400,
+    type: TabtException,
+  })
+  findCurrentSeason() {
+    return this.seasonService.getCurrentSeason();
+  }
+
   @Get('/:seasonId')
   @ApiOperation({
     operationId: 'findSeasonById',
@@ -49,21 +66,6 @@ export class SeasonController {
     return this.seasonService.getSeasonById(seasonId);
   }
 
-  @Get('current')
-  @ApiOperation({
-    operationId: 'findCurrentSeason',
-  })
-  @ApiResponse({
-    description: 'The current season.',
-    type: SeasonEntry,
-    status: 200,
-  })
-  @ApiResponse({
-    status: 400,
-    type: TabtException,
-  })
-  findCurrentSeason() {
-    return this.seasonService.getCurrentSeason();
-  }
+
 
 }
