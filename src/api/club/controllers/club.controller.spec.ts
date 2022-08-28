@@ -7,27 +7,29 @@ import { GetMembersFromClub, ListAllClubs } from '../dto/club.dto';
 import { RequestBySeasonDto } from '../../../common/dto/request-by-season.dto';
 import { NotFoundException } from '@nestjs/common';
 import { MatchesMembersRankerService } from '../../../services/matches/matches-members-ranker.service';
+import { MemberService } from '../../../services/members/member.service';
 
 jest.mock('../../../services/clubs/club.service');
 jest.mock('../../../services/clubs/club-member.service');
 jest.mock('../../../services/clubs/club-team.service');
 jest.mock('../../../services/matches/matches-members-ranker.service');
+jest.mock('../../../services/members/member.service');
 
 describe('ClubController', () => {
   let controller: ClubController;
   let clubService: ClubService;
   let clubTeamService: ClubTeamService;
-  let clubMemberService: ClubMemberService;
+  let memberService: MemberService;
 
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [ClubController],
-      providers: [ClubService, ClubTeamService, ClubMemberService, MatchesMembersRankerService],
+      providers: [ClubService, ClubTeamService, ClubMemberService, MatchesMembersRankerService, MemberService],
     }).compile();
 
     controller = module.get<ClubController>(ClubController);
-    clubMemberService = module.get<ClubMemberService>(ClubMemberService);
+    memberService = module.get<MemberService>(MemberService);
     clubTeamService = module.get<ClubTeamService>(ClubTeamService);
     clubService = module.get<ClubService>(ClubService);
   });
@@ -80,7 +82,7 @@ describe('ClubController', () => {
         withOpponentRankingEvaluation: false,
         withResults: true,
       };
-      const getClubMembersSpy = jest.spyOn(clubMemberService, 'getClubsMembers');
+      const getClubMembersSpy = jest.spyOn(memberService, 'getMembers');
 
       const response = await controller.getClubMembers(input, 'L360');
 
