@@ -85,7 +85,7 @@ export class WeeklyNumericRankingInput extends RequestBySeasonDto {
 }
 
 export class LookupDTO {
-  @Type(() => String)
+  @ApiProperty()
   @Matches('^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.\'-]+$', 'u', { message: 'query can only contains letters' })
   @MinLength(3)
   query: string;

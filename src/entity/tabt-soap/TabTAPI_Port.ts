@@ -486,16 +486,16 @@ export class IndividualMatchResult {
   @ApiProperty()
   Position: number;
   @ApiProperty()
-  HomePlayerMatchIndex: Array<number>;
+  HomePlayerMatchIndex: Array<string>;
 
   @ApiProperty()
-  HomePlayerUniqueIndex: Array<number>;
+  HomePlayerUniqueIndex: Array<string>;
 
   @ApiProperty()
-  AwayPlayerMatchIndex: Array<number>;
+  AwayPlayerMatchIndex: Array<string>;
 
   @ApiProperty()
-  AwayPlayerUniqueIndex: Array<number>;
+  AwayPlayerUniqueIndex: Array<string>;
 
   @ApiProperty()
   HomeSetCount: number;
