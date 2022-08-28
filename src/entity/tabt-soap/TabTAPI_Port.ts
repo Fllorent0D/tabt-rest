@@ -347,6 +347,68 @@ export class TournamentRegisterOutput {
   MessageEntries: Array<string>;
 }
 
+export class GetPlayerCategoriesInput {
+  /** Credentials */
+  Credentials?: Credentials;
+  /** xsd:integer */
+  Season?: string;
+  /** xsd:integer */
+  UniqueIndex?: string;
+  /** xsd:string */
+  ShortNameSearch?: string;
+  /** xsd:integer */
+  RankingCategory?: string;
+}
+
+export class GetPlayerCategoriesResponse {
+  /** xsd:integer */
+  @ApiProperty()
+  PlayerCategoryCount?: number;
+  /** PlayerCategoryEntries[] */
+  @ApiProperty()
+  PlayerCategoryEntries?: Array<PlayerCategoryEntries>;
+}
+
+export class PlayerCategoryEntries {
+  /** xsd:integer */
+  @ApiProperty()
+  UniqueIndex?: string;
+  /** xsd:string */
+  @ApiProperty()
+  Name?: string;
+  /** xsd:string */
+  @ApiProperty()
+  ShortName?: string;
+  /** xsd:integer */
+  @ApiProperty()
+  RankingCategory?: string;
+  /** xsd:boolean */
+  @ApiProperty()
+  IsGroup?: string;
+  /** xsd:string */
+  @ApiProperty()
+  GroupMembers?: string;
+  /** xsd:string */
+  @ApiProperty()
+  Sex?: string;
+  /** xsd:string */
+  @ApiProperty()
+  StrictSex?: string;
+  /** xsd:integer */
+  @ApiProperty()
+  MinimumAge?: string;
+  /** xsd:integer */
+  @ApiProperty()
+  MaximumAge?: string;
+  /** xsd:integer */
+  @ApiProperty()
+  StrictMinimumAge?: string;
+  /** xsd:integer */
+  @ApiProperty()
+  StrictMaximumAge?: string;
+}
+
+
 export class TabTAPISoap extends Client {
   Test: (input: ITestInput, cb: (err: any | null, result: TestOutput, raw: string, soapHeader: { [k: string]: any; }) => any, options?: any, extraHeaders?: any) => void;
   GetSeasons: (input: GetSeasonsInput, cb: (err: any | null, result: IGetSeasonsOutput, raw: string, soapHeader: { [k: string]: any; }) => any, options?: any, extraHeaders?: any) => void;
@@ -360,6 +422,7 @@ export class TabTAPISoap extends Client {
   GetTournaments: (input: GetTournamentsInput, cb: (err: any | null, result: IGetTournamentsOutput, raw: string, soapHeader: { [k: string]: any; }) => any, options?: any, extraHeaders?: any) => void;
   GetMatchSystems: (input: GetMatchSystemsInput, cb: (err: any | null, result: GetMatchSystemsOutput, raw: string, soapHeader: { [k: string]: any; }) => any, options?: any, extraHeaders?: any) => void;
   TournamentRegister: (input: TournamentRegisterInput, cb: (err: any | null, result: TournamentRegisterOutput, raw: string, soapHeader: { [k: string]: any; }) => any, options?: any, extraHeaders?: any) => void;
+  GetPlayerCategories: (input: GetPlayerCategoriesInput, cb: (err: any | null, result: GetPlayerCategoriesResponse, raw: string, soapHeader: { [k: string]: any; }) => any, options?: any, extraHeaders?: any) => void;
 
   TestAsync: (input: ITestInput, option?: any, headers?: { [k: string]: string; }) => Promise<[TestOutput, string, { [k: string]: any; }, any, any]>;
   GetSeasonsAsync: (input: GetSeasonsInput, option?: any, headers?: { [k: string]: string; }) => Promise<[IGetSeasonsOutput, string, { [k: string]: any; }, any, any]>;
@@ -373,6 +436,7 @@ export class TabTAPISoap extends Client {
   GetTournamentsAsync: (input: GetTournamentsInput, option?: any, headers?: { [k: string]: string; }) => Promise<[IGetTournamentsOutput, string, { [k: string]: any; }, any, any]>;
   GetMatchSystemsAsync: (input: GetMatchSystemsInput, option?: any, headers?: { [k: string]: string; }) => Promise<[GetMatchSystemsOutput, string, { [k: string]: any; }, any, any]>;
   TournamentRegisterAsync: (input: TournamentRegisterInput, option?: any, headers?: { [k: string]: string; }) => Promise<[TournamentRegisterOutput, string, { [k: string]: any; }, any, any]>;
+  GetPlayerCategoriesAsync: (input: GetPlayerCategoriesInput, option?: any, headers?: { [k: string]: string; }) => Promise<[GetPlayerCategoriesResponse, string, { [k: string]: any; }, any, any]>;
 }
 
 export class SeasonEntry {

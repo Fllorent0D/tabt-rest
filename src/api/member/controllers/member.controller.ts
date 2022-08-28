@@ -8,13 +8,14 @@ import {
   Query,
   UseInterceptors,
 } from '@nestjs/common';
-import { MemberEntry } from '../../../entity/tabt-soap/TabTAPI_Port';
+import { MemberEntry, PlayerCategoryEntries } from '../../../entity/tabt-soap/TabTAPI_Port';
 import { ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { MemberService } from '../../../services/members/member.service';
 import { TabtHeadersDecorator } from '../../../common/decorators/tabt-headers.decorator';
 import {
   GetMember,
   GetMembers,
+  GetPlayerCategoriesInput,
   LookupDTO,
   WeeklyELO,
   WeeklyNumericRanking,
@@ -81,6 +82,28 @@ export class MemberController {
     @Query() params: LookupDTO,
   ): Promise<any> {
     return this.membersSearchIndexService.search(params.query);
+  }
+
+  @Get('categories')
+  @ApiOkResponse({
+    type: MemberEntry,
+    description: 'The categories of a specific player',
+  })
+  @ApiOperation({
+    operationId: 'findMemberCategories',
+  })
+  @ApiNotFoundResponse()
+  @TabtHeadersDecorator()
+  @UseInterceptors(ClassSerializerInterceptor)
+  async findMemberCategoriesById(
+    @Query() input: GetPlayerCategoriesInput,
+  ): Promise<PlayerCategoryEntries[]> {
+    return await this.memberService.getMembersCategories({
+      Season: input.season?.toString(10),
+      UniqueIndex: input.uniqueIndex?.toString(10),
+      ShortNameSearch: input.shortNameSearch,
+      RankingCategory: input.rankingCategory,
+    });
   }
 
   @Get(':uniqueIndex')

@@ -11,7 +11,7 @@ import {
   GetMatchesOutput,
   GetMatchSystemsInput,
   GetMatchSystemsOutput,
-  GetMembersInput,
+  GetMembersInput, GetPlayerCategoriesInput, GetPlayerCategoriesResponse,
   GetSeasonsInput,
   GetTournamentsInput,
   IGetDivisionsOutput,
@@ -115,6 +115,16 @@ export class TabtClientService {
       return result;
     };
     return this.enrichBodyAndQueryWithCache('members', getMembersInput, getter, TTL_DURATION.TWELVE_HOURS);
+  }
+
+
+  GetMembersCategoriesAsync(getMembersInput: GetPlayerCategoriesInput): Promise<GetPlayerCategoriesResponse> {
+    this.logger.log('Request GetMembersCategories method');
+    const getter = async (input, options, headers) => {
+      const [result] = await this.tabtClientSwitchingService.tabtClient.GetPlayerCategoriesAsync(input, options, headers);
+      return result;
+    };
+    return this.enrichBodyAndQueryWithCache('members-categories', getMembersInput, getter, TTL_DURATION.ONE_DAY * 2);
   }
 
   UploadAsync(input: IUploadInput): Promise<[IUploadOutput, string, { [k: string]: any; }, any, any]> {

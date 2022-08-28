@@ -19,6 +19,7 @@ import { RequestBySeasonDto } from '../../../common/dto/request-by-season.dto';
 import { ClubCategory, PlayerCategory } from '../../../entity/tabt-input.interface';
 import { MatchesMembersRankerService } from '../../../services/matches/matches-members-ranker.service';
 import { MemberResults } from '../../../common/dto/member-ranking.dto';
+import { MemberService } from '../../../services/members/member.service';
 
 @ApiTags('Clubs')
 @Controller({
@@ -30,7 +31,7 @@ export class ClubController {
   constructor(
     private clubService: ClubService,
     private clubTeamService: ClubTeamService,
-    private clubMemberService: ClubMemberService,
+    private memberService: MemberService,
     private matchesMembersRankerService: MatchesMembersRankerService,
   ) {
   }
@@ -98,7 +99,7 @@ export class ClubController {
     @Query() input: GetMembersFromClub,
     @Param('clubIndex') uniqueIndex: string,
   ) {
-    return this.clubMemberService.getClubsMembers({
+    return this.memberService.getMembers({
       Club: uniqueIndex,
       PlayerCategory: PlayerCategory[input.playerCategory] as unknown as number,
       UniqueIndex: input.uniqueIndex,

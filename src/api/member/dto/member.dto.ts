@@ -84,6 +84,28 @@ export class WeeklyNumericRankingInput extends RequestBySeasonDto {
   category?: PlayerCategory;
 }
 
+export class GetPlayerCategoriesInput extends RequestBySeasonDto {
+  @ApiPropertyOptional()
+  @IsOptional()
+  @Transform(id => parseInt(id.value), { toClassOnly: true })
+  uniqueIndex?: number;
+
+  @ApiPropertyOptional()
+  @IsString()
+  @IsOptional()
+  nameSearch?: string;
+
+  @ApiPropertyOptional()
+  @IsString()
+  @IsOptional()
+  shortNameSearch?: string;
+
+  @ApiPropertyOptional()
+  @IsString()
+  @IsOptional()
+  rankingCategory?: string;
+}
+
 export class LookupDTO {
   @ApiProperty()
   @Matches('^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.\'-]+$', 'u', { message: 'query can only contains letters' })
