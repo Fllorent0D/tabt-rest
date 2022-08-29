@@ -7,11 +7,13 @@ import { SeasonService } from '../../../services/seasons/season.service';
 import { EloMemberService } from '../../../services/members/elo-member.service';
 import { PlayerCategory } from '../../../entity/tabt-input.interface';
 import { MembersSearchIndexService } from '../../../services/members/members-search-index.service';
+import { MemberCategoryService } from '../../../services/members/member-category.service';
 
 jest.mock('../../../services/members/member.service');
 jest.mock('../../../services/seasons/season.service');
 jest.mock('../../../services/members/elo-member.service');
 jest.mock('../../../services/members/members-search-index.service');
+jest.mock('../../../services/members/member-category.service');
 
 describe('MemberController', () => {
   let controller: MemberController;
@@ -22,7 +24,7 @@ describe('MemberController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [MemberController],
-      providers: [MemberService, SeasonService, EloMemberService, MembersSearchIndexService],
+      providers: [MemberService, SeasonService, EloMemberService, MembersSearchIndexService, MemberCategoryService],
     }).compile();
 
     controller = module.get<MemberController>(MemberController);
