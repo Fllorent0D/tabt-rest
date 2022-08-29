@@ -10,7 +10,6 @@ import {
 import { ApiNotFoundResponse, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ClubEntry, MemberEntry, TeamEntry } from '../../../entity/tabt-soap/TabTAPI_Port';
 import { ClubService } from '../../../services/clubs/club.service';
-import { ClubMemberService } from '../../../services/clubs/club-member.service';
 import { ClubTeamService } from '../../../services/clubs/club-team.service';
 import { TabtException } from '../../../common/filter/tabt-exceptions.filter';
 import { TabtHeadersDecorator } from '../../../common/decorators/tabt-headers.decorator';
