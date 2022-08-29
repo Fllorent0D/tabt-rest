@@ -3,6 +3,7 @@ import { IsBoolean, IsEnum, IsNumber, IsOptional, IsString, Matches, MinLength }
 import { Transform, Type } from 'class-transformer';
 import { PlayerCategory } from '../../../entity/tabt-input.interface';
 import { RequestBySeasonDto } from '../../../common/dto/request-by-season.dto';
+import { MemberEntry } from '../../../entity/tabt-soap/TabTAPI_Port';
 
 export class GetMembers {
   @ApiPropertyOptional()
@@ -78,13 +79,38 @@ export class WeeklyNumericRanking {
   bel: number;
 }
 
+export enum PLAYER_CATEGORY {
+  MEN = 'MEN',
+  WOMEN = 'WOMEN',
+  VETERANS = 'VETERANS',
+  VETERANS_WOMEN = 'VETERANS_WOMEN',
+  YOUTH = 'YOUTH',
+}
+
+export class MemberEntries {
+  @ApiProperty()
+  [PLAYER_CATEGORY.MEN]: MemberEntry;
+
+  @ApiProperty()
+  [PLAYER_CATEGORY.WOMEN]: MemberEntry;
+
+  @ApiProperty()
+  [PLAYER_CATEGORY.VETERANS]: MemberEntry;
+
+  @ApiProperty()
+  [PLAYER_CATEGORY.VETERANS_WOMEN]: MemberEntry;
+
+  @ApiProperty()
+  [PLAYER_CATEGORY.YOUTH]: MemberEntry;
+}
+
 export class WeeklyNumericRankingInput extends RequestBySeasonDto {
   @ApiPropertyOptional({ enum: PlayerCategory })
   @IsEnum(PlayerCategory)
   category?: PlayerCategory;
 }
 
-export class GetPlayerCategoriesInput extends RequestBySeasonDto {
+export class GetPlayerCategoriesInput {
   @ApiPropertyOptional()
   @IsOptional()
   @Transform(id => parseInt(id.value), { toClassOnly: true })

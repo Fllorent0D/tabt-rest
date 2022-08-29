@@ -16,7 +16,7 @@ import {
   GetMember,
   GetMembers,
   GetPlayerCategoriesInput,
-  LookupDTO,
+  LookupDTO, MemberEntries,
   WeeklyELO,
   WeeklyNumericRanking,
   WeeklyNumericRankingInput,
@@ -26,19 +26,20 @@ import { EloMemberService } from '../../../services/members/elo-member.service';
 import { RequestBySeasonDto } from '../../../common/dto/request-by-season.dto';
 import { SeasonService } from '../../../services/seasons/season.service';
 import { MembersSearchIndexService } from '../../../services/members/members-search-index.service';
+import { MemberCategoryService } from '../../../services/members/member-category.service';
 
 @ApiTags('Members')
 @Controller({
   path: 'members',
   version: '1',
 })
-
 export class MemberController {
 
   constructor(
-    private memberService: MemberService,
-    private eloMemberService: EloMemberService,
-    private seasonService: SeasonService,
+    private readonly memberService: MemberService,
+    private readonly memberCategoryService: MemberCategoryService,
+    private readonly eloMemberService: EloMemberService,
+    private readonly seasonService: SeasonService,
     private readonly membersSearchIndexService: MembersSearchIndexService,
   ) {
   }
@@ -98,8 +99,7 @@ export class MemberController {
   async findMemberCategoriesById(
     @Query() input: GetPlayerCategoriesInput,
   ): Promise<PlayerCategoryEntries[]> {
-    return await this.memberService.getMembersCategories({
-      Season: input.season?.toString(10),
+    return await this.memberCategoryService.getMembersCategories({
       UniqueIndex: input.uniqueIndex?.toString(10),
       ShortNameSearch: input.shortNameSearch,
       RankingCategory: input.rankingCategory,

@@ -9,6 +9,7 @@ import { TabtClientService } from '../../common/tabt-client/tabt-client.service'
 import { ContextService } from '../../common/context/context.service';
 import { HeaderKeys } from '../../common/context/context.constants';
 import { PlayerCategory } from '../../entity/tabt-input.interface';
+import { MemberEntries } from '../../api/member/dto/member.dto';
 
 
 @Injectable()
@@ -23,9 +24,10 @@ export class MemberService {
 
   async getMembers(input: GetMembersInput): Promise<MemberEntry[]> {
     // TODO: Refactor and get dynamically the correct ID to send. Cache?
-    // Add facade for the app to minimize the breaking change
+    // Add facade for the app to minimize the breaking changes in the future
     // The app should only be able specific categories.
     // Maybe refactor with a new aggregator route that returns all info to the app
+    // encapsulate all that logic into the bff
 
     if (Number(this.contextService.context.caller[HeaderKeys.X_TABT_SEASON]) === 23) {
       if (input.PlayerCategory === PlayerCategory.MEN) {
@@ -41,12 +43,5 @@ export class MemberService {
     return result.MemberEntries;
   }
 
-  async getMembersCategories(input: GetPlayerCategoriesInput): Promise<PlayerCategoryEntries[]> {
-    const { PlayerCategoryEntries, PlayerCategoryCount } = await this.tabtClient.GetMembersCategoriesAsync(input);
-    console.log(PlayerCategoryCount, PlayerCategoryEntries);
-    if (PlayerCategoryCount === 0) {
-      return [];
-    }
-    return PlayerCategoryEntries;
-  }
+
 }
