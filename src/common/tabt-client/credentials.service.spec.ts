@@ -31,6 +31,7 @@ describe('CredentialsService', () => {
             name: 'test',
             version: '1.0.0',
             pid: 1234,
+            season: 23
           },
           caller: {
             correlationId: '123',
@@ -65,6 +66,7 @@ describe('CredentialsService', () => {
             name: 'test',
             version: '1.0.0',
             pid: 1234,
+            season: 23
           },
           caller: {
             correlationId: '123',
@@ -76,7 +78,7 @@ describe('CredentialsService', () => {
 
       expect(result).toEqual({
         'test': 'It\'s the test',
-        'Season': 22
+        'Season': 23
       });
     });
 
