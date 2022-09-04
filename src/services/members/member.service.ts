@@ -34,6 +34,8 @@ export class MemberService {
         input.PlayerCategory = PlayerCategory.MEN_POST_23;
       } else if (input.PlayerCategory === PlayerCategory.WOMEN) {
         input.PlayerCategory = PlayerCategory.WOMEN_POST_23;
+      } else if (input.PlayerCategory === PlayerCategory.YOUTH) {
+        input.PlayerCategory = PlayerCategory.YOUTH_POST_23;
       }
     }
     const result = await this.tabtClient.GetMembersAsync(input);

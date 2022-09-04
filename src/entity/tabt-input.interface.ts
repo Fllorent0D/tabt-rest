@@ -42,7 +42,8 @@ export enum PlayerCategory {
   VETERANS_WOMEN = 4,
   YOUTH = 5,
   MEN_POST_23 = 37,
-  WOMEN_POST_23 = 38
+  WOMEN_POST_23 = 38,
+  YOUTH_POST_23 = 41
 }
 
 export enum ClubCategory {
