@@ -2,6 +2,7 @@ export interface RunnerContext {
     name: string;
     version: string;
     pid: number;
+    season: number;
 }
 
 export interface CallerContext {

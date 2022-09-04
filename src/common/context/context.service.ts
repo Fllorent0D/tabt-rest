@@ -3,6 +3,7 @@ import { Context, RunnerContext } from './context.contract';
 import { HttpUtil } from '../utils/http.util';
 import { REQUEST } from '@nestjs/core';
 import { PackageService } from '../package/package.service';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable({scope: Scope.REQUEST})
 export class ContextService {
@@ -15,12 +16,14 @@ export class ContextService {
   constructor(
     @Inject(REQUEST) request,
     @Inject('TABT_HEADERS') tabtHeaders: string[],
-    private readonly packageService: PackageService
+    private readonly packageService: PackageService,
+    private readonly configService: ConfigService
   ) {
     this.runnerContext = {
       name: this.packageService.name,
       version: this.packageService.version,
       pid: process.pid,
+      season: Number(configService.get('CURRENT_SEASON'))
     };
     this.httpHeaderKeys = new Set<string>();
     this.registerHttpHeaders(tabtHeaders)
