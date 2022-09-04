@@ -1,7 +1,6 @@
 import { ContextService } from './context.service';
 import { PackageService } from '../package/package.service';
 import { TABT_HEADERS } from './context.constants';
-import { ConfigService } from '@nestjs/config';
 
 describe('ContextService', () => {
   describe('context', () => {
@@ -24,11 +23,8 @@ describe('ContextService', () => {
         name: 'TabtRest',
         version: '1.0.0',
       };
-      const configService = {
-        get: jest.fn().mockReturnValue('23')
-      }
 
-      const ser = new ContextService(request, TABT_HEADERS, packageInfo as PackageService, configService as unknown as ConfigService);
+      const ser = new ContextService(request, TABT_HEADERS, packageInfo as PackageService);
 
       expect(ser.context.caller).toEqual({
           'X-Tabt-Account': 'test',
@@ -56,11 +52,7 @@ describe('ContextService', () => {
         version: '1.0.0',
       };
 
-      const configService = {
-        get: jest.fn().mockReturnValue('23')
-      }
-
-      const ser = new ContextService(request, TABT_HEADERS, packageInfo as PackageService, configService as unknown as ConfigService);
+      const ser = new ContextService(request, TABT_HEADERS, packageInfo as PackageService);
 
       expect(ser.context.caller).toEqual({
           'remoteAddress': '127.0.0.1',
