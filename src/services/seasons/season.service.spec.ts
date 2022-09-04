@@ -1,7 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { SeasonService } from './season.service';
 import { TabtClientService } from '../../common/tabt-client/tabt-client.service';
+import { ContextService } from '../../common/context/context.service';
+import { HeaderKeys } from '../../common/context/context.constants';
 
+jest.mock('../../common/context/context.service');
 describe('SeasonService', () => {
   let provider: SeasonService;
   let tabtService: TabtClientService;
@@ -10,6 +13,24 @@ describe('SeasonService', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         SeasonService,
+        {
+          provide: ContextService,
+          useValue: {
+            context: {
+              runner: {
+                name: 'test',
+                version: '1,0,0',
+                pid: 1234,
+                season: 18,
+              },
+              caller: {
+                correlationId: '123',
+                remoteAddress: '12.12.12.12',
+                [HeaderKeys.X_FORWARDED_FOR]: '11.11.11.11',
+              },
+            },
+          },
+        },
         {
           provide: TabtClientService,
           useValue: {
@@ -40,7 +61,7 @@ describe('SeasonService', () => {
 
       expect(result).toBe(seasons);
       expect(spyOnTabt).toBeCalledTimes(1);
-      expect(spyOnTabt).toBeCalledWith({  });
+      expect(spyOnTabt).toBeCalledWith({});
     });
   });
 
@@ -56,7 +77,7 @@ describe('SeasonService', () => {
 
       const result = await provider.getCurrentSeason();
 
-      expect(result).toBe(currentSeason);
+      expect(result).toBe(seasons[0]);
       expect(spyOnTabt).toBeCalledTimes(1);
       expect(spyOnTabt).toBeCalledWith({});
     });
