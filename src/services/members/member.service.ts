@@ -29,7 +29,7 @@ export class MemberService {
     // Maybe refactor with a new aggregator route that returns all info to the app
     // encapsulate all that logic into the bff
 
-    if (Number(this.contextService.context.caller[HeaderKeys.X_TABT_SEASON]) === 23 || Number(this.contextService.context.runner.season) === 23) {
+    if (Number(this.contextService.context.caller[HeaderKeys.X_TABT_SEASON]) === 23 || (!this.contextService.context.caller[HeaderKeys.X_TABT_SEASON] && this.contextService.context.runner.season === 23)) {
       if (input.PlayerCategory === PlayerCategory.MEN) {
         input.PlayerCategory = PlayerCategory.MEN_POST_23;
       } else if (input.PlayerCategory === PlayerCategory.WOMEN) {
