@@ -99,7 +99,7 @@ export class EloMemberService {
       for (let row = 3; row < matchesRows.length; row = row + 2) {
         const currentRow = matchesRows.item(row);
 
-        const week = currentRow.childNodes[1].childNodes[0]['data'];
+        const week = (row === 3) ? '2022-09-15' : currentRow.childNodes[1].childNodes[0]['data'];
         const elo = Number((currentRow.childNodes[21].childNodes[0].nodeValue as string).replace('&nbsp;', ''));
         const bel = Number((currentRow.childNodes[23].childNodes[0].nodeValue as string).replace('&nbsp;', ''));
 
