@@ -100,7 +100,7 @@ export class TabtClientService {
   }
 
   GetMatchesAsync(input: GetMatchesInput): Promise<GetMatchesOutput> {
-    this.logger.log('Request Test method');
+    this.logger.log('Request GetMatchesAsync method', input);
     const getter = async (input, options, headers) => {
       const [result] = await this.tabtClientSwitchingService.tabtClient.GetMatchesAsync(input, options, headers);
       return result;

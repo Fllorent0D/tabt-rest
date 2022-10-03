@@ -8,6 +8,7 @@ import { firstValueFrom } from 'rxjs';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { SocksProxyHttpClient } from '../../common/socks-proxy/socks-proxy-http-client';
 import { ConfigService } from '@nestjs/config';
+import { UserAgentsUtil } from '../../common/utils/user-agents.util';
 
 export interface ExtractedMatchInfo {
   weekName?: string,
@@ -105,10 +106,12 @@ export class Head2headService {
           maxRedirects: 0,
         },
         {
+          headers: {
+            'user-agent': UserAgentsUtil.random,
+          },
           httpsAgent: this.configService.get('USE_SOCKS_PROXY') === 'true' ? this.socksProxyService.createHttpsAgent() : undefined,
         }),
     );
-
     return result.data;
   }
 
