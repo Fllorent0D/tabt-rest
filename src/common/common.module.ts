@@ -21,18 +21,14 @@ const asyncProviders: Provider[] = [
   {
     provide: 'tabt-aftt',
     useFactory: async (configService, socksProxy) => {
-      return createSoapClient(
-        process.env.AFTT_WSDL,
-        configService.get('USE_SOCKS_PROXY') === 'true' ? socksProxy : undefined);
+      return createSoapClient(process.env.AFTT_WSDL);
     },
     inject: [ConfigService, SocksProxyHttpClient],
   },
   {
     provide: 'tabt-vttl',
     useFactory: async (configService, socksProxy) => {
-      return createSoapClient(
-        process.env.VTLL_WSDL,
-        configService.get('USE_SOCKS_PROXY') === 'true' ? socksProxy : undefined);
+      return createSoapClient(process.env.VTLL_WSDL);
     },
     inject: [ConfigService, SocksProxyHttpClient],
   },
