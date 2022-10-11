@@ -37,7 +37,7 @@
     "@nestjs/serve-static": "3.0.0",
     "@nestjs/swagger": "6.1.2",
     "@nestjs/terminus": "9.1.2",
-    "@xmldom/xmldom": "0.8.2",
+    "@xmldom/xmldom": "0.8.3",
     "bluebird": "3.7.2",
     "cache-manager": "4.1.0",
     "cache-manager-redis-store": "2.0.0",
