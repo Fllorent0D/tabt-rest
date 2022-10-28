@@ -59,7 +59,7 @@
     "soap": "0.45.0",
     "socks-proxy-agent": "7.0.0",
     "swagger-ui-express": "4.5.0",
-    "user-agents": "1.0.1180",
+    "user-agents": "1.0.1181",
     "uuid": "9.0.0"
   },
   "devDependencies": {
