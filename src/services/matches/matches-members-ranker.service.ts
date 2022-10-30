@@ -49,13 +49,12 @@ export class MatchesMembersRankerService {
 
   async getMembersRankingFromTeam(club: string, teamId: string, season: number, sortingSystem: SortSystem = SortSystem.MOST_PLAYED): Promise<MemberResults[]> {
     // Télécharger les matchs
-    const [divisionId, id] = teamId.split('-');
+    const [divisionId] = teamId.split('-');
     const getter = async () => {
       const matches = await this.matchService.getMatches({
         Season: season,
         Club: club,
-        Team: teamId,
-        //DivisionId: Number(divisionId),
+        DivisionId: Number(divisionId),
         WithDetails: true,
       });
       return MatchesMembersRankerService.computeRanking(matches, sortingSystem, club);
