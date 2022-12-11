@@ -53,7 +53,7 @@ export class EloMemberService {
       return this.getELOsAndNumeric(playerId, simplifiedCategory);
     };
 
-    return this.cacheService.getFromCacheOrGetAndCacheResult(`elo-bel-wk:${PlayerCategory[simplifiedCategory]}-${playerId}`, getter, TTL_DURATION.EIGHT_HOURS);
+    return this.cacheService.getFromCacheOrGetAndCacheResult(`elo-bel-wk:${PlayerCategory[simplifiedCategory]}-${playerId}`, getter, TTL_DURATION.TWO_DAYS);
   }
 
   private async getCanvasElement(uniquePlayerId: number, category: PlayerCategory.MEN | PlayerCategory.WOMEN): Promise<HTMLCanvasElement> {
