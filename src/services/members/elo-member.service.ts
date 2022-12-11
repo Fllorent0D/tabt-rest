@@ -1,14 +1,14 @@
-import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { InternalIdMapperService } from '../id-mapper/internal-id-mapper.service';
-import { DOMParser } from '@xmldom/xmldom';
-import { WeeklyELO, WeeklyNumericRanking } from '../../api/member/dto/member.dto';
+import { WeeklyNumericRanking, WeeklyNumericRankingV2 } from '../../api/member/dto/member.dto';
 import { CacheService, TTL_DURATION } from '../../common/cache/cache.service';
 import { firstValueFrom } from 'rxjs';
 import { PlayerCategory } from '../../entity/tabt-input.interface';
 import { SocksProxyHttpClient } from '../../common/socks-proxy/socks-proxy-http-client';
 import { ConfigService } from '@nestjs/config';
 import { UserAgentsUtil } from '../../common/utils/user-agents.util';
+import { JSDOM } from 'jsdom';
 
 @Injectable()
 export class EloMemberService {
@@ -23,95 +23,65 @@ export class EloMemberService {
   ) {
   }
 
-  public async getEloWeekly(playerId: number, season: number): Promise<WeeklyELO[]> {
-    const getter = async () => {
-      const playerUniqueIndex = await this.internalIdService.getInternalPlayerId(playerId);
-      return this.getELOsFromAFTT(playerUniqueIndex, season);
-    };
-
-    return this.cacheService.getFromCacheOrGetAndCacheResult(`elo-wk:${season}:${playerId}`, getter, TTL_DURATION.EIGHT_HOURS);
-  }
-
   public async getBelNumericRanking(playerId: number, season: number, category: PlayerCategory = PlayerCategory.MEN): Promise<WeeklyNumericRanking[]> {
-    const getter = async () => {
-      try {
-        const playerUniqueIndex = await this.internalIdService.getInternalPlayerId(playerId);
-        return this.getELOsAndNumeric(playerUniqueIndex, season, category);
-      } catch (e) {
-        if (e.message.indexOf('Player Id not found') > -1) {
-          this.logger.error('Player Id not found');
-          throw new NotFoundException('Player not found');
-        }
-        throw e;
-      }
-    };
-
-    return this.cacheService.getFromCacheOrGetAndCacheResult(`elo-bel-wk:${season}:${PlayerCategory[category]}-${playerId}`, getter, TTL_DURATION.EIGHT_HOURS);
+    const points = await this.getBelNumericRankingV2(playerId, category);
+    return points.map((point) => ({
+      ...point,
+      elo: 0,
+    }));
   }
 
-  private async getRankingTablePage(uniquePlayerId: number, season: number, category: PlayerCategory): Promise<HTMLElementTagNameMap['table']> {
-    const page = await firstValueFrom(this.httpService.get<string>(`https://resultats.aftt.be/?menu=6&season=${season}&result=1&sel=${uniquePlayerId}&category=${PlayerCategory[category]}&show_elo_in_table=1`, {
+  public async getBelNumericRankingV2(playerId: number, category: PlayerCategory = PlayerCategory.MEN): Promise<WeeklyNumericRankingV2[]> {
+    let simplifiedCategory: PlayerCategory.MEN | PlayerCategory.WOMEN;
+    switch (category) {
+      case PlayerCategory.MEN:
+      case PlayerCategory.MEN_POST_23:
+      case PlayerCategory.YOUTH:
+      case PlayerCategory.VETERANS:
+      default:
+        simplifiedCategory = PlayerCategory.MEN;
+        break;
+      case PlayerCategory.WOMEN:
+      case PlayerCategory.WOMEN_POST_23:
+      case PlayerCategory.VETERANS_WOMEN:
+      case PlayerCategory.YOUTH_POST_23:
+        simplifiedCategory = PlayerCategory.WOMEN;
+        break;
+    }
+
+    const getter = async () => {
+      return this.getELOsAndNumeric(playerId, simplifiedCategory);
+    };
+
+    return this.cacheService.getFromCacheOrGetAndCacheResult(`elo-bel-wk:${PlayerCategory[simplifiedCategory]}-${playerId}`, getter, TTL_DURATION.EIGHT_HOURS);
+  }
+
+  private async getCanvasElement(uniquePlayerId: number, category: PlayerCategory.MEN | PlayerCategory.WOMEN): Promise<HTMLCanvasElement> {
+    const urlSearchParams = new URLSearchParams();
+    urlSearchParams.append('licence', uniquePlayerId.toString(10));
+    const page = await firstValueFrom(this.httpService.post<string>(`https://data.aftt.be/cltnum-${category === PlayerCategory.WOMEN ? 'dames' : 'messieurs'}/fiche.php`, urlSearchParams, {
       responseType: 'text',
       headers: {
-        'user-agent': UserAgentsUtil.random,
+        'User-Agent': UserAgentsUtil.random,
       },
       httpsAgent: this.configService.get('USE_SOCKS_PROXY') === 'true' ? this.socksProxyService.createHttpsAgent() : undefined,
     }));
-    const domParser = new DOMParser({ errorHandler: () => void (0) });
-    const dom = domParser.parseFromString(page.data, 'text/html');
-    const matchListDiv = dom.getElementById('match_list');
-    return matchListDiv.getElementsByTagName('table').item(0);
+    const dom = new JSDOM(page.data, {});
+    return dom.window.document.querySelector('body > div.content > div.row > div:nth-child(2) > canvas') as HTMLCanvasElement;
   }
 
-  private async getELOsFromAFTT(uniquePlayerId: number, season: number): Promise<WeeklyELO[]> {
-    const table = await this.getRankingTablePage(uniquePlayerId, season, PlayerCategory.MEN);
+  private async getELOsAndNumeric(uniquePlayerId: number, category: PlayerCategory.MEN | PlayerCategory.WOMEN): Promise<WeeklyNumericRankingV2[]> {
+    const canvasElement: HTMLCanvasElement = await this.getCanvasElement(uniquePlayerId, category);
 
     // #match_list > table > tbody > tr:nth-child(2)
-    if (table) {
-      const elos: Map<string, number> = new Map<string, number>();
-      const matchesRows = table.childNodes;
-      for (let row = 3; row < matchesRows.length; row = row + 2) {
-        const currentRow = matchesRows.item(row);
+    if (canvasElement) {
+      const dates = JSON.parse(canvasElement.getAttribute('data-mdb-labels').replace(/'/g, '"'));
+      const bels = JSON.parse(canvasElement.getAttribute('data-mdb-dataset-data').replace(/'/g, '"')).map(Number);
+      return dates.map((date, i) => ({
+        weekName: date,
+        bel: bels[i],
+      }));
 
-        const week = currentRow.childNodes[1].childNodes[0]['data'];
-        const elo = Number((currentRow.childNodes[21].childNodes[0].nodeValue as string).replace('&nbsp;', ''));
-
-        if (elo) {
-          elos.set(week, elo);
-        }
-      }
-      const arr = [];
-      for (const [key, value] of elos) {
-        arr.push({ weekName: key, elo: value });
-      }
-      return arr;
-    }
-    return [];
-  }
-
-  private async getELOsAndNumeric(uniquePlayerId: number, season: number, category: PlayerCategory): Promise<WeeklyNumericRanking[]> {
-    const table = await this.getRankingTablePage(uniquePlayerId, season, category);
-
-    // #match_list > table > tbody > tr:nth-child(2)
-    if (table) {
-      const elos: Map<string, { elo: number, bel: number }> = new Map<string, { elo: number, bel: number }>();
-      const matchesRows = table.childNodes;
-      for (let row = 3; row < matchesRows.length; row = row + 2) {
-        const currentRow = matchesRows.item(row);
-
-        const week = currentRow.childNodes[1].childNodes[0]['data'];
-        const elo = Number((currentRow.childNodes[21].childNodes[0].nodeValue as string).replace('&nbsp;', ''));
-        const bel = Number((currentRow.childNodes[23].childNodes[0].nodeValue as string).replace('&nbsp;', ''));
-
-        if (elo || bel) {
-          elos.set(week, { elo, bel });
-        }
-      }
-      const arr = [];
-      for (const [key, { elo, bel }] of elos) {
-        arr.push({ weekName: key, elo, bel });
-      }
-      return arr;
     }
     return [];
   }
