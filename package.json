@@ -39,7 +39,7 @@
     "@nestjs/terminus": "9.1.4",
     "@xmldom/xmldom": "0.8.6",
     "bluebird": "3.7.2",
-    "cache-manager": "4.1.0",
+    "cache-manager": "5.1.4",
     "cache-manager-redis-store": "2.0.0",
     "class-transformer": "0.5.1",
     "class-validator": "0.13.2",
