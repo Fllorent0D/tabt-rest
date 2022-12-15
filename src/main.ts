@@ -44,7 +44,9 @@ async function bootstrap() {
   app.use(helmet.default());
   app.use(responseTime());
 
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(new ValidationPipe({
+    forbidUnknownValues: false
+  }));
 
   await app.listen(process.env.PORT);
 }
