@@ -1,5 +1,4 @@
 import { CacheModule, Logger, Module, Provider } from '@nestjs/common';
-import { createClientAsync } from 'soap';
 import { CacheService } from './cache/cache.service';
 import { ContextService } from './context/context.service';
 import { CredentialsService } from './tabt-client/credentials.service';
