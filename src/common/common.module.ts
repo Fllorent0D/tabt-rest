@@ -1,4 +1,4 @@
-import { CacheModule, Logger, Module, Provider } from '@nestjs/common';
+import { CacheModule, CacheStore, Logger, Module, Provider } from '@nestjs/common';
 import { CacheService } from './cache/cache.service';
 import { ContextService } from './context/context.service';
 import { CredentialsService } from './tabt-client/credentials.service';
@@ -8,12 +8,14 @@ import { TabtClientSwitchingService } from './tabt-client/tabt-client-switching.
 import { PackageService } from './package/package.service';
 import { HeaderKeys, TABT_HEADERS } from './context/context.constants';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import * as redisStore from 'cache-manager-redis-store';
+import {redisStore} from 'cache-manager-redis-store';
 import { LoggerModule } from 'nestjs-pino';
 import pino from 'pino';
 import { cloneDeep } from 'lodash';
 import { SocksProxyHttpClient } from './socks-proxy/socks-proxy-http-client';
 import { createSoapClient } from './tabt-client/soap-client.factory';
+import { memoryStore } from 'cache-manager';
+import { CacheModuleOptsFactory } from './cache/cache-module-opts.factory';
 
 
 const asyncProviders: Provider[] = [
@@ -40,17 +42,8 @@ const asyncProviders: Provider[] = [
 @Module({
   imports: [
     CacheModule.registerAsync({
-      useFactory: () => {
-        const redisUrl = process.env.REDIS_TLS_URL;
-        if (redisUrl) {
-          return {
-            store: redisStore,
-            url: redisUrl,
-          };
-        } else {
-          return null;
-        }
-      },
+      useClass: CacheModuleOptsFactory,
+      imports: [ConfigModule],
     }),
     ConfigModule,
     LoggerModule.forRoot({
