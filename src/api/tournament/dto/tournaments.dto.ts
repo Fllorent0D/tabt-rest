@@ -2,9 +2,6 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsBoolean, IsNumber, IsOptional } from 'class-validator';
 import { Transform } from 'class-transformer';
 
-export class GetTournaments {
-}
-
 export class GetTournamentDetails {
   @ApiPropertyOptional()
   @IsOptional()

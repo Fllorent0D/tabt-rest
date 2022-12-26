@@ -14,7 +14,7 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { TournamentEntry, TournamentSerieEntry } from '../../../entity/tabt-soap/TabTAPI_Port';
 import { TabtException } from '../../../common/filter/tabt-exceptions.filter';
 import { TournamentService } from '../../../services/tournaments/tournament.service';
-import { GetTournamentDetails, GetTournaments, RegisterTournament } from '../dto/tournaments.dto';
+import { GetTournamentDetails, RegisterTournament } from '../dto/tournaments.dto';
 import { TabtHeadersDecorator } from '../../../common/decorators/tabt-headers.decorator';
 
 @ApiTags('Tournaments')
@@ -42,10 +42,8 @@ export class TournamentController {
     status: 400,
     type: TabtException,
   })
-  findAll(
-    @Query() input: GetTournaments,
-  ) {
-    return this.tournamentService.getTournaments(input);
+  findAll() {
+    return this.tournamentService.getTournaments({});
   }
 
   @Get()
@@ -63,10 +61,8 @@ export class TournamentController {
   })
   @Version('2')
   @UseInterceptors(ClassSerializerInterceptor)
-  findAllV2(
-    @Query() input: GetTournaments,
-  ) {
-    return this.tournamentService.getTournaments(input);
+  findAllV2() {
+    return this.tournamentService.getTournaments({});
   }
 
   @Get(':tournamentId')
