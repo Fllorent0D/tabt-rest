@@ -1,45 +1,17 @@
-name: Build and deploy staging
+name: Push new tag to prod
 
-# Controls when the action will run. Triggers the workflow on push or pull request
-# events but only for the master branch
 on:
   push:
-    branches:
-      - main
-
-
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
-jobs:
-  create-tags:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: butlerlogic/action-autotag@stable
-        with:
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-
-  tests:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [ 14.x, 16.x, 18.x ]
-
-    steps:
-      - uses: actions/checkout@v3
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
-      - run: npm install
-      - run: npm run lint
-      - run: npm run test
-      - run: npm run build
-
+    tags:
+      - '*'
+      
   release:
     runs-on: ubuntu-latest
     needs: tests
     steps:
       - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.ref }}
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
