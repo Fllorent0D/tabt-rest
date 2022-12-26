@@ -28,7 +28,7 @@
     "test:e2e": "npm test -- --config test-e2e/jest-e2e.json"
   },
   "dependencies": {
-    "@nestjs/axios": "0.1.1",
+    "@nestjs/axios": "1.0.1",
     "@nestjs/common": "9.2.1",
     "@nestjs/config": "2.2.0",
     "@nestjs/core": "9.2.1",
