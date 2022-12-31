@@ -115,15 +115,15 @@ export class MemberEntries {
 }
 
 export class WeeklyNumericRankingInput extends RequestBySeasonDto {
-  @ApiPropertyOptional({ enum: PlayerCategory })
-  @IsEnum(PlayerCategory)
-  category?: PlayerCategory;
+  @ApiPropertyOptional({ enum: PLAYER_CATEGORY })
+  @IsEnum(PLAYER_CATEGORY)
+  category?: PLAYER_CATEGORY;
 }
 
 export class WeeklyNumericRankingInputV2 {
-  @ApiPropertyOptional({ enum: PlayerCategory})
-  @IsEnum(PlayerCategory)
-  category?: PlayerCategory;
+  @ApiPropertyOptional({ enum: PLAYER_CATEGORY})
+  @IsEnum(PLAYER_CATEGORY)
+  category?: PLAYER_CATEGORY;
 }
 
 export class GetPlayerCategoriesInput {

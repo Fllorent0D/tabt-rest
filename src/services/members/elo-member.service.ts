@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { InternalIdMapperService } from '../id-mapper/internal-id-mapper.service';
-import { WeeklyNumericRanking, WeeklyNumericRankingV2 } from '../../api/member/dto/member.dto';
+import { PLAYER_CATEGORY, WeeklyNumericRanking, WeeklyNumericRankingV2 } from '../../api/member/dto/member.dto';
 import { CacheService, TTL_DURATION } from '../../common/cache/cache.service';
 import { firstValueFrom } from 'rxjs';
 import { PlayerCategory } from '../../entity/tabt-input.interface';
@@ -23,7 +23,7 @@ export class EloMemberService {
   ) {
   }
 
-  public async getBelNumericRanking(playerId: number, season: number, category: PlayerCategory = PlayerCategory.MEN): Promise<WeeklyNumericRanking[]> {
+  public async getBelNumericRanking(playerId: number, season: number, category: PLAYER_CATEGORY = PLAYER_CATEGORY.MEN): Promise<WeeklyNumericRanking[]> {
     const points = await this.getBelNumericRankingV2(playerId, category);
     return points.map((point) => ({
       ...point,
@@ -31,20 +31,17 @@ export class EloMemberService {
     }));
   }
 
-  public async getBelNumericRankingV2(playerId: number, category: PlayerCategory = PlayerCategory.MEN): Promise<WeeklyNumericRankingV2[]> {
+  public async getBelNumericRankingV2(playerId: number, category: PLAYER_CATEGORY = PLAYER_CATEGORY.MEN): Promise<WeeklyNumericRankingV2[]> {
     let simplifiedCategory: PlayerCategory.MEN | PlayerCategory.WOMEN;
     switch (category) {
-      case PlayerCategory.MEN:
-      case PlayerCategory.MEN_POST_23:
-      case PlayerCategory.YOUTH:
-      case PlayerCategory.VETERANS:
+      case PLAYER_CATEGORY.MEN:
+      case PLAYER_CATEGORY.YOUTH:
+      case PLAYER_CATEGORY.VETERANS:
       default:
         simplifiedCategory = PlayerCategory.MEN;
         break;
-      case PlayerCategory.WOMEN:
-      case PlayerCategory.WOMEN_POST_23:
-      case PlayerCategory.VETERANS_WOMEN:
-      case PlayerCategory.YOUTH_POST_23:
+      case PLAYER_CATEGORY.WOMEN:
+      case PLAYER_CATEGORY.VETERANS_WOMEN:
         simplifiedCategory = PlayerCategory.WOMEN;
         break;
     }

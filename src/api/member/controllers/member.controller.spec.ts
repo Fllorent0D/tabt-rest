@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { MemberController } from './member.controller';
 import { MemberService } from '../../../services/members/member.service';
-import { GetMember, WeeklyNumericRanking, WeeklyNumericRankingInput } from '../dto/member.dto';
+import { GetMember, PLAYER_CATEGORY, WeeklyNumericRanking, WeeklyNumericRankingInput } from '../dto/member.dto';
 import { NotFoundException } from '@nestjs/common';
 import { SeasonService } from '../../../services/seasons/season.service';
 import { EloMemberService } from '../../../services/members/elo-member.service';
@@ -105,12 +105,12 @@ describe('MemberController', () => {
     it('should throw 404 exeption if not found', async () => {
       const input: WeeklyNumericRankingInput = {
         season: 18,
-        category: PlayerCategory.MEN,
+        category: PLAYER_CATEGORY.MEN,
       };
       jest.spyOn(eloService, 'getBelNumericRanking').mockResolvedValue([]);
 
       await expect(controller.findNumericRankings(123, input)).rejects.toEqual(new NotFoundException('No ELO points found'));
-      expect(eloService.getBelNumericRanking).toHaveBeenCalledWith(123, 18, PlayerCategory.MEN);
+      expect(eloService.getBelNumericRanking).toHaveBeenCalledWith(123, 18, PLAYER_CATEGORY.MEN);
     });
 
     it('should return numeric rankings if found', async () => {

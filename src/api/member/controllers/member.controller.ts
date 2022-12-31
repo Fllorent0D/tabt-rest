@@ -181,9 +181,9 @@ export class MemberController {
   @Version('2')
   async findNumericRankingV2(
     @Param('uniqueIndex', ParseIntPipe) id: number,
-    @Query() { category }: WeeklyNumericRankingInputV2,
+    @Query() params: WeeklyNumericRankingInputV2,
   ) {
-    const points = await this.eloMemberService.getBelNumericRankingV2(id, category);
+    const points = await this.eloMemberService.getBelNumericRankingV2(id, params.category);
     if (points.length) {
       return points;
     } else {
