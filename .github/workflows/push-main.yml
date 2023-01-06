@@ -23,30 +23,24 @@ jobs:
       - run: npm run test
       - run: npm run build
 
-  bump-version:
-    name: 'Bump Version on main'
+  release:
     runs-on: ubuntu-latest
-    needs: tests
-
     steps:
-      - name: 'Checkout source code'
-        uses: 'actions/checkout@v3'
+      - uses: actions/checkout@v2
         with:
-          ref: ${{ github.ref }}
-      - name: 'Automated Version Bump'
-        id: version-bump
-        uses: 'phips28/gh-action-bump-version@master'
-        with:
-          tag-prefix: 'v'
+          fetch-depth: 0
+      - name: git config
+        run: |
+          git config user.name "${GITHUB_ACTOR}"
+          git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+      - run: npm install
+      - run: npm run release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: 'Output Step'
-        env:
-          NEW_TAG: ${{ steps.version-bump.outputs.newTag }}
-        run: echo "new tag $NEW_TAG"
   
   deploy:
     runs-on: ubuntu-latest
+    needs: bump-version
     steps:
       - uses: actions/checkout@v3
         with:
