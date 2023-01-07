@@ -5,7 +5,7 @@
   ],
   "schedule": ["after 10pm and before 5:00am on Tuesday and Thursday"],
   "timezone": "Europe/Brussels",
-  "commitMessagePrefix": "chore(deps): ",
+  "commitMessagePrefix": "chore: ",
   "automergeType": "pr",
   "packageRules": [
     {
