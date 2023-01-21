@@ -110,7 +110,7 @@ describe('MemberController', () => {
       jest.spyOn(eloService, 'getBelNumericRanking').mockResolvedValue([]);
 
       await expect(controller.findNumericRankings(123, input)).rejects.toEqual(new NotFoundException('No ELO points found'));
-      expect(eloService.getBelNumericRanking).toHaveBeenCalledWith(123, 18, PLAYER_CATEGORY.MEN);
+      expect(eloService.getBelNumericRanking).toHaveBeenCalledWith(123, 18, PlayerCategory.MEN);
     });
 
     it('should return numeric rankings if found', async () => {
@@ -120,7 +120,7 @@ describe('MemberController', () => {
       jest.spyOn(seasonService, 'getCurrentSeason').mockResolvedValue({ Season: 18, IsCurrent: true, Name: '2018' });
       const result = await controller.findNumericRankings(123, input);
       expect(result).toBe(expectedResult);
-      expect(eloService.getBelNumericRanking).toHaveBeenCalledWith(123, 18, undefined);
+      expect(eloService.getBelNumericRanking).toHaveBeenCalledWith(123, 18, PlayerCategory.MEN);
     });
   });
 });
