@@ -1,5 +1,13 @@
 import { ApiProperty, ApiPropertyOptional, OmitType } from '@nestjs/swagger';
-import { Allow, IsBoolean, IsEnum, IsIn, IsNumber, IsOptional, IsString, Matches, MinLength } from 'class-validator';
+import {
+  IsBoolean,
+  IsEnum,
+  IsNumber,
+  IsOptional,
+  IsString,
+  Matches,
+  MinLength,
+} from 'class-validator';
 import { Transform } from 'class-transformer';
 import { PlayerCategory } from '../../../entity/tabt-input.interface';
 import { RequestBySeasonDto } from '../../../common/dto/request-by-season.dto';
@@ -89,6 +97,69 @@ export class WeeklyNumericRankingV2 {
   bel: number;
 }
 
+export class WeeklyNumericPointsV3 {
+  @ApiProperty()
+  weekName: string;
+
+  @ApiProperty()
+  points: number;
+}
+export class NumericRankingPerWeekOpponentsV3 {
+
+  @ApiProperty()
+  opponentName: string;
+
+  @ApiProperty()
+  opponentRanking: string;
+
+  @ApiProperty()
+  opponentNumericRanking: number;
+
+  @ApiProperty()
+  pointsWon: number;
+
+  @ApiProperty()
+  score: string;
+}
+
+export enum COMPETITION_TYPE{
+  CHAMPIONSHIP = "championship",
+  TOURNAMENT = "tournament",
+}
+export class NumericRankingDetailsV3 {
+  @ApiProperty()
+  date: string;
+
+  @ApiProperty({
+    enum: COMPETITION_TYPE,
+  })
+  competitionType: COMPETITION_TYPE;
+
+  @ApiProperty()
+  basePoints: number;
+
+  @ApiProperty()
+  endPoints: number;
+
+
+  @ApiProperty({
+    type: [NumericRankingPerWeekOpponentsV3]
+  })
+  opponents: NumericRankingPerWeekOpponentsV3[];
+}
+
+export class WeeklyNumericRankingV3 {
+  @ApiProperty({
+    type: [WeeklyNumericPointsV3]
+  })
+  points: WeeklyNumericPointsV3[];
+
+  @ApiProperty({
+    type: [NumericRankingDetailsV3]
+  })
+  perDateHistory: NumericRankingDetailsV3[];
+}
+
 export enum PLAYER_CATEGORY {
   MEN = 'MEN',
   WOMEN = 'WOMEN',
@@ -125,6 +196,8 @@ export class WeeklyNumericRankingInputV2 {
   @IsEnum(PLAYER_CATEGORY)
   category?: PLAYER_CATEGORY;
 }
+
+export type WeeklyNumericRankingInputV3 = WeeklyNumericRankingInputV2;
 
 export class GetPlayerCategoriesInput {
   @ApiPropertyOptional()

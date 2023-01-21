@@ -21,13 +21,14 @@ import {
   WeeklyNumericRanking,
   WeeklyNumericRankingInput,
   WeeklyNumericRankingInputV2,
-  WeeklyNumericRankingV2,
+  WeeklyNumericRankingV2, WeeklyNumericRankingV3,
 } from '../dto/member.dto';
 import { PlayerCategory } from '../../../entity/tabt-input.interface';
 import { EloMemberService } from '../../../services/members/elo-member.service';
 import { SeasonService } from '../../../services/seasons/season.service';
 import { MembersSearchIndexService } from '../../../services/members/members-search-index.service';
 import { MemberCategoryService } from '../../../services/members/member-category.service';
+import { getSimplifiedPlayerCategory } from '../helpers/player-category-helpers';
 
 @ApiTags('Members')
 @Controller({
@@ -159,7 +160,7 @@ export class MemberController {
       const currentSeason = await this.seasonService.getCurrentSeason();
       season = currentSeason.Season;
     }
-    const elos = await this.eloMemberService.getBelNumericRanking(id, season, category);
+    const elos = await this.eloMemberService.getBelNumericRanking(id, season, getSimplifiedPlayerCategory(category));
     if (elos.length) {
       return elos;
     } else {
@@ -183,12 +184,39 @@ export class MemberController {
     @Param('uniqueIndex', ParseIntPipe) id: number,
     @Query() params: WeeklyNumericRankingInputV2,
   ) {
-    const points = await this.eloMemberService.getBelNumericRankingV2(id, params.category);
+    const simplifiedCategory = getSimplifiedPlayerCategory(params.category);
+    const points = await this.eloMemberService.getBelNumericRankingV2(id, simplifiedCategory);
     if (points.length) {
       return points;
     } else {
       throw new NotFoundException('No ELO points found');
     }
+  }
+
+  @Get(':uniqueIndex/numeric-rankings')
+  @ApiOkResponse({
+    type: WeeklyNumericRankingV3,
+    description: 'The list of ELO points for a player in a season',
+  })
+  @ApiOperation({
+    operationId: 'findMemberNumericRankingsHistoryV3',
+  })
+  @ApiNotFoundResponse({
+    description: 'No points found for given player',
+  })
+  @Version('3')
+  async findNumericRankingV3(
+    @Param('uniqueIndex', ParseIntPipe) id: number,
+    @Query() params: WeeklyNumericRankingInputV2,
+  ) {
+    const simplifiedCategory = getSimplifiedPlayerCategory(params.category);
+    const numericRankingV3 = await this.eloMemberService.getBelNumericRankingV3(id, simplifiedCategory);
+
+    if (!numericRankingV3.points.length) {
+      throw new NotFoundException('No ELO points found');
+    }
+    return numericRankingV3;
+
   }
 
 }

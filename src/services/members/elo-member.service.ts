@@ -1,7 +1,14 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { InternalIdMapperService } from '../id-mapper/internal-id-mapper.service';
-import { PLAYER_CATEGORY, WeeklyNumericRanking, WeeklyNumericRankingV2 } from '../../api/member/dto/member.dto';
+import {
+  COMPETITION_TYPE,
+  NumericRankingDetailsV3,
+  NumericRankingPerWeekOpponentsV3,
+  WeeklyNumericRanking,
+  WeeklyNumericRankingV2,
+  WeeklyNumericRankingV3,
+} from '../../api/member/dto/member.dto';
 import { CacheService, TTL_DURATION } from '../../common/cache/cache.service';
 import { firstValueFrom } from 'rxjs';
 import { PlayerCategory } from '../../entity/tabt-input.interface';
@@ -9,6 +16,8 @@ import { SocksProxyHttpClient } from '../../common/socks-proxy/socks-proxy-http-
 import { ConfigService } from '@nestjs/config';
 import { UserAgentsUtil } from '../../common/utils/user-agents.util';
 import { JSDOM } from 'jsdom';
+import { SimplifiedPlayerCategory } from '../../api/member/helpers/player-category-helpers';
+import { format } from 'date-fns';
 
 @Injectable()
 export class EloMemberService {
@@ -23,7 +32,7 @@ export class EloMemberService {
   ) {
   }
 
-  public async getBelNumericRanking(playerId: number, season: number, category: PLAYER_CATEGORY = PLAYER_CATEGORY.MEN): Promise<WeeklyNumericRanking[]> {
+  public async getBelNumericRanking(playerId: number, season: number, category: SimplifiedPlayerCategory = PlayerCategory.MEN): Promise<WeeklyNumericRanking[]> {
     const points = await this.getBelNumericRankingV2(playerId, category);
     return points.map((point) => ({
       ...point,
@@ -31,45 +40,42 @@ export class EloMemberService {
     }));
   }
 
-  public async getBelNumericRankingV2(playerId: number, category: PLAYER_CATEGORY = PLAYER_CATEGORY.MEN): Promise<WeeklyNumericRankingV2[]> {
-    let simplifiedCategory: PlayerCategory.MEN | PlayerCategory.WOMEN;
-    switch (category) {
-      case PLAYER_CATEGORY.MEN:
-      case PLAYER_CATEGORY.YOUTH:
-      case PLAYER_CATEGORY.VETERANS:
-      default:
-        simplifiedCategory = PlayerCategory.MEN;
-        break;
-      case PLAYER_CATEGORY.WOMEN:
-      case PLAYER_CATEGORY.VETERANS_WOMEN:
-        simplifiedCategory = PlayerCategory.WOMEN;
-        break;
-    }
-
-    const getter = async () => {
-      return this.getELOsAndNumeric(playerId, simplifiedCategory);
-    };
-
-    return this.cacheService.getFromCacheOrGetAndCacheResult(`elo-bel-wk:${PlayerCategory[simplifiedCategory]}-${playerId}`, getter, TTL_DURATION.TWO_DAYS);
+  public async getBelNumericRankingV2(playerId: number, category: PlayerCategory.MEN | PlayerCategory.WOMEN = PlayerCategory.MEN): Promise<WeeklyNumericRankingV2[]> {
+    const getter = () => this.getELOsAndNumeric(playerId, category);
+    return this.cacheService.getFromCacheOrGetAndCacheResult(`elo-bel-wk:${PlayerCategory[category]}-${playerId}`, getter, TTL_DURATION.TWO_DAYS);
   }
 
-  private async getCanvasElement(uniquePlayerId: number, category: PlayerCategory.MEN | PlayerCategory.WOMEN): Promise<HTMLCanvasElement> {
-    const urlSearchParams = new URLSearchParams();
-    urlSearchParams.append('licence', uniquePlayerId.toString(10));
-    const page = await firstValueFrom(this.httpService.post<string>(`https://data.aftt.be/cltnum-${category === PlayerCategory.WOMEN ? 'dames' : 'messieurs'}/fiche.php`, urlSearchParams, {
-      responseType: 'text',
-      headers: {
-        'User-Agent': UserAgentsUtil.random,
-      },
-      httpsAgent: this.configService.get('USE_SOCKS_PROXY') === 'true' ? this.socksProxyService.createHttpsAgent() : undefined,
-    }));
-    const dom = new JSDOM(page.data, {});
-    return dom.window.document.querySelector('body > div.content > div.row > div:nth-child(2) > canvas') as HTMLCanvasElement;
+  private async getAFTTDataPage(uniquePlayerId: number, category: PlayerCategory.MEN | PlayerCategory.WOMEN): Promise<Document> {
+    const getter = async () => {
+      const url = `https://data.aftt.be/cltnum-${category === PlayerCategory.WOMEN ? 'dames' : 'messieurs'}/fiche.php`;
+      const urlSearchParams = new URLSearchParams();
+      urlSearchParams.append('licence', uniquePlayerId.toString(10));
+      const userAgent = UserAgentsUtil.random;
+      const httpsAgent = this.configService.get('USE_SOCKS_PROXY') === 'true' ? await this.socksProxyService.createHttpsAgent() : undefined;
+      const response = await firstValueFrom(this.httpService.post<string>(
+        url,
+        urlSearchParams,
+        {
+          responseType: 'text',
+          headers: {
+            'User-Agent': userAgent,
+          },
+          httpsAgent,
+        }));
+      return response.data;
+    };
+    const pageString = await this.cacheService.getFromCacheOrGetAndCacheResult(`aftt-data-page-${uniquePlayerId}-${category}`, getter, TTL_DURATION.TWO_DAYS);
+    return new JSDOM(pageString).window.document;
+
   }
 
   private async getELOsAndNumeric(uniquePlayerId: number, category: PlayerCategory.MEN | PlayerCategory.WOMEN): Promise<WeeklyNumericRankingV2[]> {
-    const canvasElement: HTMLCanvasElement = await this.getCanvasElement(uniquePlayerId, category);
+    const domPage: Document = await this.getAFTTDataPage(uniquePlayerId, category);
+    return this.parseCanvasForPoints(domPage);
+  }
 
+  private parseCanvasForPoints(domPage: Document): WeeklyNumericRankingV2[] {
+    const canvasElement: HTMLCanvasElement = domPage.querySelector('body > div.content > div.row > div:nth-child(2) > canvas') as HTMLCanvasElement;
     // #match_list > table > tbody > tr:nth-child(2)
     if (canvasElement) {
       const dates = JSON.parse(canvasElement.getAttribute('data-mdb-labels').replace(/'/g, '"'));
@@ -81,5 +87,65 @@ export class EloMemberService {
 
     }
     return [];
+  }
+
+  private parseTableForHistory(domPage: Document): NumericRankingDetailsV3[] {
+    const results = [];
+    const tableHtml: HTMLTableElement = domPage.querySelector('body > div.content > div.table-responsive > table') as HTMLTableElement;
+    const tBodies: HTMLCollectionOf<HTMLTableSectionElement> = tableHtml.tBodies;
+    // body > div.content > div.table-responsive > table
+    if (tBodies.length) {
+      const firstTBody = tBodies.item(0);
+      let dateHistoryItem: NumericRankingDetailsV3;
+      for (const line of firstTBody.rows) {
+        if (!['TabWin', 'TabLoose'].includes(line.className)) {
+          if (dateHistoryItem) {
+            results.push(dateHistoryItem);
+          }
+          // parse weekname line
+          const cellContent = line.cells[0].textContent.trim();
+          const [context, pointsSummary] = cellContent.split(' | ');
+          const [date, competition, ...club] = context.split(' - ');
+          const [day, month, year] = date.split('/').map(Number);
+          dateHistoryItem = {
+            date: format(new Date(year, month, day), 'yyyy-MM-dd'),
+            basePoints: undefined,
+            endPoints: undefined,
+            competitionType: club.length ? COMPETITION_TYPE.CHAMPIONSHIP : COMPETITION_TYPE.TOURNAMENT,
+            opponents: [],
+          };
+        } else {
+          // parse result
+          if (!dateHistoryItem) {
+            continue;
+          }
+          const opponent: NumericRankingPerWeekOpponentsV3 = {
+            opponentName: line.cells[1].textContent,
+            score: line.cells[2].textContent,
+            opponentRanking: line.cells[3].textContent,
+            opponentNumericRanking: Number(line.cells[4].textContent),
+            pointsWon: Number(line.cells[5].textContent.slice(0, -3)),
+          };
+          dateHistoryItem.opponents.push(opponent);
+        }
+      }
+    }
+    return results;
+  }
+
+  async getBelNumericRankingV3(playerUniqueIndex: number, category: SimplifiedPlayerCategory): Promise<WeeklyNumericRankingV3> {
+    const weeklyNumericRankingV3: WeeklyNumericRankingV3 = {
+      points: [],
+      perDateHistory: [],
+    };
+    const domPage = await this.getAFTTDataPage(playerUniqueIndex, category);
+
+    weeklyNumericRankingV3.perDateHistory = this.parseTableForHistory(domPage);
+    weeklyNumericRankingV3.points = this.parseCanvasForPoints(domPage).map((item) => ({
+      weekName: item.weekName,
+      points: item.bel,
+    }));
+
+    return weeklyNumericRankingV3;
   }
 }
