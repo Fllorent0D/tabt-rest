@@ -1,5 +1,12 @@
 
 
+### [1.12.6](https://github.com/Fllorent0D/TabT-Rest/compare/v1.12.5...v1.12.6) (2023-01-26)
+
+
+### Chores
+
+* Update dependency eslint-plugin-import to v2.27.5 ([1a0132a](https://github.com/Fllorent0D/TabT-Rest/commit/1a0132aa1174af582dc00fbcd784a44d4d4c73bd))
+
 ### [1.12.5](https://github.com/Fllorent0D/TabT-Rest/compare/v1.12.4...v1.12.5) (2023-01-26)
 
 
