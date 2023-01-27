@@ -1,5 +1,12 @@
 
 
+### [1.12.8](https://github.com/Fllorent0D/TabT-Rest/compare/v1.12.7...v1.12.8) (2023-01-27)
+
+
+### Chores
+
+* Update easingthemes/ssh-deploy action to v3.4.5 ([0c45061](https://github.com/Fllorent0D/TabT-Rest/commit/0c4506156e68286059cbec5de96c19297d3ca151))
+
 ### [1.12.7](https://github.com/Fllorent0D/TabT-Rest/compare/v1.12.6...v1.12.7) (2023-01-27)
 
 
