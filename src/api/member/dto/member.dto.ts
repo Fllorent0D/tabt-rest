@@ -136,6 +136,9 @@ export class NumericRankingDetailsV3 {
   competitionType: COMPETITION_TYPE;
 
   @ApiProperty()
+  competitionContext: string;
+
+  @ApiProperty()
   basePoints: number;
 
   @ApiProperty()

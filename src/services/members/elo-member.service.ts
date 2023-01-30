@@ -107,11 +107,13 @@ export class EloMemberService {
           const [context, pointsSummary] = cellContent.split(' | ');
           const [date, competition, ...club] = context.split(' - ');
           const [day, month, year] = date.split('/').map(Number);
+          const [basePoints, endPoints] = this.parseBaseAndEndPoints(pointsSummary);
           dateHistoryItem = {
-            date: format(new Date(year, month, day), 'yyyy-MM-dd'),
-            basePoints: undefined,
-            endPoints: undefined,
+            date: format(new Date(year, month - 1, day), 'yyyy-MM-dd'),
+            basePoints,
+            endPoints,
             competitionType: club.length ? COMPETITION_TYPE.CHAMPIONSHIP : COMPETITION_TYPE.TOURNAMENT,
+            competitionContext: competition,
             opponents: [],
           };
         } else {
@@ -148,4 +150,18 @@ export class EloMemberService {
 
     return weeklyNumericRankingV3;
   }
+
+  private parseBaseAndEndPoints(pointsStr: string): number[] {
+    const regex = /[a-z\s]+\s:\s([0-9.]+)/gm;
+    const results: number[] = [];
+    let m;
+    while ((m = regex.exec(pointsStr)) !== null) {
+      if (m.index === regex.lastIndex) {
+        regex.lastIndex++;
+      }
+      results.push(Number(m[1]));
+    }
+    return results;
+  }
+
 }
