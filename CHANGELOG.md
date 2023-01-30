@@ -1,5 +1,12 @@
 
 
+### [1.12.9](https://github.com/Fllorent0D/TabT-Rest/compare/v1.12.8...v1.12.9) (2023-01-30)
+
+
+### Bug Fixes
+
+* correct month & add competition context ([a066e5b](https://github.com/Fllorent0D/TabT-Rest/commit/a066e5b3c174df5c21c665eab0d4e22eb4ab8947))
+
 ### [1.12.8](https://github.com/Fllorent0D/TabT-Rest/compare/v1.12.7...v1.12.8) (2023-01-27)
 
 
