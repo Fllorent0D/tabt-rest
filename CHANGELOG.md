@@ -1,5 +1,12 @@
 
 
+### [1.12.11](https://github.com/Fllorent0D/TabT-Rest/compare/v1.12.10...v1.12.11) (2023-01-31)
+
+
+### Chores
+
+* Update dependency typescript to v4.9.5 ([7ad2dd8](https://github.com/Fllorent0D/TabT-Rest/commit/7ad2dd8ad157865e37ece7732734055af9105556))
+
 ### [1.12.10](https://github.com/Fllorent0D/TabT-Rest/compare/v1.12.9...v1.12.10) (2023-01-31)
 
 
