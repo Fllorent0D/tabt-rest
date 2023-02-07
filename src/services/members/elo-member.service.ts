@@ -133,7 +133,7 @@ export class EloMemberService {
       }
       results.push(dateHistoryItem);
     }
-    return results;
+    return results.reverse();
   }
 
   async getBelNumericRankingV3(playerUniqueIndex: number, category: SimplifiedPlayerCategory): Promise<WeeklyNumericRankingV3> {
