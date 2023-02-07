@@ -1,5 +1,13 @@
 
 
+### [1.12.16](https://github.com/Fllorent0D/TabT-Rest/compare/v1.12.15...v1.12.16) (2023-02-07)
+
+
+### Bug Fixes
+
+* fix last item history points ([f076fe6](https://github.com/Fllorent0D/TabT-Rest/commit/f076fe60eb52ca943c062329af0ed87ca034c977))
+* reverse list ([e58a4ac](https://github.com/Fllorent0D/TabT-Rest/commit/e58a4acee35225b7f253963b425091a428c5e0eb))
+
 ### [1.12.15](https://github.com/Fllorent0D/TabT-Rest/compare/v1.12.14...v1.12.15) (2023-02-07)
 
 
