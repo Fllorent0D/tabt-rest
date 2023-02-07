@@ -91,7 +91,7 @@ export class EloMemberService {
 
   private parseTableForHistory(domPage: Document): NumericRankingDetailsV3[] {
     const results = [];
-    const tableHtml: HTMLTableElement = domPage.querySelector('body > div.content > div.table-responsive > table') as HTMLTableElement;
+    const tableHtml: HTMLTableElement = domPage.querySelector('body > div.content > div.table-responsive > div.table-responsive > table') as HTMLTableElement;
     const tBodies: HTMLCollectionOf<HTMLTableSectionElement> = tableHtml.tBodies;
     // body > div.content > div.table-responsive > table
     if (tBodies.length) {
@@ -131,6 +131,7 @@ export class EloMemberService {
           dateHistoryItem.opponents.push(opponent);
         }
       }
+      results.push(dateHistoryItem);
     }
     return results;
   }
