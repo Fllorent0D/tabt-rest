@@ -1,5 +1,12 @@
 
 
+### [1.12.17](https://github.com/Fllorent0D/TabT-Rest/compare/v1.12.16...v1.12.17) (2023-02-09)
+
+
+### Chores
+
+* Update dependency pino-http to v8.3.3 ([d1f30c7](https://github.com/Fllorent0D/TabT-Rest/commit/d1f30c7f0bb4b419e6e3fffbd2a23e0cfcff991c))
+
 ### [1.12.16](https://github.com/Fllorent0D/TabT-Rest/compare/v1.12.15...v1.12.16) (2023-02-07)
 
 
