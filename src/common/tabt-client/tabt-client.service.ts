@@ -114,7 +114,7 @@ export class TabtClientService {
       const [result] = await this.tabtClientSwitchingService.tabtClient.GetMembersAsync(input, options, headers);
       return result;
     };
-    return this.enrichBodyAndQueryWithCache('members', getMembersInput, getter, TTL_DURATION.TWELVE_HOURS);
+    return this.enrichBodyAndQueryWithCache('members', getMembersInput, getter, TTL_DURATION.EIGHT_HOURS);
   }
 
 
