@@ -1,5 +1,12 @@
 
 
+### [1.12.20](https://github.com/Fllorent0D/TabT-Rest/compare/v1.12.19...v1.12.20) (2023-02-14)
+
+
+### Chores
+
+* Update dependency @nestjs/serve-static to v3.0.1 ([c56547c](https://github.com/Fllorent0D/TabT-Rest/commit/c56547c0be0a7018cc78c8b409f0a15dc9139528))
+
 ### [1.12.19](https://github.com/Fllorent0D/TabT-Rest/compare/v1.12.18...v1.12.19) (2023-02-14)
 
 
