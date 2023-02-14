@@ -1,5 +1,12 @@
 
 
+### [1.12.19](https://github.com/Fllorent0D/TabT-Rest/compare/v1.12.18...v1.12.19) (2023-02-14)
+
+
+### Chores
+
+* Update dependency @nestjs/config to v2.3.1 ([bec38b5](https://github.com/Fllorent0D/TabT-Rest/commit/bec38b565cbe173e329809a0756051ad51f882db))
+
 ### [1.12.18](https://github.com/Fllorent0D/TabT-Rest/compare/v1.12.17...v1.12.18) (2023-02-09)
 
 
