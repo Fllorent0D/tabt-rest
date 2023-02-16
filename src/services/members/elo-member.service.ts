@@ -89,9 +89,9 @@ export class EloMemberService {
     return [];
   }
 
-  private parseTableForHistory(domPage: Document): NumericRankingDetailsV3[] {
+  private parseTableForHistory(tableHtml: HTMLTableElement): NumericRankingDetailsV3[] {
     const results = [];
-    const tableHtml: HTMLTableElement = domPage.querySelector('body > div.content > div.table-responsive > div.table-responsive > table') as HTMLTableElement;
+
     const tBodies: HTMLCollectionOf<HTMLTableSectionElement> = tableHtml.tBodies;
     // body > div.content > div.table-responsive > table
     if (tBodies.length) {
@@ -142,8 +142,8 @@ export class EloMemberService {
       perDateHistory: [],
     };
     const domPage = await this.getAFTTDataPage(playerUniqueIndex, category);
-
-    weeklyNumericRankingV3.perDateHistory = this.parseTableForHistory(domPage);
+    const table = this.findHistoryTable(domPage, category);
+    weeklyNumericRankingV3.perDateHistory = this.parseTableForHistory(table);
     weeklyNumericRankingV3.points = this.parseCanvasForPoints(domPage).map((item) => ({
       weekName: item.weekName,
       points: item.bel,
@@ -165,4 +165,9 @@ export class EloMemberService {
     return results;
   }
 
+  private findHistoryTable(domPage: Document, category: SimplifiedPlayerCategory): HTMLTableElement {
+    return (category === PlayerCategory.MEN) ?
+      domPage.querySelector('body > div.content > div.table-responsive > div.table-responsive > table') as HTMLTableElement :
+      domPage.querySelector('body > div.content > div:nth-child(3) > table') as HTMLTableElement;
+  }
 }
