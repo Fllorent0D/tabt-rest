@@ -1,5 +1,12 @@
 
 
+### [1.12.21](https://github.com/Fllorent0D/TabT-Rest/compare/v1.12.20...v1.12.21) (2023-02-16)
+
+
+### Bug Fixes
+
+* reduce TTL GetMembers ([4421531](https://github.com/Fllorent0D/TabT-Rest/commit/4421531f09525381a5adefee08eb488d9e679115))
+
 ### [1.12.20](https://github.com/Fllorent0D/TabT-Rest/compare/v1.12.19...v1.12.20) (2023-02-14)
 
 
