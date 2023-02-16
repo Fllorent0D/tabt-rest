@@ -64,7 +64,7 @@ export class EloMemberService {
         }));
       return response.data;
     };
-    const pageString = await this.cacheService.getFromCacheOrGetAndCacheResult(`aftt-data-page-${uniquePlayerId}-${category}`, getter, TTL_DURATION.TWO_DAYS);
+    const pageString = await this.cacheService.getFromCacheOrGetAndCacheResult(`aftt-data-page-${uniquePlayerId}-${category}`, getter, TTL_DURATION.TWELVE_HOURS);
     return new JSDOM(pageString).window.document;
 
   }
