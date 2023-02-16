@@ -1,5 +1,13 @@
 
 
+### [1.12.23](https://github.com/Fllorent0D/TabT-Rest/compare/v1.12.22...v1.12.23) (2023-02-16)
+
+
+### Bug Fixes
+
+* numeric rankings woman fix ([ea9e1c4](https://github.com/Fllorent0D/TabT-Rest/commit/ea9e1c478e48574588fd6be894cb3272736b5fe8))
+* reduce TTL datapage ([97480e4](https://github.com/Fllorent0D/TabT-Rest/commit/97480e4d2416526c1958d7374d603f95f0cf3fd5))
+
 ### [1.12.22](https://github.com/Fllorent0D/TabT-Rest/compare/v1.12.21...v1.12.22) (2023-02-16)
 
 
