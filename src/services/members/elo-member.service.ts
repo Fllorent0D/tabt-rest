@@ -18,6 +18,7 @@ import { UserAgentsUtil } from '../../common/utils/user-agents.util';
 import { JSDOM } from 'jsdom';
 import { SimplifiedPlayerCategory } from '../../api/member/helpers/player-category-helpers';
 import { format } from 'date-fns';
+import { DataAfftTokenRefresherService } from './data-afft-token-refresher.service';
 
 @Injectable()
 export class EloMemberService {
@@ -29,6 +30,7 @@ export class EloMemberService {
     private readonly cacheService: CacheService,
     private readonly socksProxyService: SocksProxyHttpClient,
     private readonly configService: ConfigService,
+    private readonly dataAFTTTokenRefresherService: DataAfftTokenRefresherService,
   ) {
   }
 
@@ -49,7 +51,9 @@ export class EloMemberService {
     const getter = async () => {
       const url = `https://data.aftt.be/cltnum-${category === PlayerCategory.WOMEN ? 'dames' : 'messieurs'}/fiche.php`;
       const urlSearchParams = new URLSearchParams();
-      urlSearchParams.append('b3bd0a89ca76ade3c84ca196167bb3ef579f577555a270432c248e0d3b27ae382ab8e88f947bcfce76b9b631103ed31c6b92', uniquePlayerId.toString(10));
+      // 😇
+      const token = await this.dataAFTTTokenRefresherService.getToken();
+      urlSearchParams.append(token, uniquePlayerId.toString(10));
       const userAgent = UserAgentsUtil.random;
       const httpsAgent = this.configService.get('USE_SOCKS_PROXY') === 'true' ? await this.socksProxyService.createHttpsAgent() : undefined;
       const response = await firstValueFrom(this.httpService.post<string>(
