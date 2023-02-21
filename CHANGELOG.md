@@ -1,5 +1,20 @@
 
 
+### [1.12.25](https://github.com/Fllorent0D/TabT-Rest/compare/v1.12.23...v1.12.25) (2023-02-21)
+
+
+### Bug Fixes
+
+* numeric rankings ([9009b96](https://github.com/Fllorent0D/TabT-Rest/commit/9009b9655f68406cdf2f7f1f0b8ab61cfcd46fe4))
+* numeric rankings ([9880270](https://github.com/Fllorent0D/TabT-Rest/commit/9880270b1de04c7338843e6fccc9b46608d0a902))
+
+
+### Chores
+
+* Update dependency @nestjs/cli to v9.2.0 ([b9ee658](https://github.com/Fllorent0D/TabT-Rest/commit/b9ee658759a711a68062463154e35f7f6e4fec3d))
+* Update dependency @nestjs/schedule to v2.2.0 ([57a1dac](https://github.com/Fllorent0D/TabT-Rest/commit/57a1dac4e12309089da8aa06d8e57212778d58e0))
+* Update Node.js to 18.14.x ([99e9b4b](https://github.com/Fllorent0D/TabT-Rest/commit/99e9b4b92fcbda5eb81e7f52a1896a56dfdfd290))
+
 ### [1.12.23](https://github.com/Fllorent0D/TabT-Rest/compare/v1.12.22...v1.12.23) (2023-02-16)
 
 
