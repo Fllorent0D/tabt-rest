@@ -1,5 +1,12 @@
 
 
+### [1.12.31](https://github.com/Fllorent0D/TabT-Rest/compare/v1.12.30...v1.12.31) (2023-02-22)
+
+
+### Bug Fixes
+
+* numeric rankings ([8118982](https://github.com/Fllorent0D/TabT-Rest/commit/811898245e7d9589d91cd671c6c459d20c1abd03))
+
 ### [1.12.30](https://github.com/Fllorent0D/TabT-Rest/compare/v1.12.29...v1.12.30) (2023-02-22)
 
 
