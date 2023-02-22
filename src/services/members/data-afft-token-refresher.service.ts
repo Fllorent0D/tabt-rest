@@ -41,15 +41,14 @@ export class DataAfftTokenRefresherService {
   }
 
 
-  @Cron('5 0,15,30,45 * * * *')
   async refreshToken(): Promise<void> {
     this.logger.log('Refreshing data.aftt.be token...');
     const token = await this.fetchToken();
     await this.saveToken(token);
+    console.log(token)
     this.logger.log('data.aftt.be token refreshed.');
   }
 
-  @Timeout(0)
   async checkTokenExistance(): Promise<void> {
     const token = await this.getToken();
     if (!token) {
