@@ -36,7 +36,7 @@
     "@nestjs/platform-express": "9.2.1",
     "@nestjs/schedule": "2.2.0",
     "@nestjs/serve-static": "3.0.1",
-    "@nestjs/swagger": "6.1.4",
+    "@nestjs/swagger": "6.2.1",
     "@nestjs/terminus": "9.1.4",
     "@xmldom/xmldom": "0.8.6",
     "bluebird": "3.7.2",
