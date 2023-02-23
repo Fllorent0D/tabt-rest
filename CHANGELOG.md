@@ -1,5 +1,7 @@
 
 
+### [1.12.33](https://github.com/Fllorent0D/TabT-Rest/compare/v1.12.32...v1.12.33) (2023-02-23)
+
 ### [1.12.32](https://github.com/Fllorent0D/TabT-Rest/compare/v1.12.31...v1.12.32) (2023-02-23)
 
 
