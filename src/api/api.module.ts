@@ -7,6 +7,7 @@ import { MemberModule } from './member/member.module';
 import { MatchModule } from './match/match.module';
 import { HealthModule } from './health/health.module';
 import { InternalIdentifiersModule } from './internal-identifiers/internal-identifiers.module';
+import { UserAgentModule } from './user-agent/user-agent.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { InternalIdentifiersModule } from './internal-identifiers/internal-ident
     MemberModule,
     MatchModule,
     HealthModule,
+    UserAgentModule,
     InternalIdentifiersModule,
   ],
 })
