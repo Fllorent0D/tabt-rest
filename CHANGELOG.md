@@ -1,5 +1,12 @@
 
 
+### [1.12.42](https://github.com/Fllorent0D/TabT-Rest/compare/v1.12.41...v1.12.42) (2023-02-28)
+
+
+### Chores
+
+* Update dependency pino-pretty to v9.4.0 ([30f9c62](https://github.com/Fllorent0D/TabT-Rest/commit/30f9c62f51f617d0be9018a308c8053317e7fc44))
+
 ### [1.12.41](https://github.com/Fllorent0D/TabT-Rest/compare/v1.12.40...v1.12.41) (2023-02-28)
 
 
