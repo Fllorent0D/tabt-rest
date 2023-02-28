@@ -1,5 +1,12 @@
 
 
+### [1.12.39](https://github.com/Fllorent0D/TabT-Rest/compare/v1.12.38...v1.12.39) (2023-02-28)
+
+
+### Chores
+
+* Update dependency swagger-ui-express to v4.6.2 ([33cdf6c](https://github.com/Fllorent0D/TabT-Rest/commit/33cdf6c48bd8071cd0822e2f0f5962ba5fee16af))
+
 ### [1.12.38](https://github.com/Fllorent0D/TabT-Rest/compare/v1.12.37...v1.12.38) (2023-02-28)
 
 
