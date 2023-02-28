@@ -1,5 +1,12 @@
 
 
+### [1.12.43](https://github.com/Fllorent0D/TabT-Rest/compare/v1.12.42...v1.12.43) (2023-02-28)
+
+
+### Chores
+
+* Update jest monorepo ([b2309cd](https://github.com/Fllorent0D/TabT-Rest/commit/b2309cd3a9483fe5584b339c95bc1071c33e9e8b))
+
 ### [1.12.42](https://github.com/Fllorent0D/TabT-Rest/compare/v1.12.41...v1.12.42) (2023-02-28)
 
 
