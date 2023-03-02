@@ -1,5 +1,12 @@
 
 
+### [1.12.47](https://github.com/Fllorent0D/TabT-Rest/compare/v1.12.46...v1.12.47) (2023-03-02)
+
+
+### Chores
+
+* Update dependency release-it to v15.7.0 ([e30f86b](https://github.com/Fllorent0D/TabT-Rest/commit/e30f86ba970d99b7bf9fe66ee377b039b6f5ff14))
+
 ### [1.12.46](https://github.com/Fllorent0D/TabT-Rest/compare/v1.12.45...v1.12.46) (2023-03-02)
 
 
