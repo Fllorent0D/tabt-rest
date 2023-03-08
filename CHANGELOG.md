@@ -1,5 +1,12 @@
 
 
+### [1.12.50](https://github.com/Fllorent0D/TabT-Rest/compare/v1.12.49...v1.12.50) (2023-03-08)
+
+
+### Chores
+
+* Update Node.js to 18.15.x ([0c0e63e](https://github.com/Fllorent0D/TabT-Rest/commit/0c0e63e24ed3be87c03ed62ae8f0f2a3a14a93ac))
+
 ### [1.12.49](https://github.com/Fllorent0D/TabT-Rest/compare/v1.12.48...v1.12.49) (2023-03-07)
 
 
