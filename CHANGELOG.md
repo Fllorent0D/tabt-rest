@@ -1,5 +1,12 @@
 
 
+### [1.12.56](https://github.com/Fllorent0D/TabT-Rest/compare/v1.12.55...v1.12.56) (2023-03-15)
+
+
+### Chores
+
+* Update dependency @types/node to v18.15.3 ([9278a89](https://github.com/Fllorent0D/TabT-Rest/commit/9278a89d6568d0e5bb8a0b1cdf946d02b09e3e20))
+
 ### [1.12.55](https://github.com/Fllorent0D/TabT-Rest/compare/v1.12.54...v1.12.55) (2023-03-14)
 
 
