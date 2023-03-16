@@ -1,5 +1,12 @@
 
 
+### [1.12.59](https://github.com/Fllorent0D/TabT-Rest/compare/v1.12.58...v1.12.59) (2023-03-16)
+
+
+### Chores
+
+* Update dependency user-agents to v1.0.1320 ([62586d5](https://github.com/Fllorent0D/TabT-Rest/commit/62586d546cfd24804e00bc3909bea10918518f72))
+
 ### [1.12.58](https://github.com/Fllorent0D/TabT-Rest/compare/v1.12.57...v1.12.58) (2023-03-16)
 
 
