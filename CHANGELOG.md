@@ -1,5 +1,12 @@
 
 
+### [1.12.58](https://github.com/Fllorent0D/TabT-Rest/compare/v1.12.57...v1.12.58) (2023-03-16)
+
+
+### Chores
+
+* Update dependency @types/jest to v29.4.4 ([8530fe7](https://github.com/Fllorent0D/TabT-Rest/commit/8530fe7e367059ba120b42ea2704bff866cbbd5d))
+
 ### [1.12.57](https://github.com/Fllorent0D/TabT-Rest/compare/v1.12.56...v1.12.57) (2023-03-15)
 
 
