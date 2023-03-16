@@ -1,5 +1,12 @@
 
 
+### [1.12.60](https://github.com/Fllorent0D/TabT-Rest/compare/v1.12.59...v1.12.60) (2023-03-16)
+
+
+### Chores
+
+* Update nest monorepo ([af3ffa3](https://github.com/Fllorent0D/TabT-Rest/commit/af3ffa3a1c4f7164d152c4140b3d36e9d6dc0e77))
+
 ### [1.12.59](https://github.com/Fllorent0D/TabT-Rest/compare/v1.12.58...v1.12.59) (2023-03-16)
 
 
