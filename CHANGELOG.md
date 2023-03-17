@@ -1,5 +1,12 @@
 
 
+### [1.12.64](https://github.com/Fllorent0D/TabT-Rest/compare/v1.12.63...v1.12.64) (2023-03-17)
+
+
+### Chores
+
+* Update typescript-eslint monorepo to v5.55.0 ([252184f](https://github.com/Fllorent0D/TabT-Rest/commit/252184fcb46690feda1ca4e4eb12860208a638cb))
+
 ### [1.12.63](https://github.com/Fllorent0D/TabT-Rest/compare/v1.12.62...v1.12.63) (2023-03-17)
 
 
