@@ -1,5 +1,12 @@
 
 
+### [1.12.65](https://github.com/Fllorent0D/TabT-Rest/compare/v1.12.64...v1.12.65) (2023-03-21)
+
+
+### Chores
+
+* Update dependency @types/cron to v2.0.1 ([9fab55a](https://github.com/Fllorent0D/TabT-Rest/commit/9fab55aa8695ada84565525f2254c60506d30161))
+
 ### [1.12.64](https://github.com/Fllorent0D/TabT-Rest/compare/v1.12.63...v1.12.64) (2023-03-17)
 
 
