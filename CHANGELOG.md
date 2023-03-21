@@ -1,5 +1,12 @@
 
 
+### [1.12.67](https://github.com/Fllorent0D/TabT-Rest/compare/v1.12.66...v1.12.67) (2023-03-21)
+
+
+### Chores
+
+* Update dependency prettier to v2.8.6 ([76883c4](https://github.com/Fllorent0D/TabT-Rest/commit/76883c42e70a034c19ad693d40141fc4be8511a6))
+
 ### [1.12.66](https://github.com/Fllorent0D/TabT-Rest/compare/v1.12.65...v1.12.66) (2023-03-21)
 
 
