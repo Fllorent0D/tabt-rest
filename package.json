@@ -30,10 +30,10 @@
   },
   "dependencies": {
     "@nestjs/axios": "1.0.1",
-    "@nestjs/common": "9.3.11",
+    "@nestjs/common": "9.3.12",
     "@nestjs/config": "2.3.1",
-    "@nestjs/core": "9.3.11",
-    "@nestjs/platform-express": "9.3.11",
+    "@nestjs/core": "9.3.12",
+    "@nestjs/platform-express": "9.3.12",
     "@nestjs/schedule": "2.2.0",
     "@nestjs/serve-static": "3.0.1",
     "@nestjs/swagger": "6.2.1",
@@ -68,7 +68,7 @@
   "devDependencies": {
     "@nestjs/cli": "9.2.0",
     "@nestjs/schematics": "9.0.4",
-    "@nestjs/testing": "9.3.11",
+    "@nestjs/testing": "9.3.12",
     "@openapitools/openapi-generator-cli": "2.5.2",
     "@release-it/conventional-changelog": "5.1.1",
     "@types/bluebird": "3.5.38",
