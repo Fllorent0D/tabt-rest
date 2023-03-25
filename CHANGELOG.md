@@ -1,5 +1,12 @@
 
 
+### [1.12.73](https://github.com/Fllorent0D/TabT-Rest/compare/v1.12.72...v1.12.73) (2023-03-25)
+
+
+### Bug Fixes
+
+* cron issue ([9e525e3](https://github.com/Fllorent0D/TabT-Rest/commit/9e525e32728bfd5264c5513391ecbc901f1593e7))
+
 ### [1.12.72](https://github.com/Fllorent0D/TabT-Rest/compare/v1.12.71...v1.12.72) (2023-03-23)
 
 
