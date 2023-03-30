@@ -1,5 +1,12 @@
 
 
+### [1.12.76](https://github.com/Fllorent0D/TabT-Rest/compare/v1.12.75...v1.12.76) (2023-03-30)
+
+
+### Chores
+
+* Update dependency @nestjs/terminus to v9.2.2 ([6f88d47](https://github.com/Fllorent0D/TabT-Rest/commit/6f88d47bda2a3b62d93cf38d23e4e4ad7afa9d3f))
+
 ### [1.12.75](https://github.com/Fllorent0D/TabT-Rest/compare/v1.12.74...v1.12.75) (2023-03-28)
 
 
