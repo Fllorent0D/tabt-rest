@@ -1,5 +1,12 @@
 
 
+### [1.12.80](https://github.com/Fllorent0D/TabT-Rest/compare/v1.12.79...v1.12.80) (2023-04-01)
+
+
+### Bug Fixes
+
+* change host in doc ([0fdeff0](https://github.com/Fllorent0D/TabT-Rest/commit/0fdeff0b0306bae3436fc1c9f0007d2317df57e3))
+
 ### [1.12.79](https://github.com/Fllorent0D/TabT-Rest/compare/v1.12.78...v1.12.79) (2023-03-31)
 
 
