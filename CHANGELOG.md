@@ -1,5 +1,12 @@
 
 
+### [1.12.81](https://github.com/Fllorent0D/TabT-Rest/compare/v1.12.80...v1.12.81) (2023-04-06)
+
+
+### Chores
+
+* Update dependency @nestjs/schedule to v2.2.1 ([8f7249b](https://github.com/Fllorent0D/TabT-Rest/commit/8f7249b0fe186abf5d705ae150a081ba5783c449))
+
 ### [1.12.80](https://github.com/Fllorent0D/TabT-Rest/compare/v1.12.79...v1.12.80) (2023-04-01)
 
 
