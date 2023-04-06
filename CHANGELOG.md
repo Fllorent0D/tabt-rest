@@ -1,5 +1,12 @@
 
 
+### [1.12.82](https://github.com/Fllorent0D/TabT-Rest/compare/v1.12.81...v1.12.82) (2023-04-06)
+
+
+### Chores
+
+* Update dependency @xmldom/xmldom to v0.8.7 ([952faba](https://github.com/Fllorent0D/TabT-Rest/commit/952faba6308000fde306d94097278f2393c547bb))
+
 ### [1.12.81](https://github.com/Fllorent0D/TabT-Rest/compare/v1.12.80...v1.12.81) (2023-04-06)
 
 
