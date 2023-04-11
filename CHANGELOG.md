@@ -1,5 +1,12 @@
 
 
+### [1.12.86](https://github.com/Fllorent0D/TabT-Rest/compare/v1.12.85...v1.12.86) (2023-04-11)
+
+
+### Chores
+
+* Update dependency @nestjs/swagger to v6.3.0 ([7e49ffb](https://github.com/Fllorent0D/TabT-Rest/commit/7e49ffb32394b4b29b9ab452c0fb1dd731d79efc))
+
 ### [1.12.85](https://github.com/Fllorent0D/TabT-Rest/compare/v1.12.84...v1.12.85) (2023-04-11)
 
 
