@@ -52,8 +52,8 @@ export class EloMemberService {
       const url = `https://data.aftt.be/cltnum-${category === PlayerCategory.WOMEN ? 'dames' : 'messieurs'}/fiche.php`;
       const urlSearchParams = new URLSearchParams();
       // 😇
-      const token = await this.dataAFTTTokenRefresherService.getToken();
-      urlSearchParams.append(token, uniquePlayerId.toString(10));
+      //const token = await this.dataAFTTTokenRefresherService.getToken();
+      urlSearchParams.append('licence', uniquePlayerId.toString(10));
       const userAgent = UserAgentsUtil.random;
       const httpsAgent = this.configService.get('USE_SOCKS_PROXY') === 'true' ? await this.socksProxyService.createHttpsAgent() : undefined;
       const response = await firstValueFrom(this.httpService.post<string>(
@@ -135,7 +135,9 @@ export class EloMemberService {
           dateHistoryItem.opponents.push(opponent);
         }
       }
-      results.push(dateHistoryItem);
+      if (dateHistoryItem) {
+        results.push(dateHistoryItem);
+      }
     }
     return results.reverse();
   }
@@ -171,7 +173,7 @@ export class EloMemberService {
 
   private findHistoryTable(domPage: Document, category: SimplifiedPlayerCategory): HTMLTableElement {
     return (category === PlayerCategory.MEN) ?
-      domPage.querySelector('body > div.content > div.table-responsive > table') as HTMLTableElement :
+      domPage.querySelector('body > div.content > div.table-responsive > div.table-responsive > table') as HTMLTableElement :
       domPage.querySelector('body > div.content > div:nth-child(3) > table') as HTMLTableElement;
   }
 }
