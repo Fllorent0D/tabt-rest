@@ -1,5 +1,12 @@
 
 
+### [1.12.87](https://github.com/Fllorent0D/TabT-Rest/compare/v1.12.86...v1.12.87) (2023-04-11)
+
+
+### Bug Fixes
+
+* fix find table history ([8063f1c](https://github.com/Fllorent0D/TabT-Rest/commit/8063f1c1c76c2d182c538f7a3fb71407e0389274))
+
 ### [1.12.86](https://github.com/Fllorent0D/TabT-Rest/compare/v1.12.85...v1.12.86) (2023-04-11)
 
 
