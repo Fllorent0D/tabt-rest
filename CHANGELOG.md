@@ -1,5 +1,12 @@
 
 
+### [1.12.89](https://github.com/Fllorent0D/TabT-Rest/compare/v1.12.88...v1.12.89) (2023-04-12)
+
+
+### Chores
+
+* Update dependency @openapitools/openapi-generator-cli to v2.6.0 ([e3df7ef](https://github.com/Fllorent0D/TabT-Rest/commit/e3df7efb231262e353f0bdaf9f26171a980b3192))
+
 ### [1.12.88](https://github.com/Fllorent0D/TabT-Rest/compare/v1.12.87...v1.12.88) (2023-04-12)
 
 
