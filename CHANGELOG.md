@@ -1,5 +1,12 @@
 
 
+### [1.12.95](https://github.com/Fllorent0D/TabT-Rest/compare/v1.12.94...v1.12.95) (2023-04-18)
+
+
+### Chores
+
+* Update dependency cache-manager to v5.2.0 ([3145b3c](https://github.com/Fllorent0D/TabT-Rest/commit/3145b3cc51f571b47b13f91e9ac8ab7079cd8539))
+
 ### [1.12.94](https://github.com/Fllorent0D/TabT-Rest/compare/v1.12.93...v1.12.94) (2023-04-18)
 
 
