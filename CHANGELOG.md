@@ -1,5 +1,12 @@
 
 
+### [1.12.100](https://github.com/Fllorent0D/TabT-Rest/compare/v1.12.99...v1.12.100) (2023-04-21)
+
+
+### Chores
+
+* Update dependency eslint to v8.38.0 ([80302f6](https://github.com/Fllorent0D/TabT-Rest/commit/80302f6a9b2b35d01b49ffef944ccea029b94b99))
+
 ### [1.12.99](https://github.com/Fllorent0D/TabT-Rest/compare/v1.12.98...v1.12.99) (2023-04-21)
 
 
