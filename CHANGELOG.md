@@ -1,5 +1,12 @@
 
 
+### [1.12.105](https://github.com/Fllorent0D/TabT-Rest/compare/v1.12.104...v1.12.105) (2023-05-02)
+
+
+### Chores
+
+* Update dependency rxjs to v7.8.1 ([fe9f6b9](https://github.com/Fllorent0D/TabT-Rest/commit/fe9f6b92070eede0c117c9fb3cc206aec04a08f2))
+
 ### [1.12.104](https://github.com/Fllorent0D/TabT-Rest/compare/v1.12.103...v1.12.104) (2023-05-02)
 
 
