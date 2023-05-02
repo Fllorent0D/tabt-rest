@@ -58,7 +58,7 @@
     "pino-pretty": "9.4.0",
     "reflect-metadata": "0.1.13",
     "response-time": "2.3.2",
-    "rxjs": "7.8.0",
+    "rxjs": "7.8.1",
     "soap": "1.0.0",
     "socks-proxy-agent": "7.0.0",
     "swagger-ui-express": "4.6.2",
