@@ -1,0 +1,14 @@
+inputSet:
+  name: Build_TabT_Rest_1684786411394-pr-trigger-input-set
+  identifier: Build_TabT_Rest_1684786411394prtriggerinputset
+  orgIdentifier: default
+  projectIdentifier: default_project
+  pipeline:
+    identifier: Build_TabT_Rest_1684786411394
+    properties:
+      ci:
+        codebase:
+          build:
+            type: PR
+            spec:
+              number: <+trigger.prNumber>
