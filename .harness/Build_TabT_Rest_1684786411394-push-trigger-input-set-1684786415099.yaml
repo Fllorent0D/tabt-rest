@@ -1,0 +1,14 @@
+inputSet:
+  name: Build_TabT_Rest_1684786411394-push-trigger-input-set
+  identifier: Build_TabT_Rest_1684786411394pushtriggerinputset
+  orgIdentifier: default
+  projectIdentifier: default_project
+  pipeline:
+    identifier: Build_TabT_Rest_1684786411394
+    properties:
+      ci:
+        codebase:
+          build:
+            type: branch
+            spec:
+              branch: <+trigger.branch>
