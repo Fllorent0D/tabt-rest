@@ -69,7 +69,7 @@
     "@nestjs/cli": "10.1.10",
     "@nestjs/schematics": "9.2.0",
     "@nestjs/testing": "9.4.3",
-    "@openapitools/openapi-generator-cli": "2.6.0",
+    "@openapitools/openapi-generator-cli": "2.7.0",
     "@release-it/conventional-changelog": "5.1.1",
     "@types/bluebird": "3.5.38",
     "@types/compression": "1.7.2",
