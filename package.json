@@ -7,7 +7,7 @@
   "license": "UNLICENSED",
   "main": "dist/main.js",
   "engines": {
-    "node": "18.16.x",
+    "node": "18.17.x",
     "npm": "9.x"
   },
   "scripts": {
@@ -80,7 +80,7 @@
     "@types/jest": "29.5.3",
     "@types/lodash": "4.14.195",
     "@types/lunr": "2.3.4",
-    "@types/node": "18.16.19",
+    "@types/node": "18.17.0",
     "@types/response-time": "2.3.5",
     "@types/supertest": "2.0.12",
     "@types/user-agents": "1.0.2",
