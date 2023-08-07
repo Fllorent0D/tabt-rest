@@ -4,6 +4,7 @@ import { HttpUtil } from '../utils/http.util';
 import { REQUEST } from '@nestjs/core';
 import { PackageService } from '../package/package.service';
 import { ConfigService } from '@nestjs/config';
+import { HeaderKeys } from './context.constants';
 
 @Injectable({scope: Scope.REQUEST})
 export class ContextService {
@@ -19,18 +20,18 @@ export class ContextService {
     private readonly packageService: PackageService,
     private readonly configService: ConfigService
   ) {
+    this.httpHeaderKeys = new Set<string>();
+    this.registerHttpHeaders(tabtHeaders)
+
     this.runnerContext = {
       name: this.packageService.name,
       version: this.packageService.version,
       pid: process.pid,
-      season: Number(configService.get('CURRENT_SEASON'))
+      season: Number(HttpUtil.getHeaderValue(request, HeaderKeys.X_TABT_SEASON)) || Number(configService.get('CURRENT_SEASON'))
     };
-    this.httpHeaderKeys = new Set<string>();
-    this.registerHttpHeaders(tabtHeaders)
 
     this.context = this.createContext(request);
   }
-
 
   registerHttpHeaders(httpHeadersList: string[]) {
     httpHeadersList.forEach((httpHeaderOrList: string) => this.httpHeaderKeys.add(httpHeaderOrList));

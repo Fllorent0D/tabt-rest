@@ -216,7 +216,8 @@ export class MemberController {
       throw new NotFoundException('No ELO points found');
     }
     return numericRankingV3;
-
   }
+
+
 
 }

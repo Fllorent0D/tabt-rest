@@ -3,6 +3,7 @@ import { Player, TeamMatchesEntry } from '../../entity/tabt-soap/TabTAPI_Port';
 import { MatchService } from './match.service';
 import { CacheService, TTL_DURATION } from '../../common/cache/cache.service';
 import { MemberResults } from '../../common/dto/member-ranking.dto';
+import { ContextService } from '../../common/context/context.service';
 
 export enum SortSystem {
   MOST_PLAYED,
@@ -16,21 +17,21 @@ export class MatchesMembersRankerService {
   constructor(
     private matchService: MatchService,
     private cacheService: CacheService,
+    private contextService: ContextService,
   ) {
   }
 
-  async getMembersRankingFromDivision(divisionId: number, season: number, sortingSystem: SortSystem = SortSystem.BEST_PERF_PER_WIN): Promise<MemberResults[]> {
+  async getMembersRankingFromDivision(divisionId: number, sortingSystem: SortSystem = SortSystem.BEST_PERF_PER_WIN): Promise<MemberResults[]> {
     // Télécharger les matchs
     const getter = async () => {
       const matches = await this.matchService.getMatches({
-        Season: season,
         DivisionId: divisionId,
         WithDetails: true,
       });
 
       return MatchesMembersRankerService.computeRanking(matches, sortingSystem);
     };
-    return this.cacheService.getFromCacheOrGetAndCacheResult(`members-ranking-division:${season}:${divisionId}`, getter, TTL_DURATION.EIGHT_HOURS);
+    return this.cacheService.getFromCacheOrGetAndCacheResult(`members-ranking-division:${this.contextService.context.runner.season}:${divisionId}`, getter, TTL_DURATION.EIGHT_HOURS);
   }
 
   async getMembersRankingFromClub(club: string, season: number, sortingSystem: SortSystem = SortSystem.BEST_PERF_PER_PCT): Promise<MemberResults[]> {

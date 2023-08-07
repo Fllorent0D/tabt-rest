@@ -126,7 +126,7 @@ export class GetDivisionRankingInput {
   /** xsd:number(undefined) */
   DivisionId: number;
   /** xsd:string(undefined) */
-  WeekName: string;
+  WeekName?: string;
   /** xsd:number(undefined) */
   RankingSystem?: number;
 }

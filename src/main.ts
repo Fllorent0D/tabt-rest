@@ -32,8 +32,8 @@ async function bootstrap() {
     .addTag('Matches')
     .addTag('Divisions')
     .addTag('Tournaments')
+    .addServer('http://localhost:3004', 'development')
     .addServer('https://api.beping.be', 'production')
-    .addServer('http://localhost:3000', 'development')
     .build();
 
   app.enableVersioning({

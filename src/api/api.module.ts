@@ -8,6 +8,7 @@ import { MatchModule } from './match/match.module';
 import { HealthModule } from './health/health.module';
 import { InternalIdentifiersModule } from './internal-identifiers/internal-identifiers.module';
 import { UserAgentModule } from './user-agent/user-agent.module';
+import { DashboardModule } from './dashboard/dashboard.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { UserAgentModule } from './user-agent/user-agent.module';
     HealthModule,
     UserAgentModule,
     InternalIdentifiersModule,
+    DashboardModule
   ],
 })
 export class ApiModule {

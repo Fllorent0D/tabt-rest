@@ -153,9 +153,8 @@ export class DivisionsController {
   })
   async findMembersInDivision(
     @Param('divisionId', ParseIntPipe) id: number,
-    @Query() query: RequestBySeasonDto,
   ): Promise<MemberResults[]> {
-    return this.matchesMembersRankerService.getMembersRankingFromDivision(id, query.season);
+    return this.matchesMembersRankerService.getMembersRankingFromDivision(id);
   }
 
 }
