@@ -1,5 +1,12 @@
 
 
+## [1.13.12](https://github.com/Fllorent0D/TabT-Rest/compare/v1.13.11...v1.13.12) (2023-08-24)
+
+
+### Chores
+
+* Update dependency @nestjs/cli to v10.1.14 ([ca330ba](https://github.com/Fllorent0D/TabT-Rest/commit/ca330ba529655183716f4730cd0a8a80d86f651e))
+
 ## [1.13.11](https://github.com/Fllorent0D/TabT-Rest/compare/v1.13.10...v1.13.11) (2023-08-22)
 
 
