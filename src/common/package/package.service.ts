@@ -16,7 +16,7 @@ export class PackageService {
      * @static
      * @memberof PackageService
      */
-    private static PackageJsonPath = '../../../package.json';
+    private static PackageJsonPath = '../../../../package.json';
 
     private _packageInfo: any;
 

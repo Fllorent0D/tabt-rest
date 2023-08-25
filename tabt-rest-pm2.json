@@ -1,7 +1,7 @@
 {
   "apps" : [{
     "name"        : "tabt-rest",
-    "script"      : "./dist/main.js",
+    "script"      : "./dist/src/main.js",
     "exec_mode"   : "fork",
     "env_production": {
       "NODE_ENV": "prod"

@@ -172,7 +172,7 @@ describe('TabtClientService', () => {
       await cacheSpy.mock.calls[0][1]();
 
       expect(cacheSpy).toHaveBeenCalledTimes(1);
-      expect(cacheSpy).toHaveBeenCalledWith('season:aftt:3bc66823b8789b7c4d43e6da582c36d58fc078a7cac0c752ad1d796543241aaa', expect.any(Function), expect.any(Number));
+      expect(cacheSpy).toHaveBeenCalledWith('season-aftt:3bc66823b8789b7c4d43e6da582c36d58fc078a7cac0c752ad1d796543241aaa', expect.any(Function), expect.any(Number));
       expect(enrichSpy).toHaveBeenCalledTimes(1);
       expect(enrichSpy).toHaveBeenCalledWith(input);
       expect(operationSpy).toHaveBeenCalledTimes(1);
@@ -204,7 +204,7 @@ describe('TabtClientService', () => {
       await cacheSpy.mock.calls[0][1]();
 
       expect(cacheSpy).toHaveBeenCalledTimes(1);
-      expect(cacheSpy).toHaveBeenCalledWith('club-teams:aftt:3200c65833ed1c49f5a8ffbc8d3d39322b19d4c6f493679e7d8d2162d8858ced', expect.any(Function), expect.any(Number));
+      expect(cacheSpy).toHaveBeenCalledWith('club-teams-aftt:3200c65833ed1c49f5a8ffbc8d3d39322b19d4c6f493679e7d8d2162d8858ced', expect.any(Function), expect.any(Number));
       expect(enrichSpy).toHaveBeenCalledTimes(1);
       expect(enrichSpy).toHaveBeenCalledWith(input);
       expect(operationSpy).toHaveBeenCalledTimes(1);
@@ -233,7 +233,7 @@ describe('TabtClientService', () => {
       await cacheSpy.mock.calls[0][1]();
 
       expect(cacheSpy).toHaveBeenCalledTimes(1);
-      expect(cacheSpy).toHaveBeenCalledWith('division-ranking:aftt:175e29a17dfaa6a95c8fe88dbfa4106f77cc3e39617e28116531521de8777d17', expect.any(Function), expect.any(Number));
+      expect(cacheSpy).toHaveBeenCalledWith('division-ranking-aftt:175e29a17dfaa6a95c8fe88dbfa4106f77cc3e39617e28116531521de8777d17', expect.any(Function), expect.any(Number));
       expect(enrichSpy).toHaveBeenCalledTimes(1);
       expect(enrichSpy).toHaveBeenCalledWith(input);
       expect(operationSpy).toHaveBeenCalledTimes(1);
@@ -259,7 +259,7 @@ describe('TabtClientService', () => {
       await cacheSpy.mock.calls[0][1]();
 
       expect(cacheSpy).toHaveBeenCalledTimes(1);
-      expect(cacheSpy).toHaveBeenCalledWith('matches:aftt:3bc66823b8789b7c4d43e6da582c36d58fc078a7cac0c752ad1d796543241aaa', expect.any(Function), expect.any(Number));
+      expect(cacheSpy).toHaveBeenCalledWith('matches-aftt:3bc66823b8789b7c4d43e6da582c36d58fc078a7cac0c752ad1d796543241aaa', expect.any(Function), expect.any(Number));
       expect(enrichSpy).toHaveBeenCalledTimes(1);
       expect(enrichSpy).toHaveBeenCalledWith(input);
       expect(operationSpy).toHaveBeenCalledTimes(1);
@@ -284,7 +284,7 @@ describe('TabtClientService', () => {
       await cacheSpy.mock.calls[0][1]();
 
       expect(cacheSpy).toHaveBeenCalledTimes(1);
-      expect(cacheSpy).toHaveBeenCalledWith('members:aftt:3bc66823b8789b7c4d43e6da582c36d58fc078a7cac0c752ad1d796543241aaa', expect.any(Function), expect.any(Number));
+      expect(cacheSpy).toHaveBeenCalledWith('members-aftt:3bc66823b8789b7c4d43e6da582c36d58fc078a7cac0c752ad1d796543241aaa', expect.any(Function), expect.any(Number));
       expect(enrichSpy).toHaveBeenCalledTimes(1);
       expect(enrichSpy).toHaveBeenCalledWith(input);
       expect(operationSpy).toHaveBeenCalledTimes(1);
@@ -334,7 +334,7 @@ describe('TabtClientService', () => {
       await cacheSpy.mock.calls[0][1]();
 
       expect(cacheSpy).toHaveBeenCalledTimes(1);
-      expect(cacheSpy).toHaveBeenCalledWith('clubs:aftt:3bc66823b8789b7c4d43e6da582c36d58fc078a7cac0c752ad1d796543241aaa', expect.any(Function), expect.any(Number));
+      expect(cacheSpy).toHaveBeenCalledWith('clubs-aftt:3bc66823b8789b7c4d43e6da582c36d58fc078a7cac0c752ad1d796543241aaa', expect.any(Function), expect.any(Number));
       expect(enrichSpy).toHaveBeenCalledTimes(1);
       expect(enrichSpy).toHaveBeenCalledWith(input);
       expect(operationSpy).toHaveBeenCalledTimes(1);
@@ -360,7 +360,7 @@ describe('TabtClientService', () => {
       await cacheSpy.mock.calls[0][1]();
 
       expect(cacheSpy).toHaveBeenCalledTimes(1);
-      expect(cacheSpy).toHaveBeenCalledWith('divisions:aftt:3bc66823b8789b7c4d43e6da582c36d58fc078a7cac0c752ad1d796543241aaa', expect.any(Function), expect.any(Number));
+      expect(cacheSpy).toHaveBeenCalledWith('divisions-aftt:3bc66823b8789b7c4d43e6da582c36d58fc078a7cac0c752ad1d796543241aaa', expect.any(Function), expect.any(Number));
       expect(enrichSpy).toHaveBeenCalledTimes(1);
       expect(enrichSpy).toHaveBeenCalledWith(input);
       expect(operationSpy).toHaveBeenCalledTimes(1);
@@ -386,7 +386,7 @@ describe('TabtClientService', () => {
       await cacheSpy.mock.calls[0][1]();
 
       expect(cacheSpy).toHaveBeenCalledTimes(1);
-      expect(cacheSpy).toHaveBeenCalledWith('tournaments:aftt:3bc66823b8789b7c4d43e6da582c36d58fc078a7cac0c752ad1d796543241aaa', expect.any(Function), expect.any(Number));
+      expect(cacheSpy).toHaveBeenCalledWith('tournaments-aftt:3bc66823b8789b7c4d43e6da582c36d58fc078a7cac0c752ad1d796543241aaa', expect.any(Function), expect.any(Number));
       expect(enrichSpy).toHaveBeenCalledTimes(1);
       expect(enrichSpy).toHaveBeenCalledWith(input);
       expect(operationSpy).toHaveBeenCalledTimes(1);
@@ -412,7 +412,7 @@ describe('TabtClientService', () => {
       await cacheSpy.mock.calls[0][1]();
 
       expect(cacheSpy).toHaveBeenCalledTimes(1);
-      expect(cacheSpy).toHaveBeenCalledWith('match-systems:aftt:3bc66823b8789b7c4d43e6da582c36d58fc078a7cac0c752ad1d796543241aaa', expect.any(Function), expect.any(Number));
+      expect(cacheSpy).toHaveBeenCalledWith('match-systems-aftt:3bc66823b8789b7c4d43e6da582c36d58fc078a7cac0c752ad1d796543241aaa', expect.any(Function), expect.any(Number));
       expect(enrichSpy).toHaveBeenCalledTimes(1);
       expect(enrichSpy).toHaveBeenCalledWith(input);
       expect(operationSpy).toHaveBeenCalledTimes(1);
