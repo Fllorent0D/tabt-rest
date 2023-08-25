@@ -1,5 +1,14 @@
 
 
+## [1.13.15](https://github.com/Fllorent0D/TabT-Rest/compare/v1.13.14...v1.13.15) (2023-08-25)
+
+
+### Bug Fixes
+
+* cache key ([ae2d820](https://github.com/Fllorent0D/TabT-Rest/commit/ae2d82022d9f8ce3ff3ea43f57ebabacfd337909))
+* unit tests ([752143a](https://github.com/Fllorent0D/TabT-Rest/commit/752143a512bb960c89d30240495bd308ffae7aea))
+* Various fixes ([2573b7b](https://github.com/Fllorent0D/TabT-Rest/commit/2573b7b5b74356034c15cd2cfbef73b90ea5f2f5))
+
 ## [1.13.14](https://github.com/Fllorent0D/TabT-Rest/compare/v1.13.13...v1.13.14) (2023-08-25)
 
 
