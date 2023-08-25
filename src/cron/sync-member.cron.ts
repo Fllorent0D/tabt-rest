@@ -11,7 +11,6 @@ export class SyncMemberCron {
   ) {
   }
 
-  @Cron(CronExpression.EVERY_DAY_AT_2AM)
   async syncMembersToElastic() {
     this.logger.debug('Members sync for lookup starting...');
     try {

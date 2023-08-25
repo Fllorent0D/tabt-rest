@@ -33,7 +33,7 @@ export class CredentialsService {
 
   get extraHeaders(): { [header: string]: string } {
     return {
-      [HeaderKeys.X_FORWARDED_FOR]: this.contextService.context.caller[HeaderKeys.X_FORWARDED_FOR]?.split(',')[0] || this.contextService.context.caller.remoteAddress,
+      [HeaderKeys.X_FORWARDED_FOR]: (this.contextService.context.caller[HeaderKeys.X_FORWARDED_FOR]?.split(',')[0] || this.contextService.context.caller.remoteAddress)?.split(':')[0],
     };
   }
 

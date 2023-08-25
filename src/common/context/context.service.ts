@@ -42,7 +42,7 @@ export class ContextService {
       runner: this.runnerContext,
       caller: {
         correlationId: request['id'],
-        remoteAddress: request['connection']['remoteAddress'] === '::1' ? '127.0.0.1' : request['connection']['remoteAddress'].replace('::ffff:', ''),
+        remoteAddress: request?.['connection']?.['remoteAddress'] === '::1' ? '127.0.0.1' : request?.['connection']?.['remoteAddress']?.replace('::ffff:', ''),
         ...Array.from(this.httpHeaderKeys).reduce((acc: any, x: any) => {
           const httpHeaderValue = HttpUtil.getHeaderValue(request, x);
           if (httpHeaderValue) {

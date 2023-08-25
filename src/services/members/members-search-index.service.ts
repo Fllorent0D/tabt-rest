@@ -47,7 +47,7 @@ export class MembersSearchIndexService {
     });
   }
 
-  @Timeout(0)
+
   async indexMembers() {
     const members = await this.cacheService.getFromCacheOrGetAndCacheResult('members:all', async () => {
       const [memberOutput] = await this.tabtAFTT.GetMembersAsync({ NameSearch: ' ' });
