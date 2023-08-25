@@ -52,7 +52,6 @@ export class TabtClientService {
       try {
         return await operation(enrichedInput, null, this.credentialsService.extraHeaders);
       } catch (e) {
-        //console.log(e)
         if (e.message) {
           this.logger.error(e, e.stack);
         }
@@ -177,7 +176,7 @@ export class TabtClientService {
   }
 
   private static getCacheKey(prefix: string, input: any, db: string): string {
-    return `${prefix}:${db}:${createHash('sha256').update(JSON.stringify(input ?? {})).digest('hex')}`;
+    return `${prefix}-${db}:${createHash('sha256').update(JSON.stringify(input ?? {})).digest('hex')}`;
   }
 
 
