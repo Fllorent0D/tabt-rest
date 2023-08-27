@@ -3,6 +3,7 @@ import { SeasonService } from './season.service';
 import { TabtClientService } from '../../common/tabt-client/tabt-client.service';
 import { ContextService } from '../../common/context/context.service';
 import { HeaderKeys } from '../../common/context/context.constants';
+import { ConfigService } from '@nestjs/config';
 
 jest.mock('../../common/context/context.service');
 describe('SeasonService', () => {
@@ -37,6 +38,12 @@ describe('SeasonService', () => {
             GetSeasonsAsync: jest.fn(),
           },
         },
+        {
+          provide: ConfigService,
+          useValue: {
+            get: jest.fn().mockReturnValue(18),
+          }
+        }
       ],
     }).compile();
 
