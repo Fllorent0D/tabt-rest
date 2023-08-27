@@ -1,5 +1,13 @@
 
 
+## [1.13.16](https://github.com/Fllorent0D/TabT-Rest/compare/v1.13.15...v1.13.16) (2023-08-27)
+
+
+### Bug Fixes
+
+* season migration ([c1ab0d8](https://github.com/Fllorent0D/TabT-Rest/commit/c1ab0d8586bf78bbd1c53e24c78544d5b1296254))
+* season migration tests ([610692e](https://github.com/Fllorent0D/TabT-Rest/commit/610692e14bcde38237e7f2fabda53f8e0e6395e2))
+
 ## [1.13.15](https://github.com/Fllorent0D/TabT-Rest/compare/v1.13.14...v1.13.15) (2023-08-25)
 
 
