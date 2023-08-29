@@ -1,5 +1,12 @@
 
 
+## [1.13.19](https://github.com/Fllorent0D/TabT-Rest/compare/v1.13.18...v1.13.19) (2023-08-29)
+
+
+### Bug Fixes
+
+* package service ([9354b16](https://github.com/Fllorent0D/TabT-Rest/commit/9354b1600e8109295e317ec61d6debca1d7b5091))
+
 ## [1.13.18](https://github.com/Fllorent0D/TabT-Rest/compare/v1.13.17...v1.13.18) (2023-08-29)
 
 
