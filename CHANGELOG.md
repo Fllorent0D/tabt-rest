@@ -1,5 +1,12 @@
 
 
+## [1.13.20](https://github.com/Fllorent0D/TabT-Rest/compare/v1.13.19...v1.13.20) (2023-08-31)
+
+
+### Chores
+
+* Update dependency @types/lunr to v2.3.5 ([28fdabc](https://github.com/Fllorent0D/TabT-Rest/commit/28fdabca22ac4bf52cf3560829cba9dec558833c))
+
 ## [1.13.19](https://github.com/Fllorent0D/TabT-Rest/compare/v1.13.18...v1.13.19) (2023-08-29)
 
 
