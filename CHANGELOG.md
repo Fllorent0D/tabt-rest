@@ -1,5 +1,13 @@
 
 
+## [1.13.22](https://github.com/Fllorent0D/TabT-Rest/compare/v1.13.21...v1.13.22) (2023-09-07)
+
+
+### Chores
+
+* Update dependency @release-it/conventional-changelog to v7.0.1 ([cbc9c20](https://github.com/Fllorent0D/TabT-Rest/commit/cbc9c2003660c919a619a207c35d31bd09454cff))
+* Update dependency @types/compression to v1.7.3 ([5f87f59](https://github.com/Fllorent0D/TabT-Rest/commit/5f87f59143778c819211115633c5c9f90d09e073))
+
 ## [1.13.21](https://github.com/Fllorent0D/TabT-Rest/compare/v1.13.20...v1.13.21) (2023-09-05)
 
 
