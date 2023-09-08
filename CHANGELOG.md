@@ -1,5 +1,12 @@
 
 
+## [1.13.24](https://github.com/Fllorent0D/TabT-Rest/compare/v1.13.23...v1.13.24) (2023-09-08)
+
+
+### Chores
+
+* Update dependency @types/lodash to v4.14.198 ([7f3157d](https://github.com/Fllorent0D/TabT-Rest/commit/7f3157d2fd9d20c3fe8d52b749df0f73916520f2))
+
 ## [1.13.23](https://github.com/Fllorent0D/TabT-Rest/compare/v1.13.22...v1.13.23) (2023-09-07)
 
 
