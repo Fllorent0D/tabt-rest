@@ -64,7 +64,7 @@
     "socks-proxy-agent": "7.0.0",
     "swagger-ui-express": "4.6.3",
     "user-agents": "1.0.1444",
-    "uuid": "9.0.0"
+    "uuid": "9.0.1"
   },
   "devDependencies": {
     "@nestjs/cli": "10.1.17",
