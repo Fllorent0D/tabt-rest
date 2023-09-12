@@ -91,7 +91,7 @@
     "eslint-config-prettier": "9.0.0",
     "eslint-plugin-import": "2.28.1",
     "husky": "8.0.3",
-    "jest": "29.6.2",
+    "jest": "29.6.4",
     "jest-badge-generator": "1.1.5",
     "prettier": "2.8.8",
     "release-it": "15.11.0",
