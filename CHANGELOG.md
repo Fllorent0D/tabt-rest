@@ -1,5 +1,12 @@
 
 
+## [1.13.27](https://github.com/Fllorent0D/TabT-Rest/compare/v1.13.26...v1.13.27) (2023-09-12)
+
+
+### Chores
+
+* Update dependency jest to v29.6.4 ([2977972](https://github.com/Fllorent0D/TabT-Rest/commit/29779727d0f6bada96ae916dc981c2095c9149be))
+
 ## [1.13.26](https://github.com/Fllorent0D/TabT-Rest/compare/v1.13.25...v1.13.26) (2023-09-12)
 
 
