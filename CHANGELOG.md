@@ -1,5 +1,12 @@
 
 
+## [1.13.29](https://github.com/Fllorent0D/TabT-Rest/compare/v1.13.28...v1.13.29) (2023-09-13)
+
+
+### Chores
+
+* Update dependency uuid to v9.0.1 ([9d9fd58](https://github.com/Fllorent0D/TabT-Rest/commit/9d9fd5830c45bf633ebf78c9aaf61fe433c4496b))
+
 ## [1.13.28](https://github.com/Fllorent0D/TabT-Rest/compare/v1.13.27...v1.13.28) (2023-09-12)
 
 
