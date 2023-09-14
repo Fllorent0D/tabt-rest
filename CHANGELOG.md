@@ -1,5 +1,12 @@
 
 
+## [1.13.31](https://github.com/Fllorent0D/TabT-Rest/compare/v1.13.30...v1.13.31) (2023-09-14)
+
+
+### Chores
+
+* Update dependency nestjs-pino to v3.4.0 ([a04efbc](https://github.com/Fllorent0D/TabT-Rest/commit/a04efbc0b4632840d7b613e2f08b64592cee7746))
+
 ## [1.13.30](https://github.com/Fllorent0D/TabT-Rest/compare/v1.13.29...v1.13.30) (2023-09-13)
 
 
