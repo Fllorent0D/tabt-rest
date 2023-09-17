@@ -1,5 +1,12 @@
 
 
+## [1.14.2](https://github.com/Fllorent0D/TabT-Rest/compare/v1.14.1...v1.14.2) (2023-09-17)
+
+
+### Bug Fixes
+
+* pipeline ([3901a1e](https://github.com/Fllorent0D/TabT-Rest/commit/3901a1e96f2f3ea050198623ea03d828824e713f))
+
 ## [1.14.1](https://github.com/Fllorent0D/TabT-Rest/compare/v1.14.0...v1.14.1) (2023-09-17)
 
 ## [1.14.0](https://github.com/Fllorent0D/TabT-Rest/compare/v1.13.32...v1.14.0) (2023-09-17)
