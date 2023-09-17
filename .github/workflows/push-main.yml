@@ -69,6 +69,8 @@ jobs:
           TARGET: ${{ secrets.SSH_STAGING_TARGET }}
       - name: Restarting TabT instance
         uses: appleboy/ssh-action@master
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
         with:
           host: ${{ secrets.SSH_STAGING_HOST }}
           port: ${{ secrets.SSH_REMOTE_PORT }}
