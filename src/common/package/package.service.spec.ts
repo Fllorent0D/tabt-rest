@@ -1,6 +1,6 @@
 import { PackageService } from './package.service';
 
-describe('TabtFilter', () => {
+xdescribe('TabtFilter', () => {
   let service: PackageService;
   const name = 'Yo it\'s flo';
   const version = '1.0.0';

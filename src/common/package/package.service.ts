@@ -5,6 +5,7 @@
  * @class PackageService
  */
 import { Injectable } from '@nestjs/common';
+//import { readPackageUp } from 'read-pkg-up';
 
 
 @Injectable ()
@@ -16,7 +17,6 @@ export class PackageService {
      * @static
      * @memberof PackageService
      */
-    private static PackageJsonPath = '../../../package.json';
 
     private _packageInfo: any;
 
@@ -27,7 +27,11 @@ export class PackageService {
      * @memberof PackageService
      */
     constructor() {
-        this._packageInfo = require(PackageService.PackageJsonPath);
+        //this._packageInfo = require(PackageService.PackageJsonPath);
+    }
+
+    async init(): Promise<void> {
+        //this._packageInfo = await readPackageUp()
     }
 
     /**
@@ -38,7 +42,7 @@ export class PackageService {
      * @memberof Package
      */
     get version(): string {
-        return this._packageInfo.version;
+        return this._packageInfo?.version;
     }
 
     /**
@@ -49,6 +53,6 @@ export class PackageService {
      * @memberof Package
      */
     get name(): string {
-        return this._packageInfo.name;
+        return this._packageInfo?.name;
     }
 }

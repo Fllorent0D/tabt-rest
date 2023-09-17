@@ -1,0 +1,81 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Member {
+  id                Int
+  licence           Int
+  gender            Gender
+  firstname         String
+  lastname          String
+  ranking           String
+  club              String
+  category          String
+  worldRanking      Int
+  nationality       String
+  pointsHistory     NumericPoints[]
+  results           IndividualResult[] @relation("member")
+  resultsAsOpponent IndividualResult[] @relation("memberopponent")
+
+  @@unique([id, licence])
+}
+
+enum Gender {
+  MEN
+  WOMEN
+}
+
+model NumericPoints {
+  memberId                Int
+  memberLicence           Int
+  date                    DateTime @default(now()) @db.Date
+  member                  Member   @relation(fields: [memberId, memberLicence], references: [id, licence])
+  points                  Int
+  ranking                 Int?
+  rankingWI               Int?
+  rankingLetterEstimation String?
+
+  @@id([memberId, memberLicence, date])
+}
+
+model IndividualResult {
+  id                    Int             @id
+  date                  DateTime        @default(now()) @db.Date
+  memberId              Int
+  memberLicence         Int
+  opponentId            Int
+  opponentLicence       Int
+  opponentRanking       String
+  memberRanking         String
+  memberPoints          Int?
+  opponentPoints        Int?
+  result                Result
+  score                 String
+  competitionCoef       Int
+  competitionType       CompetitionType
+  competitionName       String
+  diffPoints            Int
+  pointsToAdd           Int
+  looseFactor           Float
+  definitivePointsToAdd Int
+  member                Member          @relation("member", fields: [memberId, memberLicence], references: [id, licence])
+  memberOpponent        Member          @relation("memberopponent", fields: [opponentId, opponentLicence], references: [id, licence])
+}
+
+enum CompetitionType {
+  TOURNAMENT
+  CHAMPIONSHIP
+}
+
+enum Result {
+  VICTORY
+  DEFEAT
+}

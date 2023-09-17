@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import * as helmet from 'helmet';
+import helmet from 'helmet';
 import * as compression from 'compression';
 import * as responseTime from 'response-time';
 import { ValidationPipe, VersioningType } from '@nestjs/common';
@@ -13,7 +13,7 @@ async function bootstrap() {
   app.useLogger(app.get(Logger));
 
   const packageService = app.get(PackageService);
-  //app.setGlobalPrefix(process.env.API_PREFIX);
+    //app.setGlobalPrefix(process.env.API_PREFIX);
 
   const options = new DocumentBuilder()
     .setTitle('TabT Rest')
@@ -42,7 +42,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('doc', app, document);
   app.use(compression());
-  app.use(helmet.default());
+  app.use(helmet());
   app.use(responseTime());
 
   app.useGlobalPipes(new ValidationPipe());

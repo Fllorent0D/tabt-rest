@@ -1,4 +1,4 @@
-import { CacheModule, CacheStore, Logger, Module, Provider } from '@nestjs/common';
+import { Module, Provider } from '@nestjs/common';
 import { CacheService } from './cache/cache.service';
 import { ContextService } from './context/context.service';
 import { CredentialsService } from './tabt-client/credentials.service';
@@ -11,11 +11,20 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import {redisStore} from 'cache-manager-redis-store';
 import { LoggerModule } from 'nestjs-pino';
 import pino from 'pino';
-import { cloneDeep } from 'lodash';
+import lodash from 'lodash';
 import { SocksProxyHttpClient } from './socks-proxy/socks-proxy-http-client';
 import { createSoapClient } from './tabt-client/soap-client.factory';
 import { memoryStore } from 'cache-manager';
 import { CacheModuleOptsFactory } from './cache/cache-module-opts.factory';
+import { HttpModule } from '@nestjs/axios';
+import { CacheModule } from '@nestjs/cache-manager';
+import { MemberService } from 'src/services/members/member.service';
+import { DataAFTTIndividualResultModel } from './data-aftt/model/individual-results.model';
+import { DataAFTTMemberModel } from './data-aftt/model/member.model';
+import { PrismaService } from './prisma.service';
+import { DataAFTTMemberNumericRankingModel } from './data-aftt/model/member-numeric-ranking.model';
+import { DataAFTTMemberProcessingService } from './data-aftt/services/member-processing.service';
+import { DataAFTTResultsProcessingService } from './data-aftt/services/results-processing.service';
 
 
 const asyncProviders: Provider[] = [
@@ -41,6 +50,7 @@ const asyncProviders: Provider[] = [
 
 @Module({
   imports: [
+    HttpModule,
     CacheModule.registerAsync({
       useClass: CacheModuleOptsFactory,
       imports: [ConfigModule],
@@ -53,7 +63,7 @@ const asyncProviders: Provider[] = [
           quietReqLogger: true,
           serializers: {
             req: pino.stdSerializers.wrapRequestSerializer(r => {
-              const clonedReq = cloneDeep(r);
+              const clonedReq = lodash.cloneDeep(r);
               delete clonedReq.headers[HeaderKeys.X_TABT_PASSWORD.toLowerCase()];
               return clonedReq;
             }),
@@ -74,6 +84,13 @@ const asyncProviders: Provider[] = [
     TabtClientSwitchingService,
     PackageService,
     SocksProxyHttpClient,
+    MemberService,
+    DataAFTTIndividualResultModel,
+    DataAFTTMemberModel,
+    DataAFTTMemberNumericRankingModel,
+    PrismaService,
+    DataAFTTMemberProcessingService,
+    DataAFTTResultsProcessingService
   ],
   exports: [
     ...asyncProviders,
@@ -83,6 +100,12 @@ const asyncProviders: Provider[] = [
     PackageService,
     SocksProxyHttpClient,
     ConfigModule,
+    MemberService,
+    DataAFTTIndividualResultModel,
+    DataAFTTMemberModel,
+    DataAFTTMemberNumericRankingModel,
+    DataAFTTMemberProcessingService,
+    DataAFTTResultsProcessingService
   ],
 })
 export class CommonModule {
