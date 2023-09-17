@@ -1,5 +1,12 @@
 
 
+## [1.14.0](https://github.com/Fllorent0D/TabT-Rest/compare/v1.13.32...v1.14.0) (2023-09-17)
+
+
+### Features
+
+* sync data aftt ([7a6bf14](https://github.com/Fllorent0D/TabT-Rest/commit/7a6bf14f8cbfeb4735ffcf3b0a91cecaab52a9d8))
+
 ## [1.13.32](https://github.com/Fllorent0D/TabT-Rest/compare/v1.13.31...v1.13.32) (2023-09-14)
 
 
