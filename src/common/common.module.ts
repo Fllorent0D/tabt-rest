@@ -11,7 +11,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import {redisStore} from 'cache-manager-redis-store';
 import { LoggerModule } from 'nestjs-pino';
 import pino from 'pino';
-import lodash from 'lodash';
+import {cloneDeep} from 'lodash';
 import { SocksProxyHttpClient } from './socks-proxy/socks-proxy-http-client';
 import { createSoapClient } from './tabt-client/soap-client.factory';
 import { memoryStore } from 'cache-manager';
@@ -63,7 +63,7 @@ const asyncProviders: Provider[] = [
           quietReqLogger: true,
           serializers: {
             req: pino.stdSerializers.wrapRequestSerializer(r => {
-              const clonedReq = lodash.cloneDeep(r);
+              const clonedReq = cloneDeep(r);
               delete clonedReq.headers[HeaderKeys.X_TABT_PASSWORD.toLowerCase()];
               return clonedReq;
             }),
