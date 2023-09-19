@@ -1,5 +1,12 @@
 
 
+## [1.14.5](https://github.com/Fllorent0D/TabT-Rest/compare/v1.14.4...v1.14.5) (2023-09-19)
+
+
+### Chores
+
+* Update dependency @types/he to v1.2.1 ([30cd070](https://github.com/Fllorent0D/TabT-Rest/commit/30cd0706903dbe914ea7a5d519d1109a30a274c9))
+
 ## [1.14.4](https://github.com/Fllorent0D/TabT-Rest/compare/v1.14.3...v1.14.4) (2023-09-19)
 
 
