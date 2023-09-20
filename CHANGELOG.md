@@ -1,5 +1,12 @@
 
 
+## [1.14.10](https://github.com/Fllorent0D/TabT-Rest/compare/v1.14.9...v1.14.10) (2023-09-20)
+
+
+### Bug Fixes
+
+* sync ([70ae43a](https://github.com/Fllorent0D/TabT-Rest/commit/70ae43a43bc38636417ea7629568958a16d0a07c))
+
 ## [1.14.9](https://github.com/Fllorent0D/TabT-Rest/compare/v1.14.8...v1.14.9) (2023-09-20)
 
 
