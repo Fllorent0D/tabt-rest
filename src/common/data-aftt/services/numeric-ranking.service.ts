@@ -1,12 +1,11 @@
 import { Injectable } from "@nestjs/common";
 import { DataAFTTMemberNumericRankingModel } from "../model/member-numeric-ranking.model";
-import { COMPETITION_TYPE, NumericRankingDetailsV3, PLAYER_CATEGORY, WeeklyNumericPointsV3, WeeklyNumericRankingV4 } from "src/api/member/dto/member.dto";
-import { SimplifiedPlayerCategory } from "src/api/member/helpers/player-category-helpers";
-import { PlayerCategory } from "src/entity/tabt-input.interface";
-import { CompetitionType, Gender, IndividualResult } from "@prisma/client";
+import { COMPETITION_TYPE, NumericRankingDetailsV3, WeeklyNumericPointsV3, WeeklyNumericRankingV4 } from "../../../api/member/dto/member.dto";
+import { SimplifiedPlayerCategory } from "../../../api/member/helpers/player-category-helpers";
+import { PlayerCategory } from "../../../entity/tabt-input.interface";
+import { CompetitionType, Gender } from "@prisma/client";
 import { format } from "date-fns";
 import { DataAFTTIndividualResultModel, IndividualResultWithOpponent } from "../model/individual-results.model";
-import { IndividualMatchResult } from "src/entity/tabt-soap/TabTAPI_Port";
 
 @Injectable()
 export class NumericRankingService {

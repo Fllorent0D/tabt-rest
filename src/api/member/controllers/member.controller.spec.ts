@@ -8,29 +8,32 @@ import { EloMemberService } from '../../../services/members/elo-member.service';
 import { PlayerCategory } from '../../../entity/tabt-input.interface';
 import { MembersSearchIndexService } from '../../../services/members/members-search-index.service';
 import { MemberCategoryService } from '../../../services/members/member-category.service';
+import { NumericRankingService } from '../../../common/data-aftt/services/numeric-ranking.service';
 
 jest.mock('../../../services/members/member.service');
 jest.mock('../../../services/seasons/season.service');
 jest.mock('../../../services/members/elo-member.service');
 jest.mock('../../../services/members/members-search-index.service');
 jest.mock('../../../services/members/member-category.service');
-
+jest.mock('../../../common/data-aftt/services/numeric-ranking.service')
 describe('MemberController', () => {
   let controller: MemberController;
   let service: MemberService;
   let eloService: EloMemberService;
   let seasonService: SeasonService;
+  let numericRankingService: NumericRankingService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [MemberController],
-      providers: [MemberService, SeasonService, EloMemberService, MembersSearchIndexService, MemberCategoryService],
+      providers: [MemberService, SeasonService, EloMemberService, MembersSearchIndexService, MemberCategoryService, NumericRankingService],
     }).compile();
 
     controller = module.get<MemberController>(MemberController);
     service = module.get<MemberService>(MemberService);
     eloService = module.get<EloMemberService>(EloMemberService);
     seasonService = module.get<SeasonService>(SeasonService);
+    numericRankingService = module.get<NumericRankingService>(NumericRankingService);
   });
 
   it('should be defined', () => {

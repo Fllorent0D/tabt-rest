@@ -30,7 +30,7 @@ import { SeasonService } from '../../../services/seasons/season.service';
 import { MembersSearchIndexService } from '../../../services/members/members-search-index.service';
 import { MemberCategoryService } from '../../../services/members/member-category.service';
 import { getSimplifiedPlayerCategory } from '../helpers/player-category-helpers';
-import { NumericRankingService } from 'src/common/data-aftt/services/numeric-ranking.service';
+import { NumericRankingService } from '../../../common/data-aftt/services/numeric-ranking.service';
 
 @ApiTags('Members')
 @Controller({
