@@ -31,7 +31,7 @@ export class DataAFTTMemberProcessingService {
       this.logger.log(`File downloaded, start processing ${lines.length} lines...`);
       for (const line of lines) {
         const cols = line.split(';');
-        return this.updateDB(cols, gender);
+        await this.updateDB(cols, gender);
       }
       this.logger.log(`Processing done. (${lines.length} lines)`);
     }
