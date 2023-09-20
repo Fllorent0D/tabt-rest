@@ -1,5 +1,13 @@
 
 
+## [1.14.8](https://github.com/Fllorent0D/TabT-Rest/compare/v1.14.7...v1.14.8) (2023-09-20)
+
+
+### Bug Fixes
+
+* add numerical ranking endpoint ([60dbe15](https://github.com/Fllorent0D/TabT-Rest/commit/60dbe15d30c3237a4463e685ca1eb61cd6b9f75f))
+* tests ([032d7d8](https://github.com/Fllorent0D/TabT-Rest/commit/032d7d84a92527b85f6e87d3084d69fa3f11076f))
+
 ## [1.14.7](https://github.com/Fllorent0D/TabT-Rest/compare/v1.14.6...v1.14.7) (2023-09-20)
 
 
