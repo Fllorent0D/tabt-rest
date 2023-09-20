@@ -5,8 +5,6 @@ import { firstValueFrom } from "rxjs";
 import { Injectable, Logger, Query } from "@nestjs/common";
 import { DataAFTTIndividualResultModel } from "../model/individual-results.model";
 import { CompetitionType, Gender, Result } from "@prisma/client";
-import * as pqueue from 'p-queue';
-import * as os from 'os';
 
 @Injectable()
 export class DataAFTTResultsProcessingService {
@@ -22,19 +20,18 @@ export class DataAFTTResultsProcessingService {
 
 
     async process(): Promise<void> {
-        const queue = new pqueue.default({concurrency: (os.cpus().length * 2) + 1});
 
         for (const [gender, mapping] of genderMapping) {
             const file = await this.downloadMemberFile(gender, mapping);
 
             // split lines and remove last line
             const lines = file.data.split('\n').slice(0, -1);
-            this.logger.log(`File downloaded, start processing with concurrency ${queue.concurrency}...`);
-            queue.addAll(lines.map(line => async () => {
+            this.logger.log(`File downloaded, start processing ${lines.length} lines...`);
+            for(const line of lines){
                 const cols = line.split(';');
                 await this.updateDB(cols, gender);
-            }));
-           
+            }
+
                 /*
                 1;          ID 
                 2023-09-03; DATA
@@ -60,11 +57,7 @@ export class DataAFTTResultsProcessingService {
                 18 - -1        definitive points to add
                 */
 
-            
-
-
             this.logger.log(`Processing done. (${lines.length} lines)`);
-
         }
     }
 

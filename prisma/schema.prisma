@@ -62,8 +62,8 @@ model IndividualResult {
   competitionCoef       Int
   competitionType       CompetitionType
   competitionName       String
-  diffPoints            Int
-  pointsToAdd           Int
+  diffPoints            Float
+  pointsToAdd           Float
   looseFactor           Float
   definitivePointsToAdd Int
   member                Member          @relation("member", fields: [memberId, memberLicence], references: [id, licence])

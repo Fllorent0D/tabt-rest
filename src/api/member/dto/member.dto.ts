@@ -163,6 +163,8 @@ export class WeeklyNumericRankingV3 {
   perDateHistory: NumericRankingDetailsV3[];
 }
 
+export type WeeklyNumericRankingV4 = WeeklyNumericRankingV3;
+
 export enum PLAYER_CATEGORY {
   MEN = 'MEN',
   WOMEN = 'WOMEN',

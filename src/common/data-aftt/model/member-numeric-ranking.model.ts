@@ -1,12 +1,28 @@
 import { Injectable } from "@nestjs/common";
 import { PrismaService } from "../../prisma.service";
-import { NumericPoints } from "@prisma/client";
+import { Gender, NumericPoints } from "@prisma/client";
 
 @Injectable()
 export class DataAFTTMemberNumericRankingModel {
     constructor(
         private readonly prismaService: PrismaService
     ) {
+    }
+
+
+    getLatestPoints(licence: number, gender: Gender): Promise<NumericPoints[]> {
+        const points = this.prismaService.numericPoints.findMany({
+            where: {
+                memberLicence: licence,
+                member: {
+                    gender
+                }
+            },
+            orderBy: {
+                date: 'desc'
+            }
+        });
+        return points;
     }
 
 

@@ -25,6 +25,7 @@ import { PrismaService } from './prisma.service';
 import { DataAFTTMemberNumericRankingModel } from './data-aftt/model/member-numeric-ranking.model';
 import { DataAFTTMemberProcessingService } from './data-aftt/services/member-processing.service';
 import { DataAFTTResultsProcessingService } from './data-aftt/services/results-processing.service';
+import { NumericRankingService } from './data-aftt/services/numeric-ranking.service';
 
 
 const asyncProviders: Provider[] = [
@@ -90,7 +91,8 @@ const asyncProviders: Provider[] = [
     DataAFTTMemberNumericRankingModel,
     PrismaService,
     DataAFTTMemberProcessingService,
-    DataAFTTResultsProcessingService
+    DataAFTTResultsProcessingService,
+    NumericRankingService
   ],
   exports: [
     ...asyncProviders,
@@ -105,7 +107,8 @@ const asyncProviders: Provider[] = [
     DataAFTTMemberModel,
     DataAFTTMemberNumericRankingModel,
     DataAFTTMemberProcessingService,
-    DataAFTTResultsProcessingService
+    DataAFTTResultsProcessingService,
+    NumericRankingService
   ],
 })
 export class CommonModule {

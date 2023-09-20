@@ -21,7 +21,8 @@ import {
   WeeklyNumericRanking,
   WeeklyNumericRankingInput,
   WeeklyNumericRankingInputV2,
-  WeeklyNumericRankingV2, WeeklyNumericRankingV3,
+  WeeklyNumericRankingV2,
+  WeeklyNumericRankingV3,
 } from '../dto/member.dto';
 import { PlayerCategory } from '../../../entity/tabt-input.interface';
 import { EloMemberService } from '../../../services/members/elo-member.service';
@@ -29,6 +30,7 @@ import { SeasonService } from '../../../services/seasons/season.service';
 import { MembersSearchIndexService } from '../../../services/members/members-search-index.service';
 import { MemberCategoryService } from '../../../services/members/member-category.service';
 import { getSimplifiedPlayerCategory } from '../helpers/player-category-helpers';
+import { NumericRankingService } from 'src/common/data-aftt/services/numeric-ranking.service';
 
 @ApiTags('Members')
 @Controller({
@@ -43,6 +45,7 @@ export class MemberController {
     private readonly eloMemberService: EloMemberService,
     private readonly seasonService: SeasonService,
     private readonly membersSearchIndexService: MembersSearchIndexService,
+    private readonly numericRankingService: NumericRankingService
   ) {
   }
 
@@ -218,6 +221,25 @@ export class MemberController {
     return numericRankingV3;
   }
 
+  @Get(':uniqueIndex/numeric-rankings')
+  @ApiOkResponse({
+    type: WeeklyNumericRankingV3,
+    description: 'The list of ELO points for a player in a season',
+  })
+  @ApiOperation({
+    operationId: 'findMemberNumericRankingsHistoryV3',
+  })
+  @ApiNotFoundResponse({
+    description: 'No points found for given player',
+  })
+  @Version('4')
+  async findNumericRankingV4(
+    @Param('uniqueIndex', ParseIntPipe) id: number,
+    @Query() params: WeeklyNumericRankingInputV2,
+  ) {
+    const simplifiedCategory = getSimplifiedPlayerCategory(params.category);
+    return await this.numericRankingService.getWeeklyRanking(id, simplifiedCategory);
+  }
 
 
 }
