@@ -19,7 +19,7 @@ export class DataAFTTMemberNumericRankingModel {
                 }
             },
             orderBy: {
-                date: 'desc'
+                date: 'asc'
             }
         });
         return points;

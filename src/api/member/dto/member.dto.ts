@@ -161,6 +161,9 @@ export class WeeklyNumericRankingV3 {
     type: [NumericRankingDetailsV3]
   })
   perDateHistory: NumericRankingDetailsV3[];
+
+  @ApiProperty()
+  actualPoints: number;
 }
 
 export type WeeklyNumericRankingV4 = WeeklyNumericRankingV3;

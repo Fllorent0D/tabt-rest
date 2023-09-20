@@ -146,6 +146,7 @@ export class EloMemberService {
     const weeklyNumericRankingV3: WeeklyNumericRankingV3 = {
       points: [],
       perDateHistory: [],
+      actualPoints: 0,
     };
     const domPage = await this.getAFTTDataPage(playerUniqueIndex, category);
     const table = this.findHistoryTable(domPage, category);
@@ -154,8 +155,9 @@ export class EloMemberService {
       weekName: item.weekName,
       points: item.bel,
     }));
-
+    weeklyNumericRankingV3.actualPoints = weeklyNumericRankingV3.points[weeklyNumericRankingV3.points.length - 1].points;
     return weeklyNumericRankingV3;
+
   }
 
   private parseBaseAndEndPoints(pointsStr: string): number[] {

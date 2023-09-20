@@ -213,8 +213,7 @@ export class MemberController {
     @Query() params: WeeklyNumericRankingInputV2,
   ) {
     const simplifiedCategory = getSimplifiedPlayerCategory(params.category);
-    const numericRankingV3 = await this.eloMemberService.getBelNumericRankingV3(id, simplifiedCategory);
-
+    const numericRankingV3 = await this.numericRankingService.getWeeklyRanking(id, simplifiedCategory);
     if (!numericRankingV3.points.length) {
       throw new NotFoundException('No ELO points found');
     }

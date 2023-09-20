@@ -24,6 +24,7 @@ export class NumericRankingService {
         return {
             perDateHistory: history,
             points: points,
+            actualPoints: points[points.length - 1].points,
         }
     }
 
