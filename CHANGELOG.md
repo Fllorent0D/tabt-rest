@@ -1,5 +1,12 @@
 
 
+## [1.15.0](https://github.com/Fllorent0D/TabT-Rest/compare/v1.14.11...v1.15.0) (2023-09-27)
+
+
+### Features
+
+* send notification when syncing ([e46321d](https://github.com/Fllorent0D/TabT-Rest/commit/e46321db59c73d66ca889d59f71bb12bdd32681a))
+
 ## [1.14.11](https://github.com/Fllorent0D/TabT-Rest/compare/v1.14.10...v1.14.11) (2023-09-21)
 
 
