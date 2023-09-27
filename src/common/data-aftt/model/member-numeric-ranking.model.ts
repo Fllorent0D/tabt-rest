@@ -1,11 +1,13 @@
 import { Injectable } from "@nestjs/common";
 import { PrismaService } from "../../prisma.service";
 import { Gender, NumericPoints } from "@prisma/client";
+import { BepingNotifierService } from '../../../services/notifications/beping-notifier.service';
 
 @Injectable()
 export class DataAFTTMemberNumericRankingModel {
     constructor(
-        private readonly prismaService: PrismaService
+        private readonly prismaService: PrismaService,
+        private readonly bepingNotifierService: BepingNotifierService
     ) {
     }
 
@@ -45,6 +47,9 @@ export class DataAFTTMemberNumericRankingModel {
         });
         
         if(latestPoint?.points !== points.points || latestPoint?.ranking !== points.ranking){
+            // push a notification to player
+            await this.bepingNotifierService.notifyNumericRankingChanged(points.memberLicence, latestPoint?.ranking, points.ranking)
+
             return this.prismaService.numericPoints.create({
                 data: {
                     points: points.points,

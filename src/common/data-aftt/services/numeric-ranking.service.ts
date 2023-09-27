@@ -77,7 +77,7 @@ export class NumericRankingService {
             }
         });
 
-        return eventGroupedArray;
+        return eventGroupedArray.reverse();
 
     }
 

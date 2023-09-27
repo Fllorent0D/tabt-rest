@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import { HttpModule } from '@nestjs/axios';
 import { ClubService } from './clubs/club.service';
 import { ClubMemberService } from './clubs/club-member.service';
@@ -19,6 +19,7 @@ import { MatchesMembersRankerService } from './matches/matches-members-ranker.se
 import { MembersSearchIndexService } from './members/members-search-index.service';
 import { MemberCategoryService } from './members/member-category.service';
 import { DataAfftTokenRefresherService } from './members/data-afft-token-refresher.service';
+import { BepingNotifierService } from './notifications/beping-notifier.service';
 
 const services = [
   ClubService,
@@ -38,7 +39,8 @@ const services = [
   MatchesMembersRankerService,
   MembersSearchIndexService,
   MemberCategoryService,
-  DataAfftTokenRefresherService
+  DataAfftTokenRefresherService,
+  BepingNotifierService
 ];
 
 @Module({
@@ -46,5 +48,6 @@ const services = [
   providers: [...services],
   exports: [...services],
 })
+@Global()
 export class ServicesModule {
 }
