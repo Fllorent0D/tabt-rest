@@ -92,7 +92,7 @@ export class NumericRankingService {
       });
     }
 
-    return eventGroupedArray;//.reverse();
+    return eventGroupedArray.reverse();
 
   }
 
