@@ -1,5 +1,12 @@
 
 
+## [1.15.1](https://github.com/Fllorent0D/TabT-Rest/compare/v1.15.0...v1.15.1) (2023-09-28)
+
+
+### Bug Fixes
+
+* correct base/endpoints in numeric ranking ([3cca805](https://github.com/Fllorent0D/TabT-Rest/commit/3cca805863332f54b1ed08293fcf4cb734d59c84))
+
 ## [1.15.0](https://github.com/Fllorent0D/TabT-Rest/compare/v1.14.11...v1.15.0) (2023-09-27)
 
 
