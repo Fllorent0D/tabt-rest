@@ -1,5 +1,12 @@
 
 
+## [1.15.2](https://github.com/Fllorent0D/TabT-Rest/compare/v1.15.1...v1.15.2) (2023-09-28)
+
+
+### Bug Fixes
+
+* correct reverse latest matchs results ([52e20b0](https://github.com/Fllorent0D/TabT-Rest/commit/52e20b0c3d9dcb4fe3942dea1eaad521ced4b5c4))
+
 ## [1.15.1](https://github.com/Fllorent0D/TabT-Rest/compare/v1.15.0...v1.15.1) (2023-09-28)
 
 
