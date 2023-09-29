@@ -9,7 +9,7 @@ export class SyncMembersListCron {
 
   constructor(
     private readonly memberProcessingService: DataAFTTMemberProcessingService,
-    private readonly resultProcessingService: DataAFTTResultsProcessingService
+    private readonly resultProcessingService: DataAFTTResultsProcessingService,
   ) {
   }
 
@@ -17,15 +17,20 @@ export class SyncMembersListCron {
   @Cron('0 0 9 * * *')
   async syncMembers() {
     this.logger.log('Daily members sync starting...');
-    await this.memberProcessingService.process();
-    await this.resultProcessingService.process();
+
+    if (process.env.NODE_ENV === 'production') {
+      await this.memberProcessingService.process();
+      await this.resultProcessingService.process();
+    }
   }
 
   @Timeout(1000)
   async syncMembersAtBootstrap() {
     this.logger.log('Members sync starting at bootstrap...');
-    await this.memberProcessingService.process();
-    await this.resultProcessingService.process();
+    if (process.env.NODE_ENV === 'production') {
+      await this.memberProcessingService.process();
+      await this.resultProcessingService.process();
+    }
   }
 
 
