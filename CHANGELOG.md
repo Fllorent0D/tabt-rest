@@ -1,5 +1,12 @@
 
 
+## [1.15.3](https://github.com/Fllorent0D/TabT-Rest/compare/v1.15.2...v1.15.3) (2023-09-29)
+
+
+### Bug Fixes
+
+* correct validation ([8973808](https://github.com/Fllorent0D/TabT-Rest/commit/8973808a32cb00c267372ba9c74142f264900ec0))
+
 ## [1.15.2](https://github.com/Fllorent0D/TabT-Rest/compare/v1.15.1...v1.15.2) (2023-09-28)
 
 
