@@ -48,7 +48,7 @@ export class DataAFTTMemberNumericRankingModel {
         
         if(latestPoint?.points !== points.points || latestPoint?.ranking !== points.ranking){
             // push a notification to player
-            await this.bepingNotifierService.notifyNumericRankingChanged(points.memberLicence, latestPoint?.ranking, points.ranking)
+            await this.bepingNotifierService.notifyNumericRankingChanged(points.memberLicence, latestPoint?.points, points.points)
 
             return this.prismaService.numericPoints.create({
                 data: {
