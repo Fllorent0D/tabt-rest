@@ -18,7 +18,7 @@ export class SyncMembersListCron {
   async syncMembers() {
     this.logger.log('Daily members sync starting...');
 
-    if (process.env.NODE_ENV === 'production') {
+    if (process.env.NODE_ENV === 'prod') {
       await this.memberProcessingService.process();
       await this.resultProcessingService.process();
     }
@@ -27,7 +27,7 @@ export class SyncMembersListCron {
   @Timeout(1000)
   async syncMembersAtBootstrap() {
     this.logger.log('Members sync starting at bootstrap...');
-    if (process.env.NODE_ENV === 'production') {
+    if (process.env.NODE_ENV === 'prod') {
       await this.memberProcessingService.process();
       await this.resultProcessingService.process();
     }
