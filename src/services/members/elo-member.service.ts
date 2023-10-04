@@ -127,6 +127,7 @@ export class EloMemberService {
           }
           const opponent: NumericRankingPerWeekOpponentsV3 = {
             opponentName: line.cells[1].textContent,
+            opponentUniqueIndex: 0,
             score: line.cells[2].textContent,
             opponentRanking: line.cells[3].textContent,
             opponentNumericRanking: Number(line.cells[4].textContent),

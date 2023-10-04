@@ -110,6 +110,9 @@ export class NumericRankingPerWeekOpponentsV3 {
   opponentName: string;
 
   @ApiProperty()
+  opponentUniqueIndex: number;
+
+  @ApiProperty()
   opponentRanking: string;
 
   @ApiProperty()

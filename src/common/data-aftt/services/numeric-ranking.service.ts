@@ -69,6 +69,7 @@ export class NumericRankingService {
       const opponents = eventGrouped[key].map(result => ({
         opponentName: result.memberOpponent.firstname + ' ' + result.memberOpponent.lastname,
         opponentRanking: result.opponentRanking,
+        opponentUniqueIndex: result.opponentLicence,
         opponentNumericRanking: result.opponentPoints,
         pointsWon: result.definitivePointsToAdd,
         score: result.score,
