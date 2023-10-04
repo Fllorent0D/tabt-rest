@@ -1,5 +1,12 @@
 
 
+## [1.16.0](https://github.com/Fllorent0D/TabT-Rest/compare/v1.15.5...v1.16.0) (2023-10-04)
+
+
+### Features
+
+* add unique index ([c4cbc4d](https://github.com/Fllorent0D/TabT-Rest/commit/c4cbc4ddb808af12f46bc7c05b6013c6d006ee57))
+
 ## [1.15.5](https://github.com/Fllorent0D/TabT-Rest/compare/v1.15.4...v1.15.5) (2023-10-01)
 
 
