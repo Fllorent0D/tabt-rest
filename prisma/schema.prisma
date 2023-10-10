@@ -65,7 +65,7 @@ model IndividualResult {
   diffPoints            Float
   pointsToAdd           Float
   looseFactor           Float
-  definitivePointsToAdd   Int
+  definitivePointsToAdd   Float
   member                Member          @relation("member", fields: [memberId, memberLicence], references: [id, licence])
   memberOpponent        Member          @relation("memberopponent", fields: [opponentId, opponentLicence], references: [id, licence])
 }
