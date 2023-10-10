@@ -1,5 +1,12 @@
 
 
+## [1.18.4](https://github.com/Fllorent0D/TabT-Rest/compare/v1.18.3...v1.18.4) (2023-10-10)
+
+
+### Bug Fixes
+
+* numeric ranking info ([539401a](https://github.com/Fllorent0D/TabT-Rest/commit/539401a55be7bb83a6313cb933e686e5fb70913e))
+
 ## [1.18.3](https://github.com/Fllorent0D/TabT-Rest/compare/v1.18.2...v1.18.3) (2023-10-10)
 
 
