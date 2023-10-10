@@ -1,5 +1,13 @@
 
 
+## [1.18.2](https://github.com/Fllorent0D/TabT-Rest/compare/v1.18.1...v1.18.2) (2023-10-10)
+
+
+### Bug Fixes
+
+* parse float ([c43e1dc](https://github.com/Fllorent0D/TabT-Rest/commit/c43e1dc916b455899f52e19937f1357dca255646))
+* try catch send notifications ([e466aaf](https://github.com/Fllorent0D/TabT-Rest/commit/e466aafa7ce35b61a95471fc03b93b8335d42906))
+
 ## [1.18.1](https://github.com/Fllorent0D/TabT-Rest/compare/v1.18.0...v1.18.1) (2023-10-10)
 
 
