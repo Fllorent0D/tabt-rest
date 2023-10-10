@@ -21,7 +21,10 @@ export class NumericRankingService {
   }
 
   async getWeeklyRanking(licence: number, simplifiedCategory: SimplifiedPlayerCategory): Promise<WeeklyNumericRankingV4> {
-    const history = await this.getResultsDetailsHistory(licence, simplifiedCategory);
+    const [history, actualPoints] = await Promise.all([
+      this.getResultsDetailsHistory(licence, simplifiedCategory),
+      this.getActualPoints(licence, simplifiedCategory),
+    ]);
     const points = history.map(d => ({
       weekName: d.date,
       points: d.endPoints,
@@ -31,16 +34,15 @@ export class NumericRankingService {
     points.unshift({
       weekName: '2023-07-01',
       points: lastBasePoints,
-    })
+    });
 
 
     return {
       perDateHistory: history,
       points: points,
-      actualPoints: points[points.length - 1].points,
+      actualPoints: actualPoints,
     };
   }
-
 
 
   async getRankingHistory(licence: number, simplifiedCategory: SimplifiedPlayerCategory): Promise<WeeklyNumericPointsV3[]> {
@@ -50,6 +52,12 @@ export class NumericRankingService {
       weekName: format(p.date, 'yyyy-MM-dd'),
       points: p.points,
     }));
+  }
+
+  async getActualPoints(licence: number, simplifiedCategory: SimplifiedPlayerCategory): Promise<number> {
+    const gender = simplifiedCategory === PlayerCategory.MEN ? Gender.MEN : Gender.WOMEN;
+    const points = await this.memberNumericRankingModel.getLatestPoints(licence, gender);
+    return points[points.length - 1].points;
   }
 
   async getResultsDetailsHistory(licence: number, simplifiedCategory: SimplifiedPlayerCategory): Promise<NumericRankingDetailsV3[]> {
