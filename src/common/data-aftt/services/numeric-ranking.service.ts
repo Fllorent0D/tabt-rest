@@ -21,10 +21,11 @@ export class NumericRankingService {
   }
 
   async getWeeklyRanking(licence: number, simplifiedCategory: SimplifiedPlayerCategory): Promise<WeeklyNumericRankingV4> {
-    const [points, history] = await Promise.all([
-      this.getRankingHistory(licence, simplifiedCategory),
-      this.getResultsDetailsHistory(licence, simplifiedCategory),
-    ]);
+    const history = await this.getResultsDetailsHistory(licence, simplifiedCategory);
+    const points = history.map(d => ({
+      weekName: d.date,
+      points: d.endPoints,
+    })).reverse();
 
     return {
       perDateHistory: history,
@@ -32,6 +33,7 @@ export class NumericRankingService {
       actualPoints: points[points.length - 1].points,
     };
   }
+
 
 
   async getRankingHistory(licence: number, simplifiedCategory: SimplifiedPlayerCategory): Promise<WeeklyNumericPointsV3[]> {
@@ -87,8 +89,8 @@ export class NumericRankingService {
         date: format(date, 'yyyy-MM-dd'),
         competitionContext,
         competitionType,
-        basePoints,
-        endPoints,
+        basePoints: Math.round(basePoints * 100) / 100,
+        endPoints: Math.round(endPoints * 100) / 100,
         opponents,
       });
     }
