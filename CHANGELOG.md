@@ -1,5 +1,13 @@
 
 
+## [1.18.3](https://github.com/Fllorent0D/TabT-Rest/compare/v1.18.2...v1.18.3) (2023-10-10)
+
+
+### Bug Fixes
+
+* graph ([7b377cf](https://github.com/Fllorent0D/TabT-Rest/commit/7b377cf8a0359c8532b0137e38064379665faf56))
+* graph ([4053a60](https://github.com/Fllorent0D/TabT-Rest/commit/4053a60e375dff671012963c02c3a498ebb6bc5d))
+
 ## [1.18.2](https://github.com/Fllorent0D/TabT-Rest/compare/v1.18.1...v1.18.2) (2023-10-10)
 
 
