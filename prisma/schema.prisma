@@ -38,7 +38,7 @@ model NumericPoints {
   memberLicence           Int
   date                    DateTime @default(now()) @db.Date
   member                  Member   @relation(fields: [memberId, memberLicence], references: [id, licence])
-  points                  Int
+  points                  Float
   ranking                 Int?
   rankingWI               Int?
   rankingLetterEstimation String?
