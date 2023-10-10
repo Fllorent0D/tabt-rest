@@ -55,8 +55,8 @@ model IndividualResult {
   opponentLicence       Int
   opponentRanking       String
   memberRanking         String
-  memberPoints          Int?
-  opponentPoints        Int?
+  memberPoints          Float?
+  opponentPoints        Float?
   result                Result
   score                 String
   competitionCoef       Int
@@ -65,7 +65,7 @@ model IndividualResult {
   diffPoints            Float
   pointsToAdd           Float
   looseFactor           Float
-  definitivePointsToAdd Int
+  definitivePointsToAdd   Int
   member                Member          @relation("member", fields: [memberId, memberLicence], references: [id, licence])
   memberOpponent        Member          @relation("memberopponent", fields: [opponentId, opponentLicence], references: [id, licence])
 }
