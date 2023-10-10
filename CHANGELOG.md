@@ -1,5 +1,12 @@
 
 
+## [1.18.0](https://github.com/Fllorent0D/TabT-Rest/compare/v1.17.0...v1.18.0) (2023-10-10)
+
+
+### Features
+
+* float for definitivePointsToAdd ([c8ed589](https://github.com/Fllorent0D/TabT-Rest/commit/c8ed58914f1380e8a43930f2059ee600d0afd013))
+
 ## [1.17.0](https://github.com/Fllorent0D/TabT-Rest/compare/v1.16.0...v1.17.0) (2023-10-10)
 
 
