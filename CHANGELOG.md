@@ -1,5 +1,12 @@
 
 
+## [1.18.1](https://github.com/Fllorent0D/TabT-Rest/compare/v1.18.0...v1.18.1) (2023-10-10)
+
+
+### Bug Fixes
+
+* parse float ([09a83b1](https://github.com/Fllorent0D/TabT-Rest/commit/09a83b1fd70c3898b6c9f8741978a973c65773b7))
+
 ## [1.18.0](https://github.com/Fllorent0D/TabT-Rest/compare/v1.17.0...v1.18.0) (2023-10-10)
 
 
