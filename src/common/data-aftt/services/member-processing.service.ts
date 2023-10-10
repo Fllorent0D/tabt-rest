@@ -71,7 +71,7 @@ export class DataAFTTMemberProcessingService {
         memberId: parseInt(cols[0], 10),
         memberLicence: parseInt(cols[1], 10),
         date: new Date(),
-        points: parseInt(cols[10], 10),
+        points: parseFloat(cols[10]),
         ranking: cols[11].length ? parseInt(cols[11]) : null,
         rankingWI: cols[12].length ? parseInt(cols[12]) : null,
         rankingLetterEstimation: null,
