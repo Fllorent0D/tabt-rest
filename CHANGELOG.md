@@ -1,5 +1,12 @@
 
 
+## [1.18.6](https://github.com/Fllorent0D/TabT-Rest/compare/v1.18.5...v1.18.6) (2023-10-18)
+
+
+### Chores
+
+* Update dependency @release-it/conventional-changelog to v7.0.2 ([73f549d](https://github.com/Fllorent0D/TabT-Rest/commit/73f549d03b5b28aa27c62887412448df085ef445))
+
 ## [1.18.5](https://github.com/Fllorent0D/TabT-Rest/compare/v1.18.4...v1.18.5) (2023-10-17)
 
 
