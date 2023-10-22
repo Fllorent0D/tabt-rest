@@ -29,7 +29,7 @@ export class NumericRankingService {
       weekName: d.date,
       points: d.endPoints,
     })).reverse();
-    const lastBasePoints = history[history.length - 1].basePoints;
+    const lastBasePoints = history[history.length - 1]?.basePoints ?? actualPoints;
     //insert in first position in array points
     points.unshift({
       weekName: '2023-07-01',
