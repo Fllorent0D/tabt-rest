@@ -1,5 +1,12 @@
 
 
+## [1.18.9](https://github.com/Fllorent0D/TabT-Rest/compare/v1.18.8...v1.18.9) (2023-10-22)
+
+
+### Bug Fixes
+
+* graph when no history not yet introduce ([16c5394](https://github.com/Fllorent0D/TabT-Rest/commit/16c5394522ca16f3fd465de7f53b8fa06facc5a3))
+
 ## [1.18.8](https://github.com/Fllorent0D/TabT-Rest/compare/v1.18.7...v1.18.8) (2023-10-19)
 
 
