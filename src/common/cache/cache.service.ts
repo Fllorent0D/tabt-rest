@@ -1,4 +1,6 @@
-import { CACHE_MANAGER, CacheStore, Inject, Injectable, Logger } from '@nestjs/common';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { Inject, Injectable, Logger } from '@nestjs/common';
+import { Cache } from 'cache-manager';
 
 // Durations in Seconds
 
@@ -17,7 +19,7 @@ export class CacheService {
   private readonly logger = new Logger(CacheService.name);
 
   constructor(
-    @Inject(CACHE_MANAGER) private cacheManager: CacheStore,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
   ) {
   }
 
@@ -30,7 +32,8 @@ export class CacheService {
 
   setInCache(key: string, value: any, ttl?: number): Promise<void> {
     //this.logger.debug(`Set [${key}] in cache. Value: ${JSON.stringify(value)}`);
-    return this.cacheManager.set(key, value, { ttl }) as Promise<void>;
+    return this.cacheManager.set(key, value, ttl * 1_000)  as Promise<void>;
+
   }
 
 
@@ -43,10 +46,16 @@ export class CacheService {
     }
 
     this.logger.debug('Data not found in cache');
-
     const result = await getter();
     await this.setInCache(key, result, ttl);
     return result;
   }
+
+  async cleanKeys(pattern: string): Promise<void> {
+    const keys = await this.cacheManager.store.keys(pattern);
+    this.logger.debug(`Cleaning cache for pattern ${pattern}. Found ${keys.length} keys.`);
+    return this.cacheManager.store.mdel(...keys);
+  }
+
 
 }

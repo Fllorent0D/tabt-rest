@@ -6,6 +6,7 @@ import { genderMapping } from '../constants';
 import { firstValueFrom } from 'rxjs';
 import { Injectable, Logger } from '@nestjs/common';
 import { Gender } from '@prisma/client';
+import { CacheService } from '../../cache/cache.service';
 
 @Injectable()
 export class DataAFTTMemberProcessingService {
@@ -17,6 +18,7 @@ export class DataAFTTMemberProcessingService {
     private readonly configService: ConfigService,
     private readonly memberServiceModel: DataAFTTMemberModel,
     private readonly numericRankingModel: DataAFTTMemberNumericRankingModel,
+    private readonly cacheService: CacheService
   ) {
   }
 
@@ -24,10 +26,8 @@ export class DataAFTTMemberProcessingService {
   async process(): Promise<void> {
     for (const [gender, mapping] of genderMapping) {
       const file = await this.downloadFile(gender, mapping);
-
       // split lines and remove last line
       const lines = file.data.split('\n').slice(0, -1);
-      //console.log(cols);
       this.logger.log(`File downloaded, start processing ${lines.length} lines...`);
       for (const line of lines) {
         const cols = line.split(';');
@@ -35,6 +35,7 @@ export class DataAFTTMemberProcessingService {
       }
       this.logger.log(`Processing done. (${lines.length} lines)`);
     }
+    await this.cacheService.cleanKeys('numeric-ranking-v4:*');
   }
 
   private async updateDB(cols: string[], gender: Gender) {

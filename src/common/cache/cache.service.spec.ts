@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { CacheService } from './cache.service';
-import { CACHE_MANAGER, CacheStore } from '@nestjs/common';
+import { CACHE_MANAGER, CacheStore } from '@nestjs/cache-manager';
 
 describe('CacheService', () => {
   let provider: CacheService;
@@ -42,7 +42,7 @@ describe('CacheService', () => {
 
       provider.setInCache(key, value, ttl);
 
-      expect(spy).toHaveBeenCalledWith('aaa', value, { ttl });
+      expect(spy).toHaveBeenCalledWith('aaa', value, 10000);
     });
   });
   describe('getFromCacheOrGetAndCacheResult', () => {
@@ -78,7 +78,7 @@ describe('CacheService', () => {
       expect(getSpy).toHaveBeenCalledTimes(1);
       expect(getSpy).toHaveBeenCalledWith('aaa');
       expect(setSpy).toHaveBeenCalledTimes(1);
-      expect(setSpy).toHaveBeenCalledWith('aaa', value, { ttl: 600 });
+      expect(setSpy).toHaveBeenCalledWith('aaa', value, 600000);
       expect(getter).toHaveBeenCalledTimes(1);
     });
   });

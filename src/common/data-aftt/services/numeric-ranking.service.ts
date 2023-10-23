@@ -11,37 +11,49 @@ import { PlayerCategory } from '../../../entity/tabt-input.interface';
 import { CompetitionType, Gender } from '@prisma/client';
 import { format } from 'date-fns';
 import { DataAFTTIndividualResultModel, IndividualResultWithOpponent } from '../model/individual-results.model';
+import { CacheService, TTL_DURATION } from '../../cache/cache.service';
 
 @Injectable()
 export class NumericRankingService {
   constructor(
     private readonly memberNumericRankingModel: DataAFTTMemberNumericRankingModel,
     private readonly resultHistoryModel: DataAFTTIndividualResultModel,
+    private readonly cacheService: CacheService,
   ) {
   }
 
   async getWeeklyRanking(licence: number, simplifiedCategory: SimplifiedPlayerCategory): Promise<WeeklyNumericRankingV4> {
-    const [history, actualPoints] = await Promise.all([
-      this.getResultsDetailsHistory(licence, simplifiedCategory),
-      this.getActualPoints(licence, simplifiedCategory),
-    ]);
-    const points = history.map(d => ({
-      weekName: d.date,
-      points: d.endPoints,
-    })).reverse();
-    const lastBasePoints = history[history.length - 1]?.basePoints ?? actualPoints;
-    //insert in first position in array points
-    points.unshift({
-      weekName: '2023-07-01',
-      points: lastBasePoints,
-    });
+    const getter = async (): Promise<WeeklyNumericRankingV4> => {
+      const [history, actualPoints] = await Promise.all([
+        this.getResultsDetailsHistory(licence, simplifiedCategory),
+        this.getActualPoints(licence, simplifiedCategory),
+      ]);
+      const points = history.map(d => ({
+        weekName: d.date,
+        points: d.endPoints,
+      })).reverse();
+      const lastBasePoints = history[history.length - 1]?.basePoints ?? actualPoints;
+      //insert in first position in array points
+
+      // TO DO change
+      points.unshift({
+        weekName: '2023-07-01',
+        points: lastBasePoints,
+      });
 
 
-    return {
-      perDateHistory: history,
-      points: points,
-      actualPoints: actualPoints,
+      return {
+        perDateHistory: history,
+        points: points,
+        actualPoints: actualPoints,
+      };
     };
+    return this.cacheService.getFromCacheOrGetAndCacheResult(
+      `numeric-ranking-v4:${licence}:${simplifiedCategory}`,
+      getter,
+      TTL_DURATION.ONE_DAY,
+    );
+
   }
 
 
