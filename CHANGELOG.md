@@ -1,5 +1,12 @@
 
 
+## [1.19.0](https://github.com/Fllorent0D/TabT-Rest/compare/v1.18.9...v1.19.0) (2023-10-23)
+
+
+### Features
+
+* cache numeric-ranking ([a50d039](https://github.com/Fllorent0D/TabT-Rest/commit/a50d0392084e9a662d1444636d0fed455c6301f6))
+
 ## [1.18.9](https://github.com/Fllorent0D/TabT-Rest/compare/v1.18.8...v1.18.9) (2023-10-22)
 
 
