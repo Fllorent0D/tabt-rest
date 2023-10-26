@@ -31,8 +31,8 @@ export class CacheService {
   }
 
   setInCache(key: string, value: any, ttl?: number): Promise<void> {
-    //this.logger.debug(`Set [${key}] in cache. Value: ${JSON.stringify(value)}`);
-    return this.cacheManager.set(key, value, ttl * 1_000)  as Promise<void>;
+    this.logger.debug(`Set [${key}] in cache. Value: ${JSON.stringify(value)}. TTL: ${ttl}`);
+    return this.cacheManager.set(key, value, ttl)  as Promise<void>;
 
   }
 
