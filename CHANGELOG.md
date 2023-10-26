@@ -1,5 +1,13 @@
 
 
+## [1.20.0](https://github.com/Fllorent0D/TabT-Rest/compare/v1.19.3...v1.20.0) (2023-10-26)
+
+
+### Features
+
+* cache revert ([8eec20a](https://github.com/Fllorent0D/TabT-Rest/commit/8eec20af5b62dc1ebc9843f4ca528072ad314987))
+* cache revert ([9809484](https://github.com/Fllorent0D/TabT-Rest/commit/9809484e738ab60e1ec9187ba15b048d2aea1b68))
+
 ## [1.19.3](https://github.com/Fllorent0D/TabT-Rest/compare/v1.19.2...v1.19.3) (2023-10-26)
 
 
