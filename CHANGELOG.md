@@ -1,5 +1,12 @@
 
 
+## [1.19.2](https://github.com/Fllorent0D/TabT-Rest/compare/v1.19.1...v1.19.2) (2023-10-26)
+
+
+### Chores
+
+* Update dependency @schematics/angular to v16.2.8 ([96cf170](https://github.com/Fllorent0D/TabT-Rest/commit/96cf170973b262269cf39bc2db5a07781db9d99b))
+
 ## [1.19.1](https://github.com/Fllorent0D/TabT-Rest/compare/v1.19.0...v1.19.1) (2023-10-24)
 
 
