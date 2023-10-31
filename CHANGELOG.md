@@ -1,5 +1,12 @@
 
 
+## [1.20.1](https://github.com/Fllorent0D/TabT-Rest/compare/v1.20.0...v1.20.1) (2023-10-31)
+
+
+### Chores
+
+* Update dependency @types/continuation-local-storage to v3.2.6 ([31cfd1b](https://github.com/Fllorent0D/TabT-Rest/commit/31cfd1bcbb0a0c581ea3755c9c063f9cfaf826c0))
+
 ## [1.20.0](https://github.com/Fllorent0D/TabT-Rest/compare/v1.19.3...v1.20.0) (2023-10-26)
 
 
