@@ -1,5 +1,12 @@
 
 
+## [1.20.2](https://github.com/Fllorent0D/TabT-Rest/compare/v1.20.1...v1.20.2) (2023-11-01)
+
+
+### Chores
+
+* Update dependency @types/express to v4.17.20 ([233e314](https://github.com/Fllorent0D/TabT-Rest/commit/233e3140903b922a2662ea3f9d1869068c41471f))
+
 ## [1.20.1](https://github.com/Fllorent0D/TabT-Rest/compare/v1.20.0...v1.20.1) (2023-10-31)
 
 
