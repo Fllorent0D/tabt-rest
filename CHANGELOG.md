@@ -1,5 +1,12 @@
 
 
+## [1.20.5](https://github.com/Fllorent0D/TabT-Rest/compare/v1.20.4...v1.20.5) (2023-11-03)
+
+
+### Chores
+
+* Update dependency @nestjs/cache-manager to v2.1.1 ([a86d377](https://github.com/Fllorent0D/TabT-Rest/commit/a86d37722cf8046e58584a251d341c1598dded0b))
+
 ## [1.20.4](https://github.com/Fllorent0D/TabT-Rest/compare/v1.20.3...v1.20.4) (2023-11-02)
 
 
