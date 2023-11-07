@@ -1,5 +1,12 @@
 
 
+## [1.20.7](https://github.com/Fllorent0D/TabT-Rest/compare/v1.20.6...v1.20.7) (2023-11-07)
+
+
+### Chores
+
+* Update dependency @types/compression to v1.7.5 ([fedfcad](https://github.com/Fllorent0D/TabT-Rest/commit/fedfcad842e00e6ce21f98b83ff449878959cf74))
+
 ## [1.20.6](https://github.com/Fllorent0D/TabT-Rest/compare/v1.20.5...v1.20.6) (2023-11-07)
 
 
