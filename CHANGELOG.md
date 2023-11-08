@@ -1,5 +1,12 @@
 
 
+## [1.20.8](https://github.com/Fllorent0D/TabT-Rest/compare/v1.20.7...v1.20.8) (2023-11-08)
+
+
+### Chores
+
+* Update dependency @types/bluebird to v3.5.42 ([9d268ae](https://github.com/Fllorent0D/TabT-Rest/commit/9d268ae01b1fadde217a17a61e388fb928139cb5))
+
 ## [1.20.7](https://github.com/Fllorent0D/TabT-Rest/compare/v1.20.6...v1.20.7) (2023-11-07)
 
 
