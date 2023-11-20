@@ -32,13 +32,17 @@ export class BepingNotifierService {
     } catch (e) {
       this.logger.error(`Error while sending notification for numeric ranking update for ${uniqueIndex} from ${oldRanking} to ${newRanking}: ${e.message}`);
       return {
-        sent: false
-      }
+        sent: false,
+      };
     }
 
   }
 
   private async sendNotification(url: string, payload: any): Promise<NotificationAcknolwedgement> {
+    if (this.configService.get('NODE_ENV') === 'dev') {
+      this.logger.log(`Notification not sent in dev mode: ${url}`);
+      return;
+    }
     const notificationURL = this.configService.get<string>('BEPING_NOTIFICATION_URL');
     return firstValueFrom(
       this.httpClient.post<NotificationAcknolwedgement>(notificationURL + url, payload, {
