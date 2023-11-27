@@ -1,5 +1,13 @@
 
 
+## [1.20.19](https://github.com/Fllorent0D/TabT-Rest/compare/v1.20.18...v1.20.19) (2023-11-27)
+
+
+### Bug Fixes
+
+* caching not expiring ([d4e6230](https://github.com/Fllorent0D/TabT-Rest/commit/d4e62308cfa8d9877182bb3721c186d35077849e))
+* caching not expiring ([bdc4147](https://github.com/Fllorent0D/TabT-Rest/commit/bdc4147e68e8a0ed20a63b7634c56af63dfa103b))
+
 ## [1.20.18](https://github.com/Fllorent0D/TabT-Rest/compare/v1.20.17...v1.20.18) (2023-11-24)
 
 
