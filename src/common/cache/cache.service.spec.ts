@@ -42,7 +42,7 @@ describe('CacheService', () => {
 
       provider.setInCache(key, value, ttl);
 
-      expect(spy).toHaveBeenCalledWith('aaa', value, 10);
+      expect(spy).toHaveBeenCalledWith(key, value, {ttl: 10});
     });
   });
   describe('getFromCacheOrGetAndCacheResult', () => {
@@ -78,7 +78,7 @@ describe('CacheService', () => {
       expect(getSpy).toHaveBeenCalledTimes(1);
       expect(getSpy).toHaveBeenCalledWith('aaa');
       expect(setSpy).toHaveBeenCalledTimes(1);
-      expect(setSpy).toHaveBeenCalledWith('aaa', value, 600);
+      expect(setSpy).toHaveBeenCalledWith('aaa', value, { ttl: 600 });
       expect(getter).toHaveBeenCalledTimes(1);
     });
   });
