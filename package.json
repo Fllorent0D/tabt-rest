@@ -89,7 +89,7 @@
     "@types/lodash": "4.14.202",
     "@types/lunr": "2.3.7",
     "@types/node": "18.17.18",
-    "@types/response-time": "2.3.5",
+    "@types/response-time": "2.3.8",
     "@types/supertest": "2.0.12",
     "@types/user-agents": "1.0.2",
     "@typescript-eslint/eslint-plugin": "5.62.0",
