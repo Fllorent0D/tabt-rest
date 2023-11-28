@@ -1,5 +1,12 @@
 
 
+## [1.20.20](https://github.com/Fllorent0D/TabT-Rest/compare/v1.20.19...v1.20.20) (2023-11-28)
+
+
+### Chores
+
+* Update dependency @types/response-time to v2.3.8 ([18015e3](https://github.com/Fllorent0D/TabT-Rest/commit/18015e3249b0ebb8d89387b7ade8c37cfb47d05e))
+
 ## [1.20.19](https://github.com/Fllorent0D/TabT-Rest/compare/v1.20.18...v1.20.19) (2023-11-27)
 
 
