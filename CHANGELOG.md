@@ -1,5 +1,12 @@
 
 
+## [1.20.21](https://github.com/Fllorent0D/TabT-Rest/compare/v1.20.20...v1.20.21) (2023-11-28)
+
+
+### Chores
+
+* Update dependency @types/supertest to v2.0.16 ([1bd93ae](https://github.com/Fllorent0D/TabT-Rest/commit/1bd93ae68d1ad82d0f56a2599b79fe2c2866cc4a))
+
 ## [1.20.20](https://github.com/Fllorent0D/TabT-Rest/compare/v1.20.19...v1.20.20) (2023-11-28)
 
 
