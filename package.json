@@ -60,7 +60,7 @@
     "lunr": "2.3.9",
     "nestjs-pino": "3.4.0",
     "p-queue": "6.6.2",
-    "pino-http": "8.5.0",
+    "pino-http": "8.5.1",
     "pino-multi-stream": "6.0.0",
     "pino-pretty": "9.4.1",
     "reflect-metadata": "0.1.13",
