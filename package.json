@@ -12,7 +12,6 @@
   },
   "scripts": {
     "prebuild": "rimraf dist",
-    "postinstall": "git update-index -q --refresh",
     "build": "nest build",
     "ci": "node ./node_modules/@nestjs/cli/bin/nest.js build",
     "format": "prettier --write \\\"src/**/*.ts\\\" \\\"test-e2e/**/*.ts\\\"",
