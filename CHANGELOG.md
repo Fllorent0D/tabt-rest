@@ -1,5 +1,7 @@
 
 
+## [1.20.29](https://github.com/Fllorent0D/tabt-rest/compare/v1.20.28...v1.20.29) (2023-12-01)
+
 ## [1.20.28](https://github.com/Fllorent0D/tabt-rest/compare/v1.20.27...v1.20.28) (2023-12-01)
 
 
