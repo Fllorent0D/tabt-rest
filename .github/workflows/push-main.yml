@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [ 16.x, 18.x ]
+        node-version: [ 18.x ]
 
     steps:
       - uses: actions/checkout@v3
@@ -18,6 +18,13 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
+      - name: Cache Node.js modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.OS }}-node-
       - run: npm ci
       - run: npm run lint
       - run: npm run test
@@ -34,11 +41,17 @@ jobs:
         run: |
           git config user.name "${GITHUB_ACTOR}"
           git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+      - name: Cache Node.js modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.OS }}-node-
       - run: npm ci
       - run: npm run release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
 
   build-image:
     runs-on: ubuntu-latest
@@ -50,9 +63,15 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '18'
+      - name: Cache Node.js modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.OS }}-node-
       - name: Build Docker Image
         run: docker build -t ghcr.io/fllorent0d/tabt-rest:latest .
-        # Replace "your-nodejs-api" with your desired image name
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v1
         with:
@@ -73,6 +92,13 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18.12.0
+      - name: Cache Node.js modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.OS }}-node-
       - name: Setup
         run: npm ci
       - name: Build
@@ -89,15 +115,3 @@ jobs:
           REMOTE_HOST: ${{ secrets.SSH_STAGING_HOST }}
           REMOTE_USER: ${{ secrets.SSH_STAGING_USER }}
           REMOTE_PORT: ${{ secrets.SSH_REMOTE_PORT }}
-          TARGET: ${{ secrets.SSH_STAGING_TARGET }}
-      - name: Restarting TabT instance
-        uses: appleboy/ssh-action@master
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-        with:
-          envs: DATABASE_URL
-          host: ${{ secrets.SSH_STAGING_HOST }}
-          port: ${{ secrets.SSH_REMOTE_PORT }}
-          username: ${{ secrets.SSH_STAGING_USER }}
-          key: ${{ secrets.SSH_STAGING_PRIVATEKEY }}
-          script: cd ${{ secrets.SSH_STAGING_TARGET }} && npm run prisma:deploy && pm2 reload tabt-rest-pm2.json --env production
