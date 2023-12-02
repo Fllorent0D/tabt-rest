@@ -12,10 +12,6 @@ jobs:
   run_tests:
     name: Run Tests
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [ ${ { env.NODE_VERSION } } ]
-
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
