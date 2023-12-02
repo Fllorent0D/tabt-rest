@@ -1,9 +1,10 @@
 name: 'Build and Push Docker Image on Tag Creation'
 
 on:
-  push:
-    tags:
-      - '*'
+  workflow_run:
+    workflows: ["Main Branch Operations"]
+    types:
+      - completed
 
 env:
   NODE_VERSION: 18

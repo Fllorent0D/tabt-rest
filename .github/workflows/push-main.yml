@@ -1,80 +1,94 @@
-name: 'Bump Version'
+name: 'Main Branch Operations'
 
 on:
   push:
     branches:
       - 'main'
 
+env:
+  NODE_VERSION: 18.x
+
 jobs:
-  tests:
+  run_tests:
+    name: Run Tests
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [ 18.x ]
+        node-version: [ ${{ env.NODE_VERSION }} ]
 
     steps:
-      - uses: actions/checkout@v3
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js Environment
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Cache Node.js modules
+
+      - name: Cache Node.js Modules
         uses: actions/cache@v3
         with:
           path: ~/.npm
           key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.OS }}-node-
-      - run: npm ci
-      - run: npm run lint
-      - run: npm run test
-      - run: npm run build
 
-  release:
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Lint Code
+        run: npm run lint
+
+      - name: Run Unit Tests
+        run: npm run test
+
+      - name: Build Project
+        run: npm run build
+
+  create_release:
+    name: Create Release
     runs-on: ubuntu-latest
-    needs: tests
+    needs: run_tests
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout Code
+        uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: git config
+
+      - name: Configure Git User
         run: |
           git config user.name "${GITHUB_ACTOR}"
           git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
-      - name: Cache Node.js modules
-        uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.OS }}-node-
-      - run: npm ci
-      - run: npm run release
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Create Release
+        run: npm run release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  deploy:
+  deploy_to_server:
+    name: Deploy to Server
     runs-on: ubuntu-latest
-    needs: release
+    needs: create_release
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout Code
+        uses: actions/checkout@v3
         with:
           ref: ${{ github.ref }}
-      - name: Use Node.js ${{ matrix.node-version }}
+
+      - name: Setup Node.js Environment
         uses: actions/setup-node@v3
         with:
-          node-version: 18.12.0
-      - name: Cache Node.js modules
-        uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.OS }}-node-
-      - name: Setup
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install Dependencies
         run: npm ci
-      - name: Build
+
+      - name: Build Project
         run: npm run build
+
       - name: Deploy to Server
         uses: easingthemes/ssh-deploy@v3.4.5
         with:
@@ -87,3 +101,4 @@ jobs:
           REMOTE_HOST: ${{ secrets.SSH_STAGING_HOST }}
           REMOTE_USER: ${{ secrets.SSH_STAGING_USER }}
           REMOTE_PORT: ${{ secrets.SSH_REMOTE_PORT }}
+          TARGET: ${{ secrets.SSH_STAGING_TARGET }}
