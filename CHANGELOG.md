@@ -1,5 +1,12 @@
 
 
+## [1.20.34](https://github.com/Fllorent0D/tabt-rest/compare/v1.20.33...v1.20.34) (2023-12-05)
+
+
+### Chores
+
+* Update dependency @types/node to v18.19.2 ([04667f8](https://github.com/Fllorent0D/tabt-rest/commit/04667f8094a74c2c9b63d4d830534400aef4e282))
+
 ## [1.20.33](https://github.com/Fllorent0D/tabt-rest/compare/v1.20.32...v1.20.33) (2023-12-05)
 
 
