@@ -1,5 +1,12 @@
 
 
+## [1.20.36](https://github.com/Fllorent0D/tabt-rest/compare/v1.20.35...v1.20.36) (2023-12-05)
+
+
+### Chores
+
+* Update dependency eslint-config-prettier to v9.1.0 ([0689d5e](https://github.com/Fllorent0D/tabt-rest/commit/0689d5e518393312839e5b56d801620d66a916b4))
+
 ## [1.20.35](https://github.com/Fllorent0D/tabt-rest/compare/v1.20.34...v1.20.35) (2023-12-05)
 
 
