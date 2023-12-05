@@ -1,5 +1,12 @@
 
 
+## [1.20.33](https://github.com/Fllorent0D/tabt-rest/compare/v1.20.32...v1.20.33) (2023-12-05)
+
+
+### Chores
+
+* Pin Node.js ([b12d080](https://github.com/Fllorent0D/tabt-rest/commit/b12d080141e07e39a3b9c53296b0111d816219d3))
+
 ## [1.20.32](https://github.com/Fllorent0D/tabt-rest/compare/v1.20.31...v1.20.32) (2023-12-02)
 
 ## [1.20.31](https://github.com/Fllorent0D/tabt-rest/compare/v1.20.30...v1.20.31) (2023-12-02)
