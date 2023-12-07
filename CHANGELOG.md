@@ -1,5 +1,12 @@
 
 
+## [1.20.39](https://github.com/Fllorent0D/tabt-rest/compare/v1.20.38...v1.20.39) (2023-12-07)
+
+
+### Chores
+
+* Update dependency @types/jest to v29.5.11 ([57484bf](https://github.com/Fllorent0D/tabt-rest/commit/57484bf12c3300bd5ebe9dad011c0bbfe266840b))
+
 ## [1.20.38](https://github.com/Fllorent0D/tabt-rest/compare/v1.20.37...v1.20.38) (2023-12-06)
 
 
