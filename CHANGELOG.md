@@ -1,5 +1,12 @@
 
 
+## [1.20.40](https://github.com/Fllorent0D/tabt-rest/compare/v1.20.39...v1.20.40) (2023-12-07)
+
+
+### Chores
+
+* Update dependency ts-loader to v9.5.1 ([65c4f60](https://github.com/Fllorent0D/tabt-rest/commit/65c4f60ea05da8cda32a03361b3ccff66de86f93))
+
 ## [1.20.39](https://github.com/Fllorent0D/tabt-rest/compare/v1.20.38...v1.20.39) (2023-12-07)
 
 
