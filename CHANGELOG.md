@@ -1,5 +1,12 @@
 
 
+## [1.20.42](https://github.com/Fllorent0D/tabt-rest/compare/v1.20.41...v1.20.42) (2023-12-08)
+
+
+### Chores
+
+* Update dependency reflect-metadata to v0.1.14 ([931f6ca](https://github.com/Fllorent0D/tabt-rest/commit/931f6ca3a78e7a03bea0ec9f4da2f5fd8fd8e395))
+
 ## [1.20.41](https://github.com/Fllorent0D/tabt-rest/compare/v1.20.40...v1.20.41) (2023-12-08)
 
 
