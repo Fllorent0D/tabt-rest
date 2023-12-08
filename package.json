@@ -61,7 +61,7 @@
     "pino-http": "8.5.1",
     "pino-multi-stream": "6.0.0",
     "pino-pretty": "9.4.1",
-    "reflect-metadata": "0.1.13",
+    "reflect-metadata": "0.1.14",
     "response-time": "2.3.2",
     "rxjs": "7.8.1",
     "soap": "1.0.0",
