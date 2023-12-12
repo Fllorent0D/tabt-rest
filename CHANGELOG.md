@@ -1,5 +1,12 @@
 
 
+## [1.20.43](https://github.com/Fllorent0D/tabt-rest/compare/v1.20.42...v1.20.43) (2023-12-12)
+
+
+### Chores
+
+* Update dependency ts-node to v10.9.2 ([e193e17](https://github.com/Fllorent0D/tabt-rest/commit/e193e17ea4ce2040adb79d5730a648471ac2ce19))
+
 ## [1.20.42](https://github.com/Fllorent0D/tabt-rest/compare/v1.20.41...v1.20.42) (2023-12-08)
 
 
