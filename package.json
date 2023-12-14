@@ -30,7 +30,7 @@
     "prisma:deploy": "prisma migrate deploy"
   },
   "dependencies": {
-    "@nestjs/axios": "1.0.1",
+    "@nestjs/axios": "2.0.0",
     "@nestjs/cache-manager": "2.1.1",
     "@nestjs/common": "9.4.3",
     "@nestjs/config": "2.3.4",
@@ -60,7 +60,7 @@
     "p-queue": "6.6.2",
     "pino-http": "8.5.1",
     "pino-multi-stream": "6.0.0",
-    "pino-pretty": "9.4.1",
+    "pino-pretty": "10.3.0",
     "reflect-metadata": "0.1.14",
     "response-time": "2.3.2",
     "rxjs": "7.8.1",
