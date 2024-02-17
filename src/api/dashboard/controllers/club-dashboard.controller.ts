@@ -1,7 +1,5 @@
-import { Controller, Get, NotFoundException, Param, ParseIntPipe, Query, Version } from '@nestjs/common';
+import { Controller, Get, NotFoundException, Param, Version } from '@nestjs/common';
 import { ApiNotFoundResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { MemberDashboardDTOV1, WeeklyNumericRankingInputV2 } from '../dto/member-dashboard.dto';
-import { MemberDashboardService } from '../services/member-dashboard.service';
 import { ClubDashboardDTOV1 } from '../dto/club-dashboard.dto';
 import { ClubDashboardService } from '../services/club-dashboard.service';
 

@@ -8,13 +8,11 @@ import { TabtClientSwitchingService } from './tabt-client/tabt-client-switching.
 import { PackageService } from './package/package.service';
 import { HeaderKeys, TABT_HEADERS } from './context/context.constants';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import {redisStore} from 'cache-manager-redis-store';
 import { LoggerModule } from 'nestjs-pino';
 import pino from 'pino';
 import {cloneDeep} from 'lodash';
 import { SocksProxyHttpClient } from './socks-proxy/socks-proxy-http-client';
 import { createSoapClient } from './tabt-client/soap-client.factory';
-import { memoryStore } from 'cache-manager';
 import { CacheModuleOptsFactory } from './cache/cache-module-opts.factory';
 import { HttpModule } from '@nestjs/axios';
 import { CacheModule } from '@nestjs/cache-manager';
@@ -31,15 +29,15 @@ import { NumericRankingService } from './data-aftt/services/numeric-ranking.serv
 const asyncProviders: Provider[] = [
   {
     provide: 'tabt-aftt',
-    useFactory: async (configService, socksProxy) => {
-      return createSoapClient(process.env.AFTT_WSDL);
+    useFactory: async (configService: ConfigService, socksProxy: SocksProxyHttpClient) => {
+      return createSoapClient(configService.get('AFTT_WSDL'), socksProxy);
     },
     inject: [ConfigService, SocksProxyHttpClient],
   },
   {
     provide: 'tabt-vttl',
-    useFactory: async (configService, socksProxy) => {
-      return createSoapClient(process.env.VTLL_WSDL);
+    useFactory: async (configService: ConfigService, socksProxy: SocksProxyHttpClient) => {
+      return createSoapClient(configService.get('VTLL_WSDL'), socksProxy);
     },
     inject: [ConfigService, SocksProxyHttpClient],
   },

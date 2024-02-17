@@ -2,7 +2,6 @@ import { Inject, Injectable, Logger } from '@nestjs/common';
 import * as lunr from 'lunr';
 import { MemberEntry, TabTAPISoap } from '../../entity/tabt-soap/TabTAPI_Port';
 import { CacheService, TTL_DURATION } from '../../common/cache/cache.service';
-import { Timeout } from '@nestjs/schedule';
 
 @Injectable()
 export class MembersSearchIndexService {
@@ -22,8 +21,8 @@ export class MembersSearchIndexService {
     const searchTerms = queryString
       .trim()
       .replace(/-/g, ' ')
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
       .split(' ');
     this.logger.debug(`Quick members search. Query: ${queryString}`);
 

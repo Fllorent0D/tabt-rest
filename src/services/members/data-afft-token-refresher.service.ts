@@ -1,5 +1,4 @@
-import { Injectable, Logger, LoggerService } from '@nestjs/common';
-import { Cron, Timeout } from '@nestjs/schedule';
+import { Injectable, Logger } from '@nestjs/common';
 import { SocksProxyHttpClient } from '../../common/socks-proxy/socks-proxy-http-client';
 import { UserAgentsUtil } from '../../common/utils/user-agents.util';
 import { firstValueFrom } from 'rxjs';
@@ -45,7 +44,7 @@ export class DataAfftTokenRefresherService {
     this.logger.log('Refreshing data.aftt.be token...');
     const token = await this.fetchToken();
     await this.saveToken(token);
-    console.log(token)
+    console.log(token);
     this.logger.log('data.aftt.be token refreshed.');
   }
 

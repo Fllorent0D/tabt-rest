@@ -21,7 +21,6 @@ describe('MemberController', () => {
   let service: MemberService;
   let eloService: EloMemberService;
   let seasonService: SeasonService;
-  let numericRankingService: NumericRankingService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -33,7 +32,6 @@ describe('MemberController', () => {
     service = module.get<MemberService>(MemberService);
     eloService = module.get<EloMemberService>(EloMemberService);
     seasonService = module.get<SeasonService>(SeasonService);
-    numericRankingService = module.get<NumericRankingService>(NumericRankingService);
   });
 
   it('should be defined', () => {

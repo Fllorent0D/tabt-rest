@@ -24,6 +24,7 @@ export class SocksProxyHttpClient extends HttpClient {
     return new SocksProxyAgent(proxyOptions);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async request(rurl: string, data: any, callback: (error: any, res?: any, body?: any) => any, exheaders?: IHeaders, exoptions?: IExOptions, caller?: any): Promise<any> {
     const req = this.buildRequest(rurl, data, exheaders, exoptions);
     try {

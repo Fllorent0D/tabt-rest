@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { ClubService } from '../../../services/clubs/club.service';
 import { DashboardServiceInterface } from '../interfaces/dashboard-service.interface';
 import { DivisionMemberDashboardDTOV1 } from '../dto/division-dashboard.dto';

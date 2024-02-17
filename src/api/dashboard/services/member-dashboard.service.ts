@@ -84,7 +84,6 @@ export class MemberDashboardService implements DashboardServiceInterface<MemberD
         const tieBreakVictories = memberResultEntries.filter((result) => result.SetFor === 3 && result.SetAgainst === 2).length;
         const tieBreakdefeats = memberResultEntries.filter((result) => result.SetFor === 2 && result.SetAgainst === 3).length;
         const totalTieBreak = tieBreakVictories + tieBreakdefeats;
-        const totalTieBreakPct = Math.floor((totalTieBreak / total) * 100);
         const tieBreakDefeatsPct = Math.floor((defeats / totalTieBreak) * 100);
         const tieBreakVictoriesPct = Math.floor((victories / totalTieBreak) * 100);
 

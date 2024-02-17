@@ -2,7 +2,7 @@ import { HttpService } from "@nestjs/axios";
 import { ConfigService } from "@nestjs/config";
 import { genderMapping } from "../constants";
 import { firstValueFrom } from "rxjs";
-import { Injectable, Logger, Query } from "@nestjs/common";
+import { Injectable, Logger } from "@nestjs/common";
 import { DataAFTTIndividualResultModel } from "../model/individual-results.model";
 import { CompetitionType, Gender, Result } from "@prisma/client";
 

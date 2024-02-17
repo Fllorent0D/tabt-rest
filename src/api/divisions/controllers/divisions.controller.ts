@@ -17,7 +17,6 @@ import { TabtHeadersDecorator } from '../../../common/decorators/tabt-headers.de
 import { GetDivisionMatches, GetDivisionRanking, GetDivisions } from '../dto/divisions.dto';
 import { MatchService } from '../../../services/matches/match.service';
 import { Level } from '../../../entity/tabt-input.interface';
-import { RequestBySeasonDto } from '../../../common/dto/request-by-season.dto';
 import { MatchesMembersRankerService } from '../../../services/matches/matches-members-ranker.service';
 import { MemberResults } from '../../../common/dto/member-ranking.dto';
 
