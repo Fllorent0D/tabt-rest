@@ -1,5 +1,12 @@
 
 
+## [1.20.48](https://github.com/Fllorent0D/tabt-rest/compare/v1.20.47...v1.20.48) (2024-02-18)
+
+
+### Chores
+
+* bump ([3681033](https://github.com/Fllorent0D/tabt-rest/commit/3681033b3cdb2ea72b3293225b1b96325b2ed711))
+
 ## [1.20.47](https://github.com/Fllorent0D/tabt-rest/compare/v1.20.45...v1.20.47) (2024-02-17)
 
 
