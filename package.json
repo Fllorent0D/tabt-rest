@@ -7,7 +7,7 @@
   "license": "UNLICENSED",
   "main": "dist/main.js",
   "engines": {
-    "node": "18.19.x",
+    "node": "20.11.x",
     "npm": "9.x"
   },
   "scripts": {
@@ -27,7 +27,8 @@
     "test:e2e": "npm test -- --config test-e2e/jest-e2e.json",
     "release": "release-it",
     "start:azure": "npm run build && func host start",
-    "prisma:deploy": "prisma migrate deploy"
+    "prisma:deploy": "prisma migrate deploy",
+    "start:migrate:prod": "npm run prisma:deploy && npm run start:prod"
   },
   "dependencies": {
     "@nestjs/axios": "3.0.2",
