@@ -1,5 +1,5 @@
 # Base image
-FROM node:20
+FROM node:alpine-20
 
 # Create app directory
 WORKDIR /usr/src/app
@@ -8,7 +8,7 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 # Install app dependencies
-RUN npm install
+RUN npm install --legacy-peer-deps
 
 # Bundle app source
 COPY . .
