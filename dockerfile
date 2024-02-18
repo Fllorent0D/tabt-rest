@@ -1,19 +1,19 @@
-# Use an official Node.js runtime as a parent image
-FROM node:20-alpine
+# Base image
+FROM node:20
 
-# Set the working directory in the container
-WORKDIR /app
+# Create app directory
+WORKDIR /usr/src/app
 
-# Copy package.json and package-lock.json to the working directory
+# A wildcard is used to ensure both package.json AND package-lock.json are copied
+COPY package*.json ./
+
+# Install app dependencies
+RUN npm install
+
+# Bundle app source
 COPY . .
 
-# Install application dependencies
-RUN npm install --legacy-peer-deps && npm run build && npx prisma generate
-
-
-# Expose the port your app runs on
-EXPOSE 3000
-
-# Define the command to run your application
+# Creates a "dist" folder with the production build
+RUN npm run build
 
 CMD ["npm", "run", "start:migrate:prod"]
