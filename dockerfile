@@ -1,5 +1,5 @@
 # Use an official Node.js runtime as a parent image
-FROM node:20.11.1
+FROM node:20-alpine
 
 # Set the working directory in the container
 WORKDIR /app
@@ -8,7 +8,7 @@ WORKDIR /app
 COPY . .
 
 # Install application dependencies
-RUN npm install --legacy-peer-deps && npm run build
+RUN npm install --legacy-peer-deps && npm run build && npx prisma generate
 
 
 # Expose the port your app runs on
