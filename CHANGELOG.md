@@ -1,5 +1,12 @@
 
 
+## [1.20.56](https://github.com/Fllorent0D/tabt-rest/compare/v1.20.55...v1.20.56) (2024-02-21)
+
+
+### Chores
+
+* Update typescript-eslint monorepo to v7.0.2 ([30a808a](https://github.com/Fllorent0D/tabt-rest/commit/30a808a46557cd99e68ee2cb04e8ba51f7400774))
+
 ## [1.20.55](https://github.com/Fllorent0D/tabt-rest/compare/v1.20.54...v1.20.55) (2024-02-21)
 
 
