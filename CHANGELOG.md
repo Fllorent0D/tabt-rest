@@ -1,5 +1,12 @@
 
 
+## [1.20.58](https://github.com/Fllorent0D/tabt-rest/compare/v1.20.57...v1.20.58) (2024-02-22)
+
+
+### Chores
+
+* Update dependency release-it to v17.1.1 ([b4f5f78](https://github.com/Fllorent0D/tabt-rest/commit/b4f5f782e7276b4d34d9492b6f104a2915668fce))
+
 ## [1.20.57](https://github.com/Fllorent0D/tabt-rest/compare/v1.20.56...v1.20.57) (2024-02-22)
 
 
