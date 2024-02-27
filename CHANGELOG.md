@@ -1,5 +1,12 @@
 
 
+## [1.20.62](https://github.com/Fllorent0D/tabt-rest/compare/v1.20.61...v1.20.62) (2024-02-27)
+
+
+### Chores
+
+* Update dependency eslint to v8.57.0 ([676998e](https://github.com/Fllorent0D/tabt-rest/commit/676998ed0fe113065be766f832cc522045efb7f1))
+
 ## [1.20.61](https://github.com/Fllorent0D/tabt-rest/compare/v1.20.60...v1.20.61) (2024-02-27)
 
 
