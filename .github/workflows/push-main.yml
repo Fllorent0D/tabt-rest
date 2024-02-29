@@ -86,7 +86,7 @@ jobs:
         run: npm run build
 
       - name: Deploy to Server
-        uses: easingthemes/ssh-deploy@v3.4.5
+        uses: easingthemes/ssh-deploy@v5.0.3
         with:
           REMOTE_PORT: ${{ secrets.SSH_REMOTE_PORT }}
           TARGET: ${{ secrets.SSH_STAGING_TARGET }}
