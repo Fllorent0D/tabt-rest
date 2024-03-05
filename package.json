@@ -8,7 +8,7 @@
   "main": "dist/main.js",
   "engines": {
     "node": "20.11.x",
-    "npm": "9.x"
+    "npm": "10.x"
   },
   "scripts": {
     "prebuild": "rimraf dist",
