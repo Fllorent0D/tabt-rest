@@ -1,5 +1,12 @@
 
 
+## [1.20.71](https://github.com/Fllorent0D/tabt-rest/compare/v1.20.70...v1.20.71) (2024-03-05)
+
+
+### Chores
+
+* Update dependency @openapitools/openapi-generator-cli to v2.10.0 ([6760d9b](https://github.com/Fllorent0D/tabt-rest/commit/6760d9b56a1e726fa56c96cc8e3f3713667b4bda))
+
 ## [1.20.70](https://github.com/Fllorent0D/tabt-rest/compare/v1.20.69...v1.20.70) (2024-03-05)
 
 
