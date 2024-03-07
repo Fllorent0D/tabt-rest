@@ -1,5 +1,12 @@
 
 
+## [1.20.74](https://github.com/Fllorent0D/tabt-rest/compare/v1.20.73...v1.20.74) (2024-03-07)
+
+
+### Chores
+
+* Update dependency @types/node to v20.11.25 ([68a4668](https://github.com/Fllorent0D/tabt-rest/commit/68a4668315f2c0a1011f1ed03cf056fc6c4a7901))
+
 ## [1.20.73](https://github.com/Fllorent0D/tabt-rest/compare/v1.20.72...v1.20.73) (2024-03-07)
 
 
