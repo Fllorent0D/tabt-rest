@@ -1,5 +1,12 @@
 
 
+## [1.20.73](https://github.com/Fllorent0D/tabt-rest/compare/v1.20.72...v1.20.73) (2024-03-07)
+
+
+### Chores
+
+* Update dependency @schematics/angular to v17.2.3 ([d457584](https://github.com/Fllorent0D/tabt-rest/commit/d4575843a5d41c8f9ecd757559ceb62e33a4ae11))
+
 ## [1.20.72](https://github.com/Fllorent0D/tabt-rest/compare/v1.20.71...v1.20.72) (2024-03-06)
 
 
