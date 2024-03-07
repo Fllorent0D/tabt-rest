@@ -87,7 +87,7 @@
     "@types/jest": "29.5.12",
     "@types/lodash": "4.14.202",
     "@types/lunr": "2.3.7",
-    "@types/node": "20.11.24",
+    "@types/node": "20.11.25",
     "@types/response-time": "2.3.8",
     "@types/supertest": "6.0.2",
     "@types/user-agents": "1.0.4",
