@@ -1,5 +1,12 @@
 
 
+## [1.20.77](https://github.com/Fllorent0D/tabt-rest/compare/v1.20.76...v1.20.77) (2024-03-08)
+
+
+### Chores
+
+* Update dependency typescript to v5.4.2 ([cef93fd](https://github.com/Fllorent0D/tabt-rest/commit/cef93fdbcc59ce67ab2f98c04d725b60227191ca))
+
 ## [1.20.76](https://github.com/Fllorent0D/tabt-rest/compare/v1.20.75...v1.20.76) (2024-03-07)
 
 
