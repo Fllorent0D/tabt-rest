@@ -1,5 +1,18 @@
 
 
+## [1.20.78](https://github.com/Fllorent0D/tabt-rest/compare/v1.20.77...v1.20.78) (2024-03-08)
+
+
+### Chores
+
+* Pin Node.js ([#652](https://github.com/Fllorent0D/tabt-rest/issues/652)) ([a58c422](https://github.com/Fllorent0D/tabt-rest/commit/a58c422a905fce2db677d32c978777bcfcbc5522))
+* Update actions/cache action to v4 ([#663](https://github.com/Fllorent0D/tabt-rest/issues/663)) ([758c53d](https://github.com/Fllorent0D/tabt-rest/commit/758c53dc876bc17b1f6ff7bd0570dfa87841ef76))
+* Update actions/checkout action to v4 ([#598](https://github.com/Fllorent0D/tabt-rest/issues/598)) ([162df98](https://github.com/Fllorent0D/tabt-rest/commit/162df98c47cb28f40e783823f12b378384c6fad4))
+* Update docker/login-action action to v3 ([#667](https://github.com/Fllorent0D/tabt-rest/issues/667)) ([b4815fa](https://github.com/Fllorent0D/tabt-rest/commit/b4815facf767b98397499183a840518d938ff770))
+* Update easingthemes/ssh-deploy action to v5 ([#669](https://github.com/Fllorent0D/tabt-rest/issues/669)) ([bffc607](https://github.com/Fllorent0D/tabt-rest/commit/bffc60725bc5e8a73bd6e5c678ad96f8998d84ba))
+* Update github/codeql-action action to v3 ([#673](https://github.com/Fllorent0D/tabt-rest/issues/673)) ([666f975](https://github.com/Fllorent0D/tabt-rest/commit/666f97501a368e07338e21c2e404fb24de83dbbd))
+* Update npm to v10 ([#675](https://github.com/Fllorent0D/tabt-rest/issues/675)) ([f920edf](https://github.com/Fllorent0D/tabt-rest/commit/f920edfb7240e6ddec97521ac33d96c823f3d901))
+
 ## [1.20.77](https://github.com/Fllorent0D/tabt-rest/compare/v1.20.76...v1.20.77) (2024-03-08)
 
 
