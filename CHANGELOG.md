@@ -1,5 +1,12 @@
 
 
+## [1.20.80](https://github.com/Fllorent0D/tabt-rest/compare/v1.20.79...v1.20.80) (2024-03-12)
+
+
+### Chores
+
+* Update dependency date-fns to v3.4.0 ([983d894](https://github.com/Fllorent0D/tabt-rest/commit/983d894ccbb5e9e501855a2685b6ffd9dce7b0e5))
+
 ## [1.20.79](https://github.com/Fllorent0D/tabt-rest/compare/v1.20.78...v1.20.79) (2024-03-12)
 
 
