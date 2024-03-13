@@ -85,7 +85,7 @@
     "@types/express": "4.17.21",
     "@types/he": "1.2.3",
     "@types/jest": "29.5.12",
-    "@types/lodash": "4.14.202",
+    "@types/lodash": "4.17.0",
     "@types/lunr": "2.3.7",
     "@types/node": "20.11.26",
     "@types/response-time": "2.3.8",
