@@ -1,5 +1,12 @@
 
 
+## [1.20.88](https://github.com/Fllorent0D/tabt-rest/compare/v1.20.87...v1.20.88) (2024-03-14)
+
+
+### Chores
+
+* Update prisma monorepo to v5.11.0 ([52aa604](https://github.com/Fllorent0D/tabt-rest/commit/52aa6048d94cd11f17fcf8b3d2f9698f525595a1))
+
 ## [1.20.87](https://github.com/Fllorent0D/tabt-rest/compare/v1.20.86...v1.20.87) (2024-03-14)
 
 
