@@ -1,5 +1,12 @@
 
 
+## [1.20.86](https://github.com/Fllorent0D/tabt-rest/compare/v1.20.85...v1.20.86) (2024-03-14)
+
+
+### Chores
+
+* Update dependency user-agents to v1.1.142 ([b9158cf](https://github.com/Fllorent0D/tabt-rest/commit/b9158cf7fa151af528e522477147fd2190866d70))
+
 ## [1.20.85](https://github.com/Fllorent0D/tabt-rest/compare/v1.20.84...v1.20.85) (2024-03-14)
 
 
