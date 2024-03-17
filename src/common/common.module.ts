@@ -30,14 +30,14 @@ const asyncProviders: Provider[] = [
   {
     provide: 'tabt-aftt',
     useFactory: async (configService: ConfigService, socksProxy: SocksProxyHttpClient) => {
-      return createSoapClient(configService.get('AFTT_WSDL'), socksProxy);
+      return createSoapClient(configService.get('AFTT_WSDL'), configService.get('USE_SOCKS_PROXY') === 'true' ? socksProxy : undefined);
     },
     inject: [ConfigService, SocksProxyHttpClient],
   },
   {
     provide: 'tabt-vttl',
     useFactory: async (configService: ConfigService, socksProxy: SocksProxyHttpClient) => {
-      return createSoapClient(configService.get('VTLL_WSDL'), socksProxy);
+      return createSoapClient(configService.get('VTLL_WSDL'), configService.get('USE_SOCKS_PROXY') === 'true' ? socksProxy : undefined);
     },
     inject: [ConfigService, SocksProxyHttpClient],
   },
@@ -58,7 +58,7 @@ const asyncProviders: Provider[] = [
     LoggerModule.forRoot({
         pinoHttp: {
           level: 'debug',
-          transport: { target: 'pino-pretty' },
+          //transport: { target: 'pino-pretty' },
           quietReqLogger: true,
           serializers: {
             req: pino.stdSerializers.wrapRequestSerializer(r => {

@@ -28,7 +28,7 @@ export class DataAFTTResultsProcessingService {
             this.logger.log(`File downloaded, start processing ${lines.length} lines...`);
 
             // Split lines into chunks for batch processing
-            const chunkSize = 500; // Adjust this value based on your system's capability
+            const chunkSize = 100; // Adjust this value based on your system's capability
             for (let i = 0; i < lines.length; i += chunkSize) {
                 this.logger.log(`Processing chunk ${i / chunkSize + 1}/${Math.ceil(lines.length / chunkSize)}...`);
 
