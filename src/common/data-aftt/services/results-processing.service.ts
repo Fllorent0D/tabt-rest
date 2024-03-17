@@ -20,45 +20,30 @@ export class DataAFTTResultsProcessingService {
 
 
     async process(): Promise<void> {
-
         for (const [gender, mapping] of genderMapping) {
             const file = await this.downloadMemberFile(gender, mapping);
 
             // split lines and remove last line
             const lines = file.data.split('\n').slice(0, -1);
             this.logger.log(`File downloaded, start processing ${lines.length} lines...`);
-            for(const line of lines){
-                const cols = line.split(';');
-                await this.updateDB(cols, gender);
-            }
 
-                /*
-                1;          ID 
-                2023-09-03; DATA
-                514275;     MEMBER_ID
-                512448;     OPPONENT_ID
-                D;          RESULT
-                5 2-3;    SETS
-        
-                6 - SANDER;    OPPONENT_LASTNAME
-                7 - TEMMERMAN;   OPPONENT_FIRSTNAME
-        
-                8 - B6;       OPPONENT_RANKING
-                9 - T;        competition_type
-                10 - C2;       Member_ranking
-        
-                11 - 5;        competition_context
-                12 - B tornooi Merelbeke;  competition_name
-                13 - 1449;     member_points
-                14 - 1739;     opponent_points
-                15 - -290;     points_difference
-                16 - -2;       points to add
-                17 - 0.5;      loosing factor
-                18 - -1        definitive points to add
-                */
+            // Split lines into chunks for batch processing
+            const chunkSize = 500; // Adjust this value based on your system's capability
+            for (let i = 0; i < lines.length; i += chunkSize) {
+                this.logger.log(`Processing chunk ${i / chunkSize + 1}/${Math.ceil(lines.length / chunkSize)}...`);
+
+                const chunk = lines.slice(i, i + chunkSize);
+
+                // Process each chunk in parallel
+                await Promise.all(chunk.map(line => {
+                    const cols = line.split(';');
+                    return this.updateDB(cols, gender);
+                }));
+            }
 
             this.logger.log(`Processing done. (${lines.length} lines)`);
         }
+
     }
 
     private async downloadMemberFile(gender: Gender, mapping: string) {
@@ -91,10 +76,10 @@ export class DataAFTTResultsProcessingService {
                 competitionType: cols[9] === 'T' ? CompetitionType.TOURNAMENT : CompetitionType.CHAMPIONSHIP,
                 competitionCoef: parseFloat(cols[11]),
                 competitionName: cols[12],
-                diffPoints: parseFloat(cols[15]),
-                pointsToAdd: parseFloat(cols[16]),
-                looseFactor: parseFloat(cols[17]),
-                definitivePointsToAdd: parseFloat(cols[18]),
+                diffPoints: cols[15].length ? parseFloat(cols[15]) : 0,
+                pointsToAdd: cols[16].length ? parseFloat(cols[16]) : 0,
+                looseFactor: cols[17].length ? parseFloat(cols[17]) : 0,
+                definitivePointsToAdd: cols[18].length ? parseFloat(cols[18]) : 0,
             }, gender);
         } catch (e) {
             this.logger.error(e.message);
