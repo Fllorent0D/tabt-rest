@@ -1,5 +1,13 @@
 
 
+## [1.20.89](https://github.com/Fllorent0D/tabt-rest/compare/v1.20.88...v1.20.89) (2024-03-17)
+
+
+### Bug Fixes
+
+* empty values ([e8ac30c](https://github.com/Fllorent0D/tabt-rest/commit/e8ac30ccdf6da0f21534b80afd40f35fc093345a))
+* Small timeout in case of notification ([a6d8833](https://github.com/Fllorent0D/tabt-rest/commit/a6d8833e71b331ffcd0052ffcfb16e9012767ea8))
+
 ## [1.20.88](https://github.com/Fllorent0D/tabt-rest/compare/v1.20.87...v1.20.88) (2024-03-14)
 
 
