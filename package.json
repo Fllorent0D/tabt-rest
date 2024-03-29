@@ -7,7 +7,7 @@
   "license": "UNLICENSED",
   "main": "dist/main.js",
   "engines": {
-    "node": "20.11.x",
+    "node": "20.12.x",
     "npm": "10.x"
   },
   "scripts": {
