@@ -75,7 +75,7 @@
     "@nestjs/cli": "10.3.2",
     "@nestjs/schematics": "10.1.1",
     "@nestjs/testing": "10.3.7",
-    "@openapitools/openapi-generator-cli": "2.13.1",
+    "@openapitools/openapi-generator-cli": "2.13.2",
     "@release-it/conventional-changelog": "8.0.1",
     "@schematics/angular": "17.3.4",
     "@types/bluebird": "3.5.42",
