@@ -101,7 +101,7 @@
     "prettier": "3.2.5",
     "prisma": "5.13.0",
     "release-it": "17.2.1",
-    "rimraf": "5.0.5",
+    "rimraf": "5.0.7",
     "supertest": "6.3.4",
     "ts-jest": "29.1.2",
     "ts-loader": "9.5.1",
