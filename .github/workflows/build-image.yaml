@@ -23,7 +23,6 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          push: true
           platforms: linux/arm64/v8,linux/amd64
           file: ./apps/tabt-rest/dockerfile
           tags: ${{ env.DOCKER_IMAGE_NAME }}
