@@ -10,13 +10,12 @@ import { HeaderKeys, TABT_HEADERS } from './context/context.constants';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { LoggerModule } from 'nestjs-pino';
 import pino from 'pino';
-import {cloneDeep} from 'lodash';
+import { cloneDeep } from 'lodash';
 import { SocksProxyHttpClient } from './socks-proxy/socks-proxy-http-client';
 import { createSoapClient } from './tabt-client/soap-client.factory';
 import { CacheModuleOptsFactory } from './cache/cache-module-opts.factory';
 import { HttpModule } from '@nestjs/axios';
 import { CacheModule } from '@nestjs/cache-manager';
-import { MemberService } from 'src/services/members/member.service';
 import { DataAFTTIndividualResultModel } from './data-aftt/model/individual-results.model';
 import { DataAFTTMemberModel } from './data-aftt/model/member.model';
 import { PrismaService } from './prisma.service';
@@ -24,6 +23,7 @@ import { DataAFTTMemberNumericRankingModel } from './data-aftt/model/member-nume
 import { DataAFTTMemberProcessingService } from './data-aftt/services/member-processing.service';
 import { DataAFTTResultsProcessingService } from './data-aftt/services/results-processing.service';
 import { NumericRankingService } from './data-aftt/services/numeric-ranking.service';
+import { MemberService } from '../services/members/member.service';
 
 
 const asyncProviders: Provider[] = [
@@ -90,7 +90,7 @@ const asyncProviders: Provider[] = [
     PrismaService,
     DataAFTTMemberProcessingService,
     DataAFTTResultsProcessingService,
-    NumericRankingService
+    NumericRankingService,
   ],
   exports: [
     ...asyncProviders,
@@ -106,7 +106,7 @@ const asyncProviders: Provider[] = [
     DataAFTTMemberNumericRankingModel,
     DataAFTTMemberProcessingService,
     DataAFTTResultsProcessingService,
-    NumericRankingService
+    NumericRankingService,
   ],
 })
 export class CommonModule {

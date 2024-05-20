@@ -12,23 +12,24 @@
   },
   "scripts": {
     "prebuild": "rimraf dist",
-    "build": "nest build",
+    "build:tabt-rest": "nest build tabt-rest",
     "ci": "node ./node_modules/@nestjs/cli/bin/nest.js build",
-    "format": "prettier --write \\\"src/**/*.ts\\\" \\\"test-e2e/**/*.ts\\\"",
-    "start": "node dist/main",
-    "start:dev": "nest start --watch",
-    "start:debug": "nest start --debug --watch",
-    "start:prod": "node dist/main",
+    "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
+    "start:tabt-rest": "node dist/tabt-rest/main",
+    "start:dev:tabt-rest": "nest start tabt-rest --watch",
+    "start:debug:tabt-rest": "nest start tabt-rest --debug --watch",
+    "start:prod:tabt-rest": "node dist/apps/tabt-rest/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "npm test -- --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "npm test -- --config test-e2e/jest-e2e.json",
+    "test:e2e": "npm apps/tabt-rest/test -- --config test-e2e/jest-e2e.json",
     "release": "release-it",
     "start:azure": "npm run build && func host start",
     "prisma:deploy": "prisma migrate deploy",
-    "start:migrate:prod": "npm run prisma:deploy && npm run start:prod"
+    "start:migrate:prod": "npm run prisma:deploy && npm run start:prod",
+    "prisma:generate": "prisma generate"
   },
   "dependencies": {
     "@nestjs/axios": "3.0.2",
@@ -115,7 +116,7 @@
       "json",
       "ts"
     ],
-    "rootDir": "src",
+    "rootDir": ".",
     "testRegex": ".spec.ts$",
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
@@ -128,7 +129,7 @@
       ".decorator.ts"
     ],
     "collectCoverage": true,
-    "coverageDirectory": "../coverage",
+    "coverageDirectory": "./coverage",
     "testEnvironment": "node",
     "coverageReporters": [
       "json",
@@ -136,6 +137,9 @@
       "lcov",
       "text",
       "text-summary"
+    ],
+    "roots": [
+      "<rootDir>/apps/"
     ]
   }
 }

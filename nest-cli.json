@@ -1,4 +1,30 @@
 {
   "collection": "@nestjs/schematics",
-  "sourceRoot": "src"
+  "sourceRoot": "apps/tabt-rest/src",
+  "monorepo": true,
+  "root": "apps/tabt-rest",
+  "compilerOptions": {
+    "webpack": true,
+    "tsConfigPath": "apps/tabt-rest/tsconfig.app.json"
+  },
+  "projects": {
+    "tabt-rest": {
+      "type": "application",
+      "root": "apps/tabt-rest",
+      "entryFile": "main",
+      "sourceRoot": "apps/tabt-rest/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/tabt-rest/tsconfig.app.json"
+      }
+    },
+    "data-aftt-importer": {
+      "type": "application",
+      "root": "apps/data-aftt-importer",
+      "entryFile": "main",
+      "sourceRoot": "apps/data-aftt-importer/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/data-aftt-importer/tsconfig.app.json"
+      }
+    }
+  }
 }

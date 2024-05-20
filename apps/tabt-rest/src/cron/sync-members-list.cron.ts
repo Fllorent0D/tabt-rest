@@ -14,7 +14,7 @@ export class SyncMembersListCron {
   }
 
   // Run every day at 9:00 AM
-  @Cron('0 0 9 * * *')
+  //@Cron('0 0 9 * * *')
   async syncMembers() {
     this.logger.log('Daily members sync starting...');
 
@@ -24,13 +24,13 @@ export class SyncMembersListCron {
     }
   }
 
-  @Timeout(1000)
+  //@Timeout(1000)
   async syncMembersAtBootstrap() {
     this.logger.log('Members sync starting at bootstrap...');
-    if (process.env.NODE_ENV === 'prod') {
-      await this.memberProcessingService.process();
+    //if (process.env.NODE_ENV === 'prod') {
+      //await this.memberProcessingService.process();
       await this.resultProcessingService.process();
-    }
+    //}
   }
 
 

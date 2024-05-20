@@ -1,15 +1,15 @@
 import { Injectable } from '@nestjs/common';
-import { getSimplifiedPlayerCategory } from 'src/api/member/helpers/player-category-helpers';
-import { CacheService, TTL_DURATION } from 'src/common/cache/cache.service';
-import { MemberEntry, MemberEntryResultEntry, TeamMatchesEntry } from 'src/entity/tabt-soap/TabTAPI_Port';
-import { MatchService } from 'src/services/matches/match.service';
-import { EloMemberService } from 'src/services/members/elo-member.service';
-import { MemberService } from 'src/services/members/member.service';
 import { MemberDashboardDTOV1, MemberStatsDTOV1, RankingWinLossDTOV1 } from '../dto/member-dashboard.dto';
-import { PLAYER_CATEGORY } from 'src/api/member/dto/member.dto';
 import { DashboardServiceInterface } from '../interfaces/dashboard-service.interface';
 import { RESPONSE_STATUS, ResponseDTO } from '../dto/common.dto';
 import { PlayerCategory } from '../../../entity/tabt-input.interface';
+import { MatchService } from '../../../services/matches/match.service';
+import { CacheService, TTL_DURATION } from '../../../common/cache/cache.service';
+import { MemberService } from '../../../services/members/member.service';
+import { EloMemberService } from '../../../services/members/elo-member.service';
+import { PLAYER_CATEGORY } from '../../member/dto/member.dto';
+import { getSimplifiedPlayerCategory } from '../../member/helpers/player-category-helpers';
+import { MemberEntry, MemberEntryResultEntry, TeamMatchesEntry } from '../../../entity/tabt-soap/TabTAPI_Port';
 
 @Injectable()
 export class MemberDashboardService implements DashboardServiceInterface<MemberDashboardDTOV1> {

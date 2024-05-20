@@ -1,0 +1,51 @@
+version: '3'
+services:
+  tabt-rest:
+    build :
+      context: .
+      dockerfile: ./apps/tabt-rest/dockerfile
+    volumes:
+      - .:/app
+    ports:
+        - 3050:3050
+    depends_on:
+      - db
+      - cache
+      - torproxy
+    environment:
+      DATABASE_URL: postgres://postgres:password@db:5432/postgres
+      REDIS_URL: redis://cache:6379/0
+      AFTT_DATA_USERNAME: beping
+      AFTT_DATA_PASSWORD: T9jL@4kW!rD8zE
+      NODE_ENV: dev
+      AFTT_WSDL: https://api.aftt.be/?wsdl
+      VTLL_WSDL: https://api.aftt.be/?wsdl
+      USE_SOCKS_PROXY: false
+      PORT: 3050
+      SOCKS_PROXY_HOST: torproxy
+      SOCKS_PROXY_PORT: 9050
+      API_PREFIX: api
+      CURRENT_SEASON: 24
+      STATIC_PREFIX: static
+      REDIS_TLS_URL:
+      HOST: http://localhost:3004
+      BEPING_NOTIFICATION_URL: http://localhost:3000/
+      BEPING_NOTIFICATION_CONSUMER_KEY: beping
+      BEPING_NOTIFICATION_CONSUMER_SECRET: test
+  torproxy:
+    image: dockage/tor-privoxy
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    volumes:
+      - db-data:/var/lib/postgresql/data
+  cache:
+    image: redis:6
+    volumes:
+      - cache-data:/data
+
+volumes:
+  db-data:
+  cache-data:
