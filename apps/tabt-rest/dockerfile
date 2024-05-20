@@ -9,7 +9,7 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 # Install app dependencies
-RUN npm install --legacy-peer-deps
+RUN apt-get update && apt-get install -y openssl && npm install --legacy-peer-deps
 
 # Bundle app source
 COPY . .
