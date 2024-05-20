@@ -33,6 +33,6 @@ COPY --from=builder /usr/src/app/prisma ./prisma
 COPY package*.json ./
 
 # Install app dependencies
-RUN npm install --only=production --legacy-peer-deps
-
-CMD ["sh", "-c", "npx prisma migrate deploy && npm run start:prod:tabt-rest"]
+RUN apt-get update && apt-get install -y openssl && npm i -g prisma && npm install --only=production --legacy-peer-deps
+RUN
+CMD ["sh", "-c", "prisma migrate deploy && npm run start:prod:tabt-rest"]
