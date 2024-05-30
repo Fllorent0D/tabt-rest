@@ -58,7 +58,7 @@
     "jsdom": "24.1.0",
     "lodash": "4.17.21",
     "lunr": "2.3.9",
-    "nestjs-pino": "4.0.0",
+    "nestjs-pino": "4.1.0",
     "p-queue": "8.0.1",
     "pino-http": "9.0.0",
     "pino-multi-stream": "6.0.0",
