@@ -1,16 +1,12 @@
 version: '3'
 services:
-  data-aftt-importer:
-    build :
-      context: ./apps/data-aftt-importer
-      dockerfile: Dockerfile
-    depends_on:
-      - db
-      - cache
+
   tabt-rest:
     build :
-      context: ./apps/tabt-rest
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: apps/tabt-rest/Dockerfile
+    volumes:
+      - .:/app
     healthcheck:
       test: ["CMD", 'timeout', '10s', 'bash', '-c', ':>', '/dev/tcp/127.0.0.1/3050', '||', 'exit', '1']
       interval: 30s
@@ -26,7 +22,9 @@ services:
       DATABASE_URL: postgres://postgres:password@db:5432/postgres
       REDIS_HOST: cache
       REDIS_PORT: 6379
-      NODE_ENV: prod
+      AFTT_DATA_USERNAME: beping
+      AFTT_DATA_PASSWORD: T9jL@4kW!rD8zE
+      NODE_ENV: dev
       AFTT_WSDL: https://api.aftt.be/?wsdl
       VTLL_WSDL: https://api.aftt.be/?wsdl
       USE_SOCKS_PROXY: false
@@ -37,6 +35,9 @@ services:
       CURRENT_SEASON: 24
       STATIC_PREFIX: static
       HOST: http://localhost:3004
+      BEPING_NOTIFICATION_URL: http://localhost:3000/
+      BEPING_NOTIFICATION_CONSUMER_KEY: beping
+      BEPING_NOTIFICATION_CONSUMER_SECRET: test
   torproxy:
     image: dockage/tor-privoxy
   db:
@@ -48,10 +49,14 @@ services:
       - db-data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
+    ports:
+      - "5432:5432"
   cache:
     image: redis:6
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
+    ports:
+      - "6379:6379"
     volumes:
       - cache-data:/data
 

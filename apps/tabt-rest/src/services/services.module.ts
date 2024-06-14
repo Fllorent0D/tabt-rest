@@ -21,7 +21,6 @@ import { MemberCategoryService } from './members/member-category.service';
 import { DataAfftTokenRefresherService } from './members/data-afft-token-refresher.service';
 import { BepingNotifierService } from './notifications/beping-notifier.service';
 import { NumericRankingService } from './members/numeric-ranking.service';
-import { DataAFTTIndividualResultModel } from '../../../data-aftt-importer/src/aftt-data-results-list/individual-results.model';
 import { DataAFTTMemberNumericRankingModel } from './members/member-numeric-ranking.model';
 
 const services = [
@@ -45,7 +44,6 @@ const services = [
   DataAfftTokenRefresherService,
   BepingNotifierService,
   NumericRankingService,
-  DataAFTTIndividualResultModel,
   DataAFTTMemberNumericRankingModel,
 ];
 
