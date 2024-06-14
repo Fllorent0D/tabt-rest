@@ -29,9 +29,9 @@ describe('TabtFilter', () => {
 
     expect(httpResponse.status).toHaveBeenCalledWith(400);
     expect(httpResponse.json).toHaveBeenCalledWith({
-      'errorCode': 9,
-      'message': 'Club [L23423] is not valid.',
-      'statusCode': 400,
+      errorCode: 9,
+      message: 'Club [L23423] is not valid.',
+      statusCode: 400,
     });
     expect(httpResponse.end).toHaveBeenCalledTimes(1);
   });

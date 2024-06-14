@@ -1,7 +1,6 @@
 import { TabtException } from './tabt-exception';
 
 describe('TabtException', () => {
-
   it('tabt responds with error code 8', () => {
     const exception = new TabtException('8', 'test');
 

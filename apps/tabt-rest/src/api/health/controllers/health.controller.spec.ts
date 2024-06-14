@@ -1,6 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { HealthController } from './health.controller';
-import { HealthCheckResult, HealthCheckService, HttpHealthIndicator } from '@nestjs/terminus';
+import {
+  HealthCheckResult,
+  HealthCheckService,
+  HttpHealthIndicator,
+} from '@nestjs/terminus';
 import { TestRequestService } from '../../../services/test/test-request.service';
 import { ContextService } from '../../../common/context/context.service';
 import { ConfigService } from '@nestjs/config';
@@ -44,9 +48,12 @@ describe('HealthController', () => {
         {
           provide: ConfigService,
           useValue: {
-            get: () => {return;}
+            get: () => {
+              return;
+            },
           },
-        }, {
+        },
+        {
           provide: SocksProxyHttpClient,
           useValue: {
             context: {},
@@ -69,15 +76,27 @@ describe('HealthController', () => {
   it('should ping both wsdl', () => {
     const dnsSpy = jest.spyOn(httpHealthIndicator, 'pingCheck');
 
-    const checkSpy = jest.spyOn(healthCheckService, 'check').mockImplementation((fns) => {
-      fns.map((fn) => fn());
-      return {} as Promise<HealthCheckResult>;
-    });
+    const checkSpy = jest
+      .spyOn(healthCheckService, 'check')
+      .mockImplementation((fns) => {
+        fns.map((fn) => fn());
+        return {} as Promise<HealthCheckResult>;
+      });
 
     controller.check();
     expect(dnsSpy).toHaveBeenCalledTimes(2);
-    expect(dnsSpy).toHaveBeenNthCalledWith(1, 'AFTT API', 'https://resultats.aftt.be/api/?wsdl', expect.anything());
-    expect(dnsSpy).toHaveBeenNthCalledWith(2, 'VTTL API', 'https://api.vttl.be/?wsdl', expect.anything());
+    expect(dnsSpy).toHaveBeenNthCalledWith(
+      1,
+      'AFTT API',
+      'https://api.aftt.be/?wsdl',
+      expect.anything(),
+    );
+    expect(dnsSpy).toHaveBeenNthCalledWith(
+      2,
+      'VTTL API',
+      'https://api.vttl.be/?wsdl',
+      expect.anything(),
+    );
     expect(checkSpy).toHaveBeenCalledTimes(1);
   });
 

@@ -42,8 +42,8 @@ describe('SeasonService', () => {
           provide: ConfigService,
           useValue: {
             get: jest.fn().mockReturnValue(18),
-          }
-        }
+          },
+        },
       ],
     }).compile();
 
@@ -58,11 +58,13 @@ describe('SeasonService', () => {
   describe('getSeasons', () => {
     it('should call the tabt service correctly and returns the seasons entries', async () => {
       const seasons = [{ Name: '1', IsCurrent: false, Season: 18 }];
-      const spyOnTabt = jest.spyOn(tabtService, 'GetSeasonsAsync').mockResolvedValue({
-        CurrentSeason: 18,
-        CurrentSeasonName: '1',
-        SeasonEntries: seasons,
-      });
+      const spyOnTabt = jest
+        .spyOn(tabtService, 'GetSeasonsAsync')
+        .mockResolvedValue({
+          CurrentSeason: 18,
+          CurrentSeasonName: '1',
+          SeasonEntries: seasons,
+        });
 
       const result = await provider.getSeasons();
 
@@ -75,12 +77,17 @@ describe('SeasonService', () => {
   describe('getCurrentSeason', () => {
     it('should call the tabt service correctly and returns the current seasons entries', async () => {
       const currentSeason = { Name: '2', IsCurrent: true, Season: 19 };
-      const seasons = [{ Name: '1', IsCurrent: false, Season: 18 }, currentSeason];
-      const spyOnTabt = jest.spyOn(tabtService, 'GetSeasonsAsync').mockResolvedValue({
-        CurrentSeason: 18,
-        CurrentSeasonName: '1',
-        SeasonEntries: seasons,
-      });
+      const seasons = [
+        { Name: '1', IsCurrent: false, Season: 18 },
+        currentSeason,
+      ];
+      const spyOnTabt = jest
+        .spyOn(tabtService, 'GetSeasonsAsync')
+        .mockResolvedValue({
+          CurrentSeason: 18,
+          CurrentSeasonName: '1',
+          SeasonEntries: seasons,
+        });
 
       const result = await provider.getCurrentSeason();
 

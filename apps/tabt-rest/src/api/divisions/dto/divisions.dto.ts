@@ -20,7 +20,7 @@ export class GetDivisionRanking {
   @ApiPropertyOptional({
     type: Number,
   })
-  @Transform(id => parseInt(id.value), { toClassOnly: true })
+  @Transform((id) => parseInt(id.value), { toClassOnly: true })
   @IsOptional()
   @IsNumber()
   weekName?: string;
@@ -30,6 +30,9 @@ export class GetDivisionRanking {
   rankingSystem?: number;
 }
 
-export class GetDivisionMatches extends PickType(GetMatches, ['weekName', 'yearDateFrom', 'yearDateTo', 'withDetails']) {
-
-}
+export class GetDivisionMatches extends PickType(GetMatches, [
+  'weekName',
+  'yearDateFrom',
+  'yearDateTo',
+  'withDetails',
+]) {}

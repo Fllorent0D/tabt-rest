@@ -1,6 +1,10 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { InternalIdentifiersDTO, RedirectLinkDTO, UniqueIdentifiersDTO } from '../dto/register.dto';
+import {
+  InternalIdentifiersDTO,
+  RedirectLinkDTO,
+  UniqueIdentifiersDTO,
+} from '../dto/register.dto';
 import { InternalIdMapperService } from '../../../services/id-mapper/internal-id-mapper.service';
 import { ConfigService } from '@nestjs/config';
 
@@ -10,12 +14,10 @@ import { ConfigService } from '@nestjs/config';
   version: '1',
 })
 export class InternalIdentifiersController {
-
   constructor(
     private readonly internalMapper: InternalIdMapperService,
     private readonly configService: ConfigService,
-  ) {
-  }
+  ) {}
 
   @Get()
   @ApiOperation({
@@ -56,7 +58,10 @@ export class InternalIdentifiersController {
     ]);
 
     return {
-      url: this.configService.get<string>('HOST') + this.configService.get<string>('STATIC_PREFIX') + `/redirect-register.html?internalPlayerId=${playerId}&internalClubId=${clubId}&database=${input.database}`,
+      url:
+        this.configService.get<string>('HOST') +
+        this.configService.get<string>('STATIC_PREFIX') +
+        `/redirect-register.html?internalPlayerId=${playerId}&internalClubId=${clubId}&database=${input.database}`,
     };
   }
 }

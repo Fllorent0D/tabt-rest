@@ -1,5 +1,4 @@
 export class CacheService {
-
   getFromCache<T>(key: string): Promise<T> {
     return Promise.resolve({} as T);
   }
@@ -12,8 +11,11 @@ export class CacheService {
     return `${prefix}-${db}-${JSON.stringify(input)}`;
   }
 
-  async getFromCacheOrGetAndCacheResult<T>(key: string, getter: () => Promise<T>, ttl = 600): Promise<T> {
+  async getFromCacheOrGetAndCacheResult<T>(
+    key: string,
+    getter: () => Promise<T>,
+    ttl = 600,
+  ): Promise<T> {
     return Promise.resolve({} as T);
   }
-
 }

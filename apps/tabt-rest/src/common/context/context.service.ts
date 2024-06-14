@@ -6,9 +6,8 @@ import { PackageService } from '../package/package.service';
 import { ConfigService } from '@nestjs/config';
 import { HeaderKeys } from './context.constants';
 
-@Injectable({scope: Scope.REQUEST})
+@Injectable({ scope: Scope.REQUEST })
 export class ContextService {
-
   private readonly runnerContext: RunnerContext;
   readonly context: Context;
 
@@ -18,23 +17,27 @@ export class ContextService {
     @Inject(REQUEST) request,
     @Inject('TABT_HEADERS') tabtHeaders: string[],
     private readonly packageService: PackageService,
-    private readonly configService: ConfigService
+    private readonly configService: ConfigService,
   ) {
     this.httpHeaderKeys = new Set<string>();
-    this.registerHttpHeaders(tabtHeaders)
+    this.registerHttpHeaders(tabtHeaders);
 
     this.runnerContext = {
       name: this.packageService.name,
       version: this.packageService.version,
       pid: process.pid,
-      season: Number(HttpUtil.getHeaderValue(request, HeaderKeys.X_TABT_SEASON)) || Number(configService.get('CURRENT_SEASON'))
+      season:
+        Number(HttpUtil.getHeaderValue(request, HeaderKeys.X_TABT_SEASON)) ||
+        Number(configService.get('CURRENT_SEASON')),
     };
 
     this.context = this.createContext(request);
   }
 
   registerHttpHeaders(httpHeadersList: string[]) {
-    httpHeadersList.forEach((httpHeaderOrList: string) => this.httpHeaderKeys.add(httpHeaderOrList));
+    httpHeadersList.forEach((httpHeaderOrList: string) =>
+      this.httpHeaderKeys.add(httpHeaderOrList),
+    );
   }
 
   private createContext(request: Express.Request): Context {
@@ -42,7 +45,13 @@ export class ContextService {
       runner: this.runnerContext,
       caller: {
         correlationId: request['id'],
-        remoteAddress: request?.['connection']?.['remoteAddress'] === '::1' ? '127.0.0.1' : request?.['connection']?.['remoteAddress']?.replace('::ffff:', ''),
+        remoteAddress:
+          request?.['connection']?.['remoteAddress'] === '::1'
+            ? '127.0.0.1'
+            : request?.['connection']?.['remoteAddress']?.replace(
+                '::ffff:',
+                '',
+              ),
         ...Array.from(this.httpHeaderKeys).reduce((acc: any, x: any) => {
           const httpHeaderValue = HttpUtil.getHeaderValue(request, x);
           if (httpHeaderValue) {
@@ -53,5 +62,4 @@ export class ContextService {
       },
     };
   }
-
 }

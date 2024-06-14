@@ -1,5 +1,4 @@
 export class TabtClientSwitchingService {
-
   tabtClient = {
     TestAsync: jest.fn(),
     GetSeasonsAsync: jest.fn(),
@@ -14,6 +13,4 @@ export class TabtClientSwitchingService {
     GetMatchSystemsAsync: jest.fn(),
     TournamentRegisterAsync: jest.fn(),
   };
-
-
 }

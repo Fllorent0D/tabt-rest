@@ -17,10 +17,13 @@ export class TabtExceptionsFilter implements ExceptionFilter {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse();
     const [errorCode, errorMessage] = exception.message.split(': ');
-    response.status(400).json({
-      statusCode: 400,
-      errorCode: parseInt(errorCode),
-      message: errorMessage,
-    }).end();
+    response
+      .status(400)
+      .json({
+        statusCode: 400,
+        errorCode: parseInt(errorCode),
+        message: errorMessage,
+      })
+      .end();
   }
 }

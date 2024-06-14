@@ -1,19 +1,23 @@
-import { Controller, Get, InternalServerErrorException, Param, ParseIntPipe } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  InternalServerErrorException,
+  Param,
+  ParseIntPipe,
+} from '@nestjs/common';
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { Head2HeadData, Head2headService } from '../../../services/members/head2head.service';
+import {
+  Head2HeadData,
+  Head2headService,
+} from '../../../services/members/head2head.service';
 
 @ApiTags('Head2Head')
 @Controller({
   path: 'head2head',
   version: '1',
 })
-
 export class Head2headController {
-
-  constructor(
-    private h2hService: Head2headService,
-  ) {
-  }
+  constructor(private h2hService: Head2headService) {}
 
   @Get(':playerUniqueIndex/:opponentUniqueIndex')
   @ApiOperation({
@@ -21,7 +25,7 @@ export class Head2headController {
   })
   @ApiOkResponse({
     description: 'List of all matches between 2 players',
-    type: Head2HeadData
+    type: Head2HeadData,
   })
   async findAll(
     @Param('playerUniqueIndex', ParseIntPipe) playerA: number,
@@ -33,6 +37,4 @@ export class Head2headController {
       throw new InternalServerErrorException(e, e.message);
     }
   }
-
-
 }

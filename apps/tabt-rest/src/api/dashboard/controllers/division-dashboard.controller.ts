@@ -1,4 +1,11 @@
-import { Controller, Get, NotFoundException, Param, ParseIntPipe, Version } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  NotFoundException,
+  Param,
+  ParseIntPipe,
+  Version,
+} from '@nestjs/common';
 import { ApiNotFoundResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { DivisionDashboardDTOV1 } from '../dto/division-dashboard.dto';
 import { DivisionDashboardService } from '../services/division-dashboard.service';
@@ -11,8 +18,7 @@ import { DivisionDashboardService } from '../services/division-dashboard.service
 export class DivisionDashboardController {
   constructor(
     private readonly divisionDashboardService: DivisionDashboardService,
-  ) {
-  }
+  ) {}
 
   @Get(':divisionId')
   @ApiOkResponse({
@@ -26,11 +32,11 @@ export class DivisionDashboardController {
   async memberDashboardV1(
     @Param('divisionId', ParseIntPipe) id: number,
   ): Promise<DivisionDashboardDTOV1> {
-    const divisionDashboardDTOV1 = await this.divisionDashboardService.getDashboard(id);
+    const divisionDashboardDTOV1 =
+      await this.divisionDashboardService.getDashboard(id);
     if (!divisionDashboardDTOV1) {
       throw new NotFoundException(`No division found for id ${id}`);
     }
     return divisionDashboardDTOV1;
   }
-
 }

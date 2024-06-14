@@ -26,7 +26,7 @@ export class GetMembers {
 
   @ApiPropertyOptional()
   @IsOptional()
-  @Transform(id => parseInt(id.value), { toClassOnly: true })
+  @Transform((id) => parseInt(id.value), { toClassOnly: true })
   uniqueIndex?: number;
 
   @ApiPropertyOptional()
@@ -57,11 +57,9 @@ export class GetMembers {
   @IsBoolean()
   @IsOptional()
   withOpponentRankingEvaluation?: boolean;
-
 }
 
-export class GetMember extends OmitType(GetMembers, ['uniqueIndex']) {
-}
+export class GetMember extends OmitType(GetMembers, ['uniqueIndex']) {}
 
 export class WeeklyELO {
   @ApiProperty()
@@ -105,7 +103,6 @@ export class WeeklyNumericPointsV3 {
   points: number;
 }
 export class NumericRankingPerWeekOpponentsV3 {
-
   @ApiProperty()
   opponentName: string;
 
@@ -125,9 +122,9 @@ export class NumericRankingPerWeekOpponentsV3 {
   score: string;
 }
 
-export enum COMPETITION_TYPE{
-  CHAMPIONSHIP = "championship",
-  TOURNAMENT = "tournament",
+export enum COMPETITION_TYPE {
+  CHAMPIONSHIP = 'championship',
+  TOURNAMENT = 'tournament',
 }
 export class NumericRankingDetailsV3 {
   @ApiProperty()
@@ -147,21 +144,20 @@ export class NumericRankingDetailsV3 {
   @ApiProperty()
   endPoints: number;
 
-
   @ApiProperty({
-    type: [NumericRankingPerWeekOpponentsV3]
+    type: [NumericRankingPerWeekOpponentsV3],
   })
   opponents: NumericRankingPerWeekOpponentsV3[];
 }
 
 export class WeeklyNumericRankingV3 {
   @ApiProperty({
-    type: [WeeklyNumericPointsV3]
+    type: [WeeklyNumericPointsV3],
   })
   points: WeeklyNumericPointsV3[];
 
   @ApiProperty({
-    type: [NumericRankingDetailsV3]
+    type: [NumericRankingDetailsV3],
   })
   perDateHistory: NumericRankingDetailsV3[];
 
@@ -203,7 +199,7 @@ export class WeeklyNumericRankingInput extends RequestBySeasonDto {
 }
 
 export class WeeklyNumericRankingInputV2 {
-  @ApiPropertyOptional({ enum: PLAYER_CATEGORY})
+  @ApiPropertyOptional({ enum: PLAYER_CATEGORY })
   @IsEnum(PLAYER_CATEGORY)
   category?: PLAYER_CATEGORY;
 }
@@ -213,7 +209,7 @@ export type WeeklyNumericRankingInputV3 = WeeklyNumericRankingInputV2;
 export class GetPlayerCategoriesInput {
   @ApiPropertyOptional()
   @IsOptional()
-  @Transform(id => parseInt(id.value), { toClassOnly: true })
+  @Transform((id) => parseInt(id.value), { toClassOnly: true })
   uniqueIndex?: number;
 
   @ApiPropertyOptional()
@@ -234,7 +230,11 @@ export class GetPlayerCategoriesInput {
 
 export class LookupDTO {
   @ApiProperty()
-  @Matches('^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.\'-]+$', 'u', { message: 'query can only contains letters' })
+  @Matches(
+    "^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$",
+    'u',
+    { message: 'query can only contains letters' },
+  )
   @MinLength(3)
   query: string;
 }

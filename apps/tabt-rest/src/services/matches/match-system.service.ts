@@ -6,10 +6,7 @@ import { MatchSystemEntry } from '../../entity/tabt-soap/TabTAPI_Port';
 export class MatchSystemService {
   private readonly logger = new Logger('ClubTeamService');
 
-  constructor(
-    private tabtClient: TabtClientService,
-  ) {
-  }
+  constructor(private tabtClient: TabtClientService) {}
 
   async getMatchSystems(): Promise<MatchSystemEntry[]> {
     const response = await this.tabtClient.GetMatchSystemsAsync({});
@@ -17,12 +14,12 @@ export class MatchSystemService {
   }
 
   async getMatchSystemsById(id: number): Promise<MatchSystemEntry | null> {
-    const response = await this.tabtClient.GetMatchSystemsAsync({ UniqueIndex: id });
+    const response = await this.tabtClient.GetMatchSystemsAsync({
+      UniqueIndex: id,
+    });
     if (response.MatchSystemEntries?.length === 1) {
       return response.MatchSystemEntries[0];
     }
     return null;
   }
-
-
 }

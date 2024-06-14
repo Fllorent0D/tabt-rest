@@ -30,13 +30,17 @@ describe('MatchService', () => {
 
   describe('getMatches', () => {
     it('should call the tabt service correctly and returns the match entries', async () => {
-      const matches = [{
-        'MatchId': 'LgH01/481',
-      }] as TeamMatchesEntry[];
-      const spyOnTabt = jest.spyOn(tabtService, 'GetMatchesAsync').mockResolvedValue({
-        MatchCount: 1,
-        TeamMatchesEntries: matches,
-      });
+      const matches = [
+        {
+          MatchId: 'LgH01/481',
+        },
+      ] as TeamMatchesEntry[];
+      const spyOnTabt = jest
+        .spyOn(tabtService, 'GetMatchesAsync')
+        .mockResolvedValue({
+          MatchCount: 1,
+          TeamMatchesEntries: matches,
+        });
       const input = {
         Club: 'L360',
       };
@@ -50,10 +54,12 @@ describe('MatchService', () => {
     });
     it('should return an empty array if no matches are returned', async () => {
       const matches = [] as TeamMatchesEntry[];
-      const spyOnTabt = jest.spyOn(tabtService, 'GetMatchesAsync').mockResolvedValue({
-        MatchCount: 0,
-        TeamMatchesEntries: matches,
-      });
+      const spyOnTabt = jest
+        .spyOn(tabtService, 'GetMatchesAsync')
+        .mockResolvedValue({
+          MatchCount: 0,
+          TeamMatchesEntries: matches,
+        });
       const input = {
         Club: 'L360',
       };

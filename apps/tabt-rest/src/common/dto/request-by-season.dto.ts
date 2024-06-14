@@ -4,7 +4,7 @@ import { Transform } from 'class-transformer';
 
 export class RequestBySeasonDto {
   @ApiPropertyOptional()
-  @Transform(id => parseInt(id.value), {toClassOnly: true})
+  @Transform((id) => parseInt(id.value), { toClassOnly: true })
   @IsInt()
   @IsOptional()
   season?: number;

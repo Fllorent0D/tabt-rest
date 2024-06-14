@@ -29,21 +29,25 @@ describe('ClubTeamService', () => {
 
   describe('getClubsTeams', () => {
     it('should call the tabt service correctly and returns the team entries', async () => {
-      const teams = [{
-        TeamId: "a",
-        Team: "a",
-        DivisionId: 123,
-        DivisionName: "a",
-        DivisionCategory: 1,
-        MatchType: 5
-      }] as TeamEntry[];
-      const spyOnTabt = jest.spyOn(tabtService, 'GetClubTeamsAsync').mockResolvedValue({
-        ClubName: "a",
-        TeamCount: 1,
-        TeamEntries: teams
-      });
+      const teams = [
+        {
+          TeamId: 'a',
+          Team: 'a',
+          DivisionId: 123,
+          DivisionName: 'a',
+          DivisionCategory: 1,
+          MatchType: 5,
+        },
+      ] as TeamEntry[];
+      const spyOnTabt = jest
+        .spyOn(tabtService, 'GetClubTeamsAsync')
+        .mockResolvedValue({
+          ClubName: 'a',
+          TeamCount: 1,
+          TeamEntries: teams,
+        });
       const input = {
-        Club: 'L360'
+        Club: 'L360',
       };
 
       const result = await service.getClubsTeams(input);

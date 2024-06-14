@@ -2,7 +2,6 @@ import { Context } from '../context.contract';
 import { HeaderKeys } from '../context.constants';
 
 export class ContextService {
-
   context: Context = {
     runner: {
       name: 'test',
@@ -20,7 +19,6 @@ export class ContextService {
   constructor() {
     this.context = this.createContext(null);
   }
-
 
   registerHttpHeaders(httpHeadersList: string[]) {
     return;
@@ -41,5 +39,4 @@ export class ContextService {
       },
     };
   }
-
 }

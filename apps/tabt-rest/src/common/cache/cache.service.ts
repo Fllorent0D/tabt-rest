@@ -18,25 +18,28 @@ export enum TTL_DURATION {
 export class CacheService {
   private readonly logger = new Logger(CacheService.name);
 
-  constructor(
-    @Inject(CACHE_MANAGER) private cacheManager: Cache,
-  ) {
-  }
+  constructor(@Inject(CACHE_MANAGER) private cacheManager: Cache) {}
 
   async getFromCache<T>(key: string): Promise<T> {
-    const value = await this.cacheManager.get(key) as unknown as Promise<T | undefined>;
+    const value = (await this.cacheManager.get(key)) as unknown as Promise<
+      T | undefined
+    >;
     this.logger.debug(`Get [${key}] in cache. Found in cache: ${!!value}`);
     return value;
-
   }
 
   setInCache(key: string, value: any, ttl?: number): Promise<void> {
-    this.logger.debug(`Set [${key}] in cache. Value: ${JSON.stringify(value)}. TTL: ${ttl}`);
-    return this.cacheManager.set(key, value, { ttl } as any)  as Promise<void>;
+    this.logger.debug(
+      `Set [${key}] in cache. Value: ${JSON.stringify(value)}. TTL: ${ttl}`,
+    );
+    return this.cacheManager.set(key, value, { ttl } as any) as Promise<void>;
   }
 
-
-  async getFromCacheOrGetAndCacheResult<T>(key: string, getter: () => Promise<T>, ttl = 600): Promise<T> {
+  async getFromCacheOrGetAndCacheResult<T>(
+    key: string,
+    getter: () => Promise<T>,
+    ttl = 600,
+  ): Promise<T> {
     const cached = await this.getFromCache<T>(key);
 
     if (cached) {
@@ -52,9 +55,9 @@ export class CacheService {
 
   async cleanKeys(pattern: string): Promise<void> {
     const keys = await this.cacheManager.store.keys(pattern);
-    this.logger.debug(`Cleaning cache for pattern ${pattern}. Found ${keys.length} keys.`);
+    this.logger.debug(
+      `Cleaning cache for pattern ${pattern}. Found ${keys.length} keys.`,
+    );
     return this.cacheManager.store.mdel(...keys);
   }
-
-
 }

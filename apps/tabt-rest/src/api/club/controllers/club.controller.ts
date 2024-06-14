@@ -7,15 +7,27 @@ import {
   Query,
   UseInterceptors,
 } from '@nestjs/common';
-import { ApiNotFoundResponse, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { ClubEntry, MemberEntry, TeamEntry } from '../../../entity/tabt-soap/TabTAPI_Port';
+import {
+  ApiNotFoundResponse,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
+import {
+  ClubEntry,
+  MemberEntry,
+  TeamEntry,
+} from '../../../entity/tabt-soap/TabTAPI_Port';
 import { ClubService } from '../../../services/clubs/club.service';
 import { ClubTeamService } from '../../../services/clubs/club-team.service';
 import { TabtException } from '../../../common/filter/tabt-exceptions.filter';
 import { TabtHeadersDecorator } from '../../../common/decorators/tabt-headers.decorator';
 import { GetMembersFromClub, ListAllClubs } from '../dto/club.dto';
 import { RequestBySeasonDto } from '../../../common/dto/request-by-season.dto';
-import { ClubCategory, PlayerCategory } from '../../../entity/tabt-input.interface';
+import {
+  ClubCategory,
+  PlayerCategory,
+} from '../../../entity/tabt-input.interface';
 import { MatchesMembersRankerService } from '../../../services/matches/matches-members-ranker.service';
 import { MemberResults } from '../../../common/dto/member-ranking.dto';
 import { MemberService } from '../../../services/members/member.service';
@@ -32,8 +44,7 @@ export class ClubController {
     private clubTeamService: ClubTeamService,
     private memberService: MemberService,
     private matchesMembersRankerService: MatchesMembersRankerService,
-  ) {
-  }
+  ) {}
 
   @Get()
   @ApiOperation({
@@ -50,10 +61,10 @@ export class ClubController {
     type: TabtException,
   })
   @UseInterceptors(ClassSerializerInterceptor)
-  findAll(
-    @Query() input: ListAllClubs,
-  ) {
-    return this.clubService.getClubs({ ClubCategory: ClubCategory[input.clubCategory] });
+  findAll(@Query() input: ListAllClubs) {
+    return this.clubService.getClubs({
+      ClubCategory: ClubCategory[input.clubCategory],
+    });
   }
 
   @Get(':clubIndex')
@@ -71,9 +82,7 @@ export class ClubController {
     type: TabtException,
   })
   @UseInterceptors(ClassSerializerInterceptor)
-  async findbyId(
-    @Param('clubIndex') uniqueIndex: string,
-  ) {
+  async findbyId(@Param('clubIndex') uniqueIndex: string) {
     const value = await this.clubService.getClubById(uniqueIndex);
     if (!value) {
       throw new NotFoundException();
@@ -149,7 +158,11 @@ export class ClubController {
     @Param('clubIndex') clubIndex: string,
     @Param('teamId') teamId: string,
   ) {
-    return this.matchesMembersRankerService.getMembersRankingFromTeam(clubIndex, teamId, input.season);
+    return this.matchesMembersRankerService.getMembersRankingFromTeam(
+      clubIndex,
+      teamId,
+      input.season,
+    );
   }
 
   @Get(':clubIndex/members/ranking')
@@ -169,6 +182,9 @@ export class ClubController {
     @Param('clubIndex') id: string,
     @Query() query: RequestBySeasonDto,
   ): Promise<MemberResults[]> {
-    return this.matchesMembersRankerService.getMembersRankingFromClub(id, query.season);
+    return this.matchesMembersRankerService.getMembersRankingFromClub(
+      id,
+      query.season,
+    );
   }
 }

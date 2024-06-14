@@ -1,9 +1,15 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { MemberEntry, MemberEntryResultEntry, TeamMatchesEntry } from '../../../entity/tabt-soap/TabTAPI_Port';
-import { PLAYER_CATEGORY, WeeklyNumericRankingV3 } from '../../member/dto/member.dto';
+import {
+  MemberEntry,
+  MemberEntryResultEntry,
+  TeamMatchesEntry,
+} from '../../../entity/tabt-soap/TabTAPI_Port';
+import {
+  PLAYER_CATEGORY,
+  WeeklyNumericRankingV3,
+} from '../../member/dto/member.dto';
 import { IsEnum } from 'class-validator';
 import { ResponseDTO } from './common.dto';
-
 
 export class MemberDashboardDTOV1 {
   constructor(
@@ -11,8 +17,7 @@ export class MemberDashboardDTOV1 {
     public numericRankingResponse: ResponseDTO<WeeklyNumericRankingV3>,
     public latestTeamMatches: ResponseDTO<TeamMatchesEntry[]>,
     public stats: ResponseDTO<MemberStatsDTOV1>,
-  ) {
-  }
+  ) {}
 }
 
 export class MemberStatsDTOV1 {
@@ -31,11 +36,11 @@ export class WinLossSummaryDTOV1 {
 
 export class RankingWinLossDTOV1 extends WinLossSummaryDTOV1 {
   ranking: string;
-  players: MemberEntryResultEntry[]
+  players: MemberEntryResultEntry[];
 }
 
 export class WeeklyNumericRankingInputV2 {
-  @ApiPropertyOptional({ enum: PLAYER_CATEGORY})
+  @ApiPropertyOptional({ enum: PLAYER_CATEGORY })
   @IsEnum(PLAYER_CATEGORY)
   category?: PLAYER_CATEGORY;
 }

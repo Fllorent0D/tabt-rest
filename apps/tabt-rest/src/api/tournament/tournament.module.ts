@@ -9,5 +9,4 @@ import { ServicesModule } from '../../services/services.module';
   providers: [TournamentService],
   controllers: [TournamentController],
 })
-export class TournamentModule {
-}
+export class TournamentModule {}

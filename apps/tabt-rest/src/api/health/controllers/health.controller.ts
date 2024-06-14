@@ -1,5 +1,9 @@
 import { Controller, Get } from '@nestjs/common';
-import { HealthCheck, HealthCheckService, HttpHealthIndicator } from '@nestjs/terminus';
+import {
+  HealthCheck,
+  HealthCheckService,
+  HttpHealthIndicator,
+} from '@nestjs/terminus';
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { TestRequestService } from '../../../services/test/test-request.service';
 import { TestOutput } from '../../../entity/tabt-soap/TabTAPI_Port';
@@ -22,8 +26,7 @@ export class HealthController {
     private contextService: ContextService,
     private readonly socksProxyService: SocksProxyHttpClient,
     private readonly configService: ConfigService,
-  ) {
-  }
+  ) {}
 
   @Get()
   @ApiOperation({
@@ -33,26 +36,34 @@ export class HealthController {
   check() {
     const userAgent = UserAgentsUtil.random;
     return this.health.check([
-      () => this.healthIndicator.pingCheck(
-        'AFTT API',
-        'https://resultats.aftt.be/api/?wsdl',
-        {
-          headers: {
-            'user-agent': userAgent,
+      () =>
+        this.healthIndicator.pingCheck(
+          'AFTT API',
+          'https://api.aftt.be/?wsdl',
+          {
+            headers: {
+              'user-agent': userAgent,
+            },
+            httpsAgent:
+              this.configService.get('USE_SOCKS_PROXY') === 'true'
+                ? this.socksProxyService.createHttpsAgent()
+                : undefined,
           },
-          httpsAgent: this.configService.get('USE_SOCKS_PROXY') === 'true' ? this.socksProxyService.createHttpsAgent() : undefined,
-        },
-      ),
-      () => this.healthIndicator.pingCheck(
-        'VTTL API',
-        'https://api.vttl.be/?wsdl',
-        {
-          headers: {
-            'user-agent': userAgent,
+        ),
+      () =>
+        this.healthIndicator.pingCheck(
+          'VTTL API',
+          'https://api.vttl.be/?wsdl',
+          {
+            headers: {
+              'user-agent': userAgent,
+            },
+            httpsAgent:
+              this.configService.get('USE_SOCKS_PROXY') === 'true'
+                ? this.socksProxyService.createHttpsAgent()
+                : undefined,
           },
-          httpsAgent: this.configService.get('USE_SOCKS_PROXY') === 'true' ? this.socksProxyService.createHttpsAgent() : undefined,
-        },
-      ),
+        ),
     ]);
   }
 
@@ -77,6 +88,4 @@ export class HealthController {
   context() {
     return this.contextService.context;
   }
-
-
 }

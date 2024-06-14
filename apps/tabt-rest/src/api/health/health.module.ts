@@ -8,5 +8,4 @@ import { ServicesModule } from '../../services/services.module';
   imports: [TerminusModule, CommonModule, ServicesModule],
   controllers: [HealthController],
 })
-export class HealthModule {
-}
+export class HealthModule {}

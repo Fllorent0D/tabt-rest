@@ -14,5 +14,4 @@ export class CredentialsService {
   get extraHeaders() {
     return { [HeaderKeys.X_FORWARDED_FOR]: '12.12.12.12' };
   }
-
 }

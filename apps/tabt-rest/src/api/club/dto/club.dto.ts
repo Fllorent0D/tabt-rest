@@ -10,5 +10,6 @@ export class ListAllClubs {
   clubCategory: string;
 }
 
-export class GetMembersFromClub extends OmitType(GetMembers, ['club'] as const) {
-}
+export class GetMembersFromClub extends OmitType(GetMembers, [
+  'club',
+] as const) {}

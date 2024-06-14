@@ -1,4 +1,10 @@
-import { Controller, Get, NotFoundException, Param, Version } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  NotFoundException,
+  Param,
+  Version,
+} from '@nestjs/common';
 import { ApiNotFoundResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { ClubDashboardDTOV1 } from '../dto/club-dashboard.dto';
 import { ClubDashboardService } from '../services/club-dashboard.service';
@@ -9,10 +15,7 @@ import { ClubDashboardService } from '../services/club-dashboard.service';
   version: '1',
 })
 export class ClubDashboardController {
-  constructor(
-    private readonly clubDashboardService: ClubDashboardService,
-  ) {
-  }
+  constructor(private readonly clubDashboardService: ClubDashboardService) {}
 
   @Get(':uniqueIndex')
   @ApiOkResponse({
@@ -32,5 +35,4 @@ export class ClubDashboardController {
     }
     return clubDasboard;
   }
-
 }

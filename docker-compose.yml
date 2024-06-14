@@ -1,11 +1,21 @@
 version: '3'
 services:
+  data-aftt-importer:
+    build :
+      context: ./apps/data-aftt-importer
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+      - cache
   tabt-rest:
     build :
-      context: .
-      dockerfile: ./apps/tabt-rest/dockerfile
-    volumes:
-      - .:/app
+      context: ./apps/tabt-rest
+      dockerfile: Dockerfile
+    healthcheck:
+      test: ["CMD", 'timeout', '10s', 'bash', '-c', ':>', '/dev/tcp/127.0.0.1/3050', '||', 'exit', '1']
+      interval: 30s
+      timeout: 30s
+      retries: 3
     ports:
         - 3050:3050
     depends_on:
@@ -14,10 +24,9 @@ services:
       - torproxy
     environment:
       DATABASE_URL: postgres://postgres:password@db:5432/postgres
-      REDIS_URL: redis://cache:6379/0
-      AFTT_DATA_USERNAME: beping
-      AFTT_DATA_PASSWORD: T9jL@4kW!rD8zE
-      NODE_ENV: dev
+      REDIS_HOST: cache
+      REDIS_PORT: 6379
+      NODE_ENV: prod
       AFTT_WSDL: https://api.aftt.be/?wsdl
       VTLL_WSDL: https://api.aftt.be/?wsdl
       USE_SOCKS_PROXY: false
@@ -27,11 +36,7 @@ services:
       API_PREFIX: api
       CURRENT_SEASON: 24
       STATIC_PREFIX: static
-      REDIS_TLS_URL:
       HOST: http://localhost:3004
-      BEPING_NOTIFICATION_URL: http://localhost:3000/
-      BEPING_NOTIFICATION_CONSUMER_KEY: beping
-      BEPING_NOTIFICATION_CONSUMER_SECRET: test
   torproxy:
     image: dockage/tor-privoxy
   db:
@@ -41,8 +46,12 @@ services:
       POSTGRES_PASSWORD: password
     volumes:
       - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
   cache:
     image: redis:6
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
     volumes:
       - cache-data:/data
 

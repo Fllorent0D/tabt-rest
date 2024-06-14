@@ -5,5 +5,4 @@ import { UserAgentController } from './user-agent.controller';
   imports: [],
   controllers: [UserAgentController],
 })
-export class UserAgentModule {
-}
+export class UserAgentModule {}

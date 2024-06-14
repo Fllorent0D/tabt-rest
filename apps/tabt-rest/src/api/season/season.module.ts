@@ -9,5 +9,4 @@ import { ServicesModule } from '../../services/services.module';
   controllers: [SeasonController],
   providers: [SeasonService],
 })
-export class SeasonModule {
-}
+export class SeasonModule {}

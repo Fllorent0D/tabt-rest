@@ -2,19 +2,20 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   parserOptions: {
     project: 'tsconfig.json',
+    tsconfigRootDir: __dirname,
     sourceType: 'module',
   },
   plugins: ['@typescript-eslint/eslint-plugin'],
   extends: [
-    'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/recommended',
-    'prettier',
+    'plugin:prettier/recommended',
   ],
   root: true,
   env: {
     node: true,
     jest: true,
   },
+  ignorePatterns: ['.eslintrc.js', '**/__mocks__/*.ts', '**/__mock__/*.ts', 'apps/app-notifications/src/common/tabt-client/**/*'],
   rules: {
     '@typescript-eslint/interface-name-prefix': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',

@@ -8,8 +8,16 @@ import {
   Query,
   UseInterceptors,
 } from '@nestjs/common';
-import { ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { MatchSystemEntry, TeamMatchesEntry } from '../../../entity/tabt-soap/TabTAPI_Port';
+import {
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
+import {
+  MatchSystemEntry,
+  TeamMatchesEntry,
+} from '../../../entity/tabt-soap/TabTAPI_Port';
 import { MatchService } from '../../../services/matches/match.service';
 import { TabtHeadersDecorator } from '../../../common/decorators/tabt-headers.decorator';
 import { MatchSystemService } from '../../../services/matches/match-system.service';
@@ -27,8 +35,7 @@ export class MatchController {
   constructor(
     private matchService: MatchService,
     private matchSystemService: MatchSystemService,
-  ) {
-  }
+  ) {}
 
   @Get()
   @ApiOperation({
@@ -38,15 +45,14 @@ export class MatchController {
     type: [TeamMatchesEntry],
     description: 'List of team matches entries',
   })
-
-  async findAll(
-    @Query() input: GetMatches,
-  ): Promise<TeamMatchesEntry[]> {
+  async findAll(@Query() input: GetMatches): Promise<TeamMatchesEntry[]> {
     return this.matchService.getMatches({
       DivisionId: input.divisionId,
       Club: input.club,
       Team: input.team,
-      DivisionCategory: PlayerCategory[input.divisionCategory] as unknown as number,
+      DivisionCategory: PlayerCategory[
+        input.divisionCategory
+      ] as unknown as number,
       WeekName: input.weekName,
       Level: Level[input.level] as unknown as number,
       ShowDivisionName: input.showDivisionName,
@@ -106,7 +112,9 @@ export class MatchController {
       DivisionId: input.divisionId,
       Club: input.club,
       Team: input.team,
-      DivisionCategory: PlayerCategory[input.divisionCategory] as unknown as number,
+      DivisionCategory: PlayerCategory[
+        input.divisionCategory
+      ] as unknown as number,
       WeekName: input.weekName,
       Level: Level[input.level] as unknown as number,
       ShowDivisionName: input.showDivisionName,
@@ -122,6 +130,4 @@ export class MatchController {
     }
     throw new NotFoundException();
   }
-
-
 }

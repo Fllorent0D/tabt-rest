@@ -6,12 +6,9 @@ import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class SocksProxyHttpClient extends HttpClient {
-
   private _axios: req.Axios;
 
-  constructor(
-    private readonly configService: ConfigService,
-  ) {
+  constructor(private readonly configService: ConfigService) {
     super({ returnFault: false });
 
     this._axios = new req.Axios({ httpsAgent: this.createHttpsAgent() });
@@ -24,8 +21,15 @@ export class SocksProxyHttpClient extends HttpClient {
     return new SocksProxyAgent(proxyOptions);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async request(rurl: string, data: any, callback: (error: any, res?: any, body?: any) => any, exheaders?: IHeaders, exoptions?: IExOptions, caller?: any): Promise<any> {
+  async request(
+    rurl: string,
+    data: any,
+    callback: (error: any, res?: any, body?: any) => any,
+    exheaders?: IHeaders,
+    exoptions?: IExOptions,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    _?: any,
+  ): Promise<any> {
     const req = this.buildRequest(rurl, data, exheaders, exoptions);
     try {
       const response = await this._axios.request(req);
@@ -33,9 +37,6 @@ export class SocksProxyHttpClient extends HttpClient {
       callback(null, response, response.data);
     } catch (e) {
       callback(e);
-
     }
-
   }
-
 }

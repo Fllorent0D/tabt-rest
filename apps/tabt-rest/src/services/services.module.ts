@@ -20,6 +20,9 @@ import { MembersSearchIndexService } from './members/members-search-index.servic
 import { MemberCategoryService } from './members/member-category.service';
 import { DataAfftTokenRefresherService } from './members/data-afft-token-refresher.service';
 import { BepingNotifierService } from './notifications/beping-notifier.service';
+import { NumericRankingService } from './members/numeric-ranking.service';
+import { DataAFTTIndividualResultModel } from '../../../data-aftt-importer/src/aftt-data-results-list/individual-results.model';
+import { DataAFTTMemberNumericRankingModel } from './members/member-numeric-ranking.model';
 
 const services = [
   ClubService,
@@ -40,7 +43,10 @@ const services = [
   MembersSearchIndexService,
   MemberCategoryService,
   DataAfftTokenRefresherService,
-  BepingNotifierService
+  BepingNotifierService,
+  NumericRankingService,
+  DataAFTTIndividualResultModel,
+  DataAFTTMemberNumericRankingModel,
 ];
 
 @Module({
@@ -49,5 +55,4 @@ const services = [
   exports: [...services],
 })
 @Global()
-export class ServicesModule {
-}
+export class ServicesModule {}

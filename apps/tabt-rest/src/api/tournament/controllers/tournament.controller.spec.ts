@@ -1,7 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { TournamentController } from './tournament.controller';
 import { TournamentService } from '../../../services/tournaments/tournament.service';
-import { GetTournamentDetails, RegisterTournament } from '../dto/tournaments.dto';
+import {
+  GetTournamentDetails,
+  RegisterTournament,
+} from '../dto/tournaments.dto';
 import { NotFoundException } from '@nestjs/common';
 
 jest.mock('../../../services/tournaments/tournament.service');
@@ -35,41 +38,45 @@ describe('TournamentController', () => {
     });
     it('should call tournaments service with correct params to find one tournament', async () => {
       const input: GetTournamentDetails = {
-        withResults: true, withRegistrations: true,
+        withResults: true,
+        withRegistrations: true,
       };
       const spy = jest.spyOn(tournamentService, 'getTournaments');
       const result = await controller.findById(input, 123);
 
       expect(result).toBeDefined();
       expect(spy).toHaveBeenCalledWith({
-        'TournamentUniqueIndex': 123,
-        'WithRegistrations': true,
-        'WithResults': true,
+        TournamentUniqueIndex: 123,
+        WithRegistrations: true,
+        WithResults: true,
       });
     });
     it('should throw 404 exception if not found', async () => {
       const input: GetTournamentDetails = {};
       jest.spyOn(tournamentService, 'getTournaments').mockResolvedValue([]);
 
-      await expect(controller.findById(input, 142453)).rejects.toEqual(new NotFoundException());
+      await expect(controller.findById(input, 142453)).rejects.toEqual(
+        new NotFoundException(),
+      );
     });
   });
   describe('Tournament series', () => {
     it('should call tournaments service with correct params to find series of one tournament', async () => {
-
       const spy = jest.spyOn(tournamentService, 'getTournaments');
       const result = await controller.getSeries(123);
 
       expect(result).toBeDefined();
       expect(spy).toHaveBeenCalledWith({
-        'TournamentUniqueIndex': 123,
-        'WithRegistrations': true,
+        TournamentUniqueIndex: 123,
+        WithRegistrations: true,
       });
     });
     it('should throw 404 exception if not found', async () => {
       jest.spyOn(tournamentService, 'getTournaments').mockResolvedValue([]);
 
-      await expect(controller.getSeries(142453)).rejects.toEqual(new NotFoundException());
+      await expect(controller.getSeries(142453)).rejects.toEqual(
+        new NotFoundException(),
+      );
     });
   });
 
@@ -85,13 +92,11 @@ describe('TournamentController', () => {
 
       expect(result).toBeDefined();
       expect(spy).toHaveBeenCalledWith({
-        'NotifyPlayer': true,
-        'PlayerUniqueIndex': [
-          20,
-        ],
-        'SerieUniqueIndex': 2,
-        'TournamentUniqueIndex': 1,
-        'Unregister': true,
+        NotifyPlayer: true,
+        PlayerUniqueIndex: [20],
+        SerieUniqueIndex: 2,
+        TournamentUniqueIndex: 1,
+        Unregister: true,
       });
     });
   });

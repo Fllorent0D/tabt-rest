@@ -4,21 +4,19 @@ import { HeaderKeys } from './context.constants';
 
 export enum TABT_DATABASE {
   AFTT = 'aftt',
-  VTTL = 'vttl'
+  VTTL = 'vttl',
 }
 
 export const DEFAULT_LANG = TABT_DATABASE.AFTT;
 
 @Injectable()
 export class DatabaseContextService {
-  constructor(
-    private readonly contextService: ContextService,
-  ) {
-  }
-
+  constructor(private readonly contextService: ContextService) {}
 
   get database(): TABT_DATABASE {
-    const lang: string = (<any>this.contextService.context.caller)[HeaderKeys.X_TABT_DATABASE];
+    const lang: string = (<any>this.contextService.context.caller)[
+      HeaderKeys.X_TABT_DATABASE
+    ];
 
     switch (lang) {
       case 'aftt':
@@ -29,5 +27,4 @@ export class DatabaseContextService {
         return DEFAULT_LANG;
     }
   }
-
 }

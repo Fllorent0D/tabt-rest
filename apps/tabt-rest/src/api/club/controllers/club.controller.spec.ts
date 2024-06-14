@@ -21,11 +21,16 @@ describe('ClubController', () => {
   let clubTeamService: ClubTeamService;
   let memberService: MemberService;
 
-
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [ClubController],
-      providers: [ClubService, ClubTeamService, ClubMemberService, MatchesMembersRankerService, MemberService],
+      providers: [
+        ClubService,
+        ClubTeamService,
+        ClubMemberService,
+        MatchesMembersRankerService,
+        MemberService,
+      ],
     }).compile();
 
     controller = module.get<ClubController>(ClubController);
@@ -38,18 +43,16 @@ describe('ClubController', () => {
     expect(controller).toBeDefined();
   });
 
-
   describe('findAll', () => {
     it('should call club service with correct params', async () => {
       const input: ListAllClubs = { clubCategory: 'LIEGE' };
 
       const getAllClubSpy = jest.spyOn(clubService, 'getClubs');
 
-
       const response = await controller.findAll(input);
       expect(response).toBeDefined();
       expect(response[0]).toBeDefined();
-      expect(getAllClubSpy).toHaveBeenCalledWith({ 'ClubCategory': 10 });
+      expect(getAllClubSpy).toHaveBeenCalledWith({ ClubCategory: 10 });
     });
   });
 
@@ -67,7 +70,9 @@ describe('ClubController', () => {
       jest.spyOn(clubService, 'getClubById').mockResolvedValue(null);
 
       // Weird syntaxt... ToThrown is not supported with async/await
-      expect(controller.findbyId('L360')).rejects.toEqual(new NotFoundException());
+      expect(controller.findbyId('L360')).rejects.toEqual(
+        new NotFoundException(),
+      );
     });
   });
 
@@ -88,14 +93,14 @@ describe('ClubController', () => {
 
       expect(response).toBeDefined();
       expect(getClubMembersSpy).toHaveBeenCalledWith({
-        'Club': 'L360',
-        'ExtendedInformation': true,
-        'NameSearch': 'Florent',
-        'PlayerCategory': 1,
-        'RankingPointsInformation': true,
-        'UniqueIndex': 142453,
-        'WithOpponentRankingEvaluation': false,
-        'WithResults': true,
+        Club: 'L360',
+        ExtendedInformation: true,
+        NameSearch: 'Florent',
+        PlayerCategory: 1,
+        RankingPointsInformation: true,
+        UniqueIndex: 142453,
+        WithOpponentRankingEvaluation: false,
+        WithResults: true,
       });
     });
   });
@@ -109,9 +114,7 @@ describe('ClubController', () => {
       const response = await controller.getClubTeams(input, 'L360');
 
       expect(response).toBeDefined();
-      expect(getAllTeamsSpy).toHaveBeenCalledWith({ 'Club': 'L360' });
+      expect(getAllTeamsSpy).toHaveBeenCalledWith({ Club: 'L360' });
     });
   });
-
-
 });

@@ -10,8 +10,15 @@ import { ClubDashboardController } from './controllers/club-dashboard.controller
 
 @Module({
   imports: [CommonModule, ServicesModule],
-  controllers: [MemberDashboardController, DivisionDashboardController, ClubDashboardController],
-  providers: [MemberDashboardService, DivisionDashboardService, ClubDashboardService],
+  controllers: [
+    MemberDashboardController,
+    DivisionDashboardController,
+    ClubDashboardController,
+  ],
+  providers: [
+    MemberDashboardService,
+    DivisionDashboardService,
+    ClubDashboardService,
+  ],
 })
-export class DashboardModule {
-}
+export class DashboardModule {}

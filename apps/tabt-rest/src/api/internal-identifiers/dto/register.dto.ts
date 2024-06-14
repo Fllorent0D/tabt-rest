@@ -32,6 +32,4 @@ export class RedirectLinkDTO {
   @ApiProperty()
   @IsString()
   url: string;
-
 }
-

@@ -21,8 +21,7 @@ import { DashboardModule } from './dashboard/dashboard.module';
     HealthModule,
     UserAgentModule,
     InternalIdentifiersModule,
-    DashboardModule
+    DashboardModule,
   ],
 })
-export class ApiModule {
-}
+export class ApiModule {}

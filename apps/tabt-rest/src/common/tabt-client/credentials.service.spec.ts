@@ -9,11 +9,15 @@ describe('CredentialsService', () => {
 
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
-      providers: [{
-        provide: ContextService, useValue: ({
-          context: {},
-        }),
-      }, CredentialsService],
+      providers: [
+        {
+          provide: ContextService,
+          useValue: {
+            context: {},
+          },
+        },
+        CredentialsService,
+      ],
     }).compile();
 
     service = moduleRef.get<CredentialsService>(CredentialsService);
@@ -23,7 +27,7 @@ describe('CredentialsService', () => {
   describe('enrichInputWithCredentials', () => {
     it('should enrich the given input with headers set in the context of the request', () => {
       const input = {
-        test: 'It\'s the test',
+        test: "It's the test",
       };
       Object.defineProperty(contextService, 'context', {
         value: {
@@ -31,7 +35,7 @@ describe('CredentialsService', () => {
             name: 'test',
             version: '1.0.0',
             pid: 1234,
-            season: 23
+            season: 23,
           },
           caller: {
             correlationId: '123',
@@ -46,19 +50,19 @@ describe('CredentialsService', () => {
       const result = service.enrichInputWithCredentials(input);
 
       expect(result).toEqual({
-        'Credentials': {
-          'Account': 'florent',
+        Credentials: {
+          Account: 'florent',
           // 'OnBehalfOf': 'on behalf of ...',
-          'Password': 'the password',
+          Password: 'the password',
         },
-        'Season': 18,
-        'test': 'It\'s the test',
+        Season: 18,
+        test: "It's the test",
       });
     });
 
     it('should only add 22 as current season if nothing given', () => {
       const input = {
-        test: 'It\'s the test',
+        test: "It's the test",
       };
       Object.defineProperty(contextService, 'context', {
         value: {
@@ -66,7 +70,7 @@ describe('CredentialsService', () => {
             name: 'test',
             version: '1.0.0',
             pid: 1234,
-            season: 23
+            season: 23,
           },
           caller: {
             correlationId: '123',
@@ -77,11 +81,10 @@ describe('CredentialsService', () => {
       const result = service.enrichInputWithCredentials(input);
 
       expect(result).toEqual({
-        'test': 'It\'s the test',
-        'Season': 23
+        test: "It's the test",
+        Season: 23,
       });
     });
-
   });
   describe('extraHeaders', () => {
     it('should set x-forwarded-host to the received one', () => {
@@ -95,7 +98,7 @@ describe('CredentialsService', () => {
           caller: {
             correlationId: '123',
             [HeaderKeys.X_FORWARDED_FOR]: '12.12.12.12',
-            'remoteAddress': '11.11.11.11',
+            remoteAddress: '11.11.11.11',
           },
         },
       });
@@ -116,7 +119,7 @@ describe('CredentialsService', () => {
           },
           caller: {
             correlationId: '123',
-            'remoteAddress': '11.11.11.11',
+            remoteAddress: '11.11.11.11',
           },
         },
       });

@@ -9,7 +9,7 @@ describe('ContextService', () => {
       //service.registerHttpHeaders(['test', 'test2']);
       const request = {
         id: '123',
-        connection:{
+        connection: {
           remoteAddress: '55.55.55.55',
         },
         headers: {
@@ -25,20 +25,24 @@ describe('ContextService', () => {
         version: '1.0.0',
       };
       const configService = {
-        get: jest.fn().mockReturnValue('23')
-      }
+        get: jest.fn().mockReturnValue('23'),
+      };
 
-      const ser = new ContextService(request, TABT_HEADERS, packageInfo as PackageService, configService as unknown as ConfigService);
+      const ser = new ContextService(
+        request,
+        TABT_HEADERS,
+        packageInfo as PackageService,
+        configService as unknown as ConfigService,
+      );
 
       expect(ser.context.caller).toEqual({
-          'X-Tabt-Account': 'test',
-          'X-Tabt-Database': 'test4',
-          'X-Tabt-Password': 'test2',
-          'X-Forwarded-For': '111.111.111.111',
-          'remoteAddress': '55.55.55.55',
-          'correlationId': '123',
-        },
-      );
+        'X-Tabt-Account': 'test',
+        'X-Tabt-Database': 'test4',
+        'X-Tabt-Password': 'test2',
+        'X-Forwarded-For': '111.111.111.111',
+        remoteAddress: '55.55.55.55',
+        correlationId: '123',
+      });
       expect(ser.context.runner.name).toEqual('TabtRest');
       expect(ser.context.runner.version).toEqual('1.0.0');
     });
@@ -46,10 +50,10 @@ describe('ContextService', () => {
       //service.registerHttpHeaders(['test', 'test2']);
       const request = {
         id: '123',
-        connection:{
+        connection: {
           remoteAddress: '::1',
         },
-        headers:{}
+        headers: {},
       };
       const packageInfo = {
         name: 'TabtRest',
@@ -57,16 +61,20 @@ describe('ContextService', () => {
       };
 
       const configService = {
-        get: jest.fn().mockReturnValue('23')
-      }
+        get: jest.fn().mockReturnValue('23'),
+      };
 
-      const ser = new ContextService(request, TABT_HEADERS, packageInfo as PackageService, configService as unknown as ConfigService);
+      const ser = new ContextService(
+        request,
+        TABT_HEADERS,
+        packageInfo as PackageService,
+        configService as unknown as ConfigService,
+      );
 
       expect(ser.context.caller).toEqual({
-          'remoteAddress': '127.0.0.1',
-          'correlationId': '123',
-        },
-      );
+        remoteAddress: '127.0.0.1',
+        correlationId: '123',
+      });
     });
   });
 });

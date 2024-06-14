@@ -13,8 +13,7 @@ export class MembersSearchIndexService {
   constructor(
     @Inject('tabt-aftt') private readonly tabtAFTT: TabTAPISoap,
     private readonly cacheService: CacheService,
-  ) {
-  }
+  ) {}
 
   search(queryString: string) {
     let query = '';
@@ -35,33 +34,40 @@ export class MembersSearchIndexService {
         }
       }
       query += `${searchTerms[searchTerms.length - 1]}*^10 ${searchTerms[searchTerms.length - 1]}~1 ${searchTerms[searchTerms.length - 1]}^20`;
-
     }
     this.logger.debug(`Query to index: ${query}`);
     const results = this.index.search(query);
     this.logger.debug(`Found ${results.length} results.`);
 
     return results.slice(0, 20).map((r) => {
-      return this.members.find((member) => member.UniqueIndex === Number(r.ref));
+      return this.members.find(
+        (member) => member.UniqueIndex === Number(r.ref),
+      );
     });
   }
 
-
   async indexMembers() {
-    const members = await this.cacheService.getFromCacheOrGetAndCacheResult('members:all', async () => {
-      const [memberOutput] = await this.tabtAFTT.GetMembersAsync({ NameSearch: ' ' });
-      return memberOutput.MemberEntries;
-    }, TTL_DURATION.TWELVE_HOURS);
+    const members = await this.cacheService.getFromCacheOrGetAndCacheResult(
+      'members:all',
+      async () => {
+        const [memberOutput] = await this.tabtAFTT.GetMembersAsync({
+          NameSearch: ' ',
+        });
+        return memberOutput.MemberEntries;
+      },
+      TTL_DURATION.TWELVE_HOURS,
+    );
     this.logger.debug(`Cached ${members.length} member entries`);
 
-    this.index = lunr(function() {
+    this.index = lunr(function () {
       this.ref('UniqueIndex');
       this.field('FullName');
 
-      members.forEach(function(doc) {
+      members.forEach(function (doc) {
         this.add({
           UniqueIndex: doc.UniqueIndex,
-          FullName: doc.FirstName.toUpperCase() + ' ' + doc.LastName.toUpperCase(),
+          FullName:
+            doc.FirstName.toUpperCase() + ' ' + doc.LastName.toUpperCase(),
         });
       }, this);
       this.build();
@@ -69,7 +75,5 @@ export class MembersSearchIndexService {
     this.members = members;
 
     this.logger.debug(`Index created.`);
-
   }
-
 }

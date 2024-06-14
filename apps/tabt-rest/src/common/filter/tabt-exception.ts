@@ -1,8 +1,6 @@
 import { HttpException } from '@nestjs/common';
 
-
 export class TabtException extends HttpException {
-
   constructor(faultCodeString: string, faultString: string) {
     const code = Number(faultCodeString);
     switch (code) {

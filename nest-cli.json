@@ -25,6 +25,15 @@
       "compilerOptions": {
         "tsConfigPath": "apps/data-aftt-importer/tsconfig.app.json"
       }
+    },
+    "app-notifications": {
+      "type": "application",
+      "root": "apps/app-notifications",
+      "entryFile": "main",
+      "sourceRoot": "apps/app-notifications/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/app-notifications/tsconfig.app.json"
+      }
     }
   }
 }

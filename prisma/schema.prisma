@@ -1,9 +1,10 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
   binaryTargets = ["native", "debian-openssl-3.0.x", "darwin-arm64"]
 }
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
@@ -12,7 +13,7 @@ datasource db {
 model Member {
   id                Int
   licence           Int
-  gender            Gender
+  playerCategory    PlayerCategory
   firstname         String
   lastname          String
   ranking           String
@@ -27,7 +28,7 @@ model Member {
   @@unique([id, licence])
 }
 
-enum Gender {
+enum PlayerCategory {
   MEN
   WOMEN
 }
@@ -46,8 +47,9 @@ model NumericPoints {
 }
 
 model IndividualResult {
-  id                    Int             @id
+  id                    Int
   date                  DateTime        @default(now()) @db.Date
+  playerCategory        PlayerCategory
   memberId              Int
   memberLicence         Int
   opponentId            Int
@@ -64,9 +66,11 @@ model IndividualResult {
   diffPoints            Float
   pointsToAdd           Float
   looseFactor           Float
-  definitivePointsToAdd   Float
+  definitivePointsToAdd Float
   member                Member          @relation("member", fields: [memberId, memberLicence], references: [id, licence])
   memberOpponent        Member          @relation("memberopponent", fields: [opponentId, opponentLicence], references: [id, licence])
+
+  @@id([id, playerCategory])
 }
 
 enum CompetitionType {
@@ -77,4 +81,24 @@ enum CompetitionType {
 enum Result {
   VICTORY
   DEFEAT
+}
+
+model APIConsumer {
+  id        Int      @id @default(autoincrement())
+  app       String
+  password  String
+  updatedAt DateTime @updatedAt
+}
+
+model MobileNotificationSent {
+  id               String           @id
+  createdAt        DateTime         @default(now())
+  sent             Boolean
+  messageIds       String[]
+  notificationType NotificationType
+}
+
+enum NotificationType {
+  MATCH
+  RANKING
 }

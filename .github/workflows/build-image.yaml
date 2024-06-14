@@ -31,7 +31,7 @@ jobs:
           push: true
           context: .
           platforms: linux/arm64/v8,linux/amd64
-          file: ./apps/tabt-rest/dockerfile
+          file: ./apps/tabt-rest/Dockerfile
           tags: ${{ env.DOCKER_IMAGE_NAME }}
           cache-from: type=gha
           cache-to: type=gha,mode=max

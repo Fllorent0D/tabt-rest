@@ -1,5 +1,5 @@
 export interface TabtInputInterface {
-  toTabtInput(): any
+  toTabtInput(): any;
 }
 export enum Level {
   NATIONAL = 1,
@@ -29,9 +29,8 @@ export enum MemberStatus {
   SUPER_DIVISION = 'S',
   LICENCE_A = 'C',
   INDIVIDUAL_PLAYER = 'N',
-  EXTERN = 'E'
+  EXTERN = 'E',
 }
-
 
 // OUTDATED
 // TO REFACTOR
@@ -43,7 +42,7 @@ export enum PlayerCategory {
   YOUTH = 5,
   MEN_POST_23 = 37,
   WOMEN_POST_23 = 38,
-  YOUTH_POST_23 = 41
+  YOUTH_POST_23 = 41,
 }
 
 export enum ClubCategory {

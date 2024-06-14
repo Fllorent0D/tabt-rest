@@ -10,10 +10,7 @@ import { TabtException } from '../../../common/filter/tabt-exceptions.filter';
 })
 @ApiTags('Seasons')
 export class SeasonController {
-  constructor(
-    private seasonService: SeasonService,
-  ) {
-  }
+  constructor(private seasonService: SeasonService) {}
 
   @Get()
   @ApiOperation({
@@ -65,7 +62,4 @@ export class SeasonController {
   findById(@Param('seasonId', ParseIntPipe) seasonId: number) {
     return this.seasonService.getSeasonById(seasonId);
   }
-
-
-
 }

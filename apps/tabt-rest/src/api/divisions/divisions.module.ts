@@ -10,5 +10,4 @@ import { ServicesModule } from '../../services/services.module';
   controllers: [DivisionsController],
   providers: [DivisionService, DivisionRankingService],
 })
-export class DivisionsModule {
-}
+export class DivisionsModule {}

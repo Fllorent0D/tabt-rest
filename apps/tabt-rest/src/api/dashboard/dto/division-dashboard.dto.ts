@@ -1,4 +1,7 @@
-import { DivisionEntry, RankingEntry } from '../../../entity/tabt-soap/TabTAPI_Port';
+import {
+  DivisionEntry,
+  RankingEntry,
+} from '../../../entity/tabt-soap/TabTAPI_Port';
 import { WinLossSummaryDTOV1 } from './member-dashboard.dto';
 import { ResponseDTO } from './common.dto';
 

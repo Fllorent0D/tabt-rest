@@ -1,9 +1,9 @@
 import { MemberEntry } from '../../../entity/tabt-soap/TabTAPI_Port';
 
 export class ClubMemberService {
-
   async getClubsMembers(): Promise<MemberEntry[]> {
-    return Promise.resolve([{
+    return Promise.resolve([
+      {
         Position: 1,
         UniqueIndex: 120506,
         RankingIndex: 1,
@@ -13,16 +13,16 @@ export class ClubMemberService {
         Status: 'A',
         Club: 'L360',
       },
-        {
-          Position: 2,
-          Club: 'L360',
-          UniqueIndex: 120502,
-          RankingIndex: 2,
-          FirstName: 'ALFRED',
-          LastName: 'DORTU',
-          Ranking: 'D6',
-          Status: 'A',
-        }],
-    );
+      {
+        Position: 2,
+        Club: 'L360',
+        UniqueIndex: 120502,
+        RankingIndex: 2,
+        FirstName: 'ALFRED',
+        LastName: 'DORTU',
+        Ranking: 'D6',
+        Status: 'A',
+      },
+    ]);
   }
 }

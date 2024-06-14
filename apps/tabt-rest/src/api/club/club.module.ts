@@ -11,5 +11,4 @@ import { ServicesModule } from '../../services/services.module';
   controllers: [ClubController],
   providers: [ClubService, ClubTeamService, ClubMemberService],
 })
-export class ClubModule {
-}
+export class ClubModule {}

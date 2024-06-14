@@ -6,7 +6,6 @@ import { OSMAddress } from '../osm/osm-search.model';
 import { decode } from 'he';
 
 export class Credentials {
-
   Account: string;
 
   Password: string;
@@ -20,7 +19,6 @@ export class ITestInput {
 }
 
 export class VenueEntry {
-
   @ApiProperty()
   Id: number;
 
@@ -57,7 +55,6 @@ export class VenueEntryWithAddress extends VenueEntry {
 }
 
 export class TestOutput {
-
   /** xsd:string(undefined) */
   @ApiProperty()
   Timestamp: string;
@@ -132,7 +129,6 @@ export class GetDivisionRankingInput {
 }
 
 export class RankingEntry {
-
   @ApiProperty()
   Position: number;
 
@@ -276,7 +272,6 @@ export class GetClubsOutput {
 }
 
 export class GetDivisionsInput {
-
   Credentials?: Credentials;
   /** xsd:number(undefined) */
   Season?: number;
@@ -408,39 +403,233 @@ export class PlayerCategoryEntries {
   StrictMaximumAge?: string;
 }
 
-
 export class TabTAPISoap extends Client {
-  Test: (input: ITestInput, cb: (err: any | null, result: TestOutput, raw: string, soapHeader: { [k: string]: any; }) => any, options?: any, extraHeaders?: any) => void;
-  GetSeasons: (input: GetSeasonsInput, cb: (err: any | null, result: IGetSeasonsOutput, raw: string, soapHeader: { [k: string]: any; }) => any, options?: any, extraHeaders?: any) => void;
-  GetClubTeams: (input: GetClubTeamsInput, cb: (err: any | null, result: GetClubTeamsOutput, raw: string, soapHeader: { [k: string]: any; }) => any, options?: any, extraHeaders?: any) => void;
-  GetDivisionRanking: (input: GetDivisionRankingInput, cb: (err: any | null, result: GetDivisionRankingOutput, raw: string, soapHeader: { [k: string]: any; }) => any, options?: any, extraHeaders?: any) => void;
-  GetMatches: (input: GetMatchesInput, cb: (err: any | null, result: GetMatchesOutput, raw: string, soapHeader: { [k: string]: any; }) => any, options?: any, extraHeaders?: any) => void;
-  GetMembers: (input: GetMembersInput, cb: (err: any | null, result: IGetMembersOutput, raw: string, soapHeader: { [k: string]: any; }) => any, options?: any, extraHeaders?: any) => void;
-  Upload: (input: IUploadInput, cb: (err: any | null, result: IUploadOutput, raw: string, soapHeader: { [k: string]: any; }) => any, options?: any, extraHeaders?: any) => void;
-  GetClubs: (input: GetClubsInput, cb: (err: any | null, result: GetClubsOutput, raw: string, soapHeader: { [k: string]: any; }) => any, options?: any, extraHeaders?: any) => void;
-  GetDivisions: (input: GetDivisionsInput, cb: (err: any | null, result: IGetDivisionsOutput, raw: string, soapHeader: { [k: string]: any; }) => any, options?: any, extraHeaders?: any) => void;
-  GetTournaments: (input: GetTournamentsInput, cb: (err: any | null, result: IGetTournamentsOutput, raw: string, soapHeader: { [k: string]: any; }) => any, options?: any, extraHeaders?: any) => void;
-  GetMatchSystems: (input: GetMatchSystemsInput, cb: (err: any | null, result: GetMatchSystemsOutput, raw: string, soapHeader: { [k: string]: any; }) => any, options?: any, extraHeaders?: any) => void;
-  TournamentRegister: (input: TournamentRegisterInput, cb: (err: any | null, result: TournamentRegisterOutput, raw: string, soapHeader: { [k: string]: any; }) => any, options?: any, extraHeaders?: any) => void;
-  GetPlayerCategories: (input: GetPlayerCategoriesInput, cb: (err: any | null, result: GetPlayerCategoriesResponse, raw: string, soapHeader: { [k: string]: any; }) => any, options?: any, extraHeaders?: any) => void;
+  Test: (
+    input: ITestInput,
+    cb: (
+      err: any | null,
+      result: TestOutput,
+      raw: string,
+      soapHeader: { [k: string]: any },
+    ) => any,
+    options?: any,
+    extraHeaders?: any,
+  ) => void;
+  GetSeasons: (
+    input: GetSeasonsInput,
+    cb: (
+      err: any | null,
+      result: IGetSeasonsOutput,
+      raw: string,
+      soapHeader: { [k: string]: any },
+    ) => any,
+    options?: any,
+    extraHeaders?: any,
+  ) => void;
+  GetClubTeams: (
+    input: GetClubTeamsInput,
+    cb: (
+      err: any | null,
+      result: GetClubTeamsOutput,
+      raw: string,
+      soapHeader: { [k: string]: any },
+    ) => any,
+    options?: any,
+    extraHeaders?: any,
+  ) => void;
+  GetDivisionRanking: (
+    input: GetDivisionRankingInput,
+    cb: (
+      err: any | null,
+      result: GetDivisionRankingOutput,
+      raw: string,
+      soapHeader: { [k: string]: any },
+    ) => any,
+    options?: any,
+    extraHeaders?: any,
+  ) => void;
+  GetMatches: (
+    input: GetMatchesInput,
+    cb: (
+      err: any | null,
+      result: GetMatchesOutput,
+      raw: string,
+      soapHeader: { [k: string]: any },
+    ) => any,
+    options?: any,
+    extraHeaders?: any,
+  ) => void;
+  GetMembers: (
+    input: GetMembersInput,
+    cb: (
+      err: any | null,
+      result: IGetMembersOutput,
+      raw: string,
+      soapHeader: { [k: string]: any },
+    ) => any,
+    options?: any,
+    extraHeaders?: any,
+  ) => void;
+  Upload: (
+    input: IUploadInput,
+    cb: (
+      err: any | null,
+      result: IUploadOutput,
+      raw: string,
+      soapHeader: { [k: string]: any },
+    ) => any,
+    options?: any,
+    extraHeaders?: any,
+  ) => void;
+  GetClubs: (
+    input: GetClubsInput,
+    cb: (
+      err: any | null,
+      result: GetClubsOutput,
+      raw: string,
+      soapHeader: { [k: string]: any },
+    ) => any,
+    options?: any,
+    extraHeaders?: any,
+  ) => void;
+  GetDivisions: (
+    input: GetDivisionsInput,
+    cb: (
+      err: any | null,
+      result: IGetDivisionsOutput,
+      raw: string,
+      soapHeader: { [k: string]: any },
+    ) => any,
+    options?: any,
+    extraHeaders?: any,
+  ) => void;
+  GetTournaments: (
+    input: GetTournamentsInput,
+    cb: (
+      err: any | null,
+      result: IGetTournamentsOutput,
+      raw: string,
+      soapHeader: { [k: string]: any },
+    ) => any,
+    options?: any,
+    extraHeaders?: any,
+  ) => void;
+  GetMatchSystems: (
+    input: GetMatchSystemsInput,
+    cb: (
+      err: any | null,
+      result: GetMatchSystemsOutput,
+      raw: string,
+      soapHeader: { [k: string]: any },
+    ) => any,
+    options?: any,
+    extraHeaders?: any,
+  ) => void;
+  TournamentRegister: (
+    input: TournamentRegisterInput,
+    cb: (
+      err: any | null,
+      result: TournamentRegisterOutput,
+      raw: string,
+      soapHeader: { [k: string]: any },
+    ) => any,
+    options?: any,
+    extraHeaders?: any,
+  ) => void;
+  GetPlayerCategories: (
+    input: GetPlayerCategoriesInput,
+    cb: (
+      err: any | null,
+      result: GetPlayerCategoriesResponse,
+      raw: string,
+      soapHeader: { [k: string]: any },
+    ) => any,
+    options?: any,
+    extraHeaders?: any,
+  ) => void;
 
-  TestAsync: (input: ITestInput, option?: any, headers?: { [k: string]: string; }) => Promise<[TestOutput, string, { [k: string]: any; }, any, any]>;
-  GetSeasonsAsync: (input: GetSeasonsInput, option?: any, headers?: { [k: string]: string; }) => Promise<[IGetSeasonsOutput, string, { [k: string]: any; }, any, any]>;
-  GetClubTeamsAsync: (input: GetClubTeamsInput, option?: any, headers?: { [k: string]: string; }) => Promise<[GetClubTeamsOutput, string, { [k: string]: any; }, any, any]>;
-  GetDivisionRankingAsync: (input: GetDivisionRankingInput, option?: any, headers?: { [k: string]: string; }) => Promise<[GetDivisionRankingOutput, string, { [k: string]: any; }, any, any]>;
-  GetMatchesAsync: (input: GetMatchesInput, option?: any, headers?: { [k: string]: string; }) => Promise<[GetMatchesOutput, string, { [k: string]: any; }, any, any]>;
-  GetMembersAsync: (input: GetMembersInput, option?: any, headers?: { [k: string]: string; }) => Promise<[IGetMembersOutput, string, { [k: string]: any; }, any, any]>;
-  UploadAsync: (input: IUploadInput, option?: any, headers?: { [k: string]: string; }) => Promise<[IUploadOutput, string, { [k: string]: any; }, any, any]>;
-  GetClubsAsync: (input: GetClubsInput, option?: any, headers?: { [k: string]: string; }) => Promise<[GetClubsOutput, string, { [k: string]: any; }, any, any]>;
-  GetDivisionsAsync: (input: GetDivisionsInput, option?: any, headers?: { [k: string]: string; }) => Promise<[result: IGetDivisionsOutput, raw: string, soapHeader: { [k: string]: any; }, options: any, extraHeaders: any]>;
-  GetTournamentsAsync: (input: GetTournamentsInput, option?: any, headers?: { [k: string]: string; }) => Promise<[IGetTournamentsOutput, string, { [k: string]: any; }, any, any]>;
-  GetMatchSystemsAsync: (input: GetMatchSystemsInput, option?: any, headers?: { [k: string]: string; }) => Promise<[GetMatchSystemsOutput, string, { [k: string]: any; }, any, any]>;
-  TournamentRegisterAsync: (input: TournamentRegisterInput, option?: any, headers?: { [k: string]: string; }) => Promise<[TournamentRegisterOutput, string, { [k: string]: any; }, any, any]>;
-  GetPlayerCategoriesAsync: (input: GetPlayerCategoriesInput, option?: any, headers?: { [k: string]: string; }) => Promise<[GetPlayerCategoriesResponse, string, { [k: string]: any; }, any, any]>;
+  TestAsync: (
+    input: ITestInput,
+    option?: any,
+    headers?: { [k: string]: string },
+  ) => Promise<[TestOutput, string, { [k: string]: any }, any, any]>;
+  GetSeasonsAsync: (
+    input: GetSeasonsInput,
+    option?: any,
+    headers?: { [k: string]: string },
+  ) => Promise<[IGetSeasonsOutput, string, { [k: string]: any }, any, any]>;
+  GetClubTeamsAsync: (
+    input: GetClubTeamsInput,
+    option?: any,
+    headers?: { [k: string]: string },
+  ) => Promise<[GetClubTeamsOutput, string, { [k: string]: any }, any, any]>;
+  GetDivisionRankingAsync: (
+    input: GetDivisionRankingInput,
+    option?: any,
+    headers?: { [k: string]: string },
+  ) => Promise<
+    [GetDivisionRankingOutput, string, { [k: string]: any }, any, any]
+  >;
+  GetMatchesAsync: (
+    input: GetMatchesInput,
+    option?: any,
+    headers?: { [k: string]: string },
+  ) => Promise<[GetMatchesOutput, string, { [k: string]: any }, any, any]>;
+  GetMembersAsync: (
+    input: GetMembersInput,
+    option?: any,
+    headers?: { [k: string]: string },
+  ) => Promise<[IGetMembersOutput, string, { [k: string]: any }, any, any]>;
+  UploadAsync: (
+    input: IUploadInput,
+    option?: any,
+    headers?: { [k: string]: string },
+  ) => Promise<[IUploadOutput, string, { [k: string]: any }, any, any]>;
+  GetClubsAsync: (
+    input: GetClubsInput,
+    option?: any,
+    headers?: { [k: string]: string },
+  ) => Promise<[GetClubsOutput, string, { [k: string]: any }, any, any]>;
+  GetDivisionsAsync: (
+    input: GetDivisionsInput,
+    option?: any,
+    headers?: { [k: string]: string },
+  ) => Promise<
+    [
+      result: IGetDivisionsOutput,
+      raw: string,
+      soapHeader: { [k: string]: any },
+      options: any,
+      extraHeaders: any,
+    ]
+  >;
+  GetTournamentsAsync: (
+    input: GetTournamentsInput,
+    option?: any,
+    headers?: { [k: string]: string },
+  ) => Promise<[IGetTournamentsOutput, string, { [k: string]: any }, any, any]>;
+  GetMatchSystemsAsync: (
+    input: GetMatchSystemsInput,
+    option?: any,
+    headers?: { [k: string]: string },
+  ) => Promise<[GetMatchSystemsOutput, string, { [k: string]: any }, any, any]>;
+  TournamentRegisterAsync: (
+    input: TournamentRegisterInput,
+    option?: any,
+    headers?: { [k: string]: string },
+  ) => Promise<
+    [TournamentRegisterOutput, string, { [k: string]: any }, any, any]
+  >;
+  GetPlayerCategoriesAsync: (
+    input: GetPlayerCategoriesInput,
+    option?: any,
+    headers?: { [k: string]: string },
+  ) => Promise<
+    [GetPlayerCategoriesResponse, string, { [k: string]: any }, any, any]
+  >;
 }
 
 export class SeasonEntry {
-
   @ApiProperty()
   Season: number;
 
@@ -452,7 +641,6 @@ export class SeasonEntry {
 }
 
 export class TeamEntry {
-
   @ApiProperty()
   TeamId: string;
 
@@ -477,9 +665,7 @@ export class TeamEntry {
   }
 }
 
-
 export class Player {
-
   @ApiProperty()
   Position: number;
 
@@ -503,7 +689,6 @@ export class Player {
 }
 
 export class DoubleTeam {
-
   @ApiProperty()
   Position: number;
 
@@ -528,9 +713,7 @@ export class Players {
   DoubleTeams: Array<DoubleTeam>;
 }
 
-
 export class IAwayPlayer {
-
   Position: number;
 
   UniqueIndex: number;
@@ -578,7 +761,6 @@ export class IndividualMatchResult {
 }
 
 export class RankingPointsEntry {
-
   @ApiProperty()
   MethodName: string;
 
@@ -590,7 +772,6 @@ export class RankingPointsEntry {
 }
 
 export class Phone {
-
   @ApiProperty()
   Home: string;
 
@@ -605,7 +786,6 @@ export class Phone {
 }
 
 export class Address {
-
   @ApiProperty()
   Line1: string;
 
@@ -620,7 +800,6 @@ export class Address {
 }
 
 export class RankingEvaluationEntry {
-
   @ApiProperty()
   EvaluationType: string;
 
@@ -629,7 +808,6 @@ export class RankingEvaluationEntry {
 }
 
 export class CommentAuthor {
-
   @ApiProperty()
   Position: number;
 
@@ -709,7 +887,6 @@ export class CommentAuthor {
 }
 
 export class CommentEntry {
-
   @ApiProperty()
   Timestamp: string;
 
@@ -724,7 +901,6 @@ export class CommentEntry {
 }
 
 export class MatchDetails {
-
   @ApiProperty()
   DetailsCreated: boolean;
   /** http://api.frenoy.net/TabTAPI#xsd:time(undefined) */
@@ -771,7 +947,6 @@ export class MatchDetails {
 }
 
 export class TeamMatchesEntry {
-
   @ApiPropertyOptional()
   DivisionName?: string;
 
@@ -850,9 +1025,11 @@ export class TeamMatchesEntry {
 
   constructor(partial: Partial<TeamMatchesEntry>) {
     Object.assign(this, partial);
-    this.IsAwayWithdrawn = (partial.IsAwayWithdrawn as unknown as string) !== 'N';
+    this.IsAwayWithdrawn =
+      (partial.IsAwayWithdrawn as unknown as string) !== 'N';
 
-    this.IsHomeWithdrawn = (partial.IsHomeWithdrawn as unknown as string) !== 'N';
+    this.IsHomeWithdrawn =
+      (partial.IsHomeWithdrawn as unknown as string) !== 'N';
   }
 }
 
@@ -910,7 +1087,6 @@ export class MemberEntryResultEntry {
 }
 
 export class MemberEntry {
-
   @ApiProperty()
   Position: number;
 
@@ -970,7 +1146,6 @@ export class MemberEntry {
 }
 
 export class ClubEntry {
-
   @ApiProperty()
   UniqueIndex: string;
 
@@ -998,9 +1173,7 @@ export class ClubEntry {
   }
 }
 
-
 export class DivisionEntry {
-
   @ApiProperty()
   DivisionId: number;
 
@@ -1072,7 +1245,6 @@ export class TournamentSerieResultEntry {
 
   @ApiProperty({ type: [Player] })
   AwayPlayer: Array<Player>;
-
 }
 
 export class TournamentSerieEntry {
@@ -1102,7 +1274,7 @@ export class TournamentEntry {
   @ApiProperty()
   Name: string;
 
-  @ApiProperty({enum: Level})
+  @ApiProperty({ enum: Level })
   @Transform((l) => Level[l.value], { toPlainOnly: true })
   Level: number;
 
@@ -1119,7 +1291,10 @@ export class TournamentEntry {
   RegistrationDate: string;
 
   @ApiPropertyOptional()
-  Venue?: Pick<VenueEntry, 'Name' | 'Street' | 'Town' | 'BoundingBox' | 'Lat' | 'Lon'>;
+  Venue?: Pick<
+    VenueEntry,
+    'Name' | 'Street' | 'Town' | 'BoundingBox' | 'Lat' | 'Lon'
+  >;
 
   @ApiProperty()
   SerieCount: number;
@@ -1133,7 +1308,6 @@ export class TournamentEntry {
 }
 
 export class TeamMatchDefinitionEntry {
-
   @ApiProperty()
   Position: number;
 
@@ -1151,7 +1325,6 @@ export class TeamMatchDefinitionEntry {
 }
 
 export class MatchSystemEntry {
-
   @ApiProperty()
   UniqueIndex: number;
 
@@ -1182,4 +1355,3 @@ export class MatchSystemEntry {
   @ApiProperty()
   TeamMatchDefinitionEntries: Array<TeamMatchDefinitionEntry>;
 }
-

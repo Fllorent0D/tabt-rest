@@ -11,12 +11,16 @@ export class BepingNotifierService {
   constructor(
     private readonly httpClient: HttpService,
     private readonly configService: ConfigService,
-  ) {
-  }
+  ) {}
 
-
-  async notifyNumericRankingChanged(uniqueIndex: number, oldRanking: number, newRanking: number): Promise<NotificationAcknolwedgement> {
-    this.logger.log(`Notifying numeric ranking update for ${uniqueIndex} from ${oldRanking} to ${newRanking}`);
+  async notifyNumericRankingChanged(
+    uniqueIndex: number,
+    oldRanking: number,
+    newRanking: number,
+  ): Promise<NotificationAcknolwedgement> {
+    this.logger.log(
+      `Notifying numeric ranking update for ${uniqueIndex} from ${oldRanking} to ${newRanking}`,
+    );
 
     if (oldRanking === newRanking || !oldRanking || !newRanking) {
       return null;
@@ -27,33 +31,44 @@ export class BepingNotifierService {
         oldRanking,
         newRanking,
       });
-      this.logger.log(`Ack received for numeric ranking update for ${uniqueIndex} from ${oldRanking} to ${newRanking}: ${ack.acknolwedgedId}`);
+      this.logger.log(
+        `Ack received for numeric ranking update for ${uniqueIndex} from ${oldRanking} to ${newRanking}: ${ack.acknolwedgedId}`,
+      );
       return ack;
     } catch (e) {
-      this.logger.error(`Error while sending notification for numeric ranking update for ${uniqueIndex} from ${oldRanking} to ${newRanking}: ${e.message}`);
+      this.logger.error(
+        `Error while sending notification for numeric ranking update for ${uniqueIndex} from ${oldRanking} to ${newRanking}: ${e.message}`,
+      );
       return {
         sent: false,
       };
     }
-
   }
 
-  private async sendNotification(url: string, payload: any): Promise<NotificationAcknolwedgement> {
+  private async sendNotification(
+    url: string,
+    payload: any,
+  ): Promise<NotificationAcknolwedgement> {
     if (this.configService.get('NODE_ENV') === 'dev') {
       this.logger.log(`Notification not sent in dev mode: ${url}`);
       return;
     }
-    const notificationURL = this.configService.get<string>('BEPING_NOTIFICATION_URL');
+    const notificationURL = this.configService.get<string>(
+      'BEPING_NOTIFICATION_URL',
+    );
     return firstValueFrom(
-      this.httpClient.post<NotificationAcknolwedgement>(notificationURL + url, payload, {
-        auth: {
-          username: this.configService.get<string>('BEPING_NOTIFICATION_CONSUMER_KEY'),
-          password: this.configService.get<string>('BEPING_NOTIFICATION_CONSUMER_SECRET'),
-        },
-      }).pipe(
-        map((response) => response.data),
-      ),
+      this.httpClient
+        .post<NotificationAcknolwedgement>(notificationURL + url, payload, {
+          auth: {
+            username: this.configService.get<string>(
+              'BEPING_NOTIFICATION_CONSUMER_KEY',
+            ),
+            password: this.configService.get<string>(
+              'BEPING_NOTIFICATION_CONSUMER_SECRET',
+            ),
+          },
+        })
+        .pipe(map((response) => response.data)),
     );
   }
-
 }

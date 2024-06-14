@@ -8,13 +8,26 @@ import {
   Query,
   UseInterceptors,
 } from '@nestjs/common';
-import { DivisionEntry, RankingEntry, TeamMatchesEntry } from '../../../entity/tabt-soap/TabTAPI_Port';
+import {
+  DivisionEntry,
+  RankingEntry,
+  TeamMatchesEntry,
+} from '../../../entity/tabt-soap/TabTAPI_Port';
 import { DivisionService } from '../../../services/divisions/division.service';
-import { ApiNotFoundResponse, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiNotFoundResponse,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { TabtException } from '../../../common/filter/tabt-exceptions.filter';
 import { DivisionRankingService } from '../../../services/divisions/division-ranking.service';
 import { TabtHeadersDecorator } from '../../../common/decorators/tabt-headers.decorator';
-import { GetDivisionMatches, GetDivisionRanking, GetDivisions } from '../dto/divisions.dto';
+import {
+  GetDivisionMatches,
+  GetDivisionRanking,
+  GetDivisions,
+} from '../dto/divisions.dto';
 import { MatchService } from '../../../services/matches/match.service';
 import { Level } from '../../../entity/tabt-input.interface';
 import { MatchesMembersRankerService } from '../../../services/matches/matches-members-ranker.service';
@@ -27,14 +40,12 @@ import { MemberResults } from '../../../common/dto/member-ranking.dto';
 @TabtHeadersDecorator()
 @ApiTags('Divisions')
 export class DivisionsController {
-
   constructor(
     private divisionService: DivisionService,
     private divisionRankingService: DivisionRankingService,
     private matchesService: MatchService,
     private matchesMembersRankerService: MatchesMembersRankerService,
-  ) {
-  }
+  ) {}
 
   @Get()
   @ApiOperation({
@@ -50,9 +61,7 @@ export class DivisionsController {
     type: TabtException,
   })
   @UseInterceptors(ClassSerializerInterceptor)
-  findAll(
-    @Query() query: GetDivisions,
-  ): Promise<DivisionEntry[]> {
+  findAll(@Query() query: GetDivisions): Promise<DivisionEntry[]> {
     return this.divisionService.getDivisions({
       Level: Level[query.level] as unknown as number,
       ShowDivisionName: query.showDivisionName,
@@ -92,7 +101,8 @@ export class DivisionsController {
     operationId: 'findDivisionRanking',
   })
   @ApiResponse({
-    description: 'The ranking for a specific division based on the id of the division.',
+    description:
+      'The ranking for a specific division based on the id of the division.',
     type: [RankingEntry],
     status: 200,
   })
@@ -155,5 +165,4 @@ export class DivisionsController {
   ): Promise<MemberResults[]> {
     return this.matchesMembersRankerService.getMembersRankingFromDivision(id);
   }
-
 }

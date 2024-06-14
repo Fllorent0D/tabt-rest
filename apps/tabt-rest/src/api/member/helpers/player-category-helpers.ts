@@ -1,8 +1,12 @@
 import { PlayerCategory } from '../../../entity/tabt-input.interface';
 import { PLAYER_CATEGORY } from '../dto/member.dto';
 
-export type SimplifiedPlayerCategory = PlayerCategory.MEN | PlayerCategory.WOMEN
-export const getSimplifiedPlayerCategory = (category: PLAYER_CATEGORY): SimplifiedPlayerCategory => {
+export type SimplifiedPlayerCategory =
+  | PlayerCategory.MEN
+  | PlayerCategory.WOMEN;
+export const getSimplifiedPlayerCategory = (
+  category: PLAYER_CATEGORY,
+): SimplifiedPlayerCategory => {
   switch (category) {
     case PLAYER_CATEGORY.MEN:
     case PLAYER_CATEGORY.YOUTH:

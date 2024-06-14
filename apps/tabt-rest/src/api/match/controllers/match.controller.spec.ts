@@ -49,22 +49,21 @@ describe('MatchController', () => {
 
       const result = await controller.findAll(input);
 
-
       expect(result).toBeDefined();
       expect(result[0]).toBeDefined();
       expect(spy).toHaveBeenCalledWith({
-        'Club': 'azz',
-        'DivisionCategory': 1,
-        'DivisionId': 1,
-        'Level': 1,
-        'MatchId': 'abc',
-        'MatchUniqueId': '1234',
-        'ShowDivisionName': 'no',
-        'Team': 'aze',
-        'WeekName': '1',
-        'WithDetails': true,
-        'YearDateFrom': '1995-10-17',
-        'YearDateTo': '1995-10-17',
+        Club: 'azz',
+        DivisionCategory: 1,
+        DivisionId: 1,
+        Level: 1,
+        MatchId: 'abc',
+        MatchUniqueId: '1234',
+        ShowDivisionName: 'no',
+        Team: 'aze',
+        WeekName: '1',
+        WithDetails: true,
+        YearDateFrom: '1995-10-17',
+        YearDateTo: '1995-10-17',
       });
     });
     it('should call match service with correct params to find 1 match', async () => {
@@ -88,27 +87,28 @@ describe('MatchController', () => {
 
       expect(result).toBeDefined();
       expect(spy).toHaveBeenCalledWith({
-        'Club': 'azz',
-        'DivisionCategory': 1,
-        'DivisionId': 1,
-        'Level': 1,
-        'MatchId': 'abc',
-        'MatchUniqueId': 1234,
-        'ShowDivisionName': 'no',
-        'Team': 'aze',
-        'WeekName': '1',
-        'WithDetails': true,
-        'YearDateFrom': '1995-10-17',
-        'YearDateTo': '1995-10-17',
+        Club: 'azz',
+        DivisionCategory: 1,
+        DivisionId: 1,
+        Level: 1,
+        MatchId: 'abc',
+        MatchUniqueId: 1234,
+        ShowDivisionName: 'no',
+        Team: 'aze',
+        WeekName: '1',
+        WithDetails: true,
+        YearDateFrom: '1995-10-17',
+        YearDateTo: '1995-10-17',
       });
-
     });
     it('should thrown an 404 exception if match is not found', async () => {
       const input: GetMatch = {};
 
       jest.spyOn(matchService, 'getMatches').mockResolvedValue([]);
 
-      expect(controller.findById(input, 1234)).rejects.toEqual(new NotFoundException());
+      expect(controller.findById(input, 1234)).rejects.toEqual(
+        new NotFoundException(),
+      );
     });
   });
 
@@ -117,7 +117,6 @@ describe('MatchController', () => {
       const spy = jest.spyOn(matchSystemService, 'getMatchSystems');
 
       const result = await controller.findMatchSystem();
-
 
       expect(result).toBeDefined();
       expect(result[0]).toBeDefined();
@@ -135,9 +134,13 @@ describe('MatchController', () => {
     });
 
     it('should call match system service and return 404 if not found', async () => {
-      jest.spyOn(matchSystemService, 'getMatchSystemsById').mockResolvedValue(null);
+      jest
+        .spyOn(matchSystemService, 'getMatchSystemsById')
+        .mockResolvedValue(null);
 
-      expect(controller.findMatchSystemById(1)).rejects.toEqual(new NotFoundException());
+      expect(controller.findMatchSystemById(1)).rejects.toEqual(
+        new NotFoundException(),
+      );
     });
   });
 });

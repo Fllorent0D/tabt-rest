@@ -3,7 +3,11 @@ import { DivisionsController } from './divisions.controller';
 import { DivisionService } from '../../../services/divisions/division.service';
 import { DivisionRankingService } from '../../../services/divisions/division-ranking.service';
 import { MatchService } from '../../../services/matches/match.service';
-import { GetDivisionMatches, GetDivisionRanking, GetDivisions } from '../dto/divisions.dto';
+import {
+  GetDivisionMatches,
+  GetDivisionRanking,
+  GetDivisions,
+} from '../dto/divisions.dto';
 import { NotFoundException } from '@nestjs/common';
 import { MatchesMembersRankerService } from '../../../services/matches/matches-members-ranker.service';
 
@@ -21,13 +25,20 @@ describe('DivisionsController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [DivisionsController],
-      providers: [DivisionService, DivisionRankingService, MatchService, MatchesMembersRankerService],
+      providers: [
+        DivisionService,
+        DivisionRankingService,
+        MatchService,
+        MatchesMembersRankerService,
+      ],
     }).compile();
 
     controller = module.get<DivisionsController>(DivisionsController);
     divisionService = module.get<DivisionService>(DivisionService);
     matchService = module.get<MatchService>(MatchService);
-    divisionRankingService = module.get<DivisionRankingService>(DivisionRankingService);
+    divisionRankingService = module.get<DivisionRankingService>(
+      DivisionRankingService,
+    );
   });
 
   it('should be defined', () => {
@@ -75,8 +86,9 @@ describe('DivisionsController', () => {
 
       jest.spyOn(divisionService, 'getDivisionsById').mockResolvedValue(null);
 
-      expect(controller.findOne(12, input)).rejects.toEqual(new NotFoundException());
-
+      expect(controller.findOne(12, input)).rejects.toEqual(
+        new NotFoundException(),
+      );
     });
   });
   describe('Division ranking', () => {
@@ -93,9 +105,9 @@ describe('DivisionsController', () => {
       expect(result).toBeDefined();
       expect(result[0]).toBeDefined();
       expect(spy).toHaveBeenCalledWith({
-        'DivisionId': 4755,
-        'RankingSystem': 1,
-        'WeekName': '1',
+        DivisionId: 4755,
+        RankingSystem: 1,
+        WeekName: '1',
       });
     });
   });
@@ -115,11 +127,11 @@ describe('DivisionsController', () => {
       expect(result).toBeDefined();
       expect(result[0]).toBeDefined();
       expect(spy).toHaveBeenCalledWith({
-        'DivisionId': 4755,
-        'WeekName': '1',
-        'WithDetails': true,
-        'YearDateFrom': '1995-12-13',
-        'YearDateTo': '1995-12-14',
+        DivisionId: 4755,
+        WeekName: '1',
+        WithDetails: true,
+        YearDateFrom: '1995-12-13',
+        YearDateTo: '1995-12-14',
       });
     });
   });

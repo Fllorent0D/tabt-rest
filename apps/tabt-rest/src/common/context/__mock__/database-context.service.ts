@@ -4,5 +4,4 @@ export class DatabaseContextService {
   get database(): string {
     return TABT_DATABASE.AFTT;
   }
-
 }

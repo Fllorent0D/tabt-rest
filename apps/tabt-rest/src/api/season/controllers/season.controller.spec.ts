@@ -39,6 +39,4 @@ describe('SeasonController', () => {
     expect(result).toBeDefined();
     expect(spy).toBeCalledTimes(1);
   });
-
-
 });

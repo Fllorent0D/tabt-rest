@@ -20,4 +20,3 @@ export class MemberResults {
   @ApiProperty()
   losePourcentage: number;
 }
-

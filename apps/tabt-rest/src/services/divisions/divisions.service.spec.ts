@@ -29,23 +29,28 @@ describe('DivisionService', () => {
 
   describe('getDivisions', () => {
     it('should call the tabt service correctly and returns the division entries', async () => {
-      const divisions = [{
-        'DivisionId': 4755,
-        'DivisionName': 'Super Heren - Super Division - Hommes',
-        'DivisionCategory': 1,
-        'Level': 1,
-        'MatchType': 8,
-      },{
-        'DivisionId': 123,
-        'DivisionName': 'test',
-        'DivisionCategory': 1,
-        'Level': 1,
-        'MatchType': 8,
-      }] as DivisionEntry[];
-      const spyOnTabt = jest.spyOn(tabtService, 'GetDivisionsAsync').mockResolvedValue({
-        DivisionCount: 2,
-        DivisionEntries: divisions,
-      });
+      const divisions = [
+        {
+          DivisionId: 4755,
+          DivisionName: 'Super Heren - Super Division - Hommes',
+          DivisionCategory: 1,
+          Level: 1,
+          MatchType: 8,
+        },
+        {
+          DivisionId: 123,
+          DivisionName: 'test',
+          DivisionCategory: 1,
+          Level: 1,
+          MatchType: 8,
+        },
+      ] as DivisionEntry[];
+      const spyOnTabt = jest
+        .spyOn(tabtService, 'GetDivisionsAsync')
+        .mockResolvedValue({
+          DivisionCount: 2,
+          DivisionEntries: divisions,
+        });
       const input = {};
 
       const result = await service.getDivisions(input);
@@ -55,23 +60,28 @@ describe('DivisionService', () => {
       expect(spyOnTabt).toBeCalledWith(input);
     });
     it('should call the tabt service correctly and returns the exact division entries', async () => {
-      const divisions = [{
-        'DivisionId': 4755,
-        'DivisionName': 'Super Heren - Super Division - Hommes',
-        'DivisionCategory': 1,
-        'Level': 1,
-        'MatchType': 8,
-      },{
-        'DivisionId': 123,
-        'DivisionName': 'test',
-        'DivisionCategory': 1,
-        'Level': 1,
-        'MatchType': 8,
-      }] as DivisionEntry[];
-      const spyOnTabt = jest.spyOn(tabtService, 'GetDivisionsAsync').mockResolvedValue({
-        DivisionCount: 2,
-        DivisionEntries: divisions,
-      });
+      const divisions = [
+        {
+          DivisionId: 4755,
+          DivisionName: 'Super Heren - Super Division - Hommes',
+          DivisionCategory: 1,
+          Level: 1,
+          MatchType: 8,
+        },
+        {
+          DivisionId: 123,
+          DivisionName: 'test',
+          DivisionCategory: 1,
+          Level: 1,
+          MatchType: 8,
+        },
+      ] as DivisionEntry[];
+      const spyOnTabt = jest
+        .spyOn(tabtService, 'GetDivisionsAsync')
+        .mockResolvedValue({
+          DivisionCount: 2,
+          DivisionEntries: divisions,
+        });
       const input = {};
 
       const result = await service.getDivisionsById(4755, input);
@@ -83,10 +93,12 @@ describe('DivisionService', () => {
 
     it('should call the tabt service correctly and returns null if not found', async () => {
       const divisions = [] as DivisionEntry[];
-      const spyOnTabt = jest.spyOn(tabtService, 'GetDivisionsAsync').mockResolvedValue({
-        DivisionCount: 0,
-        DivisionEntries: divisions,
-      });
+      const spyOnTabt = jest
+        .spyOn(tabtService, 'GetDivisionsAsync')
+        .mockResolvedValue({
+          DivisionCount: 0,
+          DivisionEntries: divisions,
+        });
       const input = {};
 
       const result = await service.getDivisionsById(123, input);

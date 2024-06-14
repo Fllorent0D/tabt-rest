@@ -6,13 +6,11 @@ import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class SeasonService {
-
   constructor(
     private tabtClient: TabtClientService,
     private readonly context: ContextService,
-    private readonly configService: ConfigService
-  ) {
-  }
+    private readonly configService: ConfigService,
+  ) {}
 
   async getSeasons(): Promise<SeasonEntry[]> {
     const result = await this.tabtClient.GetSeasonsAsync({});
@@ -21,11 +19,14 @@ export class SeasonService {
 
   async getCurrentSeason(): Promise<SeasonEntry> {
     const season = await this.getSeasons();
-    return season.find(season => season.Season === Number(this.configService.get('CURRENT_SEASON')));
+    return season.find(
+      (season) =>
+        season.Season === Number(this.configService.get('CURRENT_SEASON')),
+    );
   }
 
   async getSeasonById(id: number): Promise<SeasonEntry> {
     const season = await this.getSeasons();
-    return season.find(season => season.Season === id);
+    return season.find((season) => season.Season === id);
   }
 }

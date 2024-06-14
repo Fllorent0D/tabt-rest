@@ -9,5 +9,4 @@ import { ServicesModule } from '../../services/services.module';
   controllers: [MemberController],
   providers: [MemberService],
 })
-export class MemberModule {
-}
+export class MemberModule {}

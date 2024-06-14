@@ -10,7 +10,10 @@ describe('CacheService', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         CacheService,
-        { provide: CACHE_MANAGER, useValue: ({ get: jest.fn(), set: jest.fn() }) },
+        {
+          provide: CACHE_MANAGER,
+          useValue: { get: jest.fn(), set: jest.fn() },
+        },
       ],
     }).compile();
 
@@ -42,7 +45,7 @@ describe('CacheService', () => {
 
       provider.setInCache(key, value, ttl);
 
-      expect(spy).toHaveBeenCalledWith(key, value, {ttl: 10});
+      expect(spy).toHaveBeenCalledWith(key, value, { ttl: 10 });
     });
   });
   describe('getFromCacheOrGetAndCacheResult', () => {
@@ -55,7 +58,11 @@ describe('CacheService', () => {
       const getSpy = jest.spyOn(cache, 'get').mockReturnValue(value);
       const setSpy = jest.spyOn(cache, 'set');
 
-      const result = await provider.getFromCacheOrGetAndCacheResult(key, getter, ttl);
+      const result = await provider.getFromCacheOrGetAndCacheResult(
+        key,
+        getter,
+        ttl,
+      );
 
       expect(result).toBe(value);
       expect(getSpy).toHaveBeenCalledTimes(1);
@@ -72,7 +79,10 @@ describe('CacheService', () => {
       const getSpy = jest.spyOn(cache, 'get').mockReturnValue(null);
       const setSpy = jest.spyOn(cache, 'set');
 
-      const result = await provider.getFromCacheOrGetAndCacheResult(key, getter);
+      const result = await provider.getFromCacheOrGetAndCacheResult(
+        key,
+        getter,
+      );
 
       expect(result).toBe(value);
       expect(getSpy).toHaveBeenCalledTimes(1);
@@ -82,6 +92,4 @@ describe('CacheService', () => {
       expect(getter).toHaveBeenCalledTimes(1);
     });
   });
-
-
 });

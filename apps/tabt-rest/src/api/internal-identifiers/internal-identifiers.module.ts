@@ -10,5 +10,4 @@ import { ConfigModule } from '@nestjs/config';
   controllers: [InternalIdentifiersController],
   providers: [MemberService],
 })
-export class InternalIdentifiersModule {
-}
+export class InternalIdentifiersModule {}

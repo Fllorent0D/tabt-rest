@@ -2,12 +2,17 @@ import { PackageService } from './package.service';
 
 xdescribe('TabtFilter', () => {
   let service: PackageService;
-  const name = 'Yo it\'s flo';
+  const name = "Yo it's flo";
   const version = '1.0.0';
   beforeEach(() => {
-    jest.mock('../../../package.json', () => ({
-      version, name,
-    }), { virtual: true });
+    jest.mock(
+      '../../../package.json',
+      () => ({
+        version,
+        name,
+      }),
+      { virtual: true },
+    );
 
     service = new PackageService();
   });

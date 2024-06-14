@@ -31,17 +31,19 @@ describe('TestRequestService', () => {
   describe('testRequest', () => {
     it('should call the tabt service correctly and returns the test response', async () => {
       const testResponse: TestOutput = {
-        'Timestamp': '2021-01-12T14:24:27.000Z',
-        'ApiVersion': '0.7.25',
-        'IsValidAccount': false,
-        'Language': 'fr',
-        'Database': 'aftt',
-        'RequestorIp': '127.0.0.1',
-        'ConsumedTicks': 24,
-        'CurrentQuota': 0,
-        'AllowedQuota': 8000,
+        Timestamp: '2021-01-12T14:24:27.000Z',
+        ApiVersion: '0.7.25',
+        IsValidAccount: false,
+        Language: 'fr',
+        Database: 'aftt',
+        RequestorIp: '127.0.0.1',
+        ConsumedTicks: 24,
+        CurrentQuota: 0,
+        AllowedQuota: 8000,
       };
-      const spyOnTabt = jest.spyOn(tabtService, 'TestAsync').mockResolvedValue([testResponse, '', {}, null, null,]);
+      const spyOnTabt = jest
+        .spyOn(tabtService, 'TestAsync')
+        .mockResolvedValue([testResponse, '', {}, null, null]);
 
       const result = await provider.testRequest();
 

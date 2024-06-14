@@ -15,5 +15,5 @@ export const TABT_HEADERS = [
   HeaderKeys.X_TABT_DATABASE,
   HeaderKeys.X_FORWARDED_FOR,
   HeaderKeys.X_TABT_SEASON,
-  HeaderKeys.X_APPLICATION_FOR
+  HeaderKeys.X_APPLICATION_FOR,
 ];

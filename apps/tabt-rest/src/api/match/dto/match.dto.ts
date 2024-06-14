@@ -1,5 +1,12 @@
 import { ApiPropertyOptional, OmitType } from '@nestjs/swagger';
-import { IsBoolean, IsEnum, IsNumber, IsOptional, IsString, Matches } from 'class-validator';
+import {
+  IsBoolean,
+  IsEnum,
+  IsNumber,
+  IsOptional,
+  IsString,
+  Matches,
+} from 'class-validator';
 import { Transform } from 'class-transformer';
 import { Level, PlayerCategory } from '../../../entity/tabt-input.interface';
 
@@ -7,7 +14,7 @@ export class GetMatches {
   @ApiPropertyOptional()
   @IsOptional()
   @IsNumber()
-  @Transform(id => parseInt(id.value), { toClassOnly: true })
+  @Transform((id) => parseInt(id.value), { toClassOnly: true })
   divisionId?: number;
 
   @ApiPropertyOptional()
@@ -32,7 +39,7 @@ export class GetMatches {
   })
   @IsOptional()
   @IsNumber()
-  @Transform(id => parseInt(id.value), { toClassOnly: true })
+  @Transform((id) => parseInt(id.value), { toClassOnly: true })
   weekName?: string;
 
   @ApiPropertyOptional({
@@ -80,5 +87,6 @@ export class GetMatches {
   matchUniqueId?: string;
 }
 
-export class GetMatch extends OmitType(GetMatches, ['matchUniqueId'] as const) {
-}
+export class GetMatch extends OmitType(GetMatches, [
+  'matchUniqueId',
+] as const) {}

@@ -16,28 +16,38 @@ import { createSoapClient } from './tabt-client/soap-client.factory';
 import { CacheModuleOptsFactory } from './cache/cache-module-opts.factory';
 import { HttpModule } from '@nestjs/axios';
 import { CacheModule } from '@nestjs/cache-manager';
-import { DataAFTTIndividualResultModel } from './data-aftt/model/individual-results.model';
-import { DataAFTTMemberModel } from './data-aftt/model/member.model';
 import { PrismaService } from './prisma.service';
-import { DataAFTTMemberNumericRankingModel } from './data-aftt/model/member-numeric-ranking.model';
-import { DataAFTTMemberProcessingService } from './data-aftt/services/member-processing.service';
-import { DataAFTTResultsProcessingService } from './data-aftt/services/results-processing.service';
-import { NumericRankingService } from './data-aftt/services/numeric-ranking.service';
 import { MemberService } from '../services/members/member.service';
-
+import { ClientsModule, Transport } from '@nestjs/microservices';
 
 const asyncProviders: Provider[] = [
   {
     provide: 'tabt-aftt',
-    useFactory: async (configService: ConfigService, socksProxy: SocksProxyHttpClient) => {
-      return createSoapClient(configService.get('AFTT_WSDL'), configService.get('USE_SOCKS_PROXY') === 'true' ? socksProxy : undefined);
+    useFactory: async (
+      configService: ConfigService,
+      socksProxy: SocksProxyHttpClient,
+    ) => {
+      return createSoapClient(
+        configService.get('AFTT_WSDL'),
+        configService.get('USE_SOCKS_PROXY') === 'true'
+          ? socksProxy
+          : undefined,
+      );
     },
     inject: [ConfigService, SocksProxyHttpClient],
   },
   {
     provide: 'tabt-vttl',
-    useFactory: async (configService: ConfigService, socksProxy: SocksProxyHttpClient) => {
-      return createSoapClient(configService.get('VTLL_WSDL'), configService.get('USE_SOCKS_PROXY') === 'true' ? socksProxy : undefined);
+    useFactory: async (
+      configService: ConfigService,
+      socksProxy: SocksProxyHttpClient,
+    ) => {
+      return createSoapClient(
+        configService.get('VTLL_WSDL'),
+        configService.get('USE_SOCKS_PROXY') === 'true'
+          ? socksProxy
+          : undefined,
+      );
     },
     inject: [ConfigService, SocksProxyHttpClient],
   },
@@ -50,28 +60,45 @@ const asyncProviders: Provider[] = [
 @Module({
   imports: [
     HttpModule,
+    ClientsModule.registerAsync({
+      clients: [
+        {
+          name: 'BEPING_NOTIFIER',
+          useFactory: (configService: ConfigService) => {
+            return {
+              transport: Transport.REDIS,
+              options: {
+                host: configService.get('TABT_SERVICE_HOST'),
+                port: configService.get('TABT_SERVICE_PORT'),
+              },
+            };
+          },
+          inject: [ConfigService],
+          imports: [ConfigModule],
+        },
+      ],
+    }),
     CacheModule.registerAsync({
       useClass: CacheModuleOptsFactory,
       imports: [ConfigModule],
     }),
     ConfigModule,
     LoggerModule.forRoot({
-        pinoHttp: {
-          level: 'debug',
-          //transport: { target: 'pino-pretty' },
-          quietReqLogger: true,
-          serializers: {
-            req: pino.stdSerializers.wrapRequestSerializer(r => {
-              const clonedReq = cloneDeep(r);
-              delete clonedReq.headers[HeaderKeys.X_TABT_PASSWORD.toLowerCase()];
-              return clonedReq;
-            }),
-            err: pino.stdSerializers.err,
-            res: pino.stdSerializers.res,
-          },
+      pinoHttp: {
+        level: 'debug',
+        //transport: { target: 'pino-pretty' },
+        quietReqLogger: true,
+        serializers: {
+          req: pino.stdSerializers.wrapRequestSerializer((r) => {
+            const clonedReq = cloneDeep(r);
+            delete clonedReq.headers[HeaderKeys.X_TABT_PASSWORD.toLowerCase()];
+            return clonedReq;
+          }),
+          err: pino.stdSerializers.err,
+          res: pino.stdSerializers.res,
         },
       },
-    ),
+    }),
   ],
   providers: [
     ...asyncProviders,
@@ -84,13 +111,7 @@ const asyncProviders: Provider[] = [
     PackageService,
     SocksProxyHttpClient,
     MemberService,
-    DataAFTTIndividualResultModel,
-    DataAFTTMemberModel,
-    DataAFTTMemberNumericRankingModel,
     PrismaService,
-    DataAFTTMemberProcessingService,
-    DataAFTTResultsProcessingService,
-    NumericRankingService,
   ],
   exports: [
     ...asyncProviders,
@@ -101,13 +122,8 @@ const asyncProviders: Provider[] = [
     SocksProxyHttpClient,
     ConfigModule,
     MemberService,
-    DataAFTTIndividualResultModel,
-    DataAFTTMemberModel,
-    DataAFTTMemberNumericRankingModel,
-    DataAFTTMemberProcessingService,
-    DataAFTTResultsProcessingService,
-    NumericRankingService,
+    PrismaService,
+    ClientsModule,
   ],
 })
-export class CommonModule {
-}
+export class CommonModule {}

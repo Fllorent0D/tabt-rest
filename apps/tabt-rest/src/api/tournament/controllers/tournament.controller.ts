@@ -1,5 +1,6 @@
 import {
-  Body, ClassSerializerInterceptor,
+  Body,
+  ClassSerializerInterceptor,
   Controller,
   Get,
   NotFoundException,
@@ -11,10 +12,16 @@ import {
   Version,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { TournamentEntry, TournamentSerieEntry } from '../../../entity/tabt-soap/TabTAPI_Port';
+import {
+  TournamentEntry,
+  TournamentSerieEntry,
+} from '../../../entity/tabt-soap/TabTAPI_Port';
 import { TabtException } from '../../../common/filter/tabt-exceptions.filter';
 import { TournamentService } from '../../../services/tournaments/tournament.service';
-import { GetTournamentDetails, RegisterTournament } from '../dto/tournaments.dto';
+import {
+  GetTournamentDetails,
+  RegisterTournament,
+} from '../dto/tournaments.dto';
 import { TabtHeadersDecorator } from '../../../common/decorators/tabt-headers.decorator';
 
 @ApiTags('Tournaments')
@@ -24,10 +31,7 @@ import { TabtHeadersDecorator } from '../../../common/decorators/tabt-headers.de
 })
 @TabtHeadersDecorator()
 export class TournamentController {
-  constructor(
-    private readonly tournamentService: TournamentService,
-  ) {
-  }
+  constructor(private readonly tournamentService: TournamentService) {}
 
   @Get()
   @ApiOperation({
@@ -136,9 +140,7 @@ export class TournamentController {
     status: 400,
     type: TabtException,
   })
-  async getSeries(
-    @Param('tournamentId', ParseIntPipe) id: number,
-  ) {
+  async getSeries(@Param('tournamentId', ParseIntPipe) id: number) {
     const result = await this.tournamentService.getTournaments({
       TournamentUniqueIndex: id,
       WithRegistrations: true,

@@ -30,20 +30,24 @@ describe('ClubMemberService', () => {
 
   describe('getMembers', () => {
     it('should call the tabt service correctly and returns the match entries', async () => {
-      const members = [{
-        'Position': 1,
-        'UniqueIndex': 142453,
-        'RankingIndex': 0,
-        'FirstName': 'FLORENT',
-        'LastName': 'CARDOEN',
-        'Ranking': 'D2',
-        'Status': 'A',
-        'Club': 'N051',
-      }] as MemberEntry[];
-      const spyOnTabt = jest.spyOn(tabtService, 'GetMembersAsync').mockResolvedValue({
-        MemberCount: 1,
-        MemberEntries: members,
-      });
+      const members = [
+        {
+          Position: 1,
+          UniqueIndex: 142453,
+          RankingIndex: 0,
+          FirstName: 'FLORENT',
+          LastName: 'CARDOEN',
+          Ranking: 'D2',
+          Status: 'A',
+          Club: 'N051',
+        },
+      ] as MemberEntry[];
+      const spyOnTabt = jest
+        .spyOn(tabtService, 'GetMembersAsync')
+        .mockResolvedValue({
+          MemberCount: 1,
+          MemberEntries: members,
+        });
       const input = {
         Club: 'L360',
       };

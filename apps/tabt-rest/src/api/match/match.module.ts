@@ -10,5 +10,4 @@ import { Head2headController } from '../member/controllers/head2head.controller'
   controllers: [MatchController, Head2headController],
   providers: [MatchService],
 })
-export class MatchModule {
-}
+export class MatchModule {}

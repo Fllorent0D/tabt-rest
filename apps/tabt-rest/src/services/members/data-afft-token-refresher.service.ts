@@ -8,7 +8,6 @@ import { CacheService } from '../../common/cache/cache.service';
 
 @Injectable()
 export class DataAfftTokenRefresherService {
-
   private readonly logger = new Logger('DataAfftTokenRefresherService');
 
   constructor(
@@ -16,29 +15,29 @@ export class DataAfftTokenRefresherService {
     private readonly httpService: HttpService,
     private readonly socksProxyService: SocksProxyHttpClient,
     private readonly cacheService: CacheService,
-  ) {
-
-  }
+  ) {}
 
   async fetchToken(): Promise<string> {
     const url = 'https://data.aftt.be/cltnum-messieurs/club.php';
     const userAgent = UserAgentsUtil.random;
-    const httpsAgent = this.configService.get('USE_SOCKS_PROXY') === 'true' ? await this.socksProxyService.createHttpsAgent() : undefined;
-    const response = await firstValueFrom(this.httpService.get<string>(
-      url,
-      {
+    const httpsAgent =
+      this.configService.get('USE_SOCKS_PROXY') === 'true'
+        ? await this.socksProxyService.createHttpsAgent()
+        : undefined;
+    const response = await firstValueFrom(
+      this.httpService.get<string>(url, {
         responseType: 'text',
         headers: {
           'User-Agent': userAgent,
         },
         httpsAgent,
-      }));
+      }),
+    );
     const html = response.data;
     const regex = new RegExp('[0-9A-F]{100}', 'gmi');
     const match = regex.exec(html);
     return match[0];
   }
-
 
   async refreshToken(): Promise<void> {
     this.logger.log('Refreshing data.aftt.be token...');
@@ -63,5 +62,4 @@ export class DataAfftTokenRefresherService {
   private async saveToken(token: string): Promise<void> {
     await this.cacheService.setInCache('data-afft-token', token);
   }
-
 }
