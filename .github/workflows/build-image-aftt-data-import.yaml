@@ -35,5 +35,4 @@ jobs:
           tags: ${{ env.DOCKER_IMAGE_NAME }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          build-args:
-            APP_NAME: data-aftt-importer
+          build-args: APP_NAME=aftt-data-importer
