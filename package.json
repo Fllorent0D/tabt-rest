@@ -23,6 +23,7 @@
     "start:dev:app-notifications": "nest start app-notifications --watch",
     "start:debug:tabt-rest": "nest start tabt-rest --debug --watch",
     "start:prod:tabt-rest": "node dist/apps/tabt-rest/main",
+    "start:prod:data-aftt-importer": "node dist/apps/data-aftt-importer/main",
     "lint": "eslint \"{apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
     "test:watch": "jest --watch",

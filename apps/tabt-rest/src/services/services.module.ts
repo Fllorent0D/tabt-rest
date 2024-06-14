@@ -22,6 +22,7 @@ import { DataAfftTokenRefresherService } from './members/data-afft-token-refresh
 import { BepingNotifierService } from './notifications/beping-notifier.service';
 import { NumericRankingService } from './members/numeric-ranking.service';
 import { DataAFTTMemberNumericRankingModel } from './members/member-numeric-ranking.model';
+import { DataAFTTIndividualResultModel } from './members/individual-results.model';
 
 const services = [
   ClubService,
@@ -45,6 +46,7 @@ const services = [
   BepingNotifierService,
   NumericRankingService,
   DataAFTTMemberNumericRankingModel,
+  DataAFTTIndividualResultModel
 ];
 
 @Module({
