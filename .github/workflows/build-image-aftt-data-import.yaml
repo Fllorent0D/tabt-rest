@@ -8,7 +8,7 @@ on:
 
 env:
   NODE_VERSION: 20
-  DOCKER_IMAGE_NAME: ghcr.io/fllorent0d/tabt-rest:latest
+  DOCKER_IMAGE_NAME: ghcr.io/fllorent0d/aftt-data-importer:latest
 
 jobs:
   build_and_push:
