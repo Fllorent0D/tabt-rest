@@ -9,7 +9,6 @@ export class ResultsSyncCronService {
   private readonly logger = new Logger(ResultsSyncCronService.name);
 
   constructor(@InjectQueue('results') private readonly queue: Queue) {
-    this.syncResults();
   }
 
   // Run every day at 9:30 AM
