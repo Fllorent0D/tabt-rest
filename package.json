@@ -14,7 +14,7 @@
     "prebuild": "rimraf dist",
     "build:tabt-rest": "nest build tabt-rest",
     "build:app-notifications": "nest build app-notifications",
-    "build:data-aftt-importer": "nest build app-notifications",
+    "build:data-aftt-importer": "nest build data-aftt-importer",
     "ci": "node ./node_modules/@nestjs/cli/bin/nest.js build",
     "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
     "start:tabt-rest": "node dist/tabt-rest/main",

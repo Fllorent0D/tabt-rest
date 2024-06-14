@@ -46,7 +46,7 @@ const services = [
   BepingNotifierService,
   NumericRankingService,
   DataAFTTMemberNumericRankingModel,
-  DataAFTTIndividualResultModel
+  DataAFTTIndividualResultModel,
 ];
 
 @Module({
