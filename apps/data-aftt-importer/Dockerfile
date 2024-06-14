@@ -16,8 +16,8 @@ RUN apt-get update && apt-get install -y openssl && npm install --legacy-peer-de
 # Bundle app source
 COPY . .
 
-# Creates a "dist" folder with the production build
-RUN npm run prisma:generate && npm run build:${APP_NAME}
+# Creates a "dist" folder with the production build use APP_NAME to specify the app name
+RUN npm run prisma:generate && npm run build:data-aftt-importer
 
 FROM node:${NODE_VERSION} as production
 
