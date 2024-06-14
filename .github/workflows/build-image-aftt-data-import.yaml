@@ -29,10 +29,9 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           push: true
-          context: ./apps/data-aftt-importer
-          file: ./Dockerfile
+          context: .
           platforms: linux/arm64/v8,linux/amd64
+          file: ./apps/data-aftt-importer/Dockerfile
           tags: ${{ env.DOCKER_IMAGE_NAME }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          build-args: APP_NAME=aftt-data-importer
