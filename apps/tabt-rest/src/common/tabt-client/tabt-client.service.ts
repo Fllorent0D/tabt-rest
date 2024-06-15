@@ -91,7 +91,7 @@ export class TabtClientService {
   TestAsync(
     input: ITestInput,
   ): Promise<[TestOutput, string, { [k: string]: any }, any, any]> {
-    this.logger.log('Request Test method');
+    this.logger.debug('Request Test method');
     return this.tabtClientSwitchingService.tabtClient.TestAsync(
       this.credentialsService.enrichInputWithCredentials(input),
       null,
@@ -100,7 +100,7 @@ export class TabtClientService {
   }
 
   GetSeasonsAsync(input: GetSeasonsInput): Promise<IGetSeasonsOutput> {
-    this.logger.log('Request GetSeason method');
+    this.logger.debug('Request GetSeason method');
     const getter = async (input, options, headers) => {
       const [result] =
         await this.tabtClientSwitchingService.tabtClient.GetSeasonsAsync(
@@ -119,7 +119,7 @@ export class TabtClientService {
   }
 
   GetClubTeamsAsync(input: GetClubTeamsInput): Promise<GetClubTeamsOutput> {
-    this.logger.log('Request GetClubTeams method');
+    this.logger.debug('Request GetClubTeams method');
     const getter = async (input, options, headers) => {
       const [result] =
         await this.tabtClientSwitchingService.tabtClient.GetClubTeamsAsync(
@@ -140,7 +140,7 @@ export class TabtClientService {
   GetDivisionRankingAsync(
     input: GetDivisionRankingInput,
   ): Promise<GetDivisionRankingOutput> {
-    this.logger.log('Request GetDivisionRanking method');
+    this.logger.debug('Request GetDivisionRanking method');
     const getter = async (input, options, headers) => {
       const [result] =
         await this.tabtClientSwitchingService.tabtClient.GetDivisionRankingAsync(
@@ -159,7 +159,7 @@ export class TabtClientService {
   }
 
   GetMatchesAsync(input: GetMatchesInput): Promise<GetMatchesOutput> {
-    this.logger.log('Request GetMatchesAsync method', input);
+    this.logger.debug('Request GetMatchesAsync method', input);
     const getter = async (input, options, headers) => {
       const [result] =
         await this.tabtClientSwitchingService.tabtClient.GetMatchesAsync(
@@ -180,7 +180,7 @@ export class TabtClientService {
   GetMembersAsync(
     getMembersInput: GetMembersInput,
   ): Promise<IGetMembersOutput> {
-    this.logger.log('Request GetMembers method');
+    this.logger.debug('Request GetMembers method');
     const getter = async (input, options, headers) => {
       const [result] =
         await this.tabtClientSwitchingService.tabtClient.GetMembersAsync(
@@ -201,7 +201,7 @@ export class TabtClientService {
   GetMembersCategoriesAsync(
     getMembersInput: GetPlayerCategoriesInput,
   ): Promise<GetPlayerCategoriesResponse> {
-    this.logger.log('Request GetMembersCategories method');
+    this.logger.debug('Request GetMembersCategories method');
     const getter = async (input, options, headers) => {
       const [result] =
         await this.tabtClientSwitchingService.tabtClient.GetPlayerCategoriesAsync(
@@ -222,7 +222,7 @@ export class TabtClientService {
   UploadAsync(
     input: IUploadInput,
   ): Promise<[IUploadOutput, string, { [k: string]: any }, any, any]> {
-    this.logger.log('Request Test method');
+    this.logger.debug('Request Test method');
     return this.tabtClientSwitchingService.tabtClient.UploadAsync(
       this.credentialsService.enrichInputWithCredentials(input),
       null,
@@ -231,7 +231,7 @@ export class TabtClientService {
   }
 
   GetClubsAsync(input: GetClubsInput): Promise<GetClubsOutput> {
-    this.logger.log('Request GetClubs method');
+    this.logger.debug('Request GetClubs method');
     const getter = async (input, options, headers) => {
       const [result] =
         await this.tabtClientSwitchingService.tabtClient.GetClubsAsync(
@@ -250,7 +250,7 @@ export class TabtClientService {
   }
 
   GetDivisionsAsync(input: GetDivisionsInput): Promise<IGetDivisionsOutput> {
-    this.logger.log('Request GetDivisions method');
+    this.logger.debug('Request GetDivisions method');
     const getter = async (input, options, headers) => {
       const [result] =
         await this.tabtClientSwitchingService.tabtClient.GetDivisionsAsync(
@@ -271,7 +271,7 @@ export class TabtClientService {
   GetTournamentsAsync(
     input: GetTournamentsInput,
   ): Promise<IGetTournamentsOutput> {
-    this.logger.log('Request Tournaments method');
+    this.logger.debug('Request Tournaments method');
     const getter = async (input, options, headers) => {
       const [result] =
         await this.tabtClientSwitchingService.tabtClient.GetTournamentsAsync(
@@ -292,7 +292,7 @@ export class TabtClientService {
   GetMatchSystemsAsync(
     input: GetMatchSystemsInput,
   ): Promise<GetMatchSystemsOutput> {
-    this.logger.log('Request GetMatchSystems method');
+    this.logger.debug('Request GetMatchSystems method');
     const getter = async (input, options, headers) => {
       const [result] =
         await this.tabtClientSwitchingService.tabtClient.GetMatchSystemsAsync(
@@ -315,7 +315,7 @@ export class TabtClientService {
   ): Promise<
     [TournamentRegisterOutput, string, { [k: string]: any }, any, any]
   > {
-    this.logger.log('Request TournamentRegister method');
+    this.logger.debug('Request TournamentRegister method');
     return this.tabtClientSwitchingService.tabtClient.TournamentRegisterAsync(
       this.credentialsService.enrichInputWithCredentials(input),
       null,

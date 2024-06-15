@@ -18,7 +18,7 @@ export class BepingNotifierService {
     oldRanking: number,
     newRanking: number,
   ): Promise<NotificationAcknolwedgement> {
-    this.logger.log(
+    this.logger.debug(
       `Notifying numeric ranking update for ${uniqueIndex} from ${oldRanking} to ${newRanking}`,
     );
 
@@ -31,7 +31,7 @@ export class BepingNotifierService {
         oldRanking,
         newRanking,
       });
-      this.logger.log(
+      this.logger.debug(
         `Ack received for numeric ranking update for ${uniqueIndex} from ${oldRanking} to ${newRanking}: ${ack.acknolwedgedId}`,
       );
       return ack;
@@ -50,7 +50,7 @@ export class BepingNotifierService {
     payload: any,
   ): Promise<NotificationAcknolwedgement> {
     if (this.configService.get('NODE_ENV') === 'dev') {
-      this.logger.log(`Notification not sent in dev mode: ${url}`);
+      this.logger.debug(`Notification not sent in dev mode: ${url}`);
       return;
     }
     const notificationURL = this.configService.get<string>(

@@ -40,17 +40,17 @@ export class DataAfftTokenRefresherService {
   }
 
   async refreshToken(): Promise<void> {
-    this.logger.log('Refreshing data.aftt.be token...');
+    this.logger.debug('Refreshing data.aftt.be token...');
     const token = await this.fetchToken();
     await this.saveToken(token);
     console.log(token);
-    this.logger.log('data.aftt.be token refreshed.');
+    this.logger.debug('data.aftt.be token refreshed.');
   }
 
   async checkTokenExistance(): Promise<void> {
     const token = await this.getToken();
     if (!token) {
-      this.logger.log('No token found, refreshing it...');
+      this.logger.debug('No token found, refreshing it...');
       await this.refreshToken();
     }
   }
