@@ -36,7 +36,7 @@ export class ResultsProcessorService {
 
     const chunkSize = 100;
     for (let i = 0; i < lines.length; i += chunkSize) {
-      this.logger.log(
+      this.logger.debug(
         `Processing chunk ${i / chunkSize + 1}/${Math.ceil(lines.length / chunkSize)}...`,
       );
 
