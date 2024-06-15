@@ -85,7 +85,7 @@ export class MembersListProcessingService {
   }
 
   private async downloadFile(playerCategory: PlayerCategory): Promise<string> {
-    this.logger.log(`Downloading ${playerCategory} file from data.aftt.be`);
+    this.logger.debug(`Downloading ${playerCategory} file from data.aftt.be`);
     const file = await firstValueFrom(
       this.httpService.get<string>(
         `export/liste_joueurs_${playerCategory == PlayerCategory.MEN ? 1 : 2}.txt`,
@@ -114,7 +114,7 @@ export class MembersListProcessingService {
 
       if (existingMember) {
         if (JSON.stringify(existingMember) === JSON.stringify(member)) {
-          this.logger.log(`Member ${member.licence} already processed`);
+          this.logger.debug(`Member ${member.licence} already processed`);
         } else {
           this.logger.debug(
             `Member ${member.licence} already exists but with different info, updating...`,
@@ -130,7 +130,7 @@ export class MembersListProcessingService {
           });
         }
       } else {
-        this.logger.log(`New member ${member.licence}`);
+        this.logger.debug(`New member ${member.licence}`);
         await this.prismaService.member.create({
           data: member,
         });
@@ -164,7 +164,7 @@ export class MembersListProcessingService {
         latestPoint?.ranking !== numericPoints.ranking
       ) {
         // TODO: push a notification to player on redis
-        this.logger.log(`New points for ${numericPoints.memberLicence}`);
+        this.logger.debug(`New points for ${numericPoints.memberLicence}`);
         await this.prismaService.numericPoints.create({
           data: {
             points: numericPoints.points,
@@ -183,7 +183,7 @@ export class MembersListProcessingService {
           },
         });
       } else {
-        this.logger.log(
+        this.logger.debug(
           `Points of member ${numericPoints.memberLicence} already processed. No new points.`,
         );
       }

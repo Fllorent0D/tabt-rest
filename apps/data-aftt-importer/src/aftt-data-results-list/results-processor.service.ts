@@ -55,7 +55,7 @@ export class ResultsProcessorService {
   }
 
   private async downloadMemberLines(playerCategory: PlayerCategory) {
-    this.logger.log(
+    this.logger.debug(
       `Downloading ${playerCategory} results file from data.aftt.be`,
     );
 
@@ -65,7 +65,7 @@ export class ResultsProcessorService {
       ),
     );
     const lines = file.data.split('\n').slice(0, -1);
-    this.logger.log(
+    this.logger.debug(
       `File downloaded, start processing ${lines.length} lines...`,
     );
     return lines;

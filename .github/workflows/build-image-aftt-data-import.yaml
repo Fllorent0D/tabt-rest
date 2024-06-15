@@ -1,10 +1,13 @@
-name: 'Build and Push Docker Image on Tag Creation'
+name: '[Data AFTT Importer] Build and Push Docker Image'
 
-# push on main
+# push on main when /apps/data-aftt-importer
 on:
   push:
     branches:
       - main
+    paths:
+        - 'apps/data-aftt-importer/**'
+
 
 env:
   NODE_VERSION: 20

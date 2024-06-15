@@ -1,10 +1,12 @@
-name: 'Build and Push Docker Image on Tag Creation'
+name: '[TabT-Rest] Build and Push Docker Image'
 
 # push on main
 on:
   push:
     branches:
       - main
+    paths:
+        - 'apps/tabt-rest/**'
 
 env:
   NODE_VERSION: 20
