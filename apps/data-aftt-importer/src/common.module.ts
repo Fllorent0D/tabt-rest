@@ -17,7 +17,6 @@ import { PrismaService } from './prisma.service';
           },
         };
       },
-
       inject: [ConfigService],
     }),
   ],

@@ -30,8 +30,8 @@ import { CommonModule } from './common.module';
             return {
               transport: Transport.REDIS,
               options: {
-                host: configService.get('TABT_SERVICE_HOST'),
-                port: configService.get('TABT_SERVICE_PORT'),
+                host: configService.get('REDIS_HOST'),
+                port: parseInt(configService.get('REDIS_PORT')),
               },
             };
           },

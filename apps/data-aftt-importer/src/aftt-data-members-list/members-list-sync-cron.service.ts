@@ -3,12 +3,24 @@ import { Cron } from '@nestjs/schedule';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
 import { PlayerCategory } from '@prisma/client';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class MembersListSyncCron {
   private readonly logger = new Logger(MembersListSyncCron.name);
 
-  constructor(@InjectQueue('members') private readonly queue: Queue) {}
+  constructor(
+    @InjectQueue('members') private readonly queue: Queue,
+    private readonly configService: ConfigService,
+  ) {
+    const syncOnStart = this.configService.get<boolean>(
+      'SYNC_MEMBERS_ON_START',
+      false,
+    );
+    if (syncOnStart === true) {
+      this.syncMembers();
+    }
+  }
 
   // Run every day at 9:00 AM
   @Cron('0 0 9 * * *')

@@ -68,8 +68,8 @@ const asyncProviders: Provider[] = [
             return {
               transport: Transport.REDIS,
               options: {
-                host: configService.get('TABT_SERVICE_HOST'),
-                port: configService.get('TABT_SERVICE_PORT'),
+                host: configService.get('REDIS_HOST'),
+                port: parseInt(configService.get('REDIS_PORT')),
               },
             };
           },
@@ -85,7 +85,7 @@ const asyncProviders: Provider[] = [
     ConfigModule,
     LoggerModule.forRoot({
       pinoHttp: {
-        level: 'debug',
+        level: process.env.NODE_ENV === 'production' ? 'info' : 'debug',
         //transport: { target: 'pino-pretty' },
         quietReqLogger: true,
         serializers: {
