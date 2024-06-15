@@ -13,12 +13,11 @@ export class MembersListSyncCron {
     @InjectQueue('members') private readonly queue: Queue,
     private readonly configService: ConfigService,
   ) {
-    const syncOnStart = this.configService.get<boolean>(
-      'SYNC_MEMBERS_ON_START',
-      false,
-    );
-    if (syncOnStart === true) {
+    const syncOnStart = this.configService.get('SYNC_MEMBERS_ON_START', false);
+    if (syncOnStart === true || syncOnStart === 'true') {
       this.syncMembers();
+    } else {
+      this.logger.log('SYNC_MEMBERS_ON_START is not enabled.');
     }
   }
 
