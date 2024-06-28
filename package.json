@@ -73,7 +73,7 @@
     "lunr": "2.3.9",
     "nestjs-pino": "4.1.0",
     "p-queue": "8.0.1",
-    "passport": "0.6.0",
+    "passport": "0.7.0",
     "passport-http": "0.3.0",
     "pg": "8.11.5",
     "pino-http": "9.0.0",
