@@ -51,7 +51,7 @@
     "@nestjs/serve-static": "4.0.2",
     "@nestjs/swagger": "7.4.0",
     "@nestjs/terminus": "10.2.3",
-    "@prisma/client": "5.15.1",
+    "@prisma/client": "5.16.1",
     "@xmldom/xmldom": "0.8.10",
     "axios": "1.7.4",
     "bluebird": "3.7.2",
