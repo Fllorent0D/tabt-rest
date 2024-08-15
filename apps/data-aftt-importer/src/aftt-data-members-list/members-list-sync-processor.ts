@@ -63,7 +63,7 @@ export class MembersListProcessingService {
         ranking: cols[4],
         club: cols[5],
         category: cols[7],
-        worldRanking: parseInt(cols[8], 10),
+        worldRanking: cols[8].length ? parseInt(cols[8], 10) : 0,
         nationality: cols[9],
       };
 
@@ -136,7 +136,7 @@ export class MembersListProcessingService {
         });
       }
     } catch (e) {
-      this.logger.log(`Error when processing member ${member.licence}`);
+      this.logger.log(`Error when processing member ${member.licence}: ${e}`);
     }
   }
 
