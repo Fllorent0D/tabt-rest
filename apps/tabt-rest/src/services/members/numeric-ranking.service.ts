@@ -47,7 +47,7 @@ export class NumericRankingService {
 
       // TO DO change
       points.unshift({
-        weekName: '2023-07-01',
+        weekName: '2024-07-01',
         points: lastBasePoints,
       });
 
