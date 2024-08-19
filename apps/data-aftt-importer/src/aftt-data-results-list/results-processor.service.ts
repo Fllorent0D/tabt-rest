@@ -10,6 +10,7 @@ import {
 import { OnQueueActive, Process, Processor } from '@nestjs/bull';
 import { Job } from 'bull';
 import { PrismaService } from '../prisma.service';
+import { CacheService } from '../cache/cache.service';
 
 @Processor('results')
 export class ResultsProcessorService {
@@ -18,6 +19,7 @@ export class ResultsProcessorService {
   constructor(
     private readonly httpService: HttpService,
     private readonly prismaService: PrismaService,
+    private readonly cacheService: CacheService
   ) {
     console.log('ResultsProcessorService constructor');
   }
@@ -27,6 +29,7 @@ export class ResultsProcessorService {
     console.log(
       `Processing job ${job.id} of type ${job.name} with data ${job.data}...`,
     );
+  
   }
 
   @Process()
@@ -49,6 +52,9 @@ export class ResultsProcessorService {
           return this.updateDB(cols, job.data.playerCategory);
         }),
       );
+
+      await this.cacheService.cleanKeys(`numeric-ranking-v4:*:${job.data.playerCategory == PlayerCategory.MEN ? 1 : 2}`)
+
     }
 
     this.logger.log(`Processing done. (${lines.length} lines)`);

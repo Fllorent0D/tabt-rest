@@ -1,7 +1,10 @@
 import { Global, Module } from '@nestjs/common';
 import { HttpModule } from '@nestjs/axios';
-import { ConfigService } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { PrismaService } from './prisma.service';
+import { CacheModule } from '@nestjs/cache-manager';
+import { CacheModuleOptsFactory } from '../../tabt-rest/src/common/cache/cache-module-opts.factory';
+import { CacheService } from './cache/cache.service';
 
 @Global()
 @Module({
@@ -19,8 +22,12 @@ import { PrismaService } from './prisma.service';
       },
       inject: [ConfigService],
     }),
+    CacheModule.registerAsync({
+      useClass: CacheModuleOptsFactory,
+      imports: [ConfigModule],
+    }),
   ],
-  providers: [PrismaService],
-  exports: [HttpModule, PrismaService],
+  providers: [PrismaService, CacheService],
+  exports: [HttpModule, PrismaService, CacheService],
 })
 export class CommonModule {}

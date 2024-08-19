@@ -5,6 +5,7 @@ import { Member, NumericPoints, PlayerCategory } from '@prisma/client';
 import { OnQueueActive, Process, Processor } from '@nestjs/bull';
 import { PrismaService } from '../prisma.service';
 import { Job } from 'bull';
+import { CacheService } from '../cache/cache.service';
 
 @Processor('members')
 export class MembersListProcessingService {
@@ -13,6 +14,7 @@ export class MembersListProcessingService {
   constructor(
     private readonly httpService: HttpService,
     private readonly prismaService: PrismaService,
+    private readonly cacheService: CacheService
   ) {}
 
   @OnQueueActive()
@@ -32,6 +34,11 @@ export class MembersListProcessingService {
     for (const line of lines) {
       await this.processLine(line, job.data.playerCategory);
     }
+
+    // clean the cache
+    await this.cacheService.cleanKeys(`numeric-ranking-v4:*:${job.data.playerCategory == PlayerCategory.MEN ? 1 : 2}`)
+
+
     this.logger.log(`Processing done. (${lines.length} lines)`);
   }
 
