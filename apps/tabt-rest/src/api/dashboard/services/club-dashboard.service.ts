@@ -4,7 +4,10 @@ import { DashboardServiceInterface } from '../interfaces/dashboard-service.inter
 import { DivisionMemberDashboardDTOV1 } from '../dto/division-dashboard.dto';
 import { MatchesMembersRankerService } from '../../../services/matches/matches-members-ranker.service';
 import { DivisionMemberDashboardDTOV1Mapper } from '../dto/mappers/division-member-dashboard-dto-v1.mapper';
-import { ClubDashboardDTOV1 } from '../dto/club-dashboard.dto';
+import {
+  ClubDashboardDTOV1,
+  WeeklyTeamMatchEntryDTOV1,
+} from '../dto/club-dashboard.dto';
 import { MemberService } from '../../../services/members/member.service';
 import { MatchService } from '../../../services/matches/match.service';
 import { ClubTeamService } from '../../../services/clubs/club-team.service';
@@ -139,22 +142,32 @@ export class ClubDashboardService
 
   private async getClubMatchesGrouped(
     clubUniqueIndex: string,
-  ): Promise<ResponseDTO<{ [weekname: number]: TeamMatchesEntry[] }>> {
+  ): Promise<ResponseDTO<WeeklyTeamMatchEntryDTOV1[]>> {
     try {
       const matches = await this.matchService.getMatches({
         Club: clubUniqueIndex,
       });
-      const reduced = matches.reduce<{
-        [weekName: number]: TeamMatchesEntry[];
-      }>((acc, currentValue) => {
-        const weekName = Number(currentValue.WeekName);
-        if (acc[weekName]) {
-          acc[weekName].push(currentValue);
-        } else {
-          acc[weekName] = [currentValue];
-        }
-        return acc;
-      }, {});
+
+      const reduced = matches.reduce<WeeklyTeamMatchEntryDTOV1[]>(
+        (acc, currentValue) => {
+          const weekName = Number(currentValue.WeekName);
+          const arrayIndex = acc.findIndex(
+            (entry) => entry.weekname === weekName,
+          );
+
+          if (arrayIndex > -1) {
+            acc[arrayIndex].matches.push(currentValue);
+          } else {
+            acc.push({
+              weekname: weekName,
+              matches: [currentValue],
+            });
+          }
+          return acc;
+        },
+        [],
+      );
+
       return new ResponseDTO(RESPONSE_STATUS.SUCCESS, reduced);
     } catch (error) {
       return new ResponseDTO(RESPONSE_STATUS.ERROR, undefined, error.message);
