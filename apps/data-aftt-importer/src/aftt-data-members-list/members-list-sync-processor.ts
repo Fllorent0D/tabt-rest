@@ -24,22 +24,27 @@ export class MembersListProcessingService {
 
   @Process()
   async process(job: Job<{ playerCategory: PlayerCategory }>): Promise<void> {
-    const file = await this.downloadFile(job.data.playerCategory);
-    // split lines and remove last line
-    const lines = file.split('\n').slice(0, -1);
+    try {
+      const file = await this.downloadFile(job.data.playerCategory);
+      // split lines and remove last line
+      const lines = file.split('\n').slice(0, -1);
 
-    this.logger.log(
-      `File downloaded, start processing ${lines.length} lines...`,
-    );
-    for (const line of lines) {
-      await this.processLine(line, job.data.playerCategory);
+      this.logger.log(
+        `File downloaded, start processing ${lines.length} lines...`,
+      );
+      for (const line of lines) {
+        await this.processLine(line, job.data.playerCategory);
+      }
+
+      // clean the cache
+      await this.cacheService.cleanKeys(`numeric-ranking-v4:*:${job.data.playerCategory == PlayerCategory.MEN ? 1 : 2}`)
+      this.logger.log(`Processing done. (${lines.length} lines)`);
+      
+    }
+    catch (e){
+      this.logger.error("Failed to finish job", e.message);
     }
 
-    // clean the cache
-    await this.cacheService.cleanKeys(`numeric-ranking-v4:*:${job.data.playerCategory == PlayerCategory.MEN ? 1 : 2}`)
-
-
-    this.logger.log(`Processing done. (${lines.length} lines)`);
   }
 
   private async processLine(line: string, playerCategory: PlayerCategory) {
