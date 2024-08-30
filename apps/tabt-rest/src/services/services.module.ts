@@ -18,7 +18,6 @@ import { EloMemberService } from './members/elo-member.service';
 import { MatchesMembersRankerService } from './matches/matches-members-ranker.service';
 import { MembersSearchIndexService } from './members/members-search-index.service';
 import { MemberCategoryService } from './members/member-category.service';
-import { DataAfftTokenRefresherService } from './members/data-afft-token-refresher.service';
 import { BepingNotifierService } from './notifications/beping-notifier.service';
 import { NumericRankingService } from './members/numeric-ranking.service';
 import { DataAFTTMemberNumericRankingModel } from './members/member-numeric-ranking.model';
@@ -42,7 +41,6 @@ const services = [
   MatchesMembersRankerService,
   MembersSearchIndexService,
   MemberCategoryService,
-  DataAfftTokenRefresherService,
   BepingNotifierService,
   NumericRankingService,
   DataAFTTMemberNumericRankingModel,

@@ -9,16 +9,8 @@ import {
   UseInterceptors,
   Version,
 } from '@nestjs/common';
-import {
-  MemberEntry,
-  PlayerCategoryEntries,
-} from '../../../entity/tabt-soap/TabTAPI_Port';
-import {
-  ApiNotFoundResponse,
-  ApiOkResponse,
-  ApiOperation,
-  ApiTags,
-} from '@nestjs/swagger';
+import { MemberEntry, PlayerCategoryEntries } from '../../../entity/tabt-soap/TabTAPI_Port';
+import { ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { MemberService } from '../../../services/members/member.service';
 import { TabtHeadersDecorator } from '../../../common/decorators/tabt-headers.decorator';
 import {
@@ -225,14 +217,10 @@ export class MemberController {
     @Query() params: WeeklyNumericRankingInputV2,
   ) {
     const simplifiedCategory = getSimplifiedPlayerCategory(params.category);
-    const numericRankingV3 = await this.numericRankingService.getWeeklyRanking(
+    return await this.numericRankingService.getWeeklyRanking(
       id,
       simplifiedCategory,
     );
-    if (!numericRankingV3.points.length) {
-      throw new NotFoundException('No ELO points found');
-    }
-    return numericRankingV3;
   }
 
   @Get(':uniqueIndex/numeric-rankings')

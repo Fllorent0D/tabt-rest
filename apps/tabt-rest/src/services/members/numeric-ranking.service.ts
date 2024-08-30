@@ -9,7 +9,6 @@ import { SimplifiedPlayerCategory } from '../../api/member/helpers/player-catego
 import {
   COMPETITION_TYPE,
   NumericRankingDetailsV3,
-  WeeklyNumericPointsV3,
   WeeklyNumericRankingV4,
 } from '../../api/member/dto/member.dto';
 import { PlayerCategory } from '../../entity/tabt-input.interface';
@@ -62,22 +61,6 @@ export class NumericRankingService {
       getter,
       TTL_DURATION.ONE_DAY,
     );
-  }
-
-  async getRankingHistory(
-    licence: number,
-    simplifiedCategory: SimplifiedPlayerCategory,
-  ): Promise<WeeklyNumericPointsV3[]> {
-    const gender =
-      simplifiedCategory === PlayerCategory.MEN ? pc.MEN : pc.WOMEN;
-    const points = await this.memberNumericRankingModel.getLatestPoints(
-      licence,
-      gender,
-    );
-    return points.map((p) => ({
-      weekName: format(p.date, 'yyyy-MM-dd'),
-      points: p.points,
-    }));
   }
 
   async getActualPoints(

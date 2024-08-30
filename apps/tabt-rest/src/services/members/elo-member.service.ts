@@ -18,7 +18,6 @@ import { UserAgentsUtil } from '../../common/utils/user-agents.util';
 import { JSDOM } from 'jsdom';
 import { SimplifiedPlayerCategory } from '../../api/member/helpers/player-category-helpers';
 import { format } from 'date-fns';
-import { DataAfftTokenRefresherService } from './data-afft-token-refresher.service';
 
 @Injectable()
 export class EloMemberService {
@@ -30,7 +29,6 @@ export class EloMemberService {
     private readonly cacheService: CacheService,
     private readonly socksProxyService: SocksProxyHttpClient,
     private readonly configService: ConfigService,
-    private readonly dataAFTTTokenRefresherService: DataAfftTokenRefresherService,
   ) {}
 
   public async getBelNumericRanking(
