@@ -58,6 +58,10 @@ export class CacheService {
     this.logger.log(
       `Cleaning cache for pattern ${pattern}. Found ${keys.length} keys.`,
     );
-    return this.cacheManager.store.mdel(...keys);
+
+    for (const key of keys){
+      await this.cacheManager.del(key);
+    }
+
   }
 }

@@ -35,29 +35,34 @@ export class ResultsProcessorService {
   @Process()
   async process(job: Job<{ playerCategory: PlayerCategory }>): Promise<void> {
     this.logger.log('Processing results...');
-    const lines = await this.downloadMemberLines(job.data.playerCategory);
+    try {
+      const lines = await this.downloadMemberLines(job.data.playerCategory);
 
-    const chunkSize = 100;
-    for (let i = 0; i < lines.length; i += chunkSize) {
-      this.logger.debug(
-        `Processing chunk ${i / chunkSize + 1}/${Math.ceil(lines.length / chunkSize)}...`,
-      );
+      const chunkSize = 100;
+      for (let i = 0; i < lines.length; i += chunkSize) {
+        this.logger.debug(
+          `Processing chunk ${i / chunkSize + 1}/${Math.ceil(lines.length / chunkSize)}...`,
+        );
 
-      const chunk = lines.slice(i, i + chunkSize);
+        const chunk = lines.slice(i, i + chunkSize);
 
-      // Process each chunk in parallel
-      await Promise.all(
-        chunk.map((line) => {
-          const cols = line.split(';');
-          return this.updateDB(cols, job.data.playerCategory);
-        }),
-      );
+        // Process each chunk in parallel
+        await Promise.all(
+          chunk.map((line) => {
+            const cols = line.split(';');
+            return this.updateDB(cols, job.data.playerCategory);
+          }),
+        );
 
+      }
       await this.cacheService.cleanKeys(`numeric-ranking-v4:*:${job.data.playerCategory == PlayerCategory.MEN ? 1 : 2}`)
+      this.logger.log(`Processing done. (${lines.length} lines)`);
+
+    } catch (e){
+      this.logger.error("Failed to finish results job", e.message);
 
     }
 
-    this.logger.log(`Processing done. (${lines.length} lines)`);
   }
 
   private async downloadMemberLines(playerCategory: PlayerCategory) {
