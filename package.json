@@ -33,7 +33,7 @@
     "test:e2e": "npm apps/tabt-rest/test -- --config test-e2e/jest-e2e.json",
     "release": "release-it",
     "start:azure": "npm run build && func host start",
-    "prisma:deploy": "prisma migrate deploy",
+    "prisma:deploy": "prisma migrate resolve",
     "start:migrate:prod": "npm run prisma:deploy && npm run start:prod",
     "tabt-generate": "openapi-generator-cli generate -i http://localhost:3050/doc-json --skip-validate-spec --generator-name typescript-nestjs -o apps/app-notifications/src/common/tabt-client",
     "prisma:generate": "prisma generate"
