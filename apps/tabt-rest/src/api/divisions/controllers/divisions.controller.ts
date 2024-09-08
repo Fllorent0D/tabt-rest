@@ -63,7 +63,7 @@ export class DivisionsController {
   @UseInterceptors(ClassSerializerInterceptor)
   findAll(@Query() query: GetDivisions): Promise<DivisionEntry[]> {
     return this.divisionService.getDivisions({
-      Level: Level[query.level] as unknown as number,
+      Level: query.level ? Number(Level[query.level]) : undefined,
       ShowDivisionName: query.showDivisionName,
     });
   }

@@ -1,4 +1,4 @@
-import { ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
   MemberEntry,
   MemberEntryResultEntry,
@@ -7,35 +7,29 @@ import {
 import {
   PLAYER_CATEGORY,
   WeeklyNumericRankingV3,
+  WeeklyNumericRankingV4,
 } from '../../member/dto/member.dto';
 import { IsEnum } from 'class-validator';
 import { ResponseDTO } from './common.dto';
 
-export class MemberDashboardDTOV1 {
-  constructor(
-    public member: ResponseDTO<MemberEntry>,
-    public numericRankingResponse: ResponseDTO<WeeklyNumericRankingV3>,
-    public latestTeamMatches: ResponseDTO<TeamMatchesEntry[]>,
-    public stats: ResponseDTO<MemberStatsDTOV1>,
-  ) {}
-}
-
-export class MemberStatsDTOV1 {
-  tieBreaks: WinLossSummaryDTOV1;
-  matches: WinLossSummaryDTOV1;
-  perRanking: RankingWinLossDTOV1[];
-}
-
 export class WinLossSummaryDTOV1 {
+  @ApiProperty({ type: Number })
   count: number;
+
+  @ApiPropertyOptional({ type: Number })
   victories?: number;
+  @ApiPropertyOptional({ type: Number })
   defeats?: number;
+  @ApiPropertyOptional({ type: Number })
   victoriesPct?: number;
+  @ApiPropertyOptional({ type: Number })
   defeatsPct?: number;
 }
 
 export class RankingWinLossDTOV1 extends WinLossSummaryDTOV1 {
+  @ApiProperty()
   ranking: string;
+  @ApiProperty({ type: MemberEntryResultEntry, isArray: true })
   players: MemberEntryResultEntry[];
 }
 
@@ -43,4 +37,45 @@ export class WeeklyNumericRankingInputV2 {
   @ApiPropertyOptional({ enum: PLAYER_CATEGORY })
   @IsEnum(PLAYER_CATEGORY)
   category?: PLAYER_CATEGORY;
+}
+
+export class MemberStatsDTOV1 {
+  @ApiProperty({ type: WinLossSummaryDTOV1 })
+  tieBreaks: WinLossSummaryDTOV1;
+  @ApiProperty({ type: WinLossSummaryDTOV1 })
+  matches: WinLossSummaryDTOV1;
+  @ApiProperty({ type: RankingWinLossDTOV1, isArray: true })
+  perRanking: RankingWinLossDTOV1[];
+}
+export class MemberDashboardDTOV1 {
+  @ApiProperty({
+    type: () => ResponseDTO,
+    description: 'The status of the response',
+  })
+  public status: ResponseDTO<string>;
+
+  @ApiProperty({ type: () => MemberEntry, description: 'The member data' })
+  public member: MemberEntry;
+
+  @ApiProperty({
+    type: () => WeeklyNumericRankingV3,
+    description: 'The numeric ranking response',
+  })
+  public numericRankingResponse: WeeklyNumericRankingV4;
+
+  @ApiProperty({
+    type: () => [TeamMatchesEntry],
+    description: 'The latest team matches',
+  })
+  public latestTeamMatches: TeamMatchesEntry[];
+
+  @ApiProperty({
+    type: () => MemberStatsDTOV1,
+    description: 'The statistics of the member',
+  })
+  public stats: MemberStatsDTOV1;
+
+  constructor(status: ResponseDTO<string>) {
+    this.status = status;
+  }
 }

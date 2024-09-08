@@ -11,7 +11,7 @@
  */
 
 export interface VenueEntry {
-  Id: number;
+  Id?: number;
   ClubVenue: number;
   Name: string;
   Street: string;

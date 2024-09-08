@@ -23,7 +23,8 @@ export class ClubDashboardDTOV1 {
   @ApiProperty({ type: TeamEntry, isArray: true })
   teams: ResponseDTO<TeamEntry[]>;
   @ApiProperty({
-    type: 'object',
+    type: WeeklyTeamMatchEntryDTOV1,
+    isArray: true,
   })
   matches: ResponseDTO<WeeklyTeamMatchEntryDTOV1[]>;
 }

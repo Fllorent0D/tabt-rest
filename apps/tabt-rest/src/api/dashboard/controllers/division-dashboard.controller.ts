@@ -10,7 +10,7 @@ import { ApiNotFoundResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { DivisionDashboardDTOV1 } from '../dto/division-dashboard.dto';
 import { DivisionDashboardService } from '../services/division-dashboard.service';
 
-@ApiTags('Dashboards')
+@ApiTags('DivisionDashboards')
 @Controller({
   path: 'dashboard/division',
   version: '1',

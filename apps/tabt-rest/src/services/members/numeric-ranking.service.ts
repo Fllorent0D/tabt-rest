@@ -16,6 +16,7 @@ import {
   DataAFTTIndividualResultModel,
   IndividualResultWithOpponent,
 } from './individual-results.model';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class NumericRankingService {
@@ -23,6 +24,7 @@ export class NumericRankingService {
     private readonly memberNumericRankingModel: DataAFTTMemberNumericRankingModel,
     private readonly resultHistoryModel: DataAFTTIndividualResultModel,
     private readonly cacheService: CacheService,
+    private readonly configService: ConfigService,
   ) {}
 
   async getWeeklyRanking(
@@ -44,9 +46,9 @@ export class NumericRankingService {
         history[history.length - 1]?.basePoints ?? actualPoints;
       //insert in first position in array points
 
-      // TO DO change
+      const currentSeason = this.configService.get<number>('CURRENT_SEASON');
       points.unshift({
-        weekName: '2024-07-01',
+        weekName: `20${currentSeason - 1}-07-01`,
         points: lastBasePoints,
       });
 

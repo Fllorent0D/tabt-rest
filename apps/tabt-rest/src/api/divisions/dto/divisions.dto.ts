@@ -5,9 +5,10 @@ import { GetMatches } from '../../match/dto/match.dto';
 import { Level } from '../../../entity/tabt-input.interface';
 
 export class GetDivisions {
-  @ApiPropertyOptional({ enum: Level })
+  @ApiPropertyOptional({ type: String })
   @IsOptional()
   @IsEnum(Level)
+  @IsIn(Object.keys(Level))
   level?: string;
 
   @ApiPropertyOptional({ enum: ['no', 'yes', 'short'] })

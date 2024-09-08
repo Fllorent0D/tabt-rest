@@ -21,6 +21,7 @@ import {
   MemberEntryResultEntry,
   TeamMatchesEntry,
 } from '../../../entity/tabt-soap/TabTAPI_Port';
+import { NumericRankingService } from '../../../services/members/numeric-ranking.service';
 
 @Injectable()
 export class MemberDashboardService
@@ -30,7 +31,7 @@ export class MemberDashboardService
     private readonly matchService: MatchService,
     private readonly cacheService: CacheService,
     private readonly memberService: MemberService,
-    private readonly eloMemberService: EloMemberService,
+    private readonly numericRankingService: NumericRankingService,
   ) {}
 
   async getDashboard(
@@ -38,60 +39,57 @@ export class MemberDashboardService
     category: PLAYER_CATEGORY = PLAYER_CATEGORY.MEN,
   ): Promise<MemberDashboardDTOV1> {
     const getter = async (): Promise<MemberDashboardDTOV1> => {
-      const members: MemberEntry[] = await this.memberService.getMembers({
-        UniqueIndex: memberUniqueIndex,
-        WithResults: true,
-      });
-      const member: ResponseDTO<MemberEntry> = members?.[0]
-        ? new ResponseDTO(RESPONSE_STATUS.SUCCESS, members[0])
-        : new ResponseDTO(
-            RESPONSE_STATUS.ERROR,
-            undefined,
-            'No member found for given id',
+      try {
+        const members: MemberEntry[] = await this.memberService.getMembers({
+          UniqueIndex: memberUniqueIndex,
+          WithResults: true,
+        });
+        const member: ResponseDTO<MemberEntry> = members?.[0]
+          ? new ResponseDTO(RESPONSE_STATUS.SUCCESS, members[0])
+          : new ResponseDTO(
+              RESPONSE_STATUS.ERROR,
+              undefined,
+              'No member found for given id',
+            );
+
+        const simplifiedCategory = getSimplifiedPlayerCategory(category);
+
+        if (member.status === RESPONSE_STATUS.ERROR) {
+          return new MemberDashboardDTOV1(
+            ResponseDTO.error('No member found for given id'),
           );
-
-      const simplifiedCategory = getSimplifiedPlayerCategory(category);
-
-      if (member.status === RESPONSE_STATUS.ERROR) {
-        return new MemberDashboardDTOV1(
-          member,
-          new ResponseDTO(
-            RESPONSE_STATUS.ERROR,
-            undefined,
-            'No member found for given id',
-          ),
-          new ResponseDTO(
-            RESPONSE_STATUS.ERROR,
-            undefined,
-            'No member found for given id',
-          ),
-          new ResponseDTO(
-            RESPONSE_STATUS.ERROR,
-            undefined,
-            'No member found for given id',
-          ),
+        }
+        const dashboard = new MemberDashboardDTOV1(
+          ResponseDTO.success('Member dashboard retrieved successfully'),
         );
+        const numericRankingResponse = await this.getNumericRanking(
+          member.payload,
+          simplifiedCategory,
+        );
+        const latestTeamMatches = await this.getLatestMatches(member.payload);
+        const stats = await this.getMemberStats(member.payload);
+
+        dashboard.member = member.payload;
+        dashboard.numericRankingResponse = numericRankingResponse;
+        dashboard.latestTeamMatches = latestTeamMatches;
+        dashboard.stats = stats;
+
+        return dashboard;
+      } catch (error) {
+        throw new MemberDashboardDTOV1(ResponseDTO.error(error.message));
       }
-
-      const numericRankingResponse = await this.getNumericRanking(
-        member.payload,
-        simplifiedCategory,
-      );
-      const latestTeamMatches = await this.getLatestMatches(member.payload);
-      const stats = await this.getMemberStats(member.payload);
-      return new MemberDashboardDTOV1(
-        member,
-        numericRankingResponse,
-        latestTeamMatches,
-        stats,
-      );
     };
-
-    return this.cacheService.getFromCacheOrGetAndCacheResult<MemberDashboardDTOV1>(
-      `member-dashboard-${memberUniqueIndex}-${category}`,
-      getter,
-      TTL_DURATION.ONE_DAY,
-    );
+    try {
+      return await this.cacheService.getFromCacheOrGetAndCacheResult<MemberDashboardDTOV1>(
+        `member-dashboard-${memberUniqueIndex}-${category}`,
+        getter,
+        TTL_DURATION.ONE_DAY,
+      );
+    } catch (error) {
+      throw new MemberDashboardDTOV1(
+        ResponseDTO.error('Error while retrieving member dashboard'),
+      );
+    }
   }
 
   private async getNumericRanking(
@@ -99,24 +97,21 @@ export class MemberDashboardService
     simplifiedCategory: PlayerCategory.MEN | PlayerCategory.WOMEN,
   ) {
     try {
-      const numericRanking = await this.eloMemberService.getBelNumericRankingV3(
+      return await this.numericRankingService.getWeeklyRanking(
         member.UniqueIndex,
         simplifiedCategory,
       );
-      return new ResponseDTO(RESPONSE_STATUS.SUCCESS, numericRanking);
     } catch (error) {
-      return new ResponseDTO(RESPONSE_STATUS.ERROR, undefined, error.message);
+      throw new Error(error.message);
     }
   }
 
-  private async getMemberStats(
-    member: MemberEntry,
-  ): Promise<ResponseDTO<MemberStatsDTOV1>> {
+  private async getMemberStats(member: MemberEntry): Promise<MemberStatsDTOV1> {
     try {
       const memberResultEntries = member.ResultEntries ?? [];
       const total = memberResultEntries.length;
       if (total === 0) {
-        return new ResponseDTO<MemberStatsDTOV1>(RESPONSE_STATUS.SUCCESS, {
+        return {
           matches: {
             count: 0,
           },
@@ -124,7 +119,7 @@ export class MemberDashboardService
             count: 0,
           },
           perRanking: [],
-        });
+        };
       } else {
         const victories = memberResultEntries.filter((result) =>
           result.Result.startsWith('V'),
@@ -178,7 +173,7 @@ export class MemberDashboardService
           };
         });
 
-        const stats = {
+        return {
           matches: {
             count: total,
             victories,
@@ -195,16 +190,15 @@ export class MemberDashboardService
           },
           perRanking,
         };
-        return new ResponseDTO(RESPONSE_STATUS.SUCCESS, stats);
       }
     } catch (error) {
-      return new ResponseDTO(RESPONSE_STATUS.ERROR, undefined, error.message);
+      throw new Error(error.message);
     }
   }
 
   private async getLatestMatches(
     member: MemberEntry,
-  ): Promise<ResponseDTO<TeamMatchesEntry[]>> {
+  ): Promise<TeamMatchesEntry[]> {
     try {
       const matchIds = (member.ResultEntries ?? [])
         //.sort((a, b) => b.Date.localeCompare(a.Date))
@@ -215,13 +209,10 @@ export class MemberDashboardService
 
       const clubMatches: TeamMatchesEntry[] =
         await this.matchService.getMatches({ Club: member.Club });
-      const filteredMatches = clubMatches.filter((match) =>
-        matchIds.includes(match.MatchId),
-      );
+      return clubMatches.filter((match) => matchIds.includes(match.MatchId));
       //.sort((a, b) => b.Date.localeCompare(a.Date));
-      return new ResponseDTO(RESPONSE_STATUS.SUCCESS, filteredMatches);
     } catch (error) {
-      return new ResponseDTO(RESPONSE_STATUS.ERROR, undefined, error.message);
+      throw new Error(error.message);
     }
   }
 }

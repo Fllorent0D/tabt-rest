@@ -19,25 +19,25 @@ export class ITestInput {
 }
 
 export class VenueEntry {
-  @ApiProperty()
+  @ApiPropertyOptional()
   Id: number;
 
-  @ApiProperty()
+  @ApiPropertyOptional()
   ClubVenue: number;
 
-  @ApiProperty()
+  @ApiPropertyOptional()
   Name: string;
 
-  @ApiProperty()
+  @ApiPropertyOptional()
   Street: string;
 
-  @ApiProperty()
+  @ApiPropertyOptional()
   Town: string;
 
-  @ApiProperty()
+  @ApiPropertyOptional()
   Phone: string;
 
-  @ApiProperty()
+  @ApiPropertyOptional()
   Comment: string;
 
   @ApiPropertyOptional()
@@ -956,19 +956,19 @@ export class TeamMatchesEntry {
   @ApiProperty()
   WeekName: string;
   /** http://api.frenoy.net/TabTAPI#xsd:date(undefined) */
-  @ApiProperty()
+  @ApiPropertyOptional()
   Date: string;
   /** http://api.frenoy.net/TabTAPI#xsd:time(undefined) */
-  @ApiProperty()
+  @ApiPropertyOptional()
   Time: string;
 
-  @ApiProperty()
+  @ApiPropertyOptional()
   Venue: number;
 
-  @ApiProperty()
+  @ApiPropertyOptional()
   VenueClub: string;
 
-  @ApiProperty({ type: VenueEntry })
+  @ApiPropertyOptional({ type: VenueEntry })
   VenueEntry: Omit<VenueEntry, 'ClubVenue' | 'Id'>;
 
   @ApiProperty()
@@ -983,10 +983,10 @@ export class TeamMatchesEntry {
   @ApiProperty()
   AwayTeam: string;
 
-  @ApiProperty()
+  @ApiPropertyOptional()
   Score: string;
 
-  @ApiProperty()
+  @ApiPropertyOptional()
   MatchUniqueId: number;
 
   @ApiPropertyOptional()
