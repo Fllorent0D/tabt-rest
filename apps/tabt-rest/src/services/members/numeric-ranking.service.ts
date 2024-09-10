@@ -1,6 +1,10 @@
 import { Injectable } from '@nestjs/common';
 
-import { CompetitionType, PlayerCategory as pc } from '@prisma/client';
+import {
+  CompetitionType,
+  NumericPoints,
+  PlayerCategory as pc,
+} from '@prisma/client';
 import { format } from 'date-fns';
 
 import { CacheService, TTL_DURATION } from '../../common/cache/cache.service';
@@ -9,7 +13,7 @@ import { SimplifiedPlayerCategory } from '../../api/member/helpers/player-catego
 import {
   COMPETITION_TYPE,
   NumericRankingDetailsV3,
-  WeeklyNumericRankingV4,
+  WeeklyNumericRankingV5,
 } from '../../api/member/dto/member.dto';
 import { PlayerCategory } from '../../entity/tabt-input.interface';
 import {
@@ -30,11 +34,12 @@ export class NumericRankingService {
   async getWeeklyRanking(
     licence: number,
     simplifiedCategory: SimplifiedPlayerCategory,
-  ): Promise<WeeklyNumericRankingV4> {
-    const getter = async (): Promise<WeeklyNumericRankingV4> => {
+  ): Promise<WeeklyNumericRankingV5> {
+    const getter = async (): Promise<WeeklyNumericRankingV5> => {
       const [history, actualPoints] = await Promise.all([
         this.getResultsDetailsHistory(licence, simplifiedCategory),
         this.getActualPoints(licence, simplifiedCategory),
+        this.getRankingEstimation(licence, simplifiedCategory),
       ]);
       const points = history
         .map((d) => ({
@@ -43,7 +48,8 @@ export class NumericRankingService {
         }))
         .reverse();
       const lastBasePoints =
-        history[history.length - 1]?.basePoints ?? actualPoints;
+        history[history.length - 1]?.basePoints ??
+        actualPoints[actualPoints.length - 1].points;
       //insert in first position in array points
 
       const currentSeason = this.configService.get<number>('CURRENT_SEASON');
@@ -54,8 +60,12 @@ export class NumericRankingService {
 
       return {
         perDateHistory: history,
-        points: points,
-        actualPoints: actualPoints,
+        numericRankingHistory: actualPoints.map((p) => ({
+          ranking: p.rankingWI,
+          rankingLetterEstimation: p.rankingLetterEstimation,
+          points: p.points,
+          date: p.date.toISOString(),
+        })),
       };
     };
     return this.cacheService.getFromCacheOrGetAndCacheResult(
@@ -68,14 +78,13 @@ export class NumericRankingService {
   async getActualPoints(
     licence: number,
     simplifiedCategory: SimplifiedPlayerCategory,
-  ): Promise<number> {
+  ): Promise<NumericPoints[]> {
     const gender =
       simplifiedCategory === PlayerCategory.MEN ? pc.MEN : pc.WOMEN;
-    const points = await this.memberNumericRankingModel.getLatestPoints(
+    return await this.memberNumericRankingModel.getLatestPoints(
       licence,
       gender,
     );
-    return points[points.length - 1].points;
   }
 
   async getResultsDetailsHistory(
@@ -144,4 +153,9 @@ export class NumericRankingService {
 
     return eventGroupedArray.reverse();
   }
+
+  private getRankingEstimation(
+    licence: number,
+    simplifiedCategory: SimplifiedPlayerCategory,
+  ) {}
 }

@@ -59,18 +59,20 @@ export class MemberDashboardService
             ResponseDTO.error('No member found for given id'),
           );
         }
+
+        const [numericRankingResponse, latestTeamMatches, stats] =
+          await Promise.all([
+            this.getNumericRanking(member.payload, simplifiedCategory),
+            this.getLatestMatches(member.payload),
+            this.getMemberStats(member.payload),
+          ]);
+
         const dashboard = new MemberDashboardDTOV1(
           ResponseDTO.success('Member dashboard retrieved successfully'),
         );
-        const numericRankingResponse = await this.getNumericRanking(
-          member.payload,
-          simplifiedCategory,
-        );
-        const latestTeamMatches = await this.getLatestMatches(member.payload);
-        const stats = await this.getMemberStats(member.payload);
 
         dashboard.member = member.payload;
-        dashboard.numericRankingResponse = numericRankingResponse;
+        dashboard.numericRanking = numericRankingResponse;
         dashboard.latestTeamMatches = latestTeamMatches;
         dashboard.stats = stats;
 
@@ -137,9 +139,9 @@ export class MemberDashboardService
           (result) => result.SetFor === 2 && result.SetAgainst === 3,
         ).length;
         const totalTieBreak = tieBreakVictories + tieBreakdefeats;
-        const tieBreakDefeatsPct = Math.floor((defeats / totalTieBreak) * 100);
+        const tieBreakDefeatsPct = Math.floor((defeats / totalTieBreak) * 10);
         const tieBreakVictoriesPct = Math.floor(
-          (victories / totalTieBreak) * 100,
+          (victories / totalTieBreak) * 10,
         );
 
         const memberEntryResultEntryPerRanking: {

@@ -8,6 +8,7 @@ import {
   PLAYER_CATEGORY,
   WeeklyNumericRankingV3,
   WeeklyNumericRankingV4,
+  WeeklyNumericRankingV5,
 } from '../../member/dto/member.dto';
 import { IsEnum } from 'class-validator';
 import { ResponseDTO } from './common.dto';
@@ -47,6 +48,7 @@ export class MemberStatsDTOV1 {
   @ApiProperty({ type: RankingWinLossDTOV1, isArray: true })
   perRanking: RankingWinLossDTOV1[];
 }
+
 export class MemberDashboardDTOV1 {
   @ApiProperty({
     type: () => ResponseDTO,
@@ -58,10 +60,10 @@ export class MemberDashboardDTOV1 {
   public member: MemberEntry;
 
   @ApiProperty({
-    type: () => WeeklyNumericRankingV3,
+    type: () => WeeklyNumericRankingV5,
     description: 'The numeric ranking response',
   })
-  public numericRankingResponse: WeeklyNumericRankingV4;
+  public numericRanking: WeeklyNumericRankingV5;
 
   @ApiProperty({
     type: () => [TeamMatchesEntry],

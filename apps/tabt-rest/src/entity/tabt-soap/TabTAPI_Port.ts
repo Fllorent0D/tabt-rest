@@ -832,7 +832,7 @@ export class CommentAuthor {
   @ApiProperty()
   Club: string;
   /** http://api.frenoy.net/TabTAPI#GenderType(M,F) */
-  @ApiProperty()
+  @ApiPropertyOptional()
   Gender: 'M' | 'F';
 
   Category: string;
@@ -1111,10 +1111,10 @@ export class MemberEntry {
   @ApiProperty()
   Club: string;
   /** http://api.frenoy.net/TabTAPI#GenderType(M,F) */
-  @ApiProperty()
+  @ApiPropertyOptional()
   Gender?: 'M' | 'F';
 
-  @ApiProperty()
+  @ApiPropertyOptional()
   Category?: string;
   /** http://api.frenoy.net/TabTAPI#xsd:date(undefined) */
   @ApiPropertyOptional()

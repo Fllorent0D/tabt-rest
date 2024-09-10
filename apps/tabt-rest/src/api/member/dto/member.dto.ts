@@ -102,6 +102,20 @@ export class WeeklyNumericPointsV3 {
   @ApiProperty()
   points: number;
 }
+
+export class WeeklyNumericPointsV5 {
+  @ApiProperty()
+  date: string;
+
+  @ApiProperty()
+  points: number;
+
+  @ApiProperty()
+  ranking: number;
+
+  @ApiPropertyOptional()
+  rankingLetterEstimation: string;
+}
 export class NumericRankingPerWeekOpponentsV3 {
   @ApiProperty()
   opponentName: string;
@@ -166,6 +180,18 @@ export class WeeklyNumericRankingV3 {
 }
 
 export type WeeklyNumericRankingV4 = WeeklyNumericRankingV3;
+
+export class WeeklyNumericRankingV5 {
+  @ApiProperty({
+    type: [WeeklyNumericPointsV5],
+  })
+  numericRankingHistory: WeeklyNumericPointsV5[];
+
+  @ApiProperty({
+    type: [NumericRankingDetailsV3],
+  })
+  perDateHistory: NumericRankingDetailsV3[];
+}
 
 export enum PLAYER_CATEGORY {
   MEN = 'MEN',
