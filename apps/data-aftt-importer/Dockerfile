@@ -37,4 +37,4 @@ COPY package*.json ./
 # Install app dependencies
 RUN apt-get update && apt-get install -y openssl && npm i -g prisma && npm install --only=production --legacy-peer-deps
 
-CMD ["sh", "-c", "prisma migrate deploy && npm run start:prod:data-aftt-importer"]
+CMD ["sh", "-c", "npm run start:prod:data-aftt-importer"]
