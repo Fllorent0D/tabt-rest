@@ -1,40 +1,32 @@
-import {
-  Body,
-  Controller,
-  Post,
-  UseGuards,
-  UsePipes,
-  ValidationPipe,
-} from '@nestjs/common';
-import { EventBusService } from '../common/event-bus/event-bus.service';
+import { Controller } from '@nestjs/common';
 import { v4 as uuid } from 'uuid';
-import { NumericRankingEventDto } from './dto/numeric-ranking-event.dto';
-import { TabtEventType } from '../common/event-bus/models/event.model';
-import { AuthGuard } from '@nestjs/passport';
+import { MessagePattern, Payload } from '@nestjs/microservices';
+import { NewNumericRankingEvent } from '@beping/models';
+import { NumericRankingNotifierService } from '../notifications/numeric-ranking-notifier.service';
+import { EventAcknowledgment } from '@beping/models/events/event-acknowledged.model';
+import { BePingMessagePattern } from '@beping/models/events/message-pattern';
 
-@Controller('numeric-ranking')
+@Controller()
 export class NumericRankingEventController {
-  constructor(private readonly eventBusService: EventBusService) {}
+  constructor(private readonly numericRankingNotifierService: NumericRankingNotifierService) {
+  }
 
-  @Post('update')
-  @UseGuards(AuthGuard('basic'))
-  @UsePipes(new ValidationPipe({ transform: true }))
+  @MessagePattern(BePingMessagePattern.NEW_NUMERIC_RANKING)
   async onNumericRankingUpdate(
-    @Body() numericRankingEvent: NumericRankingEventDto,
-  ) {
+    @Payload() payload: NewNumericRankingEvent,
+  ): Promise<EventAcknowledgment> {
     const corrId = uuid();
-
-    this.eventBusService.emitEvent({
-      type: TabtEventType.NUMERIC_RANKING_RECEIVED,
-      payload: {
-        ...numericRankingEvent,
-      },
-      corrId,
-    });
-
-    return {
-      acknowledged: true,
-      correlationId: corrId,
-    };
+    try {
+      await this.numericRankingNotifierService.notifyPlayer(payload);
+      return {
+        acknowledged: true,
+        correlationId: corrId
+      }
+    } catch (e) {
+      return {
+        acknowledged: false,
+        correlationId: corrId
+      }
+    }
   }
 }

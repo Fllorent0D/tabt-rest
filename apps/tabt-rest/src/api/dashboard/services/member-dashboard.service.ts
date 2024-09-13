@@ -99,7 +99,7 @@ export class MemberDashboardService
     simplifiedCategory: PlayerCategory.MEN | PlayerCategory.WOMEN,
   ) {
     try {
-      return await this.numericRankingService.getWeeklyRanking(
+      return await this.numericRankingService.getWeeklyRankingV5(
         member.UniqueIndex,
         simplifiedCategory,
       );

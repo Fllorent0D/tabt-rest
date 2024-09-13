@@ -217,7 +217,7 @@ export class MemberController {
     @Query() params: WeeklyNumericRankingInputV2,
   ) {
     const simplifiedCategory = getSimplifiedPlayerCategory(params.category);
-    return await this.numericRankingService.getWeeklyRanking(
+    return await this.numericRankingService.getWeeklyRankingV4(
       id,
       simplifiedCategory,
     );
@@ -240,7 +240,7 @@ export class MemberController {
     @Query() params: WeeklyNumericRankingInputV2,
   ) {
     const simplifiedCategory = getSimplifiedPlayerCategory(params.category);
-    return await this.numericRankingService.getWeeklyRanking(
+    return await this.numericRankingService.getWeeklyRankingV4(
       id,
       simplifiedCategory,
     );

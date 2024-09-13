@@ -12,30 +12,22 @@ import {
 } from './constants';
 import { PrismaService } from '../common/prisma.service';
 import { NotificationType } from '@prisma/client';
+import { NewNumericRankingEvent } from '@beping/models/events/new-numeric-ranking-event';
 
 @Injectable()
 export class NumericRankingNotifierService {
   private readonly logger = new Logger(NumericRankingNotifierService.name);
 
   constructor(
-    private readonly tabtEventBusService: EventBusService,
     private readonly messagingFirebaseService: MessagingFirebaseService,
     private readonly cacheService: CacheService,
     private readonly prismaService: PrismaService,
   ) {}
 
-  start(): void {
-    this.listenEvents();
-  }
 
-  private listenEvents(): void {
-    this.tabtEventBusService
-      .ofTypes(TabtEventType.NUMERIC_RANKING_RECEIVED)
-      .pipe(
-        map((event) => event.payload as NumericRankingEventDto),
-        concatMap((value) => of(value).pipe(delay(100))),
-      )
-      .subscribe(async (numericRankingEvent) => {
+  private async sendNumericRankingNotification(
+    numericRankingEvent: NewNumericRankingEvent
+  ): Promise<void> {
         try {
           const messageIds = await this.notifyPlayer(numericRankingEvent);
           this.logger.debug(
@@ -58,7 +50,6 @@ export class NumericRankingNotifierService {
             error.stack,
           );
         }
-      });
   }
 
   async notifyPlayer(event: NumericRankingEventDto): Promise<string[]> {

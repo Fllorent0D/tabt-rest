@@ -1,10 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import {
-  CompetitionType,
-  NumericPoints,
-  PlayerCategory as pc,
-} from '@prisma/client';
+import { CompetitionType, NumericPoints, PlayerCategory as pc } from '@prisma/client';
 import { format } from 'date-fns';
 
 import { CacheService, TTL_DURATION } from '../../common/cache/cache.service';
@@ -13,13 +9,11 @@ import { SimplifiedPlayerCategory } from '../../api/member/helpers/player-catego
 import {
   COMPETITION_TYPE,
   NumericRankingDetailsV3,
+  WeeklyNumericRankingV4,
   WeeklyNumericRankingV5,
 } from '../../api/member/dto/member.dto';
 import { PlayerCategory } from '../../entity/tabt-input.interface';
-import {
-  DataAFTTIndividualResultModel,
-  IndividualResultWithOpponent,
-} from './individual-results.model';
+import { DataAFTTIndividualResultModel, IndividualResultWithOpponent } from './individual-results.model';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
@@ -29,9 +23,61 @@ export class NumericRankingService {
     private readonly resultHistoryModel: DataAFTTIndividualResultModel,
     private readonly cacheService: CacheService,
     private readonly configService: ConfigService,
-  ) {}
+  ) {
+  }
 
-  async getWeeklyRanking(
+  async getWeeklyRankingV4(
+    licence: number,
+    simplifiedCategory: SimplifiedPlayerCategory,
+  ): Promise<WeeklyNumericRankingV4> {
+    const getter = async (): Promise<WeeklyNumericRankingV4> => {
+      const [history, actualPoints] = await Promise.all([
+        this.getResultsDetailsHistory(licence, simplifiedCategory),
+        this.getActualPointsV3(licence, simplifiedCategory),
+      ]);
+      const points = history
+        .map((d) => ({
+          weekName: d.date,
+          points: d.endPoints,
+        }))
+        .reverse();
+      const lastBasePoints =
+        history[history.length - 1]?.basePoints ?? actualPoints;
+      //insert in first position in array points
+
+      const currentSeason = this.configService.get<number>('CURRENT_SEASON');
+      points.unshift({
+        weekName: `20${currentSeason - 1}-07-01`,
+        points: lastBasePoints,
+      });
+
+      return {
+        perDateHistory: history,
+        points: points,
+        actualPoints: actualPoints,
+      };
+    };
+    return this.cacheService.getFromCacheOrGetAndCacheResult(
+      `numeric-ranking-v4:${licence}:${simplifiedCategory}`,
+      getter,
+      TTL_DURATION.ONE_DAY,
+    );
+  }
+
+  async getActualPointsV3(
+    licence: number,
+    simplifiedCategory: SimplifiedPlayerCategory,
+  ): Promise<number> {
+    const gender =
+      simplifiedCategory === PlayerCategory.MEN ? pc.MEN : pc.WOMEN;
+    const points = await this.memberNumericRankingModel.getLatestPoints(
+      licence,
+      gender,
+    );
+    return points[points.length - 1].points;
+  }
+
+  async getWeeklyRankingV5(
     licence: number,
     simplifiedCategory: SimplifiedPlayerCategory,
   ): Promise<WeeklyNumericRankingV5> {
@@ -157,5 +203,6 @@ export class NumericRankingService {
   private getRankingEstimation(
     licence: number,
     simplifiedCategory: SimplifiedPlayerCategory,
-  ) {}
+  ) {
+  }
 }
