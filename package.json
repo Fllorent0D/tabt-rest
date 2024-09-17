@@ -50,7 +50,7 @@
     "@nestjs/platform-express": "10.3.10",
     "@nestjs/schedule": "4.1.1",
     "@nestjs/serve-static": "4.0.2",
-    "@nestjs/swagger": "7.4.1",
+    "@nestjs/swagger": "7.4.2",
     "@nestjs/terminus": "10.2.3",
     "@prisma/client": "5.15.1",
     "@xmldom/xmldom": "0.9.2",
