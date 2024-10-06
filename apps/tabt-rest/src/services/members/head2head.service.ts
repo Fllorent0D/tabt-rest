@@ -120,25 +120,26 @@ export class Head2headService {
     playerA: number,
     playerB: number,
   ): Promise<string> {
-    const result = await firstValueFrom(
-      this.httpService.post(
-        `https://resultats.aftt.be/index.php?menu=4&head=1&player_1=${playerA}&player_2=${playerB}`,
-        {
-          responseType: 'text',
-          maxRedirects: 0,
-        },
-        {
-          headers: {
-            'user-agent': UserAgentsUtil.random,
+    try {
+      const result = await firstValueFrom(
+        this.httpService.post(
+          `https://resultats.aftt.be/index.php?menu=4&head=1&player_1=${playerA}&player_2=${playerB}`,
+          {
+            responseType: 'text',
+            maxRedirects: 0,
           },
-          httpsAgent:
-            this.configService.get('USE_SOCKS_PROXY') === 'true'
-              ? this.socksProxyService.createHttpsAgent()
-              : undefined,
-        },
-      ),
-    );
-    return result.data;
+          {
+            headers: {
+              'user-agent': UserAgentsUtil.random,
+            },
+            httpsAgent: this.socksProxyService.createHttpsAgent(),
+          },
+        ),
+      );
+      return result.data;
+    } catch (e) {
+      throw new Error('Error while fetching data from AFTT');
+    }
   }
 
   private static extractMatchesInfos(htmlPage: string): ExtractedMatchInfo[] {
