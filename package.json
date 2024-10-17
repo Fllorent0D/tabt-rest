@@ -109,7 +109,7 @@
     "@types/jest": "29.5.13",
     "@types/lodash": "4.17.10",
     "@types/lunr": "2.3.7",
-    "@types/node": "20.16.11",
+    "@types/node": "20.16.12",
     "@types/response-time": "2.3.8",
     "@types/supertest": "6.0.2",
     "@types/user-agents": "1.0.4",
