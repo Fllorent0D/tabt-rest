@@ -93,7 +93,7 @@
     "xmldom": "0.6.0"
   },
   "devDependencies": {
-    "@eslint/js": "9.12.0",
+    "@eslint/js": "9.13.0",
     "@nestjs/cli": "10.4.5",
     "@nestjs/schematics": "10.2.2",
     "@nestjs/testing": "10.4.5",
