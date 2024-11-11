@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
   ClubEntry,
   MemberEntry,
@@ -15,16 +15,26 @@ export class WeeklyTeamMatchEntryDTOV1 {
   weekname: number;
 }
 
+export class ListOfStrengthDTOV1 {
+  @ApiPropertyOptional({ type: MemberEntry, isArray: true })
+  men?: MemberEntry[];
+  @ApiPropertyOptional({ type: MemberEntry, isArray: true })
+  women?: MemberEntry[];
+}
+
 export class ClubDashboardDTOV1 {
-  @ApiProperty({ type: ClubEntry })
-  club: ResponseDTO<ClubEntry>;
-  @ApiProperty({ type: MemberEntry, isArray: true })
-  members: ResponseDTO<MemberEntry[]>;
-  @ApiProperty({ type: TeamEntry, isArray: true })
-  teams: ResponseDTO<TeamEntry[]>;
-  @ApiProperty({
-    type: WeeklyTeamMatchEntryDTOV1,
+  @ApiProperty({ type: ResponseDTO<string> })
+  status: ResponseDTO<string>;
+
+  @ApiPropertyOptional({ type: ClubEntry })
+  club?: ClubEntry;
+  @ApiPropertyOptional({ type: ListOfStrengthDTOV1 })
+  listOfStrength?: ListOfStrengthDTOV1;
+  @ApiPropertyOptional({ type: TeamEntry, isArray: true })
+  teams?: TeamEntry[];
+  @ApiPropertyOptional({
+    type: TeamMatchesEntry,
     isArray: true,
   })
-  matches: ResponseDTO<WeeklyTeamMatchEntryDTOV1[]>;
+  matches?: TeamMatchesEntry[];
 }

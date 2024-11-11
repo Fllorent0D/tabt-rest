@@ -4,10 +4,7 @@ import { DashboardServiceInterface } from '../interfaces/dashboard-service.inter
 import { DivisionMemberDashboardDTOV1 } from '../dto/division-dashboard.dto';
 import { MatchesMembersRankerService } from '../../../services/matches/matches-members-ranker.service';
 import { DivisionMemberDashboardDTOV1Mapper } from '../dto/mappers/division-member-dashboard-dto-v1.mapper';
-import {
-  ClubDashboardDTOV1,
-  WeeklyTeamMatchEntryDTOV1,
-} from '../dto/club-dashboard.dto';
+import { ClubDashboardDTOV1 } from '../dto/club-dashboard.dto';
 import { MemberService } from '../../../services/members/member.service';
 import { MatchService } from '../../../services/matches/match.service';
 import { ClubTeamService } from '../../../services/clubs/club-team.service';
@@ -18,6 +15,8 @@ import {
   TeamMatchesEntry,
 } from '../../../entity/tabt-soap/TabTAPI_Port';
 import { RESPONSE_STATUS, ResponseDTO } from '../dto/common.dto';
+import { SimplifiedPlayerCategory } from '../../member/helpers/player-category-helpers';
+import { PlayerCategory } from '../../../entity/tabt-input.interface';
 
 @Injectable()
 export class ClubDashboardService
@@ -32,44 +31,35 @@ export class ClubDashboardService
   ) {}
 
   async getDashboard(clubUniqueIndex: string): Promise<ClubDashboardDTOV1> {
-    const club = await this.getClub(clubUniqueIndex);
-    if (!club.payload) {
+    try {
+      const club = await this.getClub(clubUniqueIndex);
+
+      const [men, women, teams, matches] = await Promise.all([
+        this.getClubMembers(clubUniqueIndex, PlayerCategory.MEN).catch(
+          (error) => null,
+        ),
+        this.getClubMembers(clubUniqueIndex, PlayerCategory.WOMEN).catch(
+          (error) => null,
+        ),
+        this.getClubTeams(clubUniqueIndex).catch((error) => null),
+        this.getClubMatchesGrouped(clubUniqueIndex).catch((error) => null),
+      ]);
+
       return {
-        club: new ResponseDTO(
-          RESPONSE_STATUS.ERROR,
-          undefined,
-          'No club found for given id',
-        ),
-        members: new ResponseDTO(
-          RESPONSE_STATUS.ERROR,
-          undefined,
-          'No club found for given id',
-        ),
-        teams: new ResponseDTO(
-          RESPONSE_STATUS.ERROR,
-          undefined,
-          'No club found for given id',
-        ),
-        matches: new ResponseDTO(
-          RESPONSE_STATUS.ERROR,
-          undefined,
-          'No club found for given id',
-        ),
+        status: ResponseDTO.success('Retrieved club dashboard successfully'),
+        club,
+        listOfStrength: {
+          men,
+          women,
+        },
+        teams,
+        matches,
+      };
+    } catch (error) {
+      return {
+        status: ResponseDTO.error(error.message),
       };
     }
-
-    const [members, teams, matches] = await Promise.all([
-      this.getClubMembers(clubUniqueIndex),
-      this.getClubTeams(clubUniqueIndex),
-      this.getClubMatchesGrouped(clubUniqueIndex),
-    ]);
-
-    return {
-      club,
-      members,
-      teams,
-      matches,
-    };
   }
 
   async getPlayersStats(
@@ -96,81 +86,55 @@ export class ClubDashboardService
     }
   }
 
-  private async getClub(
-    clubUniqueIndex: string,
-  ): Promise<ResponseDTO<ClubEntry>> {
+  private async getClub(clubUniqueIndex: string): Promise<ClubEntry | null> {
     try {
       const clubs = await this.clubService.getClubs({ Club: clubUniqueIndex });
       if (!clubs?.[0]) {
-        return new ResponseDTO(
-          RESPONSE_STATUS.ERROR,
-          undefined,
-          'No club found for given id',
-        );
+        return null;
       }
-      return new ResponseDTO(RESPONSE_STATUS.SUCCESS, clubs[0]);
+      return clubs[0];
     } catch (error) {
-      return new ResponseDTO(RESPONSE_STATUS.ERROR, undefined, error.message);
+      throw new Error(error.message);
     }
   }
 
   private async getClubMembers(
     clubUniqueIndex: string,
-  ): Promise<ResponseDTO<MemberEntry[]>> {
+    category?: SimplifiedPlayerCategory,
+  ): Promise<MemberEntry[]> {
     try {
       const members = await this.memberService.getMembers({
         Club: clubUniqueIndex,
+        PlayerCategory: category,
       });
-      return new ResponseDTO(RESPONSE_STATUS.SUCCESS, members);
+      return members;
     } catch (error) {
-      return new ResponseDTO(RESPONSE_STATUS.ERROR, undefined, error.message);
+      throw new Error(error.message);
     }
   }
 
-  private async getClubTeams(
-    clubUniqueIndex: string,
-  ): Promise<ResponseDTO<TeamEntry[]>> {
+  private async getClubTeams(clubUniqueIndex: string): Promise<TeamEntry[]> {
     try {
       const teams = await this.clubTeamService.getClubsTeams({
         Club: clubUniqueIndex,
       });
-      return new ResponseDTO(RESPONSE_STATUS.SUCCESS, teams);
+      return teams;
     } catch (error) {
-      return new ResponseDTO(RESPONSE_STATUS.ERROR, undefined, error.message);
+      throw new Error(error.message);
     }
   }
 
   private async getClubMatchesGrouped(
     clubUniqueIndex: string,
-  ): Promise<ResponseDTO<WeeklyTeamMatchEntryDTOV1[]>> {
+  ): Promise<TeamMatchesEntry[]> {
     try {
       const matches = await this.matchService.getMatches({
         Club: clubUniqueIndex,
       });
 
-      const reduced = matches.reduce<WeeklyTeamMatchEntryDTOV1[]>(
-        (acc, currentValue) => {
-          const weekName = Number(currentValue.WeekName);
-          const arrayIndex = acc.findIndex(
-            (entry) => entry.weekname === weekName,
-          );
-
-          if (arrayIndex > -1) {
-            acc[arrayIndex].matches.push(currentValue);
-          } else {
-            acc.push({
-              weekname: weekName,
-              matches: [currentValue],
-            });
-          }
-          return acc;
-        },
-        [],
-      );
-
-      return new ResponseDTO(RESPONSE_STATUS.SUCCESS, reduced);
+      return matches;
     } catch (error) {
-      return new ResponseDTO(RESPONSE_STATUS.ERROR, undefined, error.message);
+      throw new Error(error.message);
     }
   }
 }

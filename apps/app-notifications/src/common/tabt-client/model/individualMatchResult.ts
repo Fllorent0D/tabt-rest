@@ -12,10 +12,10 @@
 
 export interface IndividualMatchResult {
   Position: number;
-  HomePlayerMatchIndex: Array<string>;
-  HomePlayerUniqueIndex: Array<string>;
-  AwayPlayerMatchIndex: Array<string>;
-  AwayPlayerUniqueIndex: Array<string>;
+  HomePlayerMatchIndex: Array<number>;
+  HomePlayerUniqueIndex: Array<number>;
+  AwayPlayerMatchIndex: Array<number>;
+  AwayPlayerUniqueIndex: Array<number>;
   HomeSetCount: number;
   AwaySetCount: number;
   IsHomeForfeited: boolean;

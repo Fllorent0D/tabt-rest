@@ -39,4 +39,8 @@ export class SocksProxyHttpClient extends HttpClient {
       callback(e);
     }
   }
+
+  get axios(): req.Axios {
+    return this._axios;
+  }
 }

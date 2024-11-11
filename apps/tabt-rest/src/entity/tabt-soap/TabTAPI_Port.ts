@@ -681,11 +681,11 @@ export class Player {
   @ApiProperty()
   Ranking: string;
 
-  @ApiProperty()
+  @ApiPropertyOptional()
   VictoryCount: number;
 
-  @ApiProperty()
-  IsForfeited: boolean;
+  @ApiPropertyOptional()
+  IsForfeited?: boolean;
 }
 
 export class DoubleTeam {
@@ -732,16 +732,25 @@ export class IAwayPlayer {
 export class IndividualMatchResult {
   @ApiProperty()
   Position: number;
-  @ApiProperty()
+
+  @ApiProperty({
+    type: [Number],
+  })
   HomePlayerMatchIndex: Array<number>;
 
-  @ApiProperty()
+  @ApiProperty({
+    type: [Number],
+  })
   HomePlayerUniqueIndex: Array<number>;
 
-  @ApiProperty()
+  @ApiProperty({
+    type: [Number],
+  })
   AwayPlayerMatchIndex: Array<number>;
 
-  @ApiProperty()
+  @ApiProperty({
+    type: [Number],
+  })
   AwayPlayerUniqueIndex: Array<number>;
 
   @ApiProperty()
@@ -750,13 +759,13 @@ export class IndividualMatchResult {
   @ApiProperty()
   AwaySetCount: number;
 
-  @ApiProperty()
+  @ApiPropertyOptional()
   IsHomeForfeited: boolean;
 
-  @ApiProperty()
+  @ApiPropertyOptional()
   IsAwayForfeited: boolean;
 
-  @ApiProperty()
+  @ApiPropertyOptional()
   Scores: string;
 }
 
@@ -808,28 +817,28 @@ export class RankingEvaluationEntry {
 }
 
 export class CommentAuthor {
-  @ApiProperty()
+  @ApiPropertyOptional()
   Position: number;
 
-  @ApiProperty()
+  @ApiPropertyOptional()
   UniqueIndex: number;
 
-  @ApiProperty()
+  @ApiPropertyOptional()
   RankingIndex: number;
 
-  @ApiProperty()
+  @ApiPropertyOptional()
   FirstName: string;
 
-  @ApiProperty()
+  @ApiPropertyOptional()
   LastName: string;
 
-  @ApiProperty()
+  @ApiPropertyOptional()
   Ranking: string;
 
-  @ApiProperty()
+  @ApiPropertyOptional()
   Status: string;
 
-  @ApiProperty()
+  @ApiPropertyOptional()
   Club: string;
   /** http://api.frenoy.net/TabTAPI#GenderType(M,F) */
   @ApiPropertyOptional()
@@ -887,16 +896,16 @@ export class CommentAuthor {
 }
 
 export class CommentEntry {
-  @ApiProperty()
+  @ApiPropertyOptional()
   Timestamp: string;
 
-  @ApiProperty()
+  @ApiPropertyOptional()
   Author: CommentAuthor;
 
-  @ApiProperty()
+  @ApiPropertyOptional()
   Comment: string;
 
-  @ApiProperty()
+  @ApiPropertyOptional()
   Code: string;
 }
 
@@ -904,28 +913,32 @@ export class MatchDetails {
   @ApiProperty()
   DetailsCreated: boolean;
   /** http://api.frenoy.net/TabTAPI#xsd:time(undefined) */
-  @ApiProperty()
+  @ApiPropertyOptional()
   StartTime: string;
   /** http://api.frenoy.net/TabTAPI#xsd:time(undefined) */
-  @ApiProperty()
+  @ApiPropertyOptional()
   EndTime: string;
 
-  @ApiProperty()
+  @ApiPropertyOptional()
   HomeCaptain: number;
 
-  @ApiProperty()
+  @ApiPropertyOptional()
   AwayCaptain: number;
 
-  @ApiProperty()
+  @ApiPropertyOptional()
   Referee: number;
 
-  @ApiProperty()
+  @ApiPropertyOptional()
   HallCommissioner: number;
 
-  @ApiProperty()
+  @ApiProperty({
+    type: Players,
+  })
   HomePlayers: Players;
 
-  @ApiProperty()
+  @ApiProperty({
+    type: Players,
+  })
   AwayPlayers: Players;
 
   @ApiProperty({ type: [IndividualMatchResult] })
@@ -942,7 +955,7 @@ export class MatchDetails {
 
   @ApiProperty()
   CommentCount: number;
-  @ApiProperty()
+  @ApiPropertyOptional({ type: CommentEntry, isArray: true })
   CommentEntries: Array<CommentEntry>;
 }
 

@@ -1,6 +1,29 @@
 version: '3'
 services:
-
+  app-notification:
+    build:
+      context: .
+      dockerfile: apps/app-notifications/Dockerfile
+    depends_on:
+      - cache
+    environment:
+      REDIS_HOST: cache
+      REDIS_PORT: 6379
+  data-importer:
+    build:
+      context: .
+      dockerfile: apps/data-aftt-importer/Dockerfile
+    depends_on:
+      - db
+      - cache
+    environment:
+      DATABASE_URL: 'postgres://postgres:password@pg:5432/postgres'
+      REDIS_HOST: cache
+      REDIS_PORT: 6379
+      SYNC_MEMBERS_ON_START: true
+      AFTT_DATA_BASE_URL: 'https://data.aftt.be'
+      AFTT_DATA_USERNAME: beping
+      AFTT_DATA_PASSWORD: T9jL@4kW!rD8zE
   tabt-rest:
     build :
       context: .
@@ -40,6 +63,8 @@ services:
       BEPING_NOTIFICATION_CONSUMER_SECRET: test
   torproxy:
     image: dockage/tor-privoxy
+    ports:
+      - "9050:9050"
   db:
     image: postgres:13
     environment:
