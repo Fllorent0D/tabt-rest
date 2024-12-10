@@ -87,7 +87,7 @@
     "rimraf": "5.0.10",
     "rxjs": "7.8.1",
     "soap": "1.1.6",
-    "socks-proxy-agent": "8.0.4",
+    "socks-proxy-agent": "8.0.5",
     "swagger-ui-express": "5.0.1",
     "typeorm": "0.3.20",
     "user-agents": "1.1.379",
