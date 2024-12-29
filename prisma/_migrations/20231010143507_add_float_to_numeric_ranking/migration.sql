@@ -1,2 +1,0 @@
--- AlterTable
-ALTER TABLE "NumericPoints" ALTER COLUMN "points" SET DATA TYPE DOUBLE PRECISION;

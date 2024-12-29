@@ -8,29 +8,39 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model Member {
-  id                Int
+  id                Int               @unique
   licence           Int
   playerCategory    PlayerCategory
   firstname         String
   lastname          String
+  email            String?
   ranking           String
-  club              String
+  club             String
   category          String
   worldRanking      Int
   nationality       String
   pointsHistory     NumericPoints[]
   results           IndividualResult[] @relation("member")
   resultsAsOpponent IndividualResult[] @relation("memberopponent")
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
 
-  @@unique([id, licence])
+  @@id([id, licence])
 }
 
 enum PlayerCategory {
-  MEN
-  WOMEN
+  SENIOR_MEN
+  SENIOR_WOMEN
+}
+
+enum MemberStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
 }
 
 model NumericPoints {
@@ -44,33 +54,46 @@ model NumericPoints {
   rankingLetterEstimation String?
 
   @@id([memberId, memberLicence, date])
+  @@index([date])
+}
+
+model Competition {
+  id              String               @id
+  name            String
+  type            CompetitionType
+  coefficient     Int
+  results         IndividualResult[] 
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
 }
 
 model IndividualResult {
   id                    Int
   date                  DateTime        @default(now()) @db.Date
   playerCategory        PlayerCategory
-  memberId              Int
-  memberLicence         Int
-  opponentId            Int
-  opponentLicence       Int
-  opponentRanking       String
-  memberRanking         String
-  memberPoints          Float?
-  opponentPoints        Float?
-  result                Result
-  score                 String
-  competitionCoef       Int
-  competitionType       CompetitionType
-  competitionName       String
-  diffPoints            Float
-  pointsToAdd           Float
-  looseFactor           Float
-  definitivePointsToAdd Float
+  memberId             Int
+  memberLicence        Int
+  opponentId           Int
+  opponentLicence      Int
+  opponentRanking      String          @db.VarChar(4)
+  memberRanking        String          @db.VarChar(4)
+  memberPoints         Decimal?        @db.Decimal(6,2)
+  opponentPoints       Decimal?        @db.Decimal(6,2)
+  result               Result
+  score                String          @db.VarChar(3)
+  competitionId        String
+  competition          Competition     @relation(fields: [competitionId], references: [id])
+  diffPoints           Decimal         @db.Decimal(6,2)
+  pointsToAdd          Int            @db.SmallInt
+  looseFactor          Decimal         @db.Decimal(3,2)
+  definitivePointsToAdd Decimal        @db.Decimal(6,2)
   member                Member          @relation("member", fields: [memberId, memberLicence], references: [id, licence])
   memberOpponent        Member          @relation("memberopponent", fields: [opponentId, opponentLicence], references: [id, licence])
+  createdAt            DateTime         @default(now())
 
   @@id([id, playerCategory])
+  @@index([date])
+  @@index([competitionId])
 }
 
 enum CompetitionType {
@@ -85,7 +108,7 @@ enum Result {
 
 model APIConsumer {
   id        Int      @id @default(autoincrement())
-  app       String
+  app       String   @unique
   password  String
   updatedAt DateTime @updatedAt
 }
@@ -96,6 +119,21 @@ model MobileNotificationSent {
   sent             Boolean
   messageIds       String[]
   notificationType NotificationType
+}
+
+enum ImportType {
+  MEMBER
+  RESULT
+}
+
+model DataImport {
+  id             Int            @id @default(autoincrement())
+  type           ImportType
+  playerCategory PlayerCategory
+  importedAt     DateTime       @default(now())
+  lineHashes     String[]      // Store hashes of each line to detect changes
+  
+  @@index([type, playerCategory, importedAt])
 }
 
 enum NotificationType {

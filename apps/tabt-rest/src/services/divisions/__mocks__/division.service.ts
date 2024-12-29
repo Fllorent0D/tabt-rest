@@ -8,6 +8,7 @@ export class DivisionService {
       DivisionCategory: 1,
       Level: 1,
       MatchType: 8,
+      PlayerCategory: 1,
     },
     {
       DivisionId: 4687,
@@ -15,6 +16,7 @@ export class DivisionService {
       DivisionCategory: 1,
       Level: 1,
       MatchType: 2,
+      PlayerCategory: 1,
     },
   ];
 

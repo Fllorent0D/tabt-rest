@@ -19,7 +19,7 @@ export class EloMemberService {
   public async getBelNumericRanking(
     playerId: number,
     season: number,
-    category: PlayerCategory = PlayerCategory.MEN,
+    category: PlayerCategory = PlayerCategory.SENIOR_MEN,
   ): Promise<WeeklyNumericRanking[]> {
     return Promise.resolve([
       {

@@ -7,6 +7,10 @@ import { TabtClientService } from '../../common/tabt-client/tabt-client.service'
 import { ContextService } from '../../common/context/context.service';
 import { HeaderKeys } from '../../common/context/context.constants';
 import { PlayerCategory } from '../../entity/tabt-input.interface';
+import { GetMembersV2 } from '../../api/member/dto/member.dto';
+import { mapPlayerCategoryDTOToPlayerCategory, mapPlayerCategoryToPlayerCategoryDTO, PlayerCategoryDTO } from '../../common/dto/player-category.dto';
+import { deprecate } from 'util';
+import { throwDeprecation } from 'process';
 
 @Injectable()
 export class MemberService {
@@ -17,6 +21,25 @@ export class MemberService {
     private contextService: ContextService,
   ) {}
 
+  async getMembersV2(query: GetMembersV2): Promise<MemberEntry[]> {
+    const result = await this.tabtClient.GetMembersAsync({
+      Club: query.club,
+      PlayerCategory: mapPlayerCategoryDTOToPlayerCategory(query.playerCategory),
+      UniqueIndex: query.uniqueIndex,
+      NameSearch: query.nameSearch,
+      ExtendedInformation: query.extendedInformation,
+      RankingPointsInformation: query.rankingPointsInformation,
+      WithResults: query.withResults,
+      WithOpponentRankingEvaluation: query.withOpponentRankingEvaluation,
+    });
+    return result.MemberEntries ?? [];
+  }
+
+
+
+  /**
+   * @deprecated Use getMembersV2 instead
+   */
   async getMembers(input: GetMembersInput): Promise<MemberEntry[]> {
     // TODO: Refactor and get dynamically the correct ID to send. Cache?
     // Add facade for the app to minimize the breaking changes in the future
@@ -24,20 +47,6 @@ export class MemberService {
     // Maybe refactor with a new aggregator route that returns all info to the app
     // encapsulate all that logic into the bff
 
-    if (
-      Number(this.contextService.context.caller[HeaderKeys.X_TABT_SEASON]) >=
-        23 ||
-      (!this.contextService.context.caller[HeaderKeys.X_TABT_SEASON] &&
-        this.contextService.context.runner.season >= 23)
-    ) {
-      if (input.PlayerCategory === PlayerCategory.MEN) {
-        input.PlayerCategory = PlayerCategory.MEN_POST_23;
-      } else if (input.PlayerCategory === PlayerCategory.WOMEN) {
-        input.PlayerCategory = PlayerCategory.WOMEN_POST_23;
-      } else if (input.PlayerCategory === PlayerCategory.YOUTH) {
-        input.PlayerCategory = PlayerCategory.YOUTH_POST_23;
-      }
-    }
     const result = await this.tabtClient.GetMembersAsync(input);
     if (result.MemberCount === 0) {
       return [];

@@ -15,7 +15,7 @@ import {
   TeamMatchesEntry,
 } from '../../../entity/tabt-soap/TabTAPI_Port';
 import { RESPONSE_STATUS, ResponseDTO } from '../dto/common.dto';
-import { SimplifiedPlayerCategory } from '../../member/helpers/player-category-helpers';
+import { PlayerCategoryDTO } from '../../../common/dto/player-category.dto';
 import { PlayerCategory } from '../../../entity/tabt-input.interface';
 
 @Injectable()
@@ -35,10 +35,10 @@ export class ClubDashboardService
       const club = await this.getClub(clubUniqueIndex);
 
       const [men, women, teams, matches] = await Promise.all([
-        this.getClubMembers(clubUniqueIndex, PlayerCategory.MEN).catch(
+        this.getClubMembers(clubUniqueIndex, PlayerCategoryDTO.SENIOR_MEN).catch(
           (error) => null,
         ),
-        this.getClubMembers(clubUniqueIndex, PlayerCategory.WOMEN).catch(
+        this.getClubMembers(clubUniqueIndex, PlayerCategoryDTO.SENIOR_WOMEN).catch(
           (error) => null,
         ),
         this.getClubTeams(clubUniqueIndex).catch((error) => null),
@@ -100,12 +100,12 @@ export class ClubDashboardService
 
   private async getClubMembers(
     clubUniqueIndex: string,
-    category?: SimplifiedPlayerCategory,
+    category?: PlayerCategoryDTO,
   ): Promise<MemberEntry[]> {
     try {
-      const members = await this.memberService.getMembers({
-        Club: clubUniqueIndex,
-        PlayerCategory: category,
+      const members = await this.memberService.getMembersV2({
+        club: clubUniqueIndex,
+        playerCategory: category,
       });
       return members;
     } catch (error) {

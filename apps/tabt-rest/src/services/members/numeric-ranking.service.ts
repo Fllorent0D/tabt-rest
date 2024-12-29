@@ -5,7 +5,6 @@ import { format } from 'date-fns';
 
 import { CacheService, TTL_DURATION } from '../../common/cache/cache.service';
 import { DataAFTTMemberNumericRankingModel } from './member-numeric-ranking.model';
-import { SimplifiedPlayerCategory } from '../../api/member/helpers/player-category-helpers';
 import {
   COMPETITION_TYPE,
   NumericRankingDetailsV3,
@@ -15,6 +14,7 @@ import {
 import { PlayerCategory } from '../../entity/tabt-input.interface';
 import { DataAFTTIndividualResultModel, IndividualResultWithOpponent } from './individual-results.model';
 import { ConfigService } from '@nestjs/config';
+import { PlayerCategoryDTO } from '../../common/dto/player-category.dto';
 
 @Injectable()
 export class NumericRankingService {
@@ -28,12 +28,12 @@ export class NumericRankingService {
 
   async getWeeklyRankingV4(
     licence: number,
-    simplifiedCategory: SimplifiedPlayerCategory,
+    playerCategory: PlayerCategoryDTO,
   ): Promise<WeeklyNumericRankingV4> {
     const getter = async (): Promise<WeeklyNumericRankingV4> => {
       const [history, actualPoints] = await Promise.all([
-        this.getResultsDetailsHistory(licence, simplifiedCategory),
-        this.getActualPointsV3(licence, simplifiedCategory),
+        this.getResultsDetailsHistory(licence, playerCategory),
+        this.getActualPointsV3(licence, playerCategory),
       ]);
       const points = history
         .map((d) => ({
@@ -58,7 +58,7 @@ export class NumericRankingService {
       };
     };
     return this.cacheService.getFromCacheOrGetAndCacheResult(
-      `numeric-ranking-v4:${licence}:${simplifiedCategory}`,
+      `numeric-ranking-v4:${licence}:${playerCategory}`,
       getter,
       TTL_DURATION.ONE_DAY,
     );
@@ -66,26 +66,26 @@ export class NumericRankingService {
 
   async getActualPointsV3(
     licence: number,
-    simplifiedCategory: SimplifiedPlayerCategory,
+    playerCategory: PlayerCategoryDTO,
   ): Promise<number> {
     const gender =
-      simplifiedCategory === PlayerCategory.MEN ? pc.MEN : pc.WOMEN;
+      playerCategory === PlayerCategoryDTO.SENIOR_MEN ? pc.MEN : pc.WOMEN;
     const points = await this.memberNumericRankingModel.getLatestPoints(
       licence,
       gender,
     );
-    return points[points.length - 1].points;
+    return points[points.length - 1]?.points ?? 0;
   }
 
   async getWeeklyRankingV5(
     licence: number,
-    simplifiedCategory: SimplifiedPlayerCategory,
+    category: PlayerCategoryDTO,
   ): Promise<WeeklyNumericRankingV5> {
     const getter = async (): Promise<WeeklyNumericRankingV5> => {
       const [history, actualPoints] = await Promise.all([
-        this.getResultsDetailsHistory(licence, simplifiedCategory),
-        this.getActualPoints(licence, simplifiedCategory),
-        this.getRankingEstimation(licence, simplifiedCategory),
+        this.getResultsDetailsHistory(licence, category),
+        this.getActualPoints(licence, category),
+        this.getRankingEstimation(licence, category),
       ]);
       const points = history
         .map((d) => ({
@@ -95,7 +95,7 @@ export class NumericRankingService {
         .reverse();
       const lastBasePoints =
         history[history.length - 1]?.basePoints ??
-        actualPoints[actualPoints.length - 1].points;
+        actualPoints[actualPoints.length - 1]?.points ?? 0;
       //insert in first position in array points
 
       const currentSeason = this.configService.get<number>('CURRENT_SEASON');
@@ -109,13 +109,13 @@ export class NumericRankingService {
         numericRankingHistory: actualPoints.map((p) => ({
           ranking: p.rankingWI,
           rankingLetterEstimation: p.rankingLetterEstimation,
-          points: p.points,
+          points: p?.points ?? 0,
           date: p.date.toISOString(),
         })),
       };
     };
     return this.cacheService.getFromCacheOrGetAndCacheResult(
-      `numeric-ranking-v4:${licence}:${simplifiedCategory}`,
+      `numeric-ranking-v5:${licence}:${category}`,
       getter,
       TTL_DURATION.ONE_DAY,
     );
@@ -123,10 +123,10 @@ export class NumericRankingService {
 
   async getActualPoints(
     licence: number,
-    simplifiedCategory: SimplifiedPlayerCategory,
+    category: PlayerCategoryDTO,
   ): Promise<NumericPoints[]> {
     const gender =
-      simplifiedCategory === PlayerCategory.MEN ? pc.MEN : pc.WOMEN;
+      category === PlayerCategoryDTO.SENIOR_MEN ? pc.MEN : pc.WOMEN;
     return await this.memberNumericRankingModel.getLatestPoints(
       licence,
       gender,
@@ -135,10 +135,10 @@ export class NumericRankingService {
 
   async getResultsDetailsHistory(
     licence: number,
-    simplifiedCategory: SimplifiedPlayerCategory,
+    category: PlayerCategoryDTO,
   ): Promise<NumericRankingDetailsV3[]> {
     const gender =
-      simplifiedCategory === PlayerCategory.MEN ? pc.MEN : pc.WOMEN;
+      category === PlayerCategoryDTO.SENIOR_MEN ? pc.MEN : pc.WOMEN;
     const results = await this.resultHistoryModel.getResults(licence, gender);
 
     // group result per date and comptetition name
@@ -202,7 +202,7 @@ export class NumericRankingService {
 
   private getRankingEstimation(
     licence: number,
-    simplifiedCategory: SimplifiedPlayerCategory,
+    category: PlayerCategoryDTO,
   ) {
   }
 }

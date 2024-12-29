@@ -11,11 +11,6 @@ export const MEMBERS_LIST_SYNC_QUEUE = 'members';
     ScheduleModule.forRoot(),
     BullModule.registerQueue({
       name: 'members',
-      limiter: {
-        max: 1,
-        duration: 1000,
-        bounceBack: false,
-      },
     }),
   ],
   providers: [MembersListSyncCron, MembersListProcessingService],

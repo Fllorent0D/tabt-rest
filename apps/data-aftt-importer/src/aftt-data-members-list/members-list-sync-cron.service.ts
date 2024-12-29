@@ -13,6 +13,7 @@ export class MembersListSyncCron {
     @InjectQueue('members') private readonly queue: Queue,
     private readonly configService: ConfigService,
   ) {
+
     const syncOnStart = this.configService.get('SYNC_MEMBERS_ON_START', false);
     if (syncOnStart === true || syncOnStart === 'true') {
       this.syncMembers();
@@ -25,8 +26,8 @@ export class MembersListSyncCron {
   @Cron('0 0 9 * * *')
   async syncMembers() {
     this.logger.log('Daily members sync starting...');
-    await this.queue.add({ playerCategory: PlayerCategory.MEN });
-    await this.queue.add({ playerCategory: PlayerCategory.WOMEN });
+    await this.queue.add({ playerCategory: PlayerCategory.SENIOR_MEN });
+    await this.queue.add({ playerCategory: PlayerCategory.SENIOR_WOMEN });
   }
 
   /*

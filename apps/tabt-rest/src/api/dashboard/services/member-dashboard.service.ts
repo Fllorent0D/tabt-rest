@@ -13,15 +13,13 @@ import {
   TTL_DURATION,
 } from '../../../common/cache/cache.service';
 import { MemberService } from '../../../services/members/member.service';
-import { EloMemberService } from '../../../services/members/elo-member.service';
-import { PLAYER_CATEGORY } from '../../member/dto/member.dto';
-import { getSimplifiedPlayerCategory } from '../../member/helpers/player-category-helpers';
 import {
   MemberEntry,
   MemberEntryResultEntry,
   TeamMatchesEntry,
 } from '../../../entity/tabt-soap/TabTAPI_Port';
 import { NumericRankingService } from '../../../services/members/numeric-ranking.service';
+import { PlayerCategoryDTO } from 'apps/tabt-rest/src/common/dto/player-category.dto';
 
 @Injectable()
 export class MemberDashboardService
@@ -36,7 +34,7 @@ export class MemberDashboardService
 
   async getDashboard(
     memberUniqueIndex: number,
-    category: PLAYER_CATEGORY = PLAYER_CATEGORY.MEN,
+    category: PlayerCategoryDTO = PlayerCategoryDTO.SENIOR_MEN,
   ): Promise<MemberDashboardDTOV1> {
     const getter = async (): Promise<MemberDashboardDTOV1> => {
       try {
@@ -52,7 +50,6 @@ export class MemberDashboardService
               'No member found for given id',
             );
 
-        const simplifiedCategory = getSimplifiedPlayerCategory(category);
 
         if (member.status === RESPONSE_STATUS.ERROR) {
           return new MemberDashboardDTOV1(
@@ -62,7 +59,7 @@ export class MemberDashboardService
 
         const [numericRankingResponse, latestTeamMatches, stats] =
           await Promise.all([
-            this.getNumericRanking(member.payload, simplifiedCategory),
+            this.getNumericRanking(member.payload, category),
             this.getLatestMatches(member.payload),
             this.getMemberStats(member.payload),
           ]);
@@ -96,12 +93,12 @@ export class MemberDashboardService
 
   private async getNumericRanking(
     member: MemberEntry,
-    simplifiedCategory: PlayerCategory.MEN | PlayerCategory.WOMEN,
+    category: PlayerCategoryDTO,
   ) {
     try {
       return await this.numericRankingService.getWeeklyRankingV5(
         member.UniqueIndex,
-        simplifiedCategory,
+        category,
       );
     } catch (error) {
       throw new Error(error.message);

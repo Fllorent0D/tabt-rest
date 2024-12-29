@@ -5,6 +5,14 @@ import { Level, PlayerCategory } from '../tabt-input.interface';
 import { OSMAddress } from '../osm/osm-search.model';
 import { decode } from 'he';
 
+
+export enum DivisionCategory {
+  SENIOR_MEN = 37,
+  SENIOR_WOMEN = 38,
+  YOUTH = 41,
+  YOUTH_WOMEN = 42,
+}
+
 export class Credentials {
   Account: string;
 
@@ -641,28 +649,12 @@ export class SeasonEntry {
 }
 
 export class TeamEntry {
-  @ApiProperty()
   TeamId: string;
-
-  @ApiProperty()
   Team: string;
-
-  @ApiProperty()
   DivisionId: number;
-
-  @ApiProperty()
   DivisionName: string;
-
-  @ApiProperty({ enum: PlayerCategory })
-  @Transform((pc) => PlayerCategory[pc.value], { toPlainOnly: true })
   DivisionCategory: number;
-
-  @ApiProperty()
   MatchType: number;
-
-  constructor(partial: Partial<TeamEntry>) {
-    Object.assign(this, partial);
-  }
 }
 
 export class Player {
@@ -1187,26 +1179,12 @@ export class ClubEntry {
 }
 
 export class DivisionEntry {
-  @ApiProperty()
   DivisionId: number;
-
-  @ApiPropertyOptional()
   DivisionName: string;
-
-  @ApiProperty({ enum: PlayerCategory })
-  @Transform((pc) => PlayerCategory[pc.value], { toPlainOnly: true })
   DivisionCategory: number;
-
-  @ApiProperty({ enum: Level })
-  @Transform((l) => Level[l.value], { toPlainOnly: true })
   Level: number;
-
-  @ApiProperty()
   MatchType: number;
-
-  constructor(partial: Partial<DivisionEntry>) {
-    Object.assign(this, partial);
-  }
+  PlayerCategory: number;
 }
 
 export class RegistrationEntry {
@@ -1294,13 +1272,13 @@ export class TournamentEntry {
   @ApiProperty()
   ExternalIndex: string;
   /** http://api.frenoy.net/TabTAPI#xsd:date(undefined) */
-  @ApiProperty()
+  @ApiPropertyOptional()
   DateFrom: string;
   /** http://api.frenoy.net/TabTAPI#xsd:date(undefined) */
-  @ApiProperty()
+  @ApiPropertyOptional()
   DateTo: string;
   /** http://api.frenoy.net/TabTAPI#xsd:date(undefined) */
-  @ApiProperty()
+  @ApiPropertyOptional()
   RegistrationDate: string;
 
   @ApiPropertyOptional()
@@ -1309,10 +1287,10 @@ export class TournamentEntry {
     'Name' | 'Street' | 'Town' | 'BoundingBox' | 'Lat' | 'Lon'
   >;
 
-  @ApiProperty()
+  @ApiPropertyOptional()
   SerieCount: number;
 
-  @ApiProperty({ type: [TournamentSerieEntry] })
+  @ApiPropertyOptional({ type: [TournamentSerieEntry] })
   SerieEntries: Array<TournamentSerieEntry>;
 
   constructor(partial: Partial<TournamentEntry>) {

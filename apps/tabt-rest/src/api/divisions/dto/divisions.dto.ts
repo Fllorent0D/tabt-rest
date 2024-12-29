@@ -1,39 +1,104 @@
-import { ApiPropertyOptional, PickType } from '@nestjs/swagger';
-import { IsEnum, IsIn, IsNumber, IsOptional } from 'class-validator';
+import { ApiProperty, ApiPropertyOptional, PickType } from '@nestjs/swagger';
+import { IsEnum, IsOptional } from 'class-validator';
+import { Level, PlayerCategory } from '../../../entity/tabt-input.interface';
 import { Transform } from 'class-transformer';
-import { GetMatches } from '../../match/dto/match.dto';
-import { Level } from '../../../entity/tabt-input.interface';
+import { LevelDTO, mapLevelToLevelDTO } from 'apps/tabt-rest/src/common/dto/levels.dto';
+import { mapPlayerCategoryToPlayerCategoryDTO, PlayerCategoryDTO } from 'apps/tabt-rest/src/common/dto/player-category.dto';
+import { DivisionCategoryDTO, mapDivisionCategoryToDivisionCategoryDTO } from 'apps/tabt-rest/src/common/dto/division-category.dto';
+import { DivisionEntry } from 'apps/tabt-rest/src/entity/tabt-soap/TabTAPI_Port';
 
-export class GetDivisions {
-  @ApiPropertyOptional({ type: String })
+// Base DTO with common properties
+export class GetDivisionsBase {
+  @ApiPropertyOptional({
+    enum: ['no', 'yes', 'short'],
+    description: 'How to show division names',
+  })
   @IsOptional()
-  @IsEnum(Level)
-  @IsIn(Object.keys(Level))
-  level?: string;
-
-  @ApiPropertyOptional({ enum: ['no', 'yes', 'short'] })
-  @IsOptional()
-  @IsIn(['no', 'yes', 'short'])
+  @IsEnum(['no', 'yes', 'short'])
   showDivisionName?: 'no' | 'yes' | 'short';
 }
 
-export class GetDivisionRanking {
+// V1 DTO - accepts numeric level
+export class GetDivisionsV1 extends GetDivisionsBase {
   @ApiPropertyOptional({
-    type: Number,
+    type: 'number',
+    description: 'Filter divisions by level',
   })
-  @Transform((id) => parseInt(id.value), { toClassOnly: true })
   @IsOptional()
-  @IsNumber()
-  weekName?: string;
-
-  @ApiPropertyOptional()
-  @IsOptional()
-  rankingSystem?: number;
+  @Transform(({ value }) => Number(value))
+  level?: number;
 }
 
-export class GetDivisionMatches extends PickType(GetMatches, [
-  'weekName',
-  'yearDateFrom',
-  'yearDateTo',
-  'withDetails',
-]) {}
+// V2 DTO - accepts enum string level
+export class GetDivisionsV2 extends GetDivisionsBase {
+  @ApiPropertyOptional({
+    enum: LevelDTO,
+    description: 'Filter divisions by level category',
+    example: 'NATIONAL'
+  })
+  @IsOptional()
+  @IsEnum(LevelDTO)
+  level?: keyof typeof LevelDTO;
+
+  @ApiPropertyOptional({
+    enum: DivisionCategoryDTO,
+    description: 'Filter divisions by division category',
+  })
+  @IsOptional()
+  @IsEnum(DivisionCategoryDTO)
+  divisionCategory?: DivisionCategoryDTO;
+}
+
+
+export class DivisionEntryDto {
+  @ApiProperty()
+  DivisionId: number;
+
+  @ApiPropertyOptional()
+  DivisionName: string;
+
+  @ApiProperty({ enum: LevelDTO })
+  Level:  LevelDTO;
+
+  @ApiProperty()
+  MatchType: number;
+
+  @ApiProperty({ enum: DivisionCategoryDTO })
+  DivisionCategory: DivisionCategoryDTO;
+
+  @ApiProperty({ enum: PlayerCategoryDTO })
+  PlayerCategory: PlayerCategoryDTO;
+
+// factory method
+  static fromDivisionEntry(divisionEntry: DivisionEntry): DivisionEntryDto {
+    return {
+      ...divisionEntry,
+      DivisionCategory: mapDivisionCategoryToDivisionCategoryDTO(divisionEntry.DivisionCategory),
+      Level: mapLevelToLevelDTO(divisionEntry.Level),
+      PlayerCategory: mapPlayerCategoryToPlayerCategoryDTO(divisionEntry.PlayerCategory),
+    };
+  }
+} 
+
+export class GetDivisionMatches {
+  @ApiPropertyOptional()
+  weekName: string;
+
+  @ApiPropertyOptional()
+  yearDateFrom: string;
+
+  @ApiPropertyOptional()
+  yearDateTo: string;
+
+  @ApiPropertyOptional()
+  withDetails: boolean;
+}
+
+export class GetDivisionRanking {
+
+  @ApiPropertyOptional()
+  rankingSystem?: number;
+
+  @ApiPropertyOptional()
+  weekName?: string;
+}

@@ -25,8 +25,8 @@ export class ResultsSyncCronService {
   @Cron('0 30 9 * * *')
   async syncResults() {
     this.logger.debug('Daily members sync starting...');
-    await this.queue.add({ playerCategory: PlayerCategory.MEN });
-    await this.queue.add({ playerCategory: PlayerCategory.WOMEN });
+    await this.queue.add({ playerCategory: PlayerCategory.SENIOR_MEN });
+    await this.queue.add({ playerCategory: PlayerCategory.SENIOR_WOMEN });
   }
 
   /*

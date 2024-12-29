@@ -5,13 +5,13 @@ import {
   TeamMatchesEntry,
 } from '../../../entity/tabt-soap/TabTAPI_Port';
 import {
-  PLAYER_CATEGORY,
   WeeklyNumericRankingV3,
   WeeklyNumericRankingV4,
   WeeklyNumericRankingV5,
 } from '../../member/dto/member.dto';
 import { IsEnum } from 'class-validator';
 import { ResponseDTO } from './common.dto';
+import { PlayerCategoryDTO } from 'apps/tabt-rest/src/common/dto/player-category.dto';
 
 export class WinLossSummaryDTOV1 {
   @ApiProperty({ type: Number })
@@ -35,9 +35,9 @@ export class RankingWinLossDTOV1 extends WinLossSummaryDTOV1 {
 }
 
 export class WeeklyNumericRankingInputV2 {
-  @ApiPropertyOptional({ enum: PLAYER_CATEGORY })
-  @IsEnum(PLAYER_CATEGORY)
-  category?: PLAYER_CATEGORY;
+  @ApiPropertyOptional({ enum: PlayerCategoryDTO })
+  @IsEnum(PlayerCategoryDTO)
+  category?: PlayerCategoryDTO;
 }
 
 export class MemberStatsDTOV1 {

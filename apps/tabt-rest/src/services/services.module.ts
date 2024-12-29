@@ -14,7 +14,6 @@ import { MatchSystemService } from './matches/match-system.service';
 import { TestRequestService } from './test/test-request.service';
 import { InternalIdMapperService } from './id-mapper/internal-id-mapper.service';
 import { Head2headService } from './members/head2head.service';
-import { EloMemberService } from './members/elo-member.service';
 import { MatchesMembersRankerService } from './matches/matches-members-ranker.service';
 import { MembersSearchIndexService } from './members/members-search-index.service';
 import { MemberCategoryService } from './members/member-category.service';
@@ -37,7 +36,6 @@ const services = [
   TestRequestService,
   InternalIdMapperService,
   Head2headService,
-  EloMemberService,
   MatchesMembersRankerService,
   MembersSearchIndexService,
   MemberCategoryService,

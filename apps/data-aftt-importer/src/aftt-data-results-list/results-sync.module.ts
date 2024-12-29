@@ -10,6 +10,10 @@ export const RESULTS_SYNC_QUEUE = 'results';
     ScheduleModule.forRoot(),
     BullModule.registerQueue({
       name: 'results',
+      limiter: {
+        max: 1,
+        duration: 100000,
+      },
     }),
   ],
   providers: [ResultsSyncCronService, ResultsProcessorService],

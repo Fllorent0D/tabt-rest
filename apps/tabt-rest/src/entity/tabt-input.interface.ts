@@ -32,17 +32,44 @@ export enum MemberStatus {
   EXTERN = 'E',
 }
 
-// OUTDATED
-// TO REFACTOR
+
 export enum PlayerCategory {
-  MEN = 1,
-  WOMEN = 2,
+  SENIOR_MEN = 37,
+  SENIOR_WOMEN = 38,
+  YOUTH = 41,
+  YOUTH_WOMEN = 42,
   VETERANS = 3,
-  VETERANS_WOMEN = 4,
-  YOUTH = 5,
-  MEN_POST_23 = 37,
-  WOMEN_POST_23 = 38,
-  YOUTH_POST_23 = 41,
+  SENIOR = 4,
+  BENJAMINS = 15,
+  BENJAMINES = 16,
+  PREMINIMES = 5,
+  PREMINIMES_WOMEN = 6,
+  MINIMES = 7,
+  MINIMES_WOMEN = 8,
+  CADETS = 9,
+  CADETTES = 10,
+  JUNIORS = 11,
+  JUNIORS_WOMEN = 12,
+  YOUTH_19 = 39,
+  YOUTH_19_WOMEN = 40,
+  VETERANS_40 = 17,
+  SENIOR_40 = 18,
+  VETERANS_50 = 19,
+  SENIOR_50 = 20,
+  VETERANS_60 = 21,
+  SENIOR_60 = 22,
+  VETERANS_65 = 31,
+  SENIOR_65 = 32,
+  VETERANS_70 = 23,
+  SENIOR_70 = 24,
+  VETERANS_75 = 33,
+  SENIOR_75 = 34,
+  VETERANS_80 = 25,
+  SENIOR_80 = 26,
+  VETERANS_85 = 35,
+  SENIOR_85 = 36,
+  ALL = 43,
+  ALL_WOMEN = 44,
 }
 
 export enum ClubCategory {

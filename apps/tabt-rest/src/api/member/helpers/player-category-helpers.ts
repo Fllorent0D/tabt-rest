@@ -1,20 +1,17 @@
-import { PlayerCategory } from '../../../entity/tabt-input.interface';
-import { PLAYER_CATEGORY } from '../dto/member.dto';
+import { PlayerCategoryDTO } from 'apps/tabt-rest/src/common/dto/player-category.dto';
+import { PLAYER_CATEGORY_OLD } from '../dto/member.dto';
 
-export type SimplifiedPlayerCategory =
-  | PlayerCategory.MEN
-  | PlayerCategory.WOMEN;
 export const getSimplifiedPlayerCategory = (
-  category: PLAYER_CATEGORY,
-): SimplifiedPlayerCategory => {
+  category: PLAYER_CATEGORY_OLD,
+): PlayerCategoryDTO => {
   switch (category) {
-    case PLAYER_CATEGORY.MEN:
-    case PLAYER_CATEGORY.YOUTH:
-    case PLAYER_CATEGORY.VETERANS:
+    case PLAYER_CATEGORY_OLD.MEN:
+    case PLAYER_CATEGORY_OLD.YOUTH:
+    case PLAYER_CATEGORY_OLD.VETERANS:
     default:
-      return PlayerCategory.MEN;
-    case PLAYER_CATEGORY.WOMEN:
-    case PLAYER_CATEGORY.VETERANS_WOMEN:
-      return PlayerCategory.WOMEN;
+      return PlayerCategoryDTO.SENIOR_MEN;
+    case PLAYER_CATEGORY_OLD.WOMEN:
+    case PLAYER_CATEGORY_OLD.VETERANS_WOMEN:
+      return PlayerCategoryDTO.SENIOR_WOMEN;
   }
 };

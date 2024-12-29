@@ -3,33 +3,41 @@ import { firstValueFrom } from 'rxjs';
 import { Logger } from '@nestjs/common';
 import {
   CompetitionType,
+  IndividualResult,
   Member,
   PlayerCategory,
   Result,
+  Prisma,
+  ImportType,
 } from '@prisma/client';
 import { OnQueueActive, Process, Processor } from '@nestjs/bull';
 import { Job } from 'bull';
 import { PrismaService } from '../prisma.service';
 import { CacheService } from '../cache/cache.service';
+import { createHash } from 'crypto';
+
+const BATCH_SIZE = 100;
+const TRANSACTION_BATCH_SIZE = 100;
+const MAX_RETRIES = 3;
+const TRANSACTION_TIMEOUT = 120000;
 
 @Processor('results')
 export class ResultsProcessorService {
   private readonly logger = new Logger(ResultsProcessorService.name);
+  private readonly competitionCache = new Map<string, { id: string; type: CompetitionType }>();
+  private readonly memberCache = new Map<string, Member>();
 
   constructor(
     private readonly httpService: HttpService,
     private readonly prismaService: PrismaService,
     private readonly cacheService: CacheService
-  ) {
-    console.log('ResultsProcessorService constructor');
-  }
+  ) {}
 
   @OnQueueActive()
   onActive(job: Job) {
-    console.log(
+    this.logger.log(
       `Processing job ${job.id} of type ${job.name} with data ${job.data}...`,
     );
-  
   }
 
   @Process()
@@ -37,32 +45,46 @@ export class ResultsProcessorService {
     this.logger.log('Processing results...');
     try {
       const lines = await this.downloadMemberLines(job.data.playerCategory);
-
-      const chunkSize = 100;
-      for (let i = 0; i < lines.length; i += chunkSize) {
-        this.logger.debug(
-          `Processing chunk ${i / chunkSize + 1}/${Math.ceil(lines.length / chunkSize)}...`,
-        );
-
-        const chunk = lines.slice(i, i + chunkSize);
-
-        // Process each chunk in parallel
-        await Promise.all(
-          chunk.map((line) => {
-            const cols = line.split(';');
-            return this.updateDB(cols, job.data.playerCategory);
-          }),
-        );
-
+      const { changedLines } = await this.filterChangedLines(lines, job.data.playerCategory);
+      
+      if (changedLines.length === 0) {
+        this.logger.log('No changes detected in the file, skipping processing');
+        return;
       }
-      await this.cacheService.cleanKeys(`numeric-ranking-v4:*:${job.data.playerCategory == PlayerCategory.MEN ? 1 : 2}`)
+      
+      this.logger.log(`Processing ${changedLines.length} changed lines out of ${lines.length} total lines`);
+
+      // Process in batches
+      for (let i = 0; i < changedLines.length; i += BATCH_SIZE) {
+        this.logger.debug(
+          `Processing batch ${i / BATCH_SIZE + 1}/${Math.ceil(changedLines.length / BATCH_SIZE)}...`,
+        );
+
+        const batch = changedLines.slice(i, i + BATCH_SIZE);
+        const parsedResults = batch.map(line => this.parseLine(line, job.data.playerCategory));
+        
+        // Pre-fetch all competitions and members for the batch
+        await this.prefetchCompetitions(parsedResults);
+        await this.prefetchMembers(parsedResults, job.data.playerCategory);
+
+        // Process in smaller transaction batches
+        for (let j = 0; j < parsedResults.length; j += TRANSACTION_BATCH_SIZE) {
+          const transactionBatch = parsedResults.slice(j, j + TRANSACTION_BATCH_SIZE);
+          await this.processTransactionBatch(transactionBatch, job.data.playerCategory);
+        }
+      }
+
+      await this.cacheService.cleanKeys(`numeric-ranking-v4:*:${job.data.playerCategory == PlayerCategory.SENIOR_MEN ? 1 : 2}`);
+      
+      // Store the new import record
+      await this.storeImport(lines, job.data.playerCategory);
+      
       this.logger.log(`Processing done. (${lines.length} lines)`);
 
-    } catch (e){
-      this.logger.error("Failed to finish results job", e.message);
-
+    } catch (e) {
+      this.logger.error("Failed to finish results job", e);
+      throw e; // Re-throw to mark the job as failed
     }
-
   }
 
   private async downloadMemberLines(playerCategory: PlayerCategory) {
@@ -72,19 +94,20 @@ export class ResultsProcessorService {
 
     const file = await firstValueFrom(
       this.httpService.get<string>(
-        `export/liste_result_${playerCategory == PlayerCategory.MEN ? 1 : 2}.txt`,
+        `export/liste_result_${playerCategory == PlayerCategory.SENIOR_MEN ? 1 : 2}.txt`,
       ),
     );
-    const lines = file.data.split('\n').slice(0, -1);
+    const lines = file.data.split('\n').filter(line => line.trim().length > 0);
     this.logger.debug(
       `File downloaded, start processing ${lines.length} lines...`,
     );
     return lines;
   }
 
-  private async updateDB(cols: string[], playerCategory: PlayerCategory) {
-    try {
-      const result = {
+  private parseLine(line: string, playerCategory: PlayerCategory) {
+    const cols = line.split(';');
+    return {
+      result: {
         id: parseInt(cols[0], 10),
         date: new Date(cols[1]),
         memberRanking: cols[10],
@@ -93,122 +116,219 @@ export class ResultsProcessorService {
         opponentPoints: parseFloat(cols[14]),
         result: cols[4] === 'V' ? Result.VICTORY : Result.DEFEAT,
         score: cols[5],
-        competitionType:
-          cols[9] === 'T'
-            ? CompetitionType.TOURNAMENT
-            : CompetitionType.CHAMPIONSHIP,
-        competitionCoef: parseFloat(cols[11]),
-        competitionName: cols[12],
         diffPoints: cols[15]?.length ? parseFloat(cols[15]) : 0,
         pointsToAdd: cols[16]?.length ? parseFloat(cols[16]) : 0,
         looseFactor: cols[17]?.length ? parseFloat(cols[17]) : 0,
         definitivePointsToAdd: cols[18]?.length ? parseFloat(cols[18]) : 0,
         playerCategory: playerCategory,
-      };
+      },
+      competition: {
+        id: cols[9] === 'T' ? cols[12] : cols[12].split(' - ')[0],
+        name: cols[9] === 'T' ? cols[12] : cols[12].split(' - ')[1],
+        type: cols[9] === 'T' ? CompetitionType.TOURNAMENT : CompetitionType.CHAMPIONSHIP,
+        coefficient: parseFloat(cols[11]),
+      },
+      memberLicence: parseInt(cols[2], 10),
+      opponentLicence: parseInt(cols[3], 10),
+    };
+  }
 
-      // check if result has changed
-      const existingResult =
-        await this.prismaService.individualResult.findUnique({
-          where: {
-            id_playerCategory: {
-              id: result.id,
-              playerCategory: playerCategory,
-            },
-          },
-        });
+  private async prefetchCompetitions(parsedResults: any[]) {
+    const uniqueCompetitions = new Map(
+      parsedResults.map(r => [r.competition.name, r.competition])
+    );
 
-      // deep equal
-      if (
-        existingResult &&
-        existingResult.competitionCoef === result.competitionCoef &&
-        existingResult.competitionName === result.competitionName &&
-        existingResult.competitionType === result.competitionType &&
-        existingResult.definitivePointsToAdd === result.definitivePointsToAdd &&
-        existingResult.diffPoints === result.diffPoints &&
-        existingResult.looseFactor === result.looseFactor &&
-        existingResult.memberPoints === result.memberPoints &&
-        existingResult.memberRanking === result.memberRanking &&
-        existingResult.opponentPoints === result.opponentPoints &&
-        existingResult.opponentRanking === result.opponentRanking &&
-        existingResult.result === result.result &&
-        existingResult.score === result.score &&
-        existingResult.pointsToAdd === result.pointsToAdd
-      ) {
-        return;
-      }
+    const competitions = await this.prismaService.competition.findMany({
+      where: {
+        name: { in: Array.from(uniqueCompetitions.keys()) },
+      },
+    });
 
-      const memberLicence = parseInt(cols[2], 10);
-      const opponentLicence = parseInt(cols[3], 10);
-      const [member, opponent]: Member[] = await Promise.all([
-        this.prismaService.member.findFirst({
-          where: {
-            licence: memberLicence,
-            playerCategory: playerCategory,
-          },
-        }),
-        this.prismaService.member.findFirst({
-          where: {
-            licence: opponentLicence,
-            playerCategory: playerCategory,
-          },
-        }),
-      ]);
+    // Cache existing competitions
+    competitions.forEach(comp => {
+      this.competitionCache.set(comp.name, { id: comp.id, type: comp.type });
+    });
 
-      if (!member || !opponent) {
-        this.logger.error(
-          `Member or opponent not found for result ${result.id}`,
-        );
-        return;
-      }
+    // Create missing competitions
+    const missingCompetitions = Array.from(uniqueCompetitions.values())
+      .filter(comp => !this.competitionCache.has(comp.name));
 
-      await this.prismaService.individualResult.upsert({
+    if (missingCompetitions.length > 0) {
+      const createdCompetitions = await this.prismaService.competition.createMany({
+        data: missingCompetitions,
+        skipDuplicates: true,
+      });
+      
+      // Fetch and cache the newly created competitions
+      const newCompetitions = await this.prismaService.competition.findMany({
         where: {
-          id_playerCategory: {
-            id: result.id,
-            playerCategory: playerCategory,
-          },
-        },
-        update: {
-          ...result,
-          member: {
-            connect: {
-              id_licence: {
-                id: member.id,
-                licence: member.licence,
-              },
-            },
-          },
-          memberOpponent: {
-            connect: {
-              id_licence: {
-                id: opponent.id,
-                licence: opponent.licence,
-              },
-            },
-          },
-        },
-        create: {
-          ...result,
-          member: {
-            connect: {
-              id_licence: {
-                id: member.id,
-                licence: member.licence,
-              },
-            },
-          },
-          memberOpponent: {
-            connect: {
-              id_licence: {
-                id: opponent.id,
-                licence: opponent.licence,
-              },
-            },
-          },
+          name: { in: missingCompetitions.map(c => c.name) },
         },
       });
-    } catch (e) {
-      this.logger.error(e.message);
+      
+      newCompetitions.forEach(comp => {
+        this.competitionCache.set(comp.name, { id: comp.id, type: comp.type });
+      });
     }
+  }
+
+  private async prefetchMembers(parsedResults: any[], playerCategory: PlayerCategory) {
+    const uniqueLicences = new Set(
+      parsedResults.flatMap(r => [r.memberLicence, r.opponentLicence])
+    );
+
+    const members = await this.prismaService.member.findMany({
+      where: {
+        licence: { in: Array.from(uniqueLicences) },
+        playerCategory: playerCategory,
+      },
+    });
+
+    members.forEach(member => {
+      this.memberCache.set(`${member.licence}-${playerCategory}`, member);
+    });
+  }
+
+  private async processTransactionBatch(parsedResults: any[], playerCategory: PlayerCategory) {
+    let retries = 0;
+    while (retries < MAX_RETRIES) {
+      try {
+        await this.prismaService.$transaction(async (prisma) => {
+          const validResults = parsedResults.filter(parsed => {
+            const member = this.memberCache.get(`${parsed.memberLicence}-${playerCategory}`);
+            const opponent = this.memberCache.get(`${parsed.opponentLicence}-${playerCategory}`);
+            const competition = this.competitionCache.get(parsed.competition.name);
+            return member && opponent && competition;
+          }).map(parsed => {
+            const member = this.memberCache.get(`${parsed.memberLicence}-${playerCategory}`);
+            const opponent = this.memberCache.get(`${parsed.opponentLicence}-${playerCategory}`);
+            const competition = this.competitionCache.get(parsed.competition.name);
+            return {
+              ...parsed.result,
+              competitionId: competition.id,
+              memberId: member.id,
+              memberLicence: member.licence,
+              opponentId: opponent.id,
+              opponentLicence: opponent.licence,
+            };
+          });
+
+          if (validResults.length === 0) return;
+
+          await prisma.$executeRaw`
+            INSERT INTO "IndividualResult" (
+              id, "playerCategory", date, "memberRanking", "memberPoints",
+              "opponentRanking", "opponentPoints", result, score,
+              "diffPoints", "pointsToAdd", "looseFactor", "definitivePointsToAdd",
+              "competitionId", "memberId", "memberLicence", "opponentId", "opponentLicence"
+            )
+            SELECT * FROM UNNEST(
+              ${validResults.map(r => r.id)}::integer[],
+              ${validResults.map(r => r.playerCategory)}::"PlayerCategory"[],
+              ${validResults.map(r => r.date)}::timestamp[],
+              ${validResults.map(r => r.memberRanking)}::text[],
+              ${validResults.map(r => r.memberPoints)}::double precision[],
+              ${validResults.map(r => r.opponentRanking)}::text[],
+              ${validResults.map(r => r.opponentPoints)}::double precision[],
+              ${validResults.map(r => r.result)}::"Result"[],
+              ${validResults.map(r => r.score)}::text[],
+              ${validResults.map(r => r.diffPoints)}::double precision[],
+              ${validResults.map(r => r.pointsToAdd)}::double precision[],
+              ${validResults.map(r => r.looseFactor)}::double precision[],
+              ${validResults.map(r => r.definitivePointsToAdd)}::double precision[],
+              ${validResults.map(r => r.competitionId)}::text[],
+              ${validResults.map(r => r.memberId)}::integer[],
+              ${validResults.map(r => r.memberLicence)}::integer[],
+              ${validResults.map(r => r.opponentId)}::integer[],
+              ${validResults.map(r => r.opponentLicence)}::integer[]
+            )
+            ON CONFLICT (id, "playerCategory") DO UPDATE SET
+              date = EXCLUDED.date,
+              "memberRanking" = EXCLUDED."memberRanking",
+              "memberPoints" = EXCLUDED."memberPoints",
+              "opponentRanking" = EXCLUDED."opponentRanking",
+              "opponentPoints" = EXCLUDED."opponentPoints",
+              result = EXCLUDED.result,
+              score = EXCLUDED.score,
+              "diffPoints" = EXCLUDED."diffPoints",
+              "pointsToAdd" = EXCLUDED."pointsToAdd",
+              "looseFactor" = EXCLUDED."looseFactor",
+              "definitivePointsToAdd" = EXCLUDED."definitivePointsToAdd",
+              "competitionId" = EXCLUDED."competitionId",
+              "memberId" = EXCLUDED."memberId",
+              "memberLicence" = EXCLUDED."memberLicence",
+              "opponentId" = EXCLUDED."opponentId",
+              "opponentLicence" = EXCLUDED."opponentLicence"
+          `;
+        }, { timeout: TRANSACTION_TIMEOUT, maxWait: TRANSACTION_TIMEOUT });
+        break; // Success, exit retry loop
+      } catch (e) {
+        retries++;
+        if (retries === MAX_RETRIES) {
+          throw e;
+        }
+        this.logger.warn(`Transaction failed, attempt ${retries}/${MAX_RETRIES}`);
+        await new Promise(resolve => setTimeout(resolve, 1000 * retries));
+      }
+    }
+  }
+
+  private hasResultChanged(existingResult: IndividualResult, newResult: any): boolean {
+    if (!existingResult) return true;
+
+    return existingResult.competitionId !== newResult.competitionId ||
+           existingResult.definitivePointsToAdd !== newResult.definitivePointsToAdd ||
+           existingResult.diffPoints !== newResult.diffPoints ||
+           existingResult.looseFactor !== newResult.looseFactor ||
+           existingResult.memberPoints !== newResult.memberPoints ||
+           existingResult.memberRanking !== newResult.memberRanking ||
+           existingResult.opponentPoints !== newResult.opponentPoints ||
+           existingResult.opponentRanking !== newResult.opponentRanking ||
+           existingResult.result !== newResult.result ||
+           existingResult.score !== newResult.score ||
+           existingResult.pointsToAdd !== newResult.pointsToAdd;
+  }
+
+  private computeLineHash(line: string): string {
+    return createHash('sha256').update(line).digest('hex');
+  }
+
+  private async filterChangedLines(lines: string[], playerCategory: PlayerCategory): Promise<{ changedLines: string[] }> {
+    // Get the latest import for this category
+    const lastImport = await this.prismaService.dataImport.findFirst({
+      where: { 
+        type: ImportType.RESULT,
+        playerCategory 
+      },
+      orderBy: { importedAt: 'desc' },
+    });
+
+    if (!lastImport) {
+      this.logger.log('No previous import found, processing all lines');
+      return { changedLines: lines };
+    }
+
+    // Create a set of previous hashes for O(1) lookup
+    const previousHashes = new Set(lastImport.lineHashes);
+    
+    // Filter only lines that have changed or are new
+    const changedLines = lines.filter(line => {
+      const hash = this.computeLineHash(line);
+      return !previousHashes.has(hash);
+    });
+
+    return { changedLines };
+  }
+
+  private async storeImport(lines: string[], playerCategory: PlayerCategory): Promise<void> {
+    const lineHashes = lines.map(line => this.computeLineHash(line));
+    
+    await this.prismaService.dataImport.create({
+      data: {
+        type: ImportType.RESULT,
+        playerCategory,
+        lineHashes,
+      },
+    });
   }
 }

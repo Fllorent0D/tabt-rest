@@ -6,10 +6,11 @@ import { MatchService } from '../../../services/matches/match.service';
 import {
   GetDivisionMatches,
   GetDivisionRanking,
-  GetDivisions,
+  GetDivisionsV1,
 } from '../dto/divisions.dto';
 import { NotFoundException } from '@nestjs/common';
 import { MatchesMembersRankerService } from '../../../services/matches/matches-members-ranker.service';
+import { Level } from 'apps/tabt-rest/src/entity/tabt-input.interface';
 
 jest.mock('../../../services/matches/match.service');
 jest.mock('../../../services/divisions/division.service');
@@ -47,8 +48,8 @@ describe('DivisionsController', () => {
 
   describe('Divisions', () => {
     it('should call division service with correct params', async () => {
-      const input: GetDivisions = {
-        level: 'NATIONAL',
+      const input: GetDivisionsV1 = {
+        level: Level.NATIONAL,
         showDivisionName: 'yes',
       };
 
@@ -65,7 +66,7 @@ describe('DivisionsController', () => {
     });
 
     it('should call division service with correct params for 1 division', async () => {
-      const input: GetDivisions = {
+      const input: GetDivisionsV1 = {
         showDivisionName: 'yes',
       };
 
@@ -80,7 +81,7 @@ describe('DivisionsController', () => {
     });
 
     it('should return 404 when division id is not found', async () => {
-      const input: GetDivisions = {
+      const input: GetDivisionsV1 = {
         showDivisionName: 'yes',
       };
 
