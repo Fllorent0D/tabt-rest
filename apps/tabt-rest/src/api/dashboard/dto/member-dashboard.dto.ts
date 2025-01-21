@@ -4,14 +4,11 @@ import {
   MemberEntryResultEntry,
   TeamMatchesEntry,
 } from '../../../entity/tabt-soap/TabTAPI_Port';
-import {
-  WeeklyNumericRankingV3,
-  WeeklyNumericRankingV4,
-  WeeklyNumericRankingV5,
-} from '../../member/dto/member.dto';
+import { WeeklyNumericPointsV1 } from '../../member/dto/member.dto';
 import { IsEnum } from 'class-validator';
 import { ResponseDTO } from './common.dto';
 import { PlayerCategoryDTO } from 'apps/tabt-rest/src/common/dto/player-category.dto';
+import { WeeklyRankingV1Response } from 'apps/tabt-rest/src/services/members/numeric-ranking.service';
 
 export class WinLossSummaryDTOV1 {
   @ApiProperty({ type: Number })
@@ -19,10 +16,13 @@ export class WinLossSummaryDTOV1 {
 
   @ApiPropertyOptional({ type: Number })
   victories?: number;
+
   @ApiPropertyOptional({ type: Number })
   defeats?: number;
+
   @ApiPropertyOptional({ type: Number })
   victoriesPct?: number;
+
   @ApiPropertyOptional({ type: Number })
   defeatsPct?: number;
 }
@@ -30,23 +30,195 @@ export class WinLossSummaryDTOV1 {
 export class RankingWinLossDTOV1 extends WinLossSummaryDTOV1 {
   @ApiProperty()
   ranking: string;
+
   @ApiProperty({ type: MemberEntryResultEntry, isArray: true })
   players: MemberEntryResultEntry[];
 }
 
 export class WeeklyNumericRankingInputV2 {
-  @ApiPropertyOptional({ enum: PlayerCategoryDTO })
-  @IsEnum(PlayerCategoryDTO)
-  category?: PlayerCategoryDTO;
+  @ApiProperty({ enum: PlayerCategoryDTO, default: PlayerCategoryDTO.SENIOR_MEN })
+  category: PlayerCategoryDTO = PlayerCategoryDTO.SENIOR_MEN;
+
+  @ApiProperty({ required: false, description: 'Team ID to get next match estimation points' })
+  teamId?: string;
+}
+
+export class SetStatsDTOV1 {
+  @ApiProperty({ type: Number })
+  total: number;
+
+  @ApiProperty({ type: Number })
+  won: number;
+
+  @ApiProperty({ type: Number })
+  lost: number;
+
+  @ApiProperty({ type: Number })
+  wonPct: number;
+
+  @ApiProperty({ type: Number })
+  lostPct: number;
+}
+
+export class StreakDTOV1 {
+  @ApiProperty({ type: Number })
+  current: number;
+
+  @ApiProperty({ type: Number })
+  best: number;
+
+  @ApiProperty({ type: Number })
+  worst: number;
+}
+
+export class SeasonExtremesDTOV1 {
+  @ApiProperty({ type: String })
+  highestRanking: string;
+
+  @ApiProperty({ type: String })
+  lowestRanking: string;
+
+  @ApiProperty({ type: Number, required: false })
+  highestPoints?: number;
+
+  @ApiProperty({ type: Number, required: false })
+  lowestPoints?: number;
+
+  @ApiProperty({ type: String })
+  firstMatch: string;
+
+  @ApiProperty({ type: String })
+  lastMatch: string;
+}
+
+export class MatchHistoryEntryDTOV1 {
+  @ApiProperty({ type: String })
+  date: string;
+
+  @ApiProperty({ enum: ['V', 'D'] })
+  result: 'V' | 'D';
+
+  @ApiProperty({ type: String })
+  opponentName: string;
+
+  @ApiProperty({ type: String })
+  opponentRanking: string;
+
+  @ApiProperty({ type: String })
+  score: string;
+}
+
+export class TimeOfDayStatsDTOV1 extends WinLossSummaryDTOV1 {
+  @ApiProperty({ enum: ['morning', 'afternoon', 'evening'] })
+  timeSlot: 'morning' | 'afternoon' | 'evening';
+}
+
+export class DayOfWeekStatsDTOV1 extends WinLossSummaryDTOV1 {
+  @ApiProperty({ type: String })
+  day: string;
+}
+
+export class MonthlyStatsDTOV1 extends WinLossSummaryDTOV1 {
+  @ApiProperty({ type: String })
+  month: string;
+}
+
+export class MatchDetailsDTOV1 {
+  @ApiProperty({ type: Number })
+  averageSetsPerMatch: number;
+
+  @ApiProperty({ type: Number })
+  cleanVictories: number;
+
+  @ApiProperty({ type: Number })
+  cleanDefeats: number;
+
+  @ApiProperty({ type: Number })
+  comebacks: number;
+
+  @ApiProperty({ type: Number })
+  leadLost: number;
 }
 
 export class MemberStatsDTOV1 {
-  @ApiProperty({ type: WinLossSummaryDTOV1 })
+  @ApiProperty({ type: () => WinLossSummaryDTOV1 })
   tieBreaks: WinLossSummaryDTOV1;
-  @ApiProperty({ type: WinLossSummaryDTOV1 })
+
+  @ApiProperty({ type: () => WinLossSummaryDTOV1 })
   matches: WinLossSummaryDTOV1;
-  @ApiProperty({ type: RankingWinLossDTOV1, isArray: true })
+
+  @ApiProperty({ type: () => RankingWinLossDTOV1, isArray: true })
   perRanking: RankingWinLossDTOV1[];
+
+  @ApiProperty({ type: () => SetStatsDTOV1 })
+  sets: SetStatsDTOV1;
+
+  @ApiProperty({ type: () => StreakDTOV1 })
+  winStreak: StreakDTOV1;
+
+  @ApiProperty({ type: () => StreakDTOV1 })
+  lossStreak: StreakDTOV1;
+
+  @ApiProperty({ type: () => SeasonExtremesDTOV1 })
+  seasonExtremes: SeasonExtremesDTOV1;
+
+  @ApiProperty({ type: () => MatchHistoryEntryDTOV1, isArray: true })
+  matchHistory: MatchHistoryEntryDTOV1[];
+
+  @ApiProperty({ type: () => TimeOfDayStatsDTOV1, isArray: true })
+  timeOfDay: TimeOfDayStatsDTOV1[];
+
+  @ApiProperty({ type: () => DayOfWeekStatsDTOV1, isArray: true })
+  dayOfWeek: DayOfWeekStatsDTOV1[];
+
+  @ApiProperty({ type: () => MonthlyStatsDTOV1, isArray: true })
+  monthly: MonthlyStatsDTOV1[];
+
+  @ApiProperty({ type: () => MatchDetailsDTOV1 })
+  matchDetails: MatchDetailsDTOV1;
+}
+
+export class OpponentEstimationDTO {
+  @ApiProperty({ type: String })
+  firstName: string;
+
+  @ApiProperty({ type: String })
+  lastName: string;
+
+  @ApiProperty({ type: String })
+  ranking: string;
+
+  @ApiProperty({ type: Number })
+  pointsToWin: number;
+
+  @ApiProperty({ type: Number })
+  coefficient: number;
+
+  @ApiProperty({ type: Boolean })
+  isExpectedWin: boolean;
+
+  @ApiProperty({ type: Number })
+  pointsDifference: number;
+}
+
+export class NextMatchEstimationDTO {
+  @ApiProperty({ type: String })
+  matchId?: string;
+
+  @ApiProperty({ type: String })
+  date: string;
+
+  @ApiProperty({ type: String })
+  homeTeam: string;
+
+  @ApiProperty({ type: String })
+  awayTeam: string;
+
+  @ApiProperty({ type: () => OpponentEstimationDTO, isArray: true, description: 'Best case scenario - most points to win' })
+  bestCase: OpponentEstimationDTO[];
+
+  @ApiProperty({ type: () => OpponentEstimationDTO, isArray: true, description: 'Worst case scenario - least points to win' })
+  worstCase: OpponentEstimationDTO[];
 }
 
 export class MemberDashboardDTOV1 {
@@ -60,13 +232,14 @@ export class MemberDashboardDTOV1 {
   public member: MemberEntry;
 
   @ApiProperty({
-    type: () => WeeklyNumericRankingV5,
+    type: () => WeeklyRankingV1Response,
     description: 'The numeric ranking response',
   })
-  public numericRanking: WeeklyNumericRankingV5;
+  public numericRanking: WeeklyRankingV1Response;
 
   @ApiProperty({
-    type: () => [TeamMatchesEntry],
+    type: () => TeamMatchesEntry,
+    isArray: true,
     description: 'The latest team matches',
   })
   public latestTeamMatches: TeamMatchesEntry[];
@@ -77,7 +250,29 @@ export class MemberDashboardDTOV1 {
   })
   public stats: MemberStatsDTOV1;
 
+  @ApiProperty({ type: () => NextMatchEstimationDTO, required: false })
+  public nextMatchEstimation?: NextMatchEstimationDTO;
+
   constructor(status: ResponseDTO<string>) {
     this.status = status;
   }
+}
+
+export class RankingDistributionEntryDTOV1 {
+  @ApiProperty({ type: String })
+  ranking: string;
+
+  @ApiProperty({ type: Number })
+  count: number;
+
+  @ApiProperty({ type: Number })
+  percentage: number;
+}
+
+export class RankingDistributionDTOV1 {
+  @ApiProperty({ type: Number })
+  totalPlayers: number;
+
+  @ApiProperty({ type: () => RankingDistributionEntryDTOV1, isArray: true })
+  distribution: RankingDistributionEntryDTOV1[];
 }

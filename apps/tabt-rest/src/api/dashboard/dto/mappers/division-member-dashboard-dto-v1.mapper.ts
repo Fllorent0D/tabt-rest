@@ -1,9 +1,8 @@
 import { DivisionMemberDashboardDTOV1 } from '../division-dashboard.dto';
-import { MemberResults } from '../../../../common/dto/member-ranking.dto';
-
+import { PlayerMatchStats } from '../../../../services/matches/matches-members-ranker.service';
 export class DivisionMemberDashboardDTOV1Mapper {
   static mapMemberResults(
-    memberResult: MemberResults,
+    memberResult: PlayerMatchStats,
   ): DivisionMemberDashboardDTOV1 {
     return {
       member: {

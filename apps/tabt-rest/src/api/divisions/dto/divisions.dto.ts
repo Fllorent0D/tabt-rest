@@ -1,14 +1,12 @@
 import { ApiProperty, ApiPropertyOptional, PickType } from '@nestjs/swagger';
 import { IsEnum, IsOptional } from 'class-validator';
-import { Level, PlayerCategory } from '../../../entity/tabt-input.interface';
-import { Transform } from 'class-transformer';
-import { LevelDTO, mapLevelToLevelDTO } from 'apps/tabt-rest/src/common/dto/levels.dto';
-import { mapPlayerCategoryToPlayerCategoryDTO, PlayerCategoryDTO } from 'apps/tabt-rest/src/common/dto/player-category.dto';
-import { DivisionCategoryDTO, mapDivisionCategoryToDivisionCategoryDTO } from 'apps/tabt-rest/src/common/dto/division-category.dto';
-import { DivisionEntry } from 'apps/tabt-rest/src/entity/tabt-soap/TabTAPI_Port';
+import { LevelDTO, mapLevelToLevelDTO } from '../../../common/dto/levels.dto';
+import { mapPlayerCategoryToPlayerCategoryDTO, PlayerCategoryDTO } from '../../../common/dto/player-category.dto';
+import { DivisionCategoryDTO, mapDivisionCategoryToDivisionCategoryDTO } from '../../../common/dto/division-category.dto';
+import { DivisionEntry, RankingEntry } from '../../../entity/tabt-soap/TabTAPI_Port';
 
 // Base DTO with common properties
-export class GetDivisionsBase {
+export class GetDivisionsV1 {
   @ApiPropertyOptional({
     enum: ['no', 'yes', 'short'],
     description: 'How to show division names',
@@ -16,21 +14,7 @@ export class GetDivisionsBase {
   @IsOptional()
   @IsEnum(['no', 'yes', 'short'])
   showDivisionName?: 'no' | 'yes' | 'short';
-}
 
-// V1 DTO - accepts numeric level
-export class GetDivisionsV1 extends GetDivisionsBase {
-  @ApiPropertyOptional({
-    type: 'number',
-    description: 'Filter divisions by level',
-  })
-  @IsOptional()
-  @Transform(({ value }) => Number(value))
-  level?: number;
-}
-
-// V2 DTO - accepts enum string level
-export class GetDivisionsV2 extends GetDivisionsBase {
   @ApiPropertyOptional({
     enum: LevelDTO,
     description: 'Filter divisions by level category',
@@ -49,8 +33,7 @@ export class GetDivisionsV2 extends GetDivisionsBase {
   divisionCategory?: DivisionCategoryDTO;
 }
 
-
-export class DivisionEntryDto {
+export class DivisionEntryDtoV1 {
   @ApiProperty()
   DivisionId: number;
 
@@ -63,14 +46,14 @@ export class DivisionEntryDto {
   @ApiProperty()
   MatchType: number;
 
-  @ApiProperty({ enum: DivisionCategoryDTO })
-  DivisionCategory: DivisionCategoryDTO;
+  @ApiPropertyOptional({ enum: DivisionCategoryDTO })
+  DivisionCategory?: DivisionCategoryDTO;
 
-  @ApiProperty({ enum: PlayerCategoryDTO })
-  PlayerCategory: PlayerCategoryDTO;
+  @ApiPropertyOptional({ enum: PlayerCategoryDTO })
+  PlayerCategory?: PlayerCategoryDTO;
 
-// factory method
-  static fromDivisionEntry(divisionEntry: DivisionEntry): DivisionEntryDto {
+  // factory method
+  static fromDivisionEntry(divisionEntry: DivisionEntry): DivisionEntryDtoV1 {
     return {
       ...divisionEntry,
       DivisionCategory: mapDivisionCategoryToDivisionCategoryDTO(divisionEntry.DivisionCategory),
@@ -78,9 +61,9 @@ export class DivisionEntryDto {
       PlayerCategory: mapPlayerCategoryToPlayerCategoryDTO(divisionEntry.PlayerCategory),
     };
   }
-} 
+}
 
-export class GetDivisionMatches {
+export class GetDivisionMatchesV1 {
   @ApiPropertyOptional()
   weekName: string;
 
@@ -94,11 +77,69 @@ export class GetDivisionMatches {
   withDetails: boolean;
 }
 
-export class GetDivisionRanking {
-
+export class GetDivisionRankingV1 {
   @ApiPropertyOptional()
   rankingSystem?: number;
 
   @ApiPropertyOptional()
   weekName?: string;
+}
+
+export class RankingEntryDtoV1 {
+  @ApiProperty()
+  position: number;
+
+  @ApiProperty()
+  team: string;
+
+  @ApiProperty()
+  gamesPlayed: number;
+
+  @ApiProperty()
+  gamesWon: number;
+
+  @ApiProperty()
+  gamesLost: number;
+
+  @ApiProperty()
+  gamesDraw: number;
+
+  @ApiProperty()
+  gamesWO: number;
+
+  @ApiProperty()
+  individualMatchesWon: number;
+
+  @ApiProperty()
+  individualMatchesLost: number;
+
+  @ApiProperty()
+  individualSetsWon: number;
+
+  @ApiProperty()
+  individualSetsLost: number;
+
+  @ApiProperty()
+  points: number;
+
+  @ApiProperty()
+  teamClub: string;
+
+  static fromTabT(entry: RankingEntry): RankingEntryDtoV1 {
+    const dto = new RankingEntryDtoV1();
+    dto.position = entry.Position;
+    dto.team = entry.Team;
+    dto.gamesPlayed = entry.GamesPlayed;
+    dto.gamesWon = entry.GamesWon;
+    dto.gamesLost = entry.GamesLost;
+    dto.gamesDraw = entry.GamesDraw;
+    dto.gamesWO = entry.GamesWO;
+    dto.individualMatchesWon = entry.IndividualMatchesWon;
+    dto.individualMatchesLost = entry.IndividualMatchesLost;
+    dto.individualSetsWon = entry.IndividualSetsWon;
+    dto.individualSetsLost = entry.IndividualSetsLost;
+    dto.points = entry.Points;
+    dto.teamClub = entry.TeamClub;
+    return dto;
+  }
 }

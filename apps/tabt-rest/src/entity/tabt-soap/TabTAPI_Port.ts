@@ -2,7 +2,6 @@ import { Client } from 'soap';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 import { Level, PlayerCategory } from '../tabt-input.interface';
-import { OSMAddress } from '../osm/osm-search.model';
 import { decode } from 'he';
 
 
@@ -58,9 +57,7 @@ export class VenueEntry {
   BoundingBox?: string[];
 }
 
-export class VenueEntryWithAddress extends VenueEntry {
-  Address?: OSMAddress;
-}
+
 
 export class TestOutput {
   /** xsd:string(undefined) */
@@ -1012,8 +1009,7 @@ export class TeamMatchesEntry {
   @ApiProperty()
   DivisionId: number;
 
-  @ApiProperty({ enum: PlayerCategory })
-  @Transform((pc) => PlayerCategory[pc.value], { toPlainOnly: true })
+  @ApiProperty()
   DivisionCategory: number;
 
   @ApiProperty({ type: Boolean })
@@ -1074,7 +1070,7 @@ export class MemberEntryResultEntry {
   MatchId: string;
 
   @ApiPropertyOptional()
-  MatchUniqueId: string;
+  MatchUniqueId: number;
 
   @ApiPropertyOptional()
   TournamentName: string;

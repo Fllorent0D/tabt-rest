@@ -1,8 +1,8 @@
 import { Controller, Get, Param, ParseIntPipe } from '@nestjs/common';
 import { SeasonService } from '../../../services/seasons/season.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { SeasonEntry } from '../../../entity/tabt-soap/TabTAPI_Port';
 import { TabtException } from '../../../common/filter/tabt-exceptions.filter';
+import { SeasonDto } from '../dto/season.dto';
 
 @Controller({
   path: 'seasons',
@@ -18,7 +18,7 @@ export class SeasonController {
   })
   @ApiResponse({
     description: 'A list of seasons.',
-    type: [SeasonEntry],
+    type: [SeasonDto],
     status: 200,
   })
   @ApiResponse({
@@ -26,7 +26,9 @@ export class SeasonController {
     type: TabtException,
   })
   findAll() {
-    return this.seasonService.getSeasons();
+    return this.seasonService.getSeasons().then((seasons) =>
+      seasons.map(SeasonDto.fromTabT),
+    );
   }
 
   @Get('current')
@@ -35,7 +37,7 @@ export class SeasonController {
   })
   @ApiResponse({
     description: 'The current season.',
-    type: SeasonEntry,
+    type: SeasonDto,
     status: 200,
   })
   @ApiResponse({
@@ -43,7 +45,7 @@ export class SeasonController {
     type: TabtException,
   })
   findCurrentSeason() {
-    return this.seasonService.getCurrentSeason();
+    return this.seasonService.getCurrentSeason().then(SeasonDto.fromTabT);
   }
 
   @Get('/:seasonId')
@@ -52,7 +54,7 @@ export class SeasonController {
   })
   @ApiResponse({
     description: 'Get a specific season',
-    type: SeasonEntry,
+    type: SeasonDto,
     status: 200,
   })
   @ApiResponse({
@@ -60,6 +62,6 @@ export class SeasonController {
     type: TabtException,
   })
   findById(@Param('seasonId', ParseIntPipe) seasonId: number) {
-    return this.seasonService.getSeasonById(seasonId);
+    return this.seasonService.getSeasonById(seasonId).then(SeasonDto.fromTabT);
   }
 }

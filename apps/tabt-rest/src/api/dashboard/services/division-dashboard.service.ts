@@ -64,9 +64,7 @@ export class DivisionDashboardService
     divisionId: number,
   ): Promise<ResponseDTO<DivisionEntry>> {
     try {
-      const division = await this.divisionService.getDivisionsById(divisionId, {
-        ShowDivisionName: 'yes',
-      });
+      const division = await this.divisionService.getDivisionByIdV1(divisionId);
       if (!division) {
         return new ResponseDTO(
           RESPONSE_STATUS.ERROR,

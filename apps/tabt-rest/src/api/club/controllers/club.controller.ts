@@ -13,24 +13,19 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import {
-  ClubEntry,
-  MemberEntry,
-  TeamEntry,
-} from '../../../entity/tabt-soap/TabTAPI_Port';
+import { MemberEntry } from '../../../entity/tabt-soap/TabTAPI_Port';
 import { ClubService } from '../../../services/clubs/club.service';
 import { ClubTeamService } from '../../../services/clubs/club-team.service';
 import { TabtException } from '../../../common/filter/tabt-exceptions.filter';
 import { TabtHeadersDecorator } from '../../../common/decorators/tabt-headers.decorator';
 import { GetMembersFromClub, ListAllClubs } from '../dto/club.dto';
 import { RequestBySeasonDto } from '../../../common/dto/request-by-season.dto';
-import {
-  ClubCategory,
-  PlayerCategory,
-} from '../../../entity/tabt-input.interface';
-import { MatchesMembersRankerService } from '../../../services/matches/matches-members-ranker.service';
-import { MemberResults } from '../../../common/dto/member-ranking.dto';
+import { MatchesMembersRankerService, PlayerMatchStats } from '../../../services/matches/matches-members-ranker.service';
 import { MemberService } from '../../../services/members/member.service';
+import { ClubDto } from '../dto/club-model.dto';
+import { MemberEntryDTOV1 } from '../../member/dto/member.dto';
+import { mapClubCategoryDTOToClubCategory } from '../../../common/dto/club-category.dto';
+import { TeamDto } from '../dto/team-model.dto';
 
 @ApiTags('Clubs')
 @Controller({
@@ -52,8 +47,7 @@ export class ClubController {
   })
   @ApiResponse({
     description: 'A list of clubs.',
-    type: [ClubEntry],
-
+    type: [ClubDto],
     status: 200,
   })
   @ApiResponse({
@@ -61,10 +55,11 @@ export class ClubController {
     type: TabtException,
   })
   @UseInterceptors(ClassSerializerInterceptor)
-  findAll(@Query() input: ListAllClubs) {
-    return this.clubService.getClubs({
-      ClubCategory: ClubCategory[input.clubCategory],
+  async findAll(@Query() input: ListAllClubs) {
+    const clubs = await this.clubService.getClubs({
+      ClubCategory: mapClubCategoryDTOToClubCategory(input.clubCategory),
     });
+    return clubs.map(ClubDto.fromTabT);
   }
 
   @Get(':clubIndex')
@@ -73,7 +68,7 @@ export class ClubController {
   })
   @ApiResponse({
     description: 'A specific club based on the uniqueIndex.',
-    type: ClubEntry,
+    type: ClubDto,
     status: 200,
   })
   @ApiNotFoundResponse()
@@ -83,11 +78,11 @@ export class ClubController {
   })
   @UseInterceptors(ClassSerializerInterceptor)
   async findbyId(@Param('clubIndex') uniqueIndex: string) {
-    const value = await this.clubService.getClubById(uniqueIndex);
-    if (!value) {
+    const club = await this.clubService.getClubById(uniqueIndex);
+    if (!club) {
       throw new NotFoundException();
     }
-    return value;
+    return ClubDto.fromTabT(club);
   }
 
   @Get(':clubIndex/members')
@@ -96,27 +91,28 @@ export class ClubController {
   })
   @ApiResponse({
     description: 'A list of members from a specific club.',
-    type: [MemberEntry],
+    type: [MemberEntryDTOV1],
     status: 200,
   })
   @ApiResponse({
     status: 400,
     type: TabtException,
   })
-  getClubMembers(
+  async getClubMembers(
     @Query() input: GetMembersFromClub,
     @Param('clubIndex') uniqueIndex: string,
   ) {
-    return this.memberService.getMembers({
-      Club: uniqueIndex,
-      PlayerCategory: PlayerCategory[input.playerCategory] as unknown as number,
-      UniqueIndex: input.uniqueIndex,
-      NameSearch: input.nameSearch,
-      ExtendedInformation: input.extendedInformation,
-      RankingPointsInformation: input.rankingPointsInformation,
-      WithResults: input.withResults,
-      WithOpponentRankingEvaluation: input.withOpponentRankingEvaluation,
+    const members = await this.memberService.getMembersV1({
+      club: uniqueIndex,
+      playerCategory: input.playerCategory,
+      uniqueIndex: input.uniqueIndex,
+      nameSearch: input.nameSearch,
+      extendedInformation: input.extendedInformation,
+      rankingPointsInformation: input.rankingPointsInformation,
+      withResults: input.withResults,
+      withOpponentRankingEvaluation: input.withOpponentRankingEvaluation,
     });
+    return members.map(MemberEntryDTOV1.fromTabT);
   }
 
   @Get(':clubIndex/teams')
@@ -125,7 +121,7 @@ export class ClubController {
   })
   @ApiResponse({
     description: 'A list of teams from a specific club.',
-    type: [TeamEntry],
+    type: [TeamDto],
     status: 200,
   })
   @ApiResponse({
@@ -133,11 +129,12 @@ export class ClubController {
     type: TabtException,
   })
   @UseInterceptors(ClassSerializerInterceptor)
-  getClubTeams(
+  async getClubTeams(
     @Query() input: RequestBySeasonDto,
     @Param('clubIndex') uniqueIndex: string,
   ) {
-    return this.clubTeamService.getClubsTeams({ Club: uniqueIndex });
+    const teams = await this.clubTeamService.getClubsTeams({ Club: uniqueIndex });
+    return teams.map(TeamDto.fromTabT);
   }
 
   @Get(':clubIndex/teams/:teamId/ranking')
@@ -146,7 +143,7 @@ export class ClubController {
   })
   @ApiResponse({
     description: 'A ranking of all players from a team.',
-    type: [MemberResults],
+    type: [PlayerMatchStats],
     status: 200,
   })
   @ApiResponse({
@@ -171,7 +168,7 @@ export class ClubController {
   })
   @ApiResponse({
     description: 'A ranking of members playing in a given division.',
-    type: [MemberResults],
+    type: [PlayerMatchStats],
     status: 200,
   })
   @ApiResponse({
@@ -181,7 +178,7 @@ export class ClubController {
   async findClubMembersRanking(
     @Param('clubIndex') id: string,
     @Query() query: RequestBySeasonDto,
-  ): Promise<MemberResults[]> {
+  ): Promise<PlayerMatchStats[]> {
     return this.matchesMembersRankerService.getMembersRankingFromClub(
       id,
       query.season,

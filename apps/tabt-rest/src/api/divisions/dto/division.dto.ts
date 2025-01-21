@@ -14,14 +14,14 @@ export class TeamEntryDto {
   @ApiProperty()
   DivisionName: string;
 
-  @ApiProperty({
+  @ApiPropertyOptional({
     enum: PlayerCategory,
     enumName: 'PlayerCategory',
     description: 'Division category',
     example: 'MEN',
     type: 'string'
   })
-  DivisionCategory: keyof typeof PlayerCategory;
+  DivisionCategory?: keyof typeof PlayerCategory;
 
   @ApiProperty()
   MatchType: number;

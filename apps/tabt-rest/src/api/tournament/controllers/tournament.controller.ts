@@ -12,10 +12,7 @@ import {
   Version,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import {
-  TournamentEntry,
-  TournamentSerieEntry,
-} from '../../../entity/tabt-soap/TabTAPI_Port';
+import { TournamentSerieEntry } from '../../../entity/tabt-soap/TabTAPI_Port';
 import { TabtException } from '../../../common/filter/tabt-exceptions.filter';
 import { TournamentService } from '../../../services/tournaments/tournament.service';
 import {
@@ -23,6 +20,7 @@ import {
   RegisterTournament,
 } from '../dto/tournaments.dto';
 import { TabtHeadersDecorator } from '../../../common/decorators/tabt-headers.decorator';
+import { TournamentEntryDTOV1, TournamentSerieEntryDTOV1 } from '../dto/tournament.dto';
 
 @ApiTags('Tournaments')
 @Controller({
@@ -35,54 +33,40 @@ export class TournamentController {
 
   @Get()
   @ApiOperation({
-    operationId: 'findAllTournaments',
+    operationId: 'findAllTournamentsV1',
   })
   @ApiResponse({
     description: 'A list of tournament.',
-    type: [TournamentEntry],
+    type: [TournamentEntryDTOV1],
     status: 200,
   })
   @ApiResponse({
     status: 400,
     type: TabtException,
   })
-  findAll() {
-    return this.tournamentService.getTournaments({});
-  }
-
-  @Get()
-  @ApiOperation({
-    operationId: 'findAllTournamentsV2',
-  })
-  @ApiResponse({
-    description: 'A list of tournament.',
-    type: [TournamentEntry],
-    status: 200,
-  })
-  @ApiResponse({
-    status: 400,
-    type: TabtException,
-  })
-  @Version('2')
+  @Version('1')
   @UseInterceptors(ClassSerializerInterceptor)
-  findAllV2() {
-    return this.tournamentService.getTournaments({});
+  async findAllV1() {
+    const tournaments = await this.tournamentService.getTournaments({});
+    return tournaments.map(TournamentEntryDTOV1.fromTabT);
   }
 
   @Get(':tournamentId')
   @ApiOperation({
-    operationId: 'findTournamentById',
+    operationId: 'findTournamentByIdV1',
   })
   @ApiResponse({
     description: 'A specific tournament.',
-    type: TournamentEntry,
+    type: TournamentEntryDTOV1,
     status: 200,
   })
   @ApiResponse({
     status: 400,
     type: TabtException,
   })
-  async findById(
+  @UseInterceptors(ClassSerializerInterceptor)
+  @Version('1')
+  async findByIdV1(
     @Query() input: GetTournamentDetails,
     @Param('tournamentId', ParseIntPipe) id: number,
   ) {
@@ -92,74 +76,46 @@ export class TournamentController {
       TournamentUniqueIndex: id,
     });
     if (result.length) {
-      return result[0];
-    }
-    throw new NotFoundException();
-  }
-
-  @Get(':tournamentId')
-  @ApiOperation({
-    operationId: 'findTournamentByIdV2',
-  })
-  @ApiResponse({
-    description: 'A specific tournament.',
-    type: TournamentEntry,
-    status: 200,
-  })
-  @ApiResponse({
-    status: 400,
-    type: TabtException,
-  })
-  @UseInterceptors(ClassSerializerInterceptor)
-  @Version('2')
-  async findByIdV2(
-    @Query() input: GetTournamentDetails,
-    @Param('tournamentId', ParseIntPipe) id: number,
-  ) {
-    const result = await this.tournamentService.getTournaments({
-      WithRegistrations: input.withRegistrations,
-      WithResults: input.withResults,
-      TournamentUniqueIndex: id,
-    });
-    if (result.length) {
-      return result[0];
+      return TournamentEntryDTOV1.fromTabT(result[0]);
     }
     throw new NotFoundException();
   }
 
   @Get(':tournamentId/series')
   @ApiOperation({
-    operationId: 'findSeriesByTournament',
+    operationId: 'findSeriesByTournamentV1',
   })
   @ApiResponse({
     description: 'A specific tournament.',
-    type: [TournamentSerieEntry],
+    type: [TournamentSerieEntryDTOV1],
     status: 200,
   })
   @ApiResponse({
     status: 400,
     type: TabtException,
   })
-  async getSeries(@Param('tournamentId', ParseIntPipe) id: number) {
+  @Version('1')
+  async getSeriesV1(@Param('tournamentId', ParseIntPipe) id: number) {
     const result = await this.tournamentService.getTournaments({
       TournamentUniqueIndex: id,
       WithRegistrations: true,
     });
     if (result.length) {
-      return result[0].SerieEntries;
+      return result[0].SerieEntries.map(TournamentSerieEntryDTOV1.fromTabT);
     }
     throw new NotFoundException();
   }
 
   @Post(':tournamentId/serie/:serieId/register')
   @ApiOperation({
-    operationId: 'registerToSerie',
+    operationId: 'registerToSerieV1',
   })
   @ApiResponse({
     status: 400,
     type: TabtException,
   })
-  async register(
+  @Version('1')
+  async registerV1(
     @Body() input: RegisterTournament,
     @Param('tournamentId', ParseIntPipe) tournamentId: number,
     @Param('serieId', ParseIntPipe) serieId: number,

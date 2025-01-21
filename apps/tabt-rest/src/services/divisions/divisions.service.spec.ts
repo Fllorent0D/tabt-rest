@@ -53,7 +53,7 @@ describe('DivisionService', () => {
         });
       const input = {};
 
-      const result = await service.getDivisions(input);
+      const result = await service.getDivisionsV1(input);
 
       expect(result).toBeDefined();
       expect(spyOnTabt).toBeCalledTimes(1);
@@ -82,16 +82,18 @@ describe('DivisionService', () => {
           DivisionCount: 2,
           DivisionEntries: divisions,
         });
-      const input = {};
+      const input = {
+        ShowDivisionName: 'yes',
+      };
 
-      const result = await service.getDivisionsById(4755, input);
+      const result = await service.getDivisionByIdV1(4755);
 
       expect(result).toBeDefined();
       expect(spyOnTabt).toBeCalledTimes(1);
       expect(spyOnTabt).toBeCalledWith(input);
     });
 
-    it('should call the tabt service correctly and returns null if not found', async () => {
+    it('should call the tabt service correctly and returns 404 if not found', async () => {
       const divisions = [] as DivisionEntry[];
       const spyOnTabt = jest
         .spyOn(tabtService, 'GetDivisionsAsync')
@@ -99,11 +101,13 @@ describe('DivisionService', () => {
           DivisionCount: 0,
           DivisionEntries: divisions,
         });
-      const input = {};
+      const input = {
+        ShowDivisionName: 'yes',
+      };
 
-      const result = await service.getDivisionsById(123, input);
+      const result = await service.getDivisionByIdV1(123);
 
-      expect(result).toBeUndefined();
+      expect(result).toBeNull();
       expect(spyOnTabt).toBeCalledTimes(1);
       expect(spyOnTabt).toBeCalledWith(input);
     });

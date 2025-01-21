@@ -8,13 +8,14 @@ import {
   Matches,
 } from 'class-validator';
 import { Transform } from 'class-transformer';
-import { Level, PlayerCategory } from '../../../entity/tabt-input.interface';
+import { DivisionCategoryDTO } from '../../../common/dto/division-category.dto';
+import { LevelDTO } from '../../../common/dto/levels.dto';
+
 
 export class GetMatches {
   @ApiPropertyOptional()
   @IsOptional()
-  @IsNumber()
-  @Transform((id) => parseInt(id.value), { toClassOnly: true })
+  @Transform(({ value }) => parseInt(value), { toClassOnly: true })
   divisionId?: number;
 
   @ApiPropertyOptional()
@@ -28,26 +29,26 @@ export class GetMatches {
   team?: string;
 
   @ApiPropertyOptional({
-    enum: PlayerCategory,
+    enum: DivisionCategoryDTO,
   })
-  @IsEnum(PlayerCategory)
+  @IsEnum(DivisionCategoryDTO)
   @IsOptional()
-  divisionCategory?: string;
+  divisionCategory?: DivisionCategoryDTO;
 
   @ApiPropertyOptional({
     type: Number,
   })
   @IsOptional()
   @IsNumber()
-  @Transform((id) => parseInt(id.value), { toClassOnly: true })
+  @Transform(({ value }) => parseInt(value), { toClassOnly: true })
   weekName?: string;
 
   @ApiPropertyOptional({
-    enum: Level,
+    enum: LevelDTO,
   })
-  @IsEnum(Level)
+  @IsEnum(LevelDTO)
   @IsOptional()
-  level?: string;
+  level?: LevelDTO;
 
   @ApiPropertyOptional()
   @IsEnum(['no', 'yes', 'short'])
@@ -72,8 +73,8 @@ export class GetMatches {
 
   @ApiPropertyOptional()
   @IsOptional()
-  @Transform((val) => Boolean(val.value), { toClassOnly: true })
   @IsBoolean()
+  @Transform(({ value }) => value === 'true' || value === true, { toClassOnly: true })
   withDetails?: boolean;
 
   @ApiPropertyOptional()
@@ -83,8 +84,9 @@ export class GetMatches {
 
   @ApiPropertyOptional()
   @IsOptional()
-  @IsString()
-  matchUniqueId?: string;
+  @IsNumber()
+  @Transform(({ value }) => parseInt(value), { toClassOnly: true })
+  matchUniqueId?: number;
 }
 
 export class GetMatch extends OmitType(GetMatches, [

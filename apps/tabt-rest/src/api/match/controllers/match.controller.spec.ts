@@ -4,6 +4,8 @@ import { MatchService } from '../../../services/matches/match.service';
 import { MatchSystemService } from '../../../services/matches/match-system.service';
 import { GetMatch, GetMatches } from '../dto/match.dto';
 import { NotFoundException } from '@nestjs/common';
+import { DivisionCategoryDTO } from '../../../common/dto/division-category.dto';
+import { LevelDTO } from '../../../common/dto/levels.dto';
 
 jest.mock('../../../services/matches/match.service');
 jest.mock('../../../services/matches/match-system.service');
@@ -34,14 +36,14 @@ describe('MatchController', () => {
         divisionId: 1,
         club: 'azz',
         team: 'aze',
-        divisionCategory: 'MEN',
+        divisionCategory: DivisionCategoryDTO.SENIOR_MEN,
         weekName: '1',
-        level: 'NATIONAL',
+        level: LevelDTO.NATIONAL,
         showDivisionName: 'no',
         yearDateFrom: '1995-10-17',
         yearDateTo: '1995-10-17',
         matchId: 'abc',
-        matchUniqueId: '1234',
+        matchUniqueId: 1234,
         withDetails: true,
       };
 
@@ -53,11 +55,11 @@ describe('MatchController', () => {
       expect(result[0]).toBeDefined();
       expect(spy).toHaveBeenCalledWith({
         Club: 'azz',
-        DivisionCategory: 1,
+        DivisionCategory: 37,
         DivisionId: 1,
         Level: 1,
         MatchId: 'abc',
-        MatchUniqueId: '1234',
+        MatchUniqueId: 1234,
         ShowDivisionName: 'no',
         Team: 'aze',
         WeekName: '1',
@@ -71,9 +73,9 @@ describe('MatchController', () => {
         divisionId: 1,
         club: 'azz',
         team: 'aze',
-        divisionCategory: 'MEN',
+        divisionCategory: DivisionCategoryDTO.SENIOR_MEN,
         weekName: '1',
-        level: 'NATIONAL',
+        level: LevelDTO.NATIONAL,
         showDivisionName: 'no',
         yearDateFrom: '1995-10-17',
         yearDateTo: '1995-10-17',
@@ -88,7 +90,7 @@ describe('MatchController', () => {
       expect(result).toBeDefined();
       expect(spy).toHaveBeenCalledWith({
         Club: 'azz',
-        DivisionCategory: 1,
+        DivisionCategory: 37,
         DivisionId: 1,
         Level: 1,
         MatchId: 'abc',

@@ -4,7 +4,7 @@ import {
   GetDivisionsInput,
 } from '../../entity/tabt-soap/TabTAPI_Port';
 import { TabtClientService } from '../../common/tabt-client/tabt-client.service';
-import { GetDivisionsV2 } from '../../api/divisions/dto/divisions.dto';
+import { GetDivisionsV1 } from '../../api/divisions/dto/divisions.dto';
 import { LevelDTO, mapLevelDTOToLevels } from '../../common/dto/levels.dto';
 import { divisionCategoryDTOToDivisionCategory } from '../../common/dto/division-category.dto';
 
@@ -14,12 +14,7 @@ export class DivisionService {
 
   constructor(private tabtClient: TabtClientService) {}
 
-  async getDivisions(input: GetDivisionsInput): Promise<DivisionEntry[]> {
-    const result = await this.tabtClient.GetDivisionsAsync(input);
-    return result.DivisionEntries;
-  }
-
-  async getDivisionsV2(query: GetDivisionsV2): Promise<DivisionEntry[]> {
+  async getDivisionsV1(query: GetDivisionsV1): Promise<DivisionEntry[]> {
     const input: GetDivisionsInput = {
       Level: query.level ? mapLevelDTOToLevels(query.level as LevelDTO)[0] : undefined,
       ShowDivisionName: query.showDivisionName,
@@ -33,23 +28,21 @@ export class DivisionService {
     });
   }
 
-async getDivisionByIdV2(id: number): Promise<DivisionEntry> {
-  const division = await this.getDivisionsById(id, {
-    ShowDivisionName: 'yes',
-  });
-  if (!division) {
-    throw new NotFoundException();
+  async getDivisionByIdV1(id: number): Promise<DivisionEntry | null> {
+    const division = await this.getDivisionByIdWithInput(id, {
+      ShowDivisionName: 'yes',
+    });
+    if (!division) {
+      return null;
+    }
+    return division;
   }
-  return division;
-}
 
-  async getDivisionsById(
+  private async getDivisionByIdWithInput(
     id: number,
     input: GetDivisionsInput,
   ): Promise<DivisionEntry> {
-    const divisions = await this.getDivisions(input);
-    return divisions.find((division) => division.DivisionId === id);
+    const divisions = await this.tabtClient.GetDivisionsAsync(input);
+    return divisions.DivisionEntries.find((division) => division.DivisionId === id);
   }
-
-
 }

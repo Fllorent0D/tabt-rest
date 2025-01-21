@@ -17,3 +17,7 @@ export const divisionCategoryDTOToDivisionCategory: Record<DivisionCategoryDTO, 
 export function mapDivisionCategoryToDivisionCategoryDTO(divisionCategory: DivisionCategory): DivisionCategoryDTO {
   return Object.keys(divisionCategoryDTOToDivisionCategory).find(key => divisionCategoryDTOToDivisionCategory[key as DivisionCategoryDTO] === divisionCategory) as DivisionCategoryDTO;
 }
+
+export function mapDivisionCategoryDTOToDivisionCategory(divisionCategoryDTO: DivisionCategoryDTO): DivisionCategory {
+  return divisionCategoryDTOToDivisionCategory[divisionCategoryDTO];
+}

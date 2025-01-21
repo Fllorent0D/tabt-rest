@@ -1,6 +1,6 @@
 {
   "[typescript]": {
-    "editor.defaultFormatter": "denoland.vscode-deno"
+    "editor.defaultFormatter": "vscode.typescript-language-features"
   },
   "azureFunctions.deploySubpath": ".",
   "azureFunctions.postDeployTask": "npm install (functions)",

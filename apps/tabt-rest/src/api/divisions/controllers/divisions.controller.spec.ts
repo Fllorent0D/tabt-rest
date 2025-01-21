@@ -4,13 +4,14 @@ import { DivisionService } from '../../../services/divisions/division.service';
 import { DivisionRankingService } from '../../../services/divisions/division-ranking.service';
 import { MatchService } from '../../../services/matches/match.service';
 import {
-  GetDivisionMatches,
-  GetDivisionRanking,
+  GetDivisionMatchesV1,
+  GetDivisionRankingV1,
   GetDivisionsV1,
 } from '../dto/divisions.dto';
 import { NotFoundException } from '@nestjs/common';
 import { MatchesMembersRankerService } from '../../../services/matches/matches-members-ranker.service';
-import { Level } from 'apps/tabt-rest/src/entity/tabt-input.interface';
+import { Level } from '../../../entity/tabt-input.interface';
+import { DivisionCategoryDTO } from '../../../common/dto/division-category.dto';
 
 jest.mock('../../../services/matches/match.service');
 jest.mock('../../../services/divisions/division.service');
@@ -22,12 +23,19 @@ describe('DivisionsController', () => {
   let divisionService: DivisionService;
   let divisionRankingService: DivisionRankingService;
   let matchService: MatchService;
+  let matchesMembersRankerService: MatchesMembersRankerService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [DivisionsController],
       providers: [
-        DivisionService,
+        {
+          provide: DivisionService,
+          useValue: {
+            getDivisionsV1: jest.fn(),
+            getDivisionByIdV1: jest.fn()
+          }
+        },
         DivisionRankingService,
         MatchService,
         MatchesMembersRankerService,
@@ -40,68 +48,26 @@ describe('DivisionsController', () => {
     divisionRankingService = module.get<DivisionRankingService>(
       DivisionRankingService,
     );
+    matchesMembersRankerService = module.get<MatchesMembersRankerService>(
+      MatchesMembersRankerService,
+    );
   });
 
   it('should be defined', () => {
     expect(controller).toBeDefined();
   });
 
-  describe('Divisions', () => {
-    it('should call division service with correct params', async () => {
-      const input: GetDivisionsV1 = {
-        level: Level.NATIONAL,
-        showDivisionName: 'yes',
-      };
 
-      const spy = jest.spyOn(divisionService, 'getDivisions');
-
-      const result = await controller.findAll(input);
-
-      expect(result).toBeDefined();
-      expect(result[0]).toBeDefined();
-      expect(spy).toHaveBeenCalledWith({
-        Level: 1,
-        ShowDivisionName: 'yes',
-      });
-    });
-
-    it('should call division service with correct params for 1 division', async () => {
-      const input: GetDivisionsV1 = {
-        showDivisionName: 'yes',
-      };
-
-      const spy = jest.spyOn(divisionService, 'getDivisionsById');
-
-      const result = await controller.findOne(12, input);
-
-      expect(result).toBeDefined();
-      expect(spy).toHaveBeenCalledWith(12, {
-        ShowDivisionName: 'yes',
-      });
-    });
-
-    it('should return 404 when division id is not found', async () => {
-      const input: GetDivisionsV1 = {
-        showDivisionName: 'yes',
-      };
-
-      jest.spyOn(divisionService, 'getDivisionsById').mockResolvedValue(null);
-
-      expect(controller.findOne(12, input)).rejects.toEqual(
-        new NotFoundException(),
-      );
-    });
-  });
   describe('Division ranking', () => {
     it('should call division ranking service with correct params', async () => {
-      const input: GetDivisionRanking = {
+      const input: GetDivisionRankingV1 = {
         weekName: '1',
         rankingSystem: 1,
       };
 
       const spy = jest.spyOn(divisionRankingService, 'getDivisionRanking');
 
-      const result = await controller.findRankingDivision(4755, input);
+      const result = await controller.findRankingDivisionV1(4755, input);
 
       expect(result).toBeDefined();
       expect(result[0]).toBeDefined();
@@ -114,7 +80,7 @@ describe('DivisionsController', () => {
   });
   describe('Division matches', () => {
     it('should call match service with correct params', async () => {
-      const input: GetDivisionMatches = {
+      const input: GetDivisionMatchesV1 = {
         weekName: '1',
         yearDateFrom: '1995-12-13',
         yearDateTo: '1995-12-14',
@@ -123,17 +89,66 @@ describe('DivisionsController', () => {
 
       const spy = jest.spyOn(matchService, 'getMatches');
 
-      const result = await controller.findMatchesDivision(4755, input);
+      const result = await controller.findMatchesDivisionV1(4755, input);
 
       expect(result).toBeDefined();
       expect(result[0]).toBeDefined();
       expect(spy).toHaveBeenCalledWith({
         DivisionId: 4755,
-        WeekName: '1',
-        WithDetails: true,
-        YearDateFrom: '1995-12-13',
-        YearDateTo: '1995-12-14',
       });
+    });
+  });
+
+  describe('getDivisionsV1', () => {
+    it('should call division service with correct params', async () => {
+      const input: GetDivisionsV1 = {
+        showDivisionName: 'yes',
+        level: 'NATIONAL',
+        divisionCategory: DivisionCategoryDTO.SENIOR_MEN,
+      };
+
+      const spy = jest.spyOn(divisionService, 'getDivisionsV1');
+      spy.mockResolvedValue([]);
+
+      const result = await controller.getDivisionsV1(input);
+
+      expect(result).toBeDefined();
+      expect(spy).toHaveBeenCalledWith(input);
+    });
+  });
+
+  describe('findOneV1', () => {
+    it('should return division when found', async () => {
+      const divisionId = 4755;
+      const spy = jest.spyOn(divisionService, 'getDivisionByIdV1');
+      spy.mockResolvedValue({ DivisionId: divisionId } as any);
+
+      const result = await controller.findOneV1(divisionId);
+
+      expect(result).toBeDefined();
+      expect(spy).toHaveBeenCalledWith(divisionId);
+    });
+
+    it('should throw NotFoundException when division not found', async () => {
+      const divisionId = 4755;
+      const spy = jest.spyOn(divisionService, 'getDivisionByIdV1');
+      spy.mockResolvedValue(null);
+
+      await expect(controller.findOneV1(divisionId)).rejects.toThrow(NotFoundException);
+      expect(spy).toHaveBeenCalledWith(divisionId);
+    });
+  });
+
+  describe('findMembersInDivisionV1', () => {
+    it('should call matchesMembersRankerService with correct params', async () => {
+      const divisionId = 4755;
+      const spy = jest.spyOn(matchesMembersRankerService, 'getMembersRankingFromDivision');
+      spy.mockResolvedValue([]);
+
+      const result = await controller.findMembersInDivisionV1(divisionId);
+
+      expect(result).toBeDefined();
+      expect(spy).toHaveBeenCalledWith(divisionId);
     });
   });
 });

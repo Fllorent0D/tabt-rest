@@ -7,7 +7,7 @@ import {
   Query,
   Version,
 } from '@nestjs/common';
-import { ApiNotFoundResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiNotFoundResponse, ApiOkResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
 import {
   MemberDashboardDTOV1,
   WeeklyNumericRankingInputV2,
@@ -32,6 +32,11 @@ export class MemberDashboardController {
   @ApiNotFoundResponse({
     description: 'No info found for given player',
   })
+  @ApiQuery({
+    name: 'teamId',
+    required: false,
+    description: 'Team ID to get next match estimation points',
+  })
   @Version('1')
   async memberDashboardV1(
     @Param('uniqueIndex', ParseIntPipe) id: number,
@@ -40,6 +45,7 @@ export class MemberDashboardController {
     const memberDashboard = await this.memberDashboardService.getDashboard(
       id,
       params.category,
+      params.teamId,
     );
     if (!memberDashboard) {
       throw new NotFoundException(`No member found for id ${id}`);

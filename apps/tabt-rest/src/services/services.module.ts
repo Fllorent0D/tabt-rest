@@ -15,12 +15,11 @@ import { TestRequestService } from './test/test-request.service';
 import { InternalIdMapperService } from './id-mapper/internal-id-mapper.service';
 import { Head2headService } from './members/head2head.service';
 import { MatchesMembersRankerService } from './matches/matches-members-ranker.service';
-import { MembersSearchIndexService } from './members/members-search-index.service';
 import { MemberCategoryService } from './members/member-category.service';
 import { BepingNotifierService } from './notifications/beping-notifier.service';
 import { NumericRankingService } from './members/numeric-ranking.service';
-import { DataAFTTMemberNumericRankingModel } from './members/member-numeric-ranking.model';
-import { DataAFTTIndividualResultModel } from './members/individual-results.model';
+import { RankingDistributionService } from './members/ranking-distribution.service';
+import { PointsEstimationService } from './members/points-estimation.service';
 
 const services = [
   ClubService,
@@ -37,12 +36,11 @@ const services = [
   InternalIdMapperService,
   Head2headService,
   MatchesMembersRankerService,
-  MembersSearchIndexService,
   MemberCategoryService,
   BepingNotifierService,
   NumericRankingService,
-  DataAFTTMemberNumericRankingModel,
-  DataAFTTIndividualResultModel,
+  RankingDistributionService,
+  PointsEstimationService,
 ];
 
 @Module({

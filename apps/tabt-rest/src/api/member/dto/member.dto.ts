@@ -18,10 +18,12 @@ import {
   Address,
   RankingEvaluationEntry,
   MemberEntryResultEntry,
+  GetPlayerCategoriesResponse,
+  PlayerCategoryEntries,
 } from '../../../entity/tabt-soap/TabTAPI_Port';
-import { PlayerCategoryDTO } from 'apps/tabt-rest/src/common/dto/player-category.dto';
+import { PlayerCategoryDTO } from '../../../common/dto/player-category.dto';
 
-export class BaseGetMembers {
+export class BaseGetMembersV1 {
   @ApiPropertyOptional()
   @IsString()
   @IsOptional()
@@ -62,25 +64,16 @@ export class BaseGetMembers {
   withOpponentRankingEvaluation?: boolean;
 }
 
-export class GetMembers extends BaseGetMembers {
-  @ApiPropertyOptional({ enum: PlayerCategory })
-  @IsOptional()
-  @IsEnum(PlayerCategory)
-  playerCategory?: string;
-}
-
-export class GetMember extends OmitType(GetMembers, ['uniqueIndex']) {}
-
-export class GetMembersV2 extends BaseGetMembers {
+export class GetMembersV1 extends BaseGetMembersV1 {
   @ApiPropertyOptional({ enum: PlayerCategoryDTO })
   @IsOptional()
   @IsEnum(PlayerCategoryDTO)
   playerCategory?: PlayerCategoryDTO;
 }
 
-export class GetMemberV2 extends OmitType(GetMembersV2, ['uniqueIndex']) {}
+export class GetMemberV1 extends OmitType(GetMembersV1, ['uniqueIndex']) {}
 
-export class RankingPointsEntryDTO {
+export class RankingPointsEntryDTOV1 {
   @ApiProperty()
   MethodName: string;
 
@@ -90,8 +83,8 @@ export class RankingPointsEntryDTO {
   @ApiProperty()
   LastModified: string;
 
-  static fromTabT(entry: RankingPointsEntry): RankingPointsEntryDTO {
-    const dto = new RankingPointsEntryDTO();
+  static fromTabT(entry: RankingPointsEntry): RankingPointsEntryDTOV1 {
+    const dto = new RankingPointsEntryDTOV1();
     dto.MethodName = entry.MethodName;
     dto.Value = entry.Value;
     dto.LastModified = entry.LastModified;
@@ -99,7 +92,7 @@ export class RankingPointsEntryDTO {
   }
 }
 
-export class PhoneDTO {
+export class PhoneDTOV1 {
   @ApiProperty()
   Home: string;
 
@@ -112,8 +105,8 @@ export class PhoneDTO {
   @ApiProperty()
   Fax: string;
 
-  static fromTabT(phone: Phone): PhoneDTO {
-    const dto = new PhoneDTO();
+  static fromTabT(phone: Phone): PhoneDTOV1 {
+    const dto = new PhoneDTOV1();
     dto.Home = phone.Home;
     dto.Work = phone.Work;
     dto.Mobile = phone.Mobile;
@@ -122,7 +115,7 @@ export class PhoneDTO {
   }
 }
 
-export class AddressDTO {
+export class AddressDTOV1 {
   @ApiProperty()
   Line1: string;
 
@@ -135,8 +128,8 @@ export class AddressDTO {
   @ApiProperty()
   Town: string;
 
-  static fromTabT(address: Address): AddressDTO {
-    const dto = new AddressDTO();
+  static fromTabT(address: Address): AddressDTOV1 {
+    const dto = new AddressDTOV1();
     dto.Line1 = address.Line1;
     dto.Line2 = address.Line2;
     dto.ZipCode = address.ZipCode;
@@ -145,22 +138,22 @@ export class AddressDTO {
   }
 }
 
-export class RankingEvaluationEntryDTO {
+export class RankingEvaluationEntryDTOV1 {
   @ApiProperty()
   EvaluationType: string;
 
   @ApiProperty()
   EvaluationValue: string;
 
-  static fromTabT(entry: RankingEvaluationEntry): RankingEvaluationEntryDTO {
-    const dto = new RankingEvaluationEntryDTO();
+  static fromTabT(entry: RankingEvaluationEntry): RankingEvaluationEntryDTOV1 {
+    const dto = new RankingEvaluationEntryDTOV1();
     dto.EvaluationType = entry.EvaluationType;
     dto.EvaluationValue = entry.EvaluationValue;
     return dto;
   }
 }
 
-export class MemberEntryResultEntryDTO {
+export class MemberEntryResultEntryDTOV1 {
   /** http://api.frenoy.net/TabTAPI#xsd:date(undefined) */
   @ApiProperty()
   Date: string;
@@ -198,7 +191,7 @@ export class MemberEntryResultEntryDTO {
   MatchId: string;
 
   @ApiPropertyOptional()
-  MatchUniqueId: string;
+  MatchUniqueId: number;
 
   @ApiPropertyOptional()
   TournamentName: string;
@@ -212,11 +205,11 @@ export class MemberEntryResultEntryDTO {
   @ApiPropertyOptional()
   RankingEvaluationCount: number;
 
-  @ApiPropertyOptional({ type: [RankingEvaluationEntryDTO] })
-  RankingEvaluationEntries: Array<RankingEvaluationEntryDTO>;
+  @ApiPropertyOptional({ type: [RankingEvaluationEntryDTOV1] })
+  RankingEvaluationEntries: Array<RankingEvaluationEntryDTOV1>;
 
-  static fromTabT(entry: MemberEntryResultEntry): MemberEntryResultEntryDTO {
-    const dto = new MemberEntryResultEntryDTO();
+  static fromTabT(entry: MemberEntryResultEntry): MemberEntryResultEntryDTOV1 {
+    const dto = new MemberEntryResultEntryDTOV1();
     dto.Date = entry.Date;
     dto.UniqueIndex = entry.UniqueIndex;
     dto.FirstName = entry.FirstName;
@@ -235,14 +228,14 @@ export class MemberEntryResultEntryDTO {
     dto.RankingEvaluationCount = entry.RankingEvaluationCount;
     if (entry.RankingEvaluationEntries) {
       dto.RankingEvaluationEntries = entry.RankingEvaluationEntries.map(
-        RankingEvaluationEntryDTO.fromTabT,
+        RankingEvaluationEntryDTOV1.fromTabT,
       );
     }
     return dto;
   }
 }
 
-export class MemberEntryDTO {
+export class MemberEntryDTOV1 {
   @ApiProperty()
   Position: number;
 
@@ -282,29 +275,29 @@ export class MemberEntryDTO {
   @ApiPropertyOptional()
   RankingPointsCount?: number;
   
-  @ApiPropertyOptional({ type: [RankingPointsEntryDTO] })
-  RankingPointsEntries?: Array<RankingPointsEntryDTO>;
+  @ApiPropertyOptional({ type: [RankingPointsEntryDTOV1] })
+  RankingPointsEntries?: Array<RankingPointsEntryDTOV1>;
 
   @ApiPropertyOptional()
   Email?: string;
   
   @ApiPropertyOptional()
-  Phone?: PhoneDTO;
+  Phone?: PhoneDTOV1;
 
   @ApiPropertyOptional()
-  Address?: AddressDTO;
+  Address?: AddressDTOV1;
 
   @ApiPropertyOptional()
   ResultCount?: number;
 
-  @ApiPropertyOptional({ type: [MemberEntryResultEntryDTO] })
-  ResultEntries?: Array<MemberEntryResultEntryDTO>;
+  @ApiPropertyOptional({ type: [MemberEntryResultEntryDTOV1] })
+  ResultEntries?: Array<MemberEntryResultEntryDTOV1>;
 
   @ApiPropertyOptional()
   NationalNumber?: string;
 
-  static fromTabT(entry: MemberEntry): MemberEntryDTO {
-    const dto = new MemberEntryDTO();
+  static fromTabT(entry: MemberEntry): MemberEntryDTOV1 {
+    const dto = new MemberEntryDTOV1();
     dto.Position = entry.Position;
     dto.UniqueIndex = entry.UniqueIndex;
     dto.RankingIndex = entry.RankingIndex;
@@ -318,60 +311,18 @@ export class MemberEntryDTO {
     dto.BirthDate = entry.BirthDate;
     dto.MedicalAttestation = entry.MedicalAttestation;
     dto.RankingPointsCount = entry.RankingPointsCount;
-    dto.RankingPointsEntries = entry.RankingPointsEntries ? entry.RankingPointsEntries.map(RankingPointsEntryDTO.fromTabT) : undefined;
+    dto.RankingPointsEntries = entry.RankingPointsEntries ? entry.RankingPointsEntries.map(RankingPointsEntryDTOV1.fromTabT) : undefined;
     dto.Email = entry.Email;
-    dto.Phone = entry.Phone ? PhoneDTO.fromTabT(entry.Phone) : undefined;
-    dto.Address = entry.Address ? AddressDTO.fromTabT(entry.Address) : undefined;
+    dto.Phone = entry.Phone ? PhoneDTOV1.fromTabT(entry.Phone) : undefined;
+    dto.Address = entry.Address ? AddressDTOV1.fromTabT(entry.Address) : undefined;
     dto.ResultCount = entry.ResultCount;
-    dto.ResultEntries = entry.ResultEntries ? entry.ResultEntries.map(MemberEntryResultEntryDTO.fromTabT) : undefined;
+    dto.ResultEntries = entry.ResultEntries ? entry.ResultEntries.map(MemberEntryResultEntryDTOV1.fromTabT) : undefined;
     dto.NationalNumber = entry.NationalNumber;
     return dto;
   }
 }
 
-export class WeeklyELO {
-  @ApiProperty()
-  @IsNumber()
-  weekName: string;
-
-  @ApiProperty()
-  @IsNumber()
-  elo: number;
-}
-
-export class WeeklyNumericRanking {
-  @ApiProperty()
-  @IsNumber()
-  weekName: string;
-
-  @ApiProperty()
-  @IsNumber()
-  elo: number;
-
-  @ApiProperty()
-  @IsNumber()
-  bel: number;
-}
-
-export class WeeklyNumericRankingV2 {
-  @ApiProperty()
-  @IsNumber()
-  weekName: string;
-
-  @ApiProperty()
-  @IsNumber()
-  bel: number;
-}
-
-export class WeeklyNumericPointsV3 {
-  @ApiProperty()
-  weekName: string;
-
-  @ApiProperty()
-  points: number;
-}
-
-export class WeeklyNumericPointsV5 {
+export class WeeklyNumericPointsV1 {
   @ApiProperty()
   date: string;
 
@@ -385,7 +336,7 @@ export class WeeklyNumericPointsV5 {
   rankingLetterEstimation: string;
 }
 
-export class NumericRankingPerWeekOpponentsV3 {
+export class NumericRankingPerWeekOpponentsV1 {
   @ApiProperty()
   opponentName: string;
 
@@ -396,7 +347,7 @@ export class NumericRankingPerWeekOpponentsV3 {
   opponentRanking: string;
 
   @ApiProperty()
-  opponentNumericRanking: number;
+  opponentNumericPoints: number;
 
   @ApiProperty()
   pointsWon: number;
@@ -410,7 +361,7 @@ export enum COMPETITION_TYPE {
   TOURNAMENT = 'tournament',
 }
 
-export class NumericRankingDetailsV3 {
+export class NumericRankingDetailsV1 {
   @ApiProperty()
   date: string;
 
@@ -428,102 +379,81 @@ export class NumericRankingDetailsV3 {
   @ApiProperty()
   endPoints: number;
 
+  
   @ApiProperty({
-    type: [NumericRankingPerWeekOpponentsV3],
+    type: [NumericRankingPerWeekOpponentsV1],
   })
-  opponents: NumericRankingPerWeekOpponentsV3[];
+  opponents: NumericRankingPerWeekOpponentsV1[];
 }
 
-export class WeeklyNumericRankingV3 {
-  @ApiProperty({
-    type: [WeeklyNumericPointsV3],
-  })
-  points: WeeklyNumericPointsV3[];
 
-  @ApiProperty({
-    type: [NumericRankingDetailsV3],
-  })
-  perDateHistory: NumericRankingDetailsV3[];
-
+export class GetPlayerCategoriesInputV1 {
   @ApiProperty()
-  actualPoints: number;
-}
-
-export type WeeklyNumericRankingV4 = WeeklyNumericRankingV3;
-
-export class WeeklyNumericRankingV5 {
-  @ApiProperty({
-    type: [WeeklyNumericPointsV5],
-  })
-  numericRankingHistory: WeeklyNumericPointsV5[];
-
-  @ApiProperty({
-    type: [NumericRankingDetailsV3],
-  })
-  perDateHistory: NumericRankingDetailsV3[];
-}
-
-
-export enum PLAYER_CATEGORY_OLD {
-  MEN = 'MEN',
-  WOMEN = 'WOMEN',
-  VETERANS = 'VETERANS',
-  VETERANS_WOMEN = 'VETERANS_WOMEN',
-  YOUTH = 'YOUTH',
-}
-
-
-export class WeeklyNumericRankingInput extends RequestBySeasonDto {
-  @ApiPropertyOptional({ enum: PLAYER_CATEGORY_OLD })
-  @IsEnum(PLAYER_CATEGORY_OLD)
-  category?: PLAYER_CATEGORY_OLD;
-}
-
-export class WeeklyNumericRankingInputV2 {
-  @ApiPropertyOptional({ enum: PLAYER_CATEGORY_OLD })
-  @IsEnum(PLAYER_CATEGORY_OLD)
-  category?: PLAYER_CATEGORY_OLD;
-}
-
-export type WeeklyNumericRankingInputV3 = WeeklyNumericRankingInputV2;
-
-export class WeeklyNumericRankingInputV5 {
-  // only allow MEN, WOMEN, VETERANS, VETERANS_WOMEN, YOUTH
-
-  @ApiPropertyOptional({enum: PlayerCategoryDTO})
-  @IsEnum(PlayerCategoryDTO)
-  category?: PlayerCategoryDTO;
-}
-
-export class GetPlayerCategoriesInput {
-  @ApiPropertyOptional()
-  @IsOptional()
-  @Transform((id) => parseInt(id.value), { toClassOnly: true })
-  uniqueIndex?: number;
-
-  @ApiPropertyOptional()
-  @IsString()
-  @IsOptional()
-  nameSearch?: string;
-
-  @ApiPropertyOptional()
-  @IsString()
-  @IsOptional()
+  uniqueIndex?: string;
+  @ApiProperty()
   shortNameSearch?: string;
-
-  @ApiPropertyOptional()
-  @IsString()
-  @IsOptional()
-  rankingCategory?: string;
-}
-
-export class LookupDTO {
   @ApiProperty()
-  @Matches(
-    "^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$",
-    'u',
-    { message: 'query can only contains letters' },
-  )
-  @MinLength(3)
-  query: string;
+  rankingCategory?: string;
+  
 }
+export class PlayerCategoryEntriesDTOV1 {
+  /** xsd:integer */
+  @ApiProperty()
+  uniqueIndex?: string;
+  /** xsd:string */
+  @ApiProperty()
+  name?: string;
+  /** xsd:string */
+  @ApiProperty()
+  shortName?: string;
+  /** xsd:integer */
+  @ApiProperty()
+  rankingCategory?: string;
+  /** xsd:boolean */
+  @ApiProperty()
+  isGroup?: string;
+  /** xsd:string */
+  @ApiProperty()
+  groupMembers?: string;
+  /** xsd:string */
+  @ApiProperty()
+  sex?: string;
+  /** xsd:string */
+  @ApiProperty()
+  strictSex?: string;
+  /** xsd:integer */
+  @ApiProperty()
+  minimumAge?: string;
+  /** xsd:integer */
+  @ApiProperty()
+  maximumAge?: string;
+  /** xsd:integer */
+  @ApiProperty()
+  strictMinimumAge?: string;
+  /** xsd:integer */
+  @ApiProperty()
+  strictMaximumAge?: string;
+
+  static fromTabT(input: PlayerCategoryEntries): PlayerCategoryEntriesDTOV1 {
+    const dto = new PlayerCategoryEntriesDTOV1();
+    dto.uniqueIndex = input.UniqueIndex;
+    dto.name = input.Name;
+    dto.shortName = input.ShortName;
+    dto.rankingCategory = input.RankingCategory;
+    dto.isGroup = input.IsGroup;
+    dto.groupMembers = input.GroupMembers;
+    dto.sex = input.Sex;
+    dto.strictSex = input.StrictSex;
+    dto.minimumAge = input.MinimumAge;
+    dto.maximumAge = input.MaximumAge;
+    return dto;
+  }
+}
+
+export class WeeklyNumericPointsInputV1 {
+  @ApiProperty({
+    enum: PlayerCategoryDTO,
+  })
+  category: PlayerCategoryDTO;
+}
+

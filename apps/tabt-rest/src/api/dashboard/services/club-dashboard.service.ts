@@ -77,8 +77,8 @@ export class ClubDashboardService
     clubUniqueIndex: string,
   ): Promise<ResponseDTO<MemberEntry[]>> {
     try {
-      const members = await this.memberService.getMembers({
-        Club: clubUniqueIndex,
+      const members = await this.memberService.getMembersV1({
+        club: clubUniqueIndex,
       });
       return new ResponseDTO(RESPONSE_STATUS.SUCCESS, members);
     } catch (error) {
@@ -103,7 +103,7 @@ export class ClubDashboardService
     category?: PlayerCategoryDTO,
   ): Promise<MemberEntry[]> {
     try {
-      const members = await this.memberService.getMembersV2({
+      const members = await this.memberService.getMembersV1({
         club: clubUniqueIndex,
         playerCategory: category,
       });

@@ -7,6 +7,8 @@ import {
   ParseIntPipe,
   Query,
   UseInterceptors,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import {
   ApiNotFoundResponse,
@@ -16,13 +18,14 @@ import {
 } from '@nestjs/swagger';
 import {
   MatchSystemEntry,
-  TeamMatchesEntry,
 } from '../../../entity/tabt-soap/TabTAPI_Port';
 import { MatchService } from '../../../services/matches/match.service';
 import { TabtHeadersDecorator } from '../../../common/decorators/tabt-headers.decorator';
 import { MatchSystemService } from '../../../services/matches/match-system.service';
 import { GetMatch, GetMatches } from '../dto/match.dto';
-import { Level, PlayerCategory } from '../../../entity/tabt-input.interface';
+import { TeamMatchesEntryDTO } from '../dto/match-model.dto';
+import { mapDivisionCategoryDTOToDivisionCategory } from '../../../common/dto/division-category.dto';
+import { mapLevelDTOToLevels } from '../../../common/dto/levels.dto';
 
 @ApiTags('Matches')
 @Controller({
@@ -42,26 +45,26 @@ export class MatchController {
     operationId: 'findAllMatches',
   })
   @ApiOkResponse({
-    type: [TeamMatchesEntry],
+    type: [TeamMatchesEntryDTO],
     description: 'List of team matches entries',
   })
-  async findAll(@Query() input: GetMatches): Promise<TeamMatchesEntry[]> {
-    return this.matchService.getMatches({
+  @UsePipes(new ValidationPipe({ transform: true }))
+  async findAll( @Query() input: GetMatches): Promise<TeamMatchesEntryDTO[]> {
+    const matches = await this.matchService.getMatches({
       DivisionId: input.divisionId,
       Club: input.club,
       Team: input.team,
-      DivisionCategory: PlayerCategory[
-        input.divisionCategory
-      ] as unknown as number,
+      DivisionCategory: input.divisionCategory ? mapDivisionCategoryDTOToDivisionCategory(input.divisionCategory) : undefined,
       WeekName: input.weekName,
-      Level: Level[input.level] as unknown as number,
+      Level: input.level ? mapLevelDTOToLevels(input.level)[0] : undefined,
       ShowDivisionName: input.showDivisionName,
       YearDateTo: input.yearDateTo,
       YearDateFrom: input.yearDateFrom,
       WithDetails: input.withDetails,
       MatchId: input.matchId,
-      MatchUniqueId: input.matchUniqueId as unknown as number,
+      MatchUniqueId: input.matchUniqueId,
     });
+    return matches.map(TeamMatchesEntryDTO.fromTabT);
   }
 
   @Get('systems')
@@ -100,23 +103,21 @@ export class MatchController {
     operationId: 'findMatchById',
   })
   @ApiOkResponse({
-    type: TeamMatchesEntry,
+    type: TeamMatchesEntryDTO,
     description: 'The information of a specific match',
   })
   @ApiNotFoundResponse()
   async findById(
     @Query() input: GetMatch,
     @Param('matchUniqueId', ParseIntPipe) id: number,
-  ): Promise<TeamMatchesEntry> {
+  ): Promise<TeamMatchesEntryDTO> {
     const found = await this.matchService.getMatches({
       DivisionId: input.divisionId,
       Club: input.club,
       Team: input.team,
-      DivisionCategory: PlayerCategory[
-        input.divisionCategory
-      ] as unknown as number,
+      DivisionCategory: input.divisionCategory ? mapDivisionCategoryDTOToDivisionCategory(input.divisionCategory) : undefined,
       WeekName: input.weekName,
-      Level: Level[input.level] as unknown as number,
+      Level: input.level ? mapLevelDTOToLevels(input.level)[0] : undefined,
       ShowDivisionName: input.showDivisionName,
       YearDateTo: input.yearDateTo,
       YearDateFrom: input.yearDateFrom,
@@ -126,7 +127,7 @@ export class MatchController {
     });
 
     if (found.length) {
-      return found[0];
+      return TeamMatchesEntryDTO.fromTabT(found[0]);
     }
     throw new NotFoundException();
   }

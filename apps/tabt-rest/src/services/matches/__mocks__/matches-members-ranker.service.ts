@@ -1,5 +1,4 @@
-import { MemberResults } from '../../../common/dto/member-ranking.dto';
-
+import { PlayerMatchStats } from '../../../services/matches/matches-members-ranker.service';
 export class MatchesMembersRankerService {
   data = [
     {
@@ -7,6 +6,7 @@ export class MatchesMembersRankerService {
       firstName: 'MORGANE',
       lastName: 'GUIDON',
       ranking: 'B4',
+      club: 'CLUB 1',
       played: 22,
       win: 13,
       lose: 9,
@@ -18,6 +18,7 @@ export class MatchesMembersRankerService {
       firstName: 'GABRIEL',
       lastName: 'STANESCU',
       ranking: 'B0',
+      club: 'CLUB 1',
       played: 16,
       win: 7,
       lose: 9,
@@ -29,6 +30,7 @@ export class MatchesMembersRankerService {
       firstName: 'FRANCOIS',
       lastName: 'GOBEAUX',
       ranking: 'B0',
+      club: 'CLUB 1',
       played: 15,
       win: 11,
       lose: 4,
@@ -40,6 +42,7 @@ export class MatchesMembersRankerService {
       firstName: 'CAROLINE',
       lastName: 'DELFORGE',
       ranking: 'C6',
+      club: 'CLUB 1',
       played: 14,
       win: 6,
       lose: 8,
@@ -51,6 +54,7 @@ export class MatchesMembersRankerService {
       firstName: 'VIRGINIE',
       lastName: 'DIEUDONNE',
       ranking: 'E4',
+      club: 'CLUB 1',
       played: 13,
       win: 7,
       lose: 6,
@@ -62,14 +66,14 @@ export class MatchesMembersRankerService {
   async getMembersRankingFromDivision(
     divisionId: number,
     season: number,
-  ): Promise<MemberResults[]> {
+  ): Promise<PlayerMatchStats[]> {
     return Promise.resolve(this.data);
   }
 
   async getMembersRankingFromClub(
     club: string,
     season: number,
-  ): Promise<MemberResults[]> {
+  ): Promise<PlayerMatchStats[]> {
     return Promise.resolve(this.data);
   }
 
@@ -77,7 +81,7 @@ export class MatchesMembersRankerService {
     club: string,
     teamId: string,
     season: number,
-  ): Promise<MemberResults[]> {
+  ): Promise<PlayerMatchStats[]> {
     return Promise.resolve(this.data);
   }
 }

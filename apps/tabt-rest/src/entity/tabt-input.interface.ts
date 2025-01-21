@@ -87,3 +87,4 @@ export enum ClubCategory {
   AFTT = 13,
   FRBTT = 14,
 }
+

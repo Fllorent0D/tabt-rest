@@ -1,15 +1,19 @@
 import { ApiPropertyOptional, OmitType } from '@nestjs/swagger';
-import { GetMembers } from '../../member/dto/member.dto';
-import { ClubCategory } from '../../../entity/tabt-input.interface';
+import { GetMembersV1 } from '../../member/dto/member.dto';
 import { IsOptional, IsString } from 'class-validator';
+import { ClubCategoryDTO } from '../../../common/dto/club-category.dto';
+
+
+
 
 export class ListAllClubs {
-  @ApiPropertyOptional({ enum: ClubCategory })
+  @ApiPropertyOptional({ enum: ClubCategoryDTO })
   @IsOptional()
   @IsString()
-  clubCategory: string;
+  clubCategory: ClubCategoryDTO;
+  
 }
 
-export class GetMembersFromClub extends OmitType(GetMembers, [
+export class GetMembersFromClub extends OmitType(GetMembersV1, [
   'club',
 ] as const) {}

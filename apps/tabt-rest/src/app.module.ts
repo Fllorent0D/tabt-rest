@@ -12,11 +12,6 @@ import { join } from 'path';
     CommonModule,
     ApiModule,
     ConfigModule.forRoot(),
-    ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', process.env.STATIC_PREFIX),
-      serveRoot: '/' + process.env.STATIC_PREFIX,
-      exclude: [`/${process.env.API_PREFIX}*`],
-    }),
   ],
 })
 export class AppModule {}

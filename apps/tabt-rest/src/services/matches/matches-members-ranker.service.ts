@@ -2,40 +2,73 @@ import { Injectable } from '@nestjs/common';
 import { Player, TeamMatchesEntry } from '../../entity/tabt-soap/TabTAPI_Port';
 import { MatchService } from './match.service';
 import { CacheService, TTL_DURATION } from '../../common/cache/cache.service';
-import { MemberResults } from '../../common/dto/member-ranking.dto';
 import { ContextService } from '../../common/context/context.service';
+import { ApiProperty } from '@nestjs/swagger';
 
 export enum SortSystem {
-  MOST_PLAYED,
-  BEST_PERF_PER_PCT,
-  BEST_PERF_PER_WIN,
-  // RANKING To Do
+  MOST_PLAYED = 'MOST_PLAYED',
+  BEST_PERF_PER_PCT = 'BEST_PERF_PER_PCT',
+  BEST_PERF_PER_WIN = 'BEST_PERF_PER_WIN',
 }
+export class PlayerMatchStats {
+  @ApiProperty()
+  played: number;
+  @ApiProperty()
+  win: number;
+  @ApiProperty()
+  lose: number;
+  @ApiProperty()
+  uniqueIndex: number;
+  @ApiProperty()
+  firstName: string;
+  @ApiProperty()
+  lastName: string;
+  @ApiProperty()
+  ranking: string;
+  @ApiProperty()
+  winPourcentage: number;
+  @ApiProperty()
+  losePourcentage: number;
+  @ApiProperty()
+  club: string;
+}
+
+interface PlayerStats extends Omit<PlayerMatchStats, 'winPourcentage' | 'losePourcentage'> {
+  uniqueIndex: number;
+  firstName: string;
+  lastName: string;
+  ranking: string;
+  played: number;
+  win: number;
+  lose: number;
+}
+
+type SortFunction = (a: PlayerMatchStats, b: PlayerMatchStats) => number;
 
 @Injectable()
 export class MatchesMembersRankerService {
+  private static readonly SORT_FUNCTIONS: Record<SortSystem, SortFunction> = {
+    [SortSystem.MOST_PLAYED]: (a, b) => 
+      (b.played * 100 + b.winPourcentage) - (a.played * 100 + a.winPourcentage),
+    [SortSystem.BEST_PERF_PER_PCT]: (a, b) => 
+      (b.winPourcentage * 100 + b.played) - (a.winPourcentage * 100 + a.played),
+    [SortSystem.BEST_PERF_PER_WIN]: (a, b) => b.win - a.win,
+  };
+
   constructor(
-    private matchService: MatchService,
-    private cacheService: CacheService,
-    private contextService: ContextService,
+    private readonly matchService: MatchService,
+    private readonly cacheService: CacheService,
+    private readonly contextService: ContextService,
   ) {}
 
   async getMembersRankingFromDivision(
     divisionId: number,
     sortingSystem: SortSystem = SortSystem.BEST_PERF_PER_WIN,
-  ): Promise<MemberResults[]> {
-    // Télécharger les matchs
-    const getter = async () => {
-      const matches = await this.matchService.getMatches({
-        DivisionId: divisionId,
-        WithDetails: true,
-      });
-
-      return MatchesMembersRankerService.computeRanking(matches, sortingSystem);
-    };
+  ): Promise<PlayerMatchStats[]> {
+    const cacheKey = `members-ranking-division:${this.contextService.context.runner.season}:${divisionId}`;
     return this.cacheService.getFromCacheOrGetAndCacheResult(
-      `members-ranking-division:${this.contextService.context.runner.season}:${divisionId}`,
-      getter,
+      cacheKey,
+      () => this.fetchAndComputeRanking({ DivisionId: divisionId, WithDetails: true }, sortingSystem),
       TTL_DURATION.EIGHT_HOURS,
     );
   }
@@ -44,24 +77,11 @@ export class MatchesMembersRankerService {
     club: string,
     season: number,
     sortingSystem: SortSystem = SortSystem.BEST_PERF_PER_PCT,
-  ): Promise<MemberResults[]> {
-    // Télécharger les matchs
-    const getter = async () => {
-      const matches = await this.matchService.getMatches({
-        Season: season,
-        Club: club,
-        WithDetails: true,
-      });
-
-      return MatchesMembersRankerService.computeRanking(
-        matches,
-        sortingSystem,
-        club,
-      );
-    };
+  ): Promise<PlayerMatchStats[]> {
+    const cacheKey = `members-ranking-club:${season}:${club}`;
     return this.cacheService.getFromCacheOrGetAndCacheResult(
-      `members-ranking-club:${season}:${club}`,
-      getter,
+      cacheKey,
+      () => this.fetchAndComputeRanking({ Season: season, Club: club, WithDetails: true }, sortingSystem, club),
       TTL_DURATION.EIGHT_HOURS,
     );
   }
@@ -71,152 +91,111 @@ export class MatchesMembersRankerService {
     teamId: string,
     season: number,
     sortingSystem: SortSystem = SortSystem.MOST_PLAYED,
-  ): Promise<MemberResults[]> {
-    // Télécharger les matchs
+  ): Promise<PlayerMatchStats[]> {
     const [divisionId] = teamId.split('-');
-    const getter = async () => {
-      const matches = await this.matchService.getMatches({
-        Season: season,
-        Club: club,
-        DivisionId: Number(divisionId),
-        WithDetails: true,
-      });
-      return MatchesMembersRankerService.computeRanking(
-        matches,
-        sortingSystem,
-        club,
-      );
-    };
+    const cacheKey = `members-ranking-team:${season}:${club}-${teamId}`;
     return this.cacheService.getFromCacheOrGetAndCacheResult(
-      `members-ranking-team:${season}:${club}-${teamId}`,
-      getter,
+      cacheKey,
+      () => this.fetchAndComputeRanking(
+        { Season: season, Club: club, DivisionId: Number(divisionId), WithDetails: true },
+        sortingSystem,
+        club
+      ),
       TTL_DURATION.EIGHT_HOURS,
     );
   }
 
-  private static computeRanking(
+  private async fetchAndComputeRanking(
+    matchParams: Record<string, any>,
+    sortingSystem: SortSystem,
+    keepClub?: string,
+  ): Promise<PlayerMatchStats[]> {
+    const matches = await this.matchService.getMatches(matchParams);
+    return this.computeRanking(matches, sortingSystem, keepClub);
+  }
+
+  private computeRanking(
     matches: TeamMatchesEntry[],
     sortingSystem: SortSystem,
     keepClub?: string,
-  ): MemberResults[] {
-    const players: Map<number, MemberResults> = new Map<
-      number,
-      MemberResults
-    >();
+  ): PlayerMatchStats[] {
+    const players = new Map<number, PlayerStats>();
 
     for (const match of matches) {
-      if (match.MatchDetails.DetailsCreated) {
-        const matchDetails = match.MatchDetails;
-        const mapPlayer = (p: Player) => ({
-          uniqueIndex: p.UniqueIndex,
-          firstName: p.FirstName,
-          lastName: p.LastName,
-          ranking: p.Ranking,
-        });
-        const awayPlayers = (matchDetails.AwayPlayers?.Players ?? []).map(
-          mapPlayer,
-        );
-        const homePlayers = (matchDetails.HomePlayers?.Players ?? []).map(
-          mapPlayer,
-        );
-        const matchPlayers = [
-          ...((keepClub && match.HomeClub === keepClub) || !keepClub
-            ? homePlayers
-            : []),
-          ...((keepClub && match.AwayClub === keepClub) || !keepClub
-            ? awayPlayers
-            : []),
-        ];
+      if (!match.MatchDetails?.DetailsCreated) continue;
 
-        for (const player of matchPlayers) {
-          const playerEntry = players.get(player.uniqueIndex) ?? {
-            uniqueIndex: player.uniqueIndex,
-            firstName: player.firstName,
-            lastName: player.lastName,
-            ranking: player.ranking,
-            played: 0,
-            win: 0,
-            lose: 0,
-            winPourcentage: 0,
-            losePourcentage: 0,
-          };
+      const { MatchDetails: matchDetails, HomeClub, AwayClub } = match;
+      const shouldIncludeHome = !keepClub || HomeClub === keepClub;
+      const shouldIncludeAway = !keepClub || AwayClub === keepClub;
 
-          for (const individualMatch of matchDetails.IndividualMatchResults) {
-            if (
-              (individualMatch &&
-                individualMatch.AwayPlayerUniqueIndex?.includes(
-                  player.uniqueIndex,
-                ) &&
-                !individualMatch.IsAwayForfeited &&
-                !individualMatch.IsHomeForfeited) ||
-              (individualMatch &&
-                individualMatch.HomePlayerUniqueIndex?.includes(
-                  player.uniqueIndex,
-                ) &&
-                !individualMatch.IsHomeForfeited &&
-                !individualMatch.IsAwayForfeited)
-            ) {
-              playerEntry.played = playerEntry.played + 1;
+      const matchPlayers = [
+        ...(shouldIncludeHome ? this.mapPlayers(matchDetails.HomePlayers?.Players, HomeClub) : []),
+        ...(shouldIncludeAway ? this.mapPlayers(matchDetails.AwayPlayers?.Players, AwayClub) : []),
+      ];
 
-              if (
-                (individualMatch.AwayPlayerUniqueIndex?.includes(
-                  player.uniqueIndex,
-                ) &&
-                  individualMatch.AwaySetCount >
-                    individualMatch.HomeSetCount) ||
-                (individualMatch.HomePlayerUniqueIndex?.includes(
-                  player.uniqueIndex,
-                ) &&
-                  individualMatch.AwaySetCount < individualMatch.HomeSetCount)
-              ) {
-                playerEntry.win = playerEntry.win + 1;
-              } else {
-                playerEntry.lose = playerEntry.lose + 1;
-              }
-            }
-          }
-          players.set(player.uniqueIndex, playerEntry);
-        }
-      }
+      this.processMatchPlayers(matchPlayers, players, matchDetails);
     }
-    const results = [...players.values()];
-    return MatchesMembersRankerService.computePctAndSort(
-      results,
-      sortingSystem,
-    );
+
+    return this.computePctAndSort([...players.values()], sortingSystem);
   }
 
-  private static computePctAndSort(
-    members: MemberResults[],
-    sortSystem: SortSystem,
-  ): MemberResults[] {
-    for (const result of members) {
-      result.winPourcentage = Math.round((result.win / result.played) * 100);
-      result.losePourcentage = Math.round((result.lose / result.played) * 100);
-    }
-    const mostPlayedCmpFct = (a: MemberResults, b: MemberResults) =>
-      a.played * 100 + a.winPourcentage > b.played * 100 + b.winPourcentage
-        ? -1
-        : 1;
-    const bestPerfPctCmpFct = (a: MemberResults, b: MemberResults) =>
-      a.winPourcentage * 100 + a.played > b.winPourcentage * 100 + b.played
-        ? -1
-        : 1;
-    const bestPerfWinCntCmpFct = (a: MemberResults, b: MemberResults) =>
-      a.win > b.win ? -1 : 1;
-    let fctToApply;
-    switch (sortSystem) {
-      case SortSystem.BEST_PERF_PER_PCT:
-        fctToApply = bestPerfPctCmpFct;
-        break;
-      case SortSystem.BEST_PERF_PER_WIN:
-        fctToApply = bestPerfWinCntCmpFct;
-        break;
-      case SortSystem.MOST_PLAYED:
-        fctToApply = mostPlayedCmpFct;
-        break;
-    }
+  private mapPlayers(players: Player[] = [], club: string): PlayerStats[] {
+    return players.map(p => ({
+      uniqueIndex: p.UniqueIndex,
+      firstName: p.FirstName,
+      lastName: p.LastName,
+      ranking: p.Ranking,
+      played: 0,
+      win: 0,
+      lose: 0,
+      club,
+    }));
+  }
 
-    return members.filter((member) => member.played > 0).sort(fctToApply);
+  private processMatchPlayers(
+    matchPlayers: PlayerStats[],
+    players: Map<number, PlayerStats>,
+    matchDetails: any,
+  ): void {
+    for (const player of matchPlayers) {
+      const playerEntry = players.get(player.uniqueIndex) ?? { ...player };
+
+      for (const match of matchDetails.IndividualMatchResults) {
+        if (!match || match.IsHomeForfeited || match.IsAwayForfeited) continue;
+
+        const isHomePlayer = match.HomePlayerUniqueIndex?.includes(player.uniqueIndex);
+        const isAwayPlayer = match.AwayPlayerUniqueIndex?.includes(player.uniqueIndex);
+
+        if (!isHomePlayer && !isAwayPlayer) continue;
+
+        playerEntry.played++;
+        
+        const playerWon = (isHomePlayer && match.HomeSetCount > match.AwaySetCount) ||
+                         (isAwayPlayer && match.AwaySetCount > match.HomeSetCount);
+        
+        if (playerWon) {
+          playerEntry.win++;
+        } else {
+          playerEntry.lose++;
+        }
+      }
+
+      players.set(player.uniqueIndex, playerEntry);
+    }
+  }
+
+  private computePctAndSort(
+    members: PlayerStats[],
+    sortSystem: SortSystem,
+  ): PlayerMatchStats[] {
+    const results = members
+      .filter(member => member.played > 0)
+      .map(member => ({
+        ...member,
+        winPourcentage: Math.round((member.win / member.played) * 100),
+        losePourcentage: Math.round((member.lose / member.played) * 100),
+      }));
+
+    return results.sort(MatchesMembersRankerService.SORT_FUNCTIONS[sortSystem]);
   }
 }

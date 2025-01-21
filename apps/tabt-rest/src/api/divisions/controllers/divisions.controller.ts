@@ -26,27 +26,22 @@ import { TabtException } from '../../../common/filter/tabt-exceptions.filter';
 import { DivisionRankingService } from '../../../services/divisions/division-ranking.service';
 import { TabtHeadersDecorator } from '../../../common/decorators/tabt-headers.decorator';
 import {
-  DivisionEntryDto,
-  GetDivisionMatches,
-  GetDivisionRanking,
+  DivisionEntryDtoV1,
+  GetDivisionMatchesV1,
+  GetDivisionRankingV1,
   GetDivisionsV1,
-  GetDivisionsV2,
+  RankingEntryDtoV1,
 } from '../dto/divisions.dto';
 import { MatchService } from '../../../services/matches/match.service';
-import { Level } from '../../../entity/tabt-input.interface';
-import { MatchesMembersRankerService } from '../../../services/matches/matches-members-ranker.service';
-import { MemberResults } from '../../../common/dto/member-ranking.dto';
-import { PlayerCategory } from '../../../entity/tabt-input.interface';
-import { LevelDTO, mapLevelDTOToLevels, mapLevelToLevelDTO } from '../../../common/dto/levels.dto';
-import { mapPlayerCategoryToPlayerCategoryDTO, playerCategoryDTOToPlayerCategory, playerCategoryToPlayerCategoryDTO } from 'apps/tabt-rest/src/common/dto/player-category.dto';
-import { divisionCategoryDTOToDivisionCategory, mapDivisionCategoryToDivisionCategoryDTO } from 'apps/tabt-rest/src/common/dto/division-category.dto';
+import { MatchesMembersRankerService, PlayerMatchStats } from '../../../services/matches/matches-members-ranker.service';
+import { TeamMatchesEntryDTO } from '../../match/dto/match-model.dto';
+
 @Controller({
   path: 'divisions',
-  version: ['1'],
 })
 @TabtHeadersDecorator()
 @ApiTags('Divisions')
-@ApiExtraModels(DivisionEntryDto)
+@ApiExtraModels(DivisionEntryDtoV1)
 export class DivisionsController {
   constructor(
     private divisionService: DivisionService,
@@ -55,91 +50,36 @@ export class DivisionsController {
     private matchesMembersRankerService: MatchesMembersRankerService,
   ) {}
 
- @Get()
-  @ApiOperation({
-    operationId: 'findAllDivisions',
-    deprecated: true,
-  })
-  @ApiResponse({
-    description: 'List of divisions for a specific season.',
-    type: [DivisionEntry],
-    status: 200,
-  })
-  @ApiResponse({
-    status: 400,
-    type: TabtException,
-  })
-  @Version('1')
-  @UseInterceptors(ClassSerializerInterceptor)
-  findAll(@Query() query: GetDivisionsV1): Promise<DivisionEntry[]> {
-    return this.divisionService.getDivisions({
-      Level: query.level ? Number(Level[query.level]) : undefined,
-      ShowDivisionName: query.showDivisionName,
-    });
-  }
-
   @Get()
   @ApiOperation({
-    operationId: 'findAllDivisionsV2',
+    operationId: 'findAllDivisionsV1',
     summary: 'List of divisions for a specific season with enum string values.',
   })
   @ApiResponse({
     description: 'List of divisions for a specific season with enum string values.',
-    type: [DivisionEntryDto],
+    type: [DivisionEntryDtoV1],
     status: 200,
   })
   @ApiResponse({
     status: 400,
     type: TabtException,
   })
-  @UseInterceptors(ClassSerializerInterceptor)
-  @Version('2')
-  async getDivisionsV2(
-    @Query() query: GetDivisionsV2,
-  ): Promise<DivisionEntryDto[]> {
-    const divisions = await this.divisionService.getDivisionsV2(query);
-    return divisions.map(DivisionEntryDto.fromDivisionEntry);
-  }
-
-  @Get(':divisionId')
-  @ApiOperation({
-    operationId: 'findDivisionById',
-    summary: 'Find a division by id',
-    deprecated: true,
-  })
-  @ApiResponse({
-    description: 'A specific division based on the id.',
-    type: DivisionEntry,
-    status: 200,
-  })
-  @ApiNotFoundResponse({ description: 'The division not found' })
-  @ApiResponse({
-    status: 400,
-    type: TabtException,
-  })
-  @UseInterceptors(ClassSerializerInterceptor)
   @Version('1')
-  async findOne(
-    @Param('divisionId', ParseIntPipe) id: number,
+  @UseInterceptors(ClassSerializerInterceptor)
+  async getDivisionsV1(
     @Query() query: GetDivisionsV1,
-  ): Promise<DivisionEntry> {
-    const division = await this.divisionService.getDivisionsById(id, {
-      ShowDivisionName: query.showDivisionName,
-    });
-    if (!division) {
-      throw new NotFoundException();
-    }
-    return division;
+  ): Promise<DivisionEntryDtoV1[]> {
+    const divisions = await this.divisionService.getDivisionsV1(query);
+    return divisions.map(DivisionEntryDtoV1.fromDivisionEntry);
   }
 
-  
   @Get(':divisionId')
   @ApiOperation({
-    operationId: 'findDivisionByIdV2',
+    operationId: 'findDivisionByIdV1',
   })
   @ApiResponse({
     description: 'A specific division based on the id.',
-    type: DivisionEntry,
+    type: DivisionEntryDtoV1,
     status: 200,
   })
   @ApiNotFoundResponse({ description: 'The division not found' })
@@ -147,88 +87,86 @@ export class DivisionsController {
     status: 400,
     type: TabtException,
   })
+  @Version('1')
   @UseInterceptors(ClassSerializerInterceptor)
-  @Version('2')
-  async findOneV2(
+  async findOneV1(
     @Param('divisionId', ParseIntPipe) id: number,
-  ): Promise<DivisionEntryDto> {
-    const division = await this.divisionService.getDivisionByIdV2(id);
+  ): Promise<DivisionEntryDtoV1> {
+    const division = await this.divisionService.getDivisionByIdV1(id);
     if (!division) {
       throw new NotFoundException();
     }
-    return DivisionEntryDto.fromDivisionEntry(division);
+    return DivisionEntryDtoV1.fromDivisionEntry(division);
   }
-  
 
   @Get(':divisionId/ranking')
   @ApiOperation({
-    operationId: 'findDivisionRanking',
+    operationId: 'findDivisionRankingV1',
   })
   @ApiResponse({
     description:
       'The ranking for a specific division based on the id of the division.',
-    type: [RankingEntry],
+    type: [RankingEntryDtoV1],
     status: 200,
   })
   @ApiResponse({
     status: 400,
     type: TabtException,
   })
-  async findRankingDivision(
+  @Version('1')
+  async findRankingDivisionV1(
     @Param('divisionId', ParseIntPipe) id: number,
-    @Query() query: GetDivisionRanking,
-  ): Promise<RankingEntry[]> {
-    return this.divisionRankingService.getDivisionRanking({
+    @Query() query: GetDivisionRankingV1,
+  ): Promise<RankingEntryDtoV1[]> {
+    const entries = await this.divisionRankingService.getDivisionRanking({
       DivisionId: id,
       RankingSystem: query.rankingSystem,
       WeekName: query.weekName,
     });
+    return entries.map(RankingEntryDtoV1.fromTabT);
   }
 
   @Get(':divisionId/matches')
   @ApiOperation({
-    operationId: 'findDivisionMatches',
+    operationId: 'findDivisionMatchesV1',
   })
   @ApiResponse({
     description: 'A list of matches.',
-    type: [TeamMatchesEntry],
+    type: [TeamMatchesEntryDTO],
     status: 200,
   })
   @ApiResponse({
     status: 400,
     type: TabtException,
   })
-  async findMatchesDivision(
+  @Version('1')
+  async findMatchesDivisionV1(
     @Param('divisionId', ParseIntPipe) id: number,
-    @Query() query: GetDivisionMatches,
-  ): Promise<TeamMatchesEntry[]> {
-    return this.matchesService.getMatches({
+    @Query() query: GetDivisionMatchesV1,
+  ): Promise<TeamMatchesEntryDTO[]> {
+    const matches = await this.matchesService.getMatches({
       DivisionId: id,
-      /*
-      WeekName: query.weekName,
-      YearDateFrom: query.yearDateFrom,
-      YearDateTo: query.yearDateTo,
-      WithDetails: query.withDetails,
-      */
     });
+    return matches.map(TeamMatchesEntryDTO.fromTabT);
   }
 
   @Get(':divisionId/members/ranking')
   @ApiOperation({
-    operationId: 'findDivisionMembers',
+    operationId: 'findDivisionMembersV1',
   })
   @ApiResponse({
     description: 'A ranking of members playing in a given division.',
-    type: [MemberResults],
+    type: [PlayerMatchStats],
     status: 200,
   })
   @ApiResponse({
     status: 400,
     type: TabtException,
   })
-  async findMembersInDivision(
+  @Version('1')
+  async findMembersInDivisionV1(
     @Param('divisionId', ParseIntPipe) id: number,
-  ): Promise<MemberResults[]> {
+  ): Promise<PlayerMatchStats[]> {
     return this.matchesMembersRankerService.getMembersRankingFromDivision(id);
   }
 }
