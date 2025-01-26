@@ -131,7 +131,7 @@ model DataImport {
   type           ImportType
   playerCategory PlayerCategory
   importedAt     DateTime       @default(now())
-  lineHashes     String[]      // Store hashes of each line to detect changes
+  hash     String      // Store hashes of each line to detect changes
   
   @@index([type, playerCategory, importedAt])
 }

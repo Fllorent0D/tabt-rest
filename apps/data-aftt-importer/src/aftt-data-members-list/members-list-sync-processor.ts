@@ -32,15 +32,15 @@ export class MembersListProcessingService {
   async process(job: Job<{ playerCategory: PlayerCategory }>): Promise<void> {
     try {
       const lines = await this.downloadAndPrepareFile(job.data.playerCategory);
-      const { changedLines } = await this.filterChangedLines(lines, job.data.playerCategory);
+      const hasChanged = await this.hasChanged(lines, job.data.playerCategory);
       
-      if (changedLines.length === 0) {
+      if (!hasChanged) {
         this.logger.log('No changes detected in the file, skipping processing');
         return;
       }
       
-      this.logger.log(`Processing ${changedLines.length} changed lines out of ${lines.length} total lines`);
-      await this.processBatches(changedLines, job.data.playerCategory);
+      this.logger.log(`Processing ${lines.length} lines`);
+      await this.processBatches(lines, job.data.playerCategory);
       await this.cleanCache(job.data.playerCategory);
       
       // Store the new import record
@@ -267,11 +267,8 @@ export class MembersListProcessingService {
     return { member, numericPoints };
   }
 
-  private computeLineHash(line: string): string {
-    return createHash('sha256').update(line).digest('hex');
-  }
 
-  private async filterChangedLines(lines: string[], playerCategory: PlayerCategory): Promise<{ changedLines: string[] }> {
+  private async hasChanged(lines: string[], playerCategory: PlayerCategory): Promise<boolean> {
     // Get the latest import for this category
     const lastImport = await this.prismaService.dataImport.findFirst({
       where: { 
@@ -283,29 +280,23 @@ export class MembersListProcessingService {
 
     if (!lastImport) {
       this.logger.log('No previous import found, processing all lines');
-      return { changedLines: lines };
+      return true;
     }
 
-    // Create a set of previous hashes for O(1) lookup
-    const previousHashes = new Set(lastImport.lineHashes);
-    
     // Filter only lines that have changed or are new
-    const changedLines = lines.filter(line => {
-      const hash = this.computeLineHash(line);
-      return !previousHashes.has(hash);
-    });
-
-    return { changedLines };
+    const currentHash = createHash('sha256').update(lines.join('')).digest('hex');
+    return currentHash !== lastImport.hash;
   }
 
   private async storeImport(lines: string[], playerCategory: PlayerCategory): Promise<void> {
-    const lineHashes = lines.map(line => this.computeLineHash(line));
+    // create a master hash of all the lines
+    const masterHash = createHash('sha256').update(lines.join('')).digest('hex');
     
     await this.prismaService.dataImport.create({
       data: {
         type: ImportType.MEMBER,
         playerCategory,
-        lineHashes,
+        hash: masterHash,
       },
     });
   }
