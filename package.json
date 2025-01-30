@@ -99,7 +99,7 @@
     "@nestjs/cli": "10.4.9",
     "@nestjs/schematics": "10.2.3",
     "@nestjs/testing": "10.4.15",
-    "@openapitools/openapi-generator-cli": "2.15.3",
+    "@openapitools/openapi-generator-cli": "2.16.3",
     "@release-it/conventional-changelog": "9.0.4",
     "@schematics/angular": "19.0.7",
     "@types/bluebird": "3.5.42",
