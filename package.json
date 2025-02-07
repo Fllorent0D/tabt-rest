@@ -75,7 +75,7 @@
     "lodash": "4.17.21",
     "lunr": "2.3.9",
     "nestjs-pino": "4.3.0",
-    "p-queue": "8.0.1",
+    "p-queue": "8.1.0",
     "passport": "0.7.0",
     "passport-http": "0.3.0",
     "pg": "8.13.1",
