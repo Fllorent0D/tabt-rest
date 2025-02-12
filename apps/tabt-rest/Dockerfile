@@ -1,5 +1,5 @@
 # Base image
-ARG NODE_VERSION=20.18.2-slim
+ARG NODE_VERSION=20.18.3-slim
 FROM node:${NODE_VERSION} as builder
 
 # Create app directory
