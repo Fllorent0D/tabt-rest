@@ -40,6 +40,7 @@ async function bootstrap() {
     .addTag('Matches')
     .addTag('Divisions')
     .addTag('Tournaments')
+    .addTag('Search')
     .addServer('http://localhost:3004', 'development')
     .addServer('https://api.beping.be', 'production')
     .build();

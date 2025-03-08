@@ -9,6 +9,7 @@ import { HealthModule } from './health/health.module';
 import { InternalIdentifiersModule } from './internal-identifiers/internal-identifiers.module';
 import { UserAgentModule } from './user-agent/user-agent.module';
 import { DashboardModule } from './dashboard/dashboard.module';
+import { SearchModule } from './search/search.module';
 @Module({
   imports: [
     DivisionsModule,
@@ -18,6 +19,7 @@ import { DashboardModule } from './dashboard/dashboard.module';
     MemberModule,
     MatchModule,
     HealthModule,
+    SearchModule,
     UserAgentModule,
     InternalIdentifiersModule,
     DashboardModule,

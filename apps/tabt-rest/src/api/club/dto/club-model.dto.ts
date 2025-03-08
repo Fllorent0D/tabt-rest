@@ -31,8 +31,8 @@ export class VenueDto {
 }
 
 export class ClubDto {
-  @ApiProperty()
-  uniqueIndex: string;
+  @ApiPropertyOptional()
+  uniqueIndex?: string;
 
   @ApiProperty()
   name: string;
@@ -40,8 +40,7 @@ export class ClubDto {
   @ApiProperty()
   longName: string;
 
-  @ApiProperty({ enum: ClubCategory })
-  @Transform((cat) => ClubCategory[cat.value], { toPlainOnly: true })
+  @ApiProperty()
   category: number;
 
   @ApiProperty()
