@@ -18,7 +18,7 @@ export class MembersListSyncCron {
     if (syncOnStart === true || syncOnStart === 'true') {
       this.syncMembers();
     } else {
-      this.logger.log('SYNC_MEMBERS_ON_START is not enabled.');
+      this.logger.log('SYNC_MEMBERS_ON_START is not enabled. ');
     }
   }
 
