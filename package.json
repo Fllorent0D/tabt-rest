@@ -113,7 +113,7 @@
     "@types/lunr": "2.3.7",
     "@types/node": "22.13.5",
     "@types/response-time": "2.3.8",
-    "@types/supertest": "6.0.2",
+    "@types/supertest": "6.0.3",
     "@types/user-agents": "1.0.4",
     "@typescript-eslint/eslint-plugin": "7.18.0",
     "@typescript-eslint/parser": "7.18.0",
