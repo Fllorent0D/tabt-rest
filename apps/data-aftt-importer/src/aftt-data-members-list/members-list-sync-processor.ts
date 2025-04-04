@@ -237,7 +237,21 @@ export class MembersListProcessingService {
     if (cols.length < 13) {
       throw new Error(`Invalid line format: ${line}`);
     }
-
+    /*  0 - 43268;
+        1 - 162218;
+        2 - GUICHARD;
+        3 - SACHA;
+        4 - D2;
+        5 - L276;
+        6 - 117;
+        7 - CAD;
+        8 - 999;
+        9 - BE;
+        10 - 1326.38;
+        11 - 2815;
+        12 - 3283;
+        13 - C4 
+        */
     const member: Member = {
       id: parseInt(cols[0], 10),
       licence: parseInt(cols[1], 10),
@@ -261,7 +275,7 @@ export class MembersListProcessingService {
       points: parseFloat(cols[10]),
       ranking: cols[12].length ? parseInt(cols[12]) : null,
       rankingWI: cols[11].length ? parseInt(cols[11]) : null,
-      rankingLetterEstimation: null,
+      rankingLetterEstimation: cols[13] || null,
     };
 
     return { member, numericPoints };
