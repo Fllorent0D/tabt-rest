@@ -101,7 +101,7 @@
     "@nestjs/testing": "10.4.17",
     "@openapitools/openapi-generator-cli": "2.20.0",
     "@release-it/conventional-changelog": "9.0.4",
-    "@schematics/angular": "19.2.10",
+    "@schematics/angular": "19.2.11",
     "@types/bluebird": "3.5.42",
     "@types/compression": "1.7.5",
     "@types/continuation-local-storage": "3.2.7",
