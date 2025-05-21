@@ -89,7 +89,7 @@
     "soap": "1.1.11",
     "socks-proxy-agent": "8.0.5",
     "swagger-ui-express": "5.0.1",
-    "typeorm": "0.3.23",
+    "typeorm": "0.3.24",
     "user-agents": "1.1.538",
     "uuid": "9.0.1",
     "xmldom": "0.6.0"
