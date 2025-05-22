@@ -1,5 +1,5 @@
 # Base image
-ARG NODE_VERSION=20.19.1-slim
+ARG NODE_VERSION=20.19.2-slim
 ARG APP_NAME=data-aftt-importer
 
 FROM node:${NODE_VERSION} as builder
