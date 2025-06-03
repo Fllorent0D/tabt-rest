@@ -86,7 +86,7 @@
     "response-time": "2.3.3",
     "rimraf": "5.0.10",
     "rxjs": "7.8.2",
-    "soap": "1.1.11",
+    "soap": "1.1.12",
     "socks-proxy-agent": "8.0.5",
     "swagger-ui-express": "5.0.1",
     "typeorm": "0.3.24",
