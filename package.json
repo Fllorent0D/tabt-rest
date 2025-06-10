@@ -103,7 +103,7 @@
     "@release-it/conventional-changelog": "9.0.4",
     "@schematics/angular": "19.2.14",
     "@types/bluebird": "3.5.42",
-    "@types/compression": "1.8.0",
+    "@types/compression": "1.8.1",
     "@types/continuation-local-storage": "3.2.7",
     "@types/cron": "2.4.3",
     "@types/express": "5.0.2",
