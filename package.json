@@ -66,7 +66,7 @@
     "class-validator": "0.14.2",
     "compression": "1.8.1",
     "date-fns": "3.6.0",
-    "firebase-admin": "10.3.0",
+    "firebase-admin": "13.4.0",
     "form-data": "4.0.4",
     "he": "1.2.0",
     "helmet": "7.2.0",
