@@ -90,7 +90,7 @@
     "socks-proxy-agent": "8.0.5",
     "swagger-ui-express": "5.0.1",
     "typeorm": "0.3.25",
-    "user-agents": "1.1.602",
+    "user-agents": "1.1.610",
     "uuid": "9.0.1",
     "xmldom": "0.6.0"
   },
